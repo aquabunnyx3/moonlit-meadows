@@ -104,17 +104,17 @@ struct ChatLayout {
         "farmer-male-s0-hoodie-blush": rect(0.1885, 0.1823, 0.3472, 0.5286),
         "farmer-male-s0-hoodie-happy": rect(0.184, 0.184, 0.3482, 0.4818),
         "farmer-male-s0-hoodie-sad": rect(0.19, 0.1892, 0.3487, 0.4748),
-        "farmer-male-s0-hoodie-surprised": rect(0.1726, 0.1797, 0.3403, 0.4931),
+        "farmer-male-s0-hoodie-surprised": rect(0.1726, 0.1797, 0.3403, 0.4939),
         "farmer-male-s0-sad": rect(0.1885, 0.184, 0.3433, 0.4601),
-        "farmer-male-s0-surprised": rect(0.1939, 0.184, 0.3562, 0.487),
+        "farmer-male-s0-surprised": rect(0.1801, 0.178, 0.3373, 0.4722),
         "farmer-male-s2-blush": rect(0.1478, 0.0825, 0.3562, 0.5174),
         "farmer-male-s2-happy": rect(0.1463, 0.0851, 0.3562, 0.4444),
         "farmer-male-s2-hoodie-blush": rect(0.129, 0.0807, 0.3646, 0.5764),
         "farmer-male-s2-hoodie-happy": rect(0.125, 0.0825, 0.3631, 0.4948),
         "farmer-male-s2-hoodie-sad": rect(0.125, 0.0773, 0.3631, 0.5356),
-        "farmer-male-s2-hoodie-surprised": rect(0.1746, 0.0825, 0.3869, 0.5009),
+        "farmer-male-s2-hoodie-surprised": rect(0.1746, 0.0825, 0.3869, 0.5017),
         "farmer-male-s2-sad": rect(0.1458, 0.0842, 0.3606, 0.4965),
-        "farmer-male-s2-surprised": rect(0.1964, 0.0868, 0.3765, 0.4384),
+        "farmer-male-s2-surprised": rect(0.1915, 0.0851, 0.3775, 0.4514),
         "farmer-male-sad": rect(0.396, 0.1805, 0.593, 0.5255),
         "farmer-male-surprised": rect(0.3995, 0.1769, 0.594, 0.5326),
         "june-blush": rect(0.197, 0.0898, 0.3245, 0.3715),
@@ -222,6 +222,20 @@ struct ChatFaceParts {
                      blinks: [.neutral, .sad, .surprised, .blush], openMouth: [.surprised, .happy]),
         "farmer-female-s0": ChatFaceParts(eyes: rect(0.2133, 0.2821, 0.3348, 0.3559), mouth: rect(0.2331, 0.3993, 0.3026, 0.4688),
                      blinks: [.neutral, .sad, .surprised, .blush], openMouth: [.happy, .surprised]),
+        "farmer-female-s1-sundress": ChatFaceParts(eyes: rect(0.2083, 0.3082, 0.3423, 0.3559), mouth: rect(0.2455, 0.4167, 0.3026, 0.4644),
+                     blinks: [.neutral], openMouth: []),
+        "farmer-female-s2": ChatFaceParts(eyes: rect(0.2034, 0.2821, 0.3472, 0.3559), mouth: rect(0.2257, 0.408, 0.2778, 0.4557),
+                     blinks: [.neutral, .happy, .sad, .surprised, .blush], openMouth: [.surprised, .happy]),
+        "farmer-male-s0": ChatFaceParts(eyes: rect(0.2083, 0.3142, 0.3299, 0.349), mouth: rect(0.2331, 0.408, 0.3026, 0.4688),
+                     blinks: [.neutral, .happy, .sad, .surprised, .blush], openMouth: [.surprised, .happy]),
+        "farmer-male-s2": ChatFaceParts(eyes: rect(0.2133, 0.276, 0.3423, 0.3316), mouth: rect(0.2331, 0.3733, 0.3075, 0.434),
+                     blinks: [.neutral, .happy, .sad, .surprised, .blush], openMouth: [.surprised, .happy]),
+        "farmer-male-s0-hoodie": ChatFaceParts(eyes: rect(0.2158, 0.3038, 0.3299, 0.349), mouth: rect(0.2331, 0.4167, 0.3026, 0.4774),
+                     blinks: [.neutral, .happy, .sad, .surprised, .blush], openMouth: [.surprised, .happy]),
+        "farmer-male-s1-hoodie": ChatFaceParts(eyes: rect(0.2133, 0.2847, 0.3323, 0.3229), mouth: rect(0.2331, 0.3819, 0.3026, 0.4427),
+                     blinks: [.neutral], openMouth: []),
+        "farmer-male-s2-hoodie": ChatFaceParts(eyes: rect(0.1984, 0.2951, 0.3423, 0.349), mouth: rect(0.2282, 0.4297, 0.3175, 0.4991),
+                     blinks: [.neutral, .happy, .sad, .surprised, .blush], openMouth: [.surprised, .happy]),
     ]
 
     /// Talk blip pitch per speaker (1 is the recorded pitch).
@@ -233,7 +247,9 @@ struct ChatFaceParts {
     private static var loggedMissing: Set<String> = []
 
     /// A frame, or `nil` (logged once) when it's missing: the static face shows instead.
-    static func frame(_ name: String) -> UIImage? {
+    /// Your farmer's frames are recolored for your look (each has a `-labels` map).
+    static func frame(_ name: String, look: FarmerLook? = nil) -> UIImage? {
+        if let look, let image = FarmerRenderer.image(named: name, look: look) { return image }
         if let image = UIImage(named: name) { return image }
         if !loggedMissing.contains(name) {
             loggedMissing.insert(name)
@@ -280,6 +296,9 @@ struct ChatScene: View {
         var faceBox: CGRect?
         /// The chat image's id, for its blinking eyes and talking mouth.
         var animID: String?
+        /// Your farmer's look, when this is one of the farmer's drawn scenes: everything on it
+        /// is recolored to match.
+        var look: FarmerLook?
     }
 
     /// The speaker's expression for this line. Narration keeps their usual face.
@@ -288,7 +307,8 @@ struct ChatScene: View {
         return ChatMood.of(text)
     }
 
-    /// Chat scenes drawn for a farmer look (gender and hairstyle), in its original colors.
+    /// Chat scenes drawn for a farmer look (gender, hairstyle and outfit cut). They're recolored
+    /// for your skin, hair, eyes and jacket colors.
     private static let drawnChatArt = [
         "female0": "farmer-female-s0", "female1": "farmer-female", "female1-sundress": "farmer-female-s1-sundress",
         "female2": "farmer-female-s2",
@@ -297,12 +317,13 @@ struct ChatScene: View {
     ]
 
     private var art: Art? {
-        func own(_ id: String) -> Art? {
-            guard let image = UIImage(named: "chat-\(id)"), let layout = ChatLayout.all[id] else { return nil }
+        func own(_ id: String, look: FarmerLook? = nil) -> Art? {
+            guard let image = ChatFaceParts.frame("chat-\(id)", look: look), let layout = ChatLayout.all[id] else { return nil }
             var art = Art(background: image, layout: layout, bust: nil)
             art.animID = id
+            art.look = look
             if mood != .neutral, let box = ChatLayout.faces["\(id)-\(mood.rawValue)"] {
-                art.face = UIImage(named: "chat-\(id)-\(mood.rawValue)")
+                art.face = ChatFaceParts.frame("chat-\(id)-\(mood.rawValue)", look: look)
                 art.faceBox = box
             }
             return art
@@ -323,13 +344,11 @@ struct ChatScene: View {
             guard let person else { return shared(nil) }
             return own(person.id) ?? shared(PersonArt.image(for: person.id))
         case .farmer:
-            // The drawn chat art shows the original colors; any other look uses your own portrait.
-            // Jacket outfits recolor, so only the original jacket matches the drawing; the other
-            // cuts are drawn as they are.
-            if let look = meadow.farmerLook, look.skinTone == 4, look.hairColor == "black", look.eyeColor == "brown",
-               let cut = Outfit.find(look.outfit)?.cut, cut != .jacket || look.outfit == Outfit.defaultID,
+            // Your look's drawn chat scene, recolored to your choices; looks without one use
+            // your own portrait.
+            if let look = meadow.farmerLook, let cut = Outfit.find(look.outfit)?.cut,
                let drawn = Self.drawnChatArt[look.gender.rawValue + "\(look.hairStyle)" + (cut == .jacket ? "" : "-\(cut.rawValue)")],
-               let art = own(drawn) {
+               let art = own(drawn, look: look) {
                 return art
             }
             // Trimmed first: some portraits have empty space above the head, which would push
@@ -427,7 +446,7 @@ struct ChatScene: View {
 
     /// Blinking (every few seconds, on each character's own rhythm) and the mouth opening and
     /// closing while they talk, then resting closed. Stops while the game is paused.
-    private func faceMotion(id: String, parts: ChatFaceParts, w: CGFloat, h: CGFloat) -> some View {
+    private func faceMotion(id: String, parts: ChatFaceParts, look: FarmerLook?, w: CGFloat, h: CGFloat) -> some View {
         let seed = Double(id.unicodeScalars.reduce(0) { ($0 * 31 + Int($1.value)) % 997 })
         let period = 3.4 + seed.truncatingRemainder(dividingBy: 13) / 10
         return TimelineView(.animation(minimumInterval: 1 / 24, paused: meadow.isPaused)) { timeline in
@@ -440,13 +459,13 @@ struct ChatScene: View {
             let mouth: String? = mouthOpen ? (parts.openMouth.contains(mood) ? nil : "mouthopen")
                 : (parts.openMouth.contains(mood) ? "mouthclosed" : nil)
             ZStack(alignment: .topLeading) {
-                if let blink, let eyes = ChatFaceParts.frame("chat-\(id)-\(mood.rawValue)-\(blink)") {
+                if let blink, let eyes = ChatFaceParts.frame("chat-\(id)-\(mood.rawValue)-\(blink)", look: look) {
                     Image(uiImage: eyes)
                         .resizable()
                         .frame(width: parts.eyes.width * w, height: parts.eyes.height * h)
                         .offset(x: parts.eyes.minX * w, y: parts.eyes.minY * h)
                 }
-                if let mouth, let image = ChatFaceParts.frame("chat-\(id)-\(mouth)") {
+                if let mouth, let image = ChatFaceParts.frame("chat-\(id)-\(mouth)", look: look) {
                     Image(uiImage: image)
                         .resizable()
                         .frame(width: parts.mouth.width * w, height: parts.mouth.height * h)
@@ -480,7 +499,7 @@ struct ChatScene: View {
             }
 
             if let id = art.animID, let parts = ChatFaceParts.all[id] {
-                faceMotion(id: id, parts: parts, w: w, h: h)
+                faceMotion(id: id, parts: parts, look: art.look, w: w, h: h)
             }
 
             if let bust = art.bust {

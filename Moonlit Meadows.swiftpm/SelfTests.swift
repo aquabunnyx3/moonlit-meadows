@@ -750,6 +750,12 @@ enum SelfTests {
             c.expect(UIImage(named: "chat-\(id)-mouthopen") != nil && UIImage(named: "chat-\(id)-mouthclosed") != nil, "\(id) has talking mouths")
         }
         c.expect(NSDataAsset(name: "sfx-talk-blip") != nil, "The talk blip is in the assets")
+        for id in ChatFaceParts.all.keys where id.hasPrefix("farmer") {
+            c.expect(UIImage(named: "chat-\(id)-labels") != nil, "chat-\(id) recolors for your look")
+        }
+        let pinkHair = FarmerLook(gender: .female, hairStyle: 0, skinTone: 1, hairColor: "pink", eyeColor: "blue")
+        c.expect(ChatFaceParts.frame("chat-farmer-female-s0", look: pinkHair) !== UIImage(named: "chat-farmer-female-s0"),
+                 "The Curly Buns chat scene is recolored for a pink-haired, fair farmer")
         for keepsake in Keepsake.all {
             c.expect(UIImage(named: "keepsake-\(keepsake.id)") != nil, "\(keepsake.name) has its icon")
         }
