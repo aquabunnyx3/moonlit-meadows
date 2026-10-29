@@ -142,6 +142,12 @@ struct ChatLayout {
         "roz": ChatLayout(tag: rect(0.0645, 0.6771, 0.2183, 0.7465), box: rect(0.0347, 0.7535, 0.9673, 0.9809), tagIsLight: false),
         "bree": ChatLayout(tag: rect(0.1575, 0.7086, 0.29, 0.757), box: rect(0.1225, 0.7852, 0.8775, 0.9498), tagIsLight: false),
         "theo": ChatLayout(tag: rect(0.0911, 0.7641, 0.2552, 0.8109), box: rect(0.0781, 0.8125, 0.9245, 0.9648), tagIsLight: false),
+        "farmer-female-s1-sundress": ChatLayout(tag: rect(0.0546, 0.7535, 0.2381, 0.8203), box: rect(0.0248, 0.8247, 0.9722, 0.9766), tagIsLight: false),
+        "farmer-male-s0": ChatLayout(tag: rect(0.0546, 0.7535, 0.2381, 0.8203), box: rect(0.0248, 0.8247, 0.9722, 0.9766), tagIsLight: false),
+        "farmer-male-s2": ChatLayout(tag: rect(0.0546, 0.7535, 0.2381, 0.8203), box: rect(0.0248, 0.8247, 0.9722, 0.9766), tagIsLight: false),
+        "farmer-male-s0-hoodie": ChatLayout(tag: rect(0.0546, 0.7535, 0.2381, 0.8203), box: rect(0.0248, 0.8247, 0.9722, 0.9766), tagIsLight: false),
+        "farmer-male-s1-hoodie": ChatLayout(tag: rect(0.0546, 0.7535, 0.2381, 0.8203), box: rect(0.0248, 0.8247, 0.9722, 0.9766), tagIsLight: false),
+        "farmer-male-s2-hoodie": ChatLayout(tag: rect(0.0546, 0.7535, 0.2381, 0.8203), box: rect(0.0248, 0.8247, 0.9722, 0.9766), tagIsLight: false),
         "generic": ChatLayout(tag: rect(0.15, 0.6954, 0.29, 0.7526), box: rect(0.1135, 0.7773, 0.888, 0.9489), tagIsLight: true),
     ]
 }
@@ -258,7 +264,11 @@ struct ChatScene: View {
     }
 
     /// Chat scenes drawn for a farmer look (gender and hairstyle), in its original colors.
-    private static let drawnChatArt = ["female0": "farmer-female-s0", "female1": "farmer-female", "male1": "farmer-male"]
+    private static let drawnChatArt = [
+        "female0": "farmer-female-s0", "female1": "farmer-female", "female1-sundress": "farmer-female-s1-sundress",
+        "male0": "farmer-male-s0", "male1": "farmer-male", "male2": "farmer-male-s2",
+        "male0-hoodie": "farmer-male-s0-hoodie", "male1-hoodie": "farmer-male-s1-hoodie", "male2-hoodie": "farmer-male-s2-hoodie",
+    ]
 
     private var art: Art? {
         func own(_ id: String) -> Art? {
@@ -288,9 +298,12 @@ struct ChatScene: View {
             return own(person.id) ?? shared(PersonArt.image(for: person.id))
         case .farmer:
             // The drawn chat art shows the original colors; any other look uses your own portrait.
-            if let look = meadow.farmerLook, look.skinTone == 4, look.hairColor == "black",
-               look.eyeColor == "brown", look.outfit == Outfit.defaultID,
-               let drawn = Self.drawnChatArt[look.gender.rawValue + "\(look.hairStyle)"], let art = own(drawn) {
+            // Jacket outfits recolor, so only the original jacket matches the drawing; the other
+            // cuts are drawn as they are.
+            if let look = meadow.farmerLook, look.skinTone == 4, look.hairColor == "black", look.eyeColor == "brown",
+               let cut = Outfit.find(look.outfit)?.cut, cut != .jacket || look.outfit == Outfit.defaultID,
+               let drawn = Self.drawnChatArt[look.gender.rawValue + "\(look.hairStyle)" + (cut == .jacket ? "" : "-\(cut.rawValue)")],
+               let art = own(drawn) {
                 return art
             }
             // Trimmed first: some portraits have empty space above the head, which would push

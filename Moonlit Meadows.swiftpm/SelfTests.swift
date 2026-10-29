@@ -622,6 +622,9 @@ enum SelfTests {
         c.expect(FarmerRenderer.image(named: "intro-4-hand", look: FarmerLook(gender: .male, skinTone: 1), drawnSkin: RGB(0xA66D4C)) != nil,
                  "The hand taking the key recolors to your skin tone")
         c.expect(UIImage(named: "chat-farmer-female-s0") != nil, "The curly-buns farmer has their own chat scene")
+        for id in ["farmer-female-s1-sundress", "farmer-male-s0", "farmer-male-s2", "farmer-male-s0-hoodie", "farmer-male-s1-hoodie", "farmer-male-s2-hoodie"] {
+            c.expect(UIImage(named: "chat-\(id)") != nil && ChatLayout.all[id] != nil, "chat-\(id) is in with its text box")
+        }
         for name in IntroView.artNames {
             c.expect(UIImage(named: name) != nil, "\(name) is in the assets")
         }
