@@ -1,0 +1,215 @@
+VOICE SCRIPT: Silas (Silas Okafor-Bell)
+
+Please create voice lines for a cozy, pastel pixel-art farming game called Moonlit Meadows.
+
+CHARACTER: he/him, man, about 30, the beekeeper at the apiary cottage. Deep brown skin, short black locs, amber-brown eyes, honey-yellow vest, golden honey-dipper pendant.
+VOICE: Warm, gentle, unhurried young man with a soft, rich voice. A patient listener, calm and kind, never raises his voice. A little smile in the voice, like he has all the time in the world.
+
+RULES:
+- Read only the text in quotes. Do not read the ID or the note.
+- Make one separate audio clip per line, and name each file with its ID (for example SILAS-DAILY-EARLY-1.mp3).
+- Keep the same voice for every line. Cozy and natural, no background music or effects.
+- "…" means a soft pause.
+- Lines like ==== Everyday chat ==== are section titles. Do not read them.
+
+LINES:
+
+==== Everyday chat ====
+
+SILAS-DAILY-EARLY-1  (Daily (stranger / acquaintance))
+"The bees are calm tonight. They only hum like that when they are happy."
+
+SILAS-DAILY-EARLY-2  (Daily (stranger / acquaintance))
+"Long day? Sit a minute. The kettle's always on."
+
+SILAS-DAILY-EARLY-3  (Daily (stranger / acquaintance))
+"Smells like rain by evening. The bees are coming home early."
+
+SILAS-DAILY-FRIEND-1  (Daily (friend / close friend))
+"You've been carrying a lot lately. You can set some of it down here."
+
+SILAS-DAILY-FRIEND-2  (Daily (friend / close friend))
+"I told the bees about you. They approve. They're very picky."
+
+SILAS-DAILY-FRIEND-3  (Daily (friend / close friend))
+"Saved you a jar of the good honey. Don't tell the others."
+
+SILAS-DAILY-ROMANCE-1  (Daily (romance))
+"My grandfather said you know it's love when the bees settle around someone. They settle around you."
+
+SILAS-DAILY-ROMANCE-2  (Daily (romance))
+"Everything slows down when you're here. In the best way. Like honey."
+
+SILAS-DAILY-ROMANCE-3  (Daily (romance))
+"Stay for supper? I'll make the honey cake. You can watch me pretend I'm not nervous."
+
+SILAS-DAILY-BESTIE-1  (Daily (best friend))
+"Some people are like sunshine after rain. You're one of them."
+
+SILAS-DAILY-BESTIE-2  (Daily (best friend))
+"When your day is too much, you know where I am. Always."
+
+SILAS-DAILY-BESTIE-3  (Daily (best friend))
+"The bees know your footsteps now. That makes you family, in bee terms."
+
+
+==== Question 1 ====
+
+SILAS-Q1  (Asks you a question)
+"What helps you most after a hard day?"
+
+SILAS-Q1-REPLY1  (Reply to your answer)
+"Then I'll keep listening."
+
+SILAS-Q1-REPLY2  (Reply to your answer)
+"Ah. A person of good sense."
+
+SILAS-Q1-REPLY3  (Reply to your answer)
+"Hm. Even bees rest in winter, you know."
+
+
+==== Question 2 ====
+
+SILAS-Q2  (Asks you a question)
+"If you were a flower, which would you be?"
+
+SILAS-Q2-REPLY1  (Reply to your answer)
+"The bees' favorite, Good choice."
+
+SILAS-Q2-REPLY2  (Reply to your answer)
+"Ha. Tough and cheerful. I can see it."
+
+SILAS-Q2-REPLY3  (Reply to your answer)
+"Busy, buzzy, and a little bit stingy? Sure."
+
+
+==== Activity 1 ====
+
+SILAS-ACT1-DATE  (Activity "Honey Tasting" (date))
+"Moonflower honey. I only ever made one batch."
+
+
+==== Activity 2 ====
+
+SILAS-ACT2-FRIEND  (Activity "Tend the hives" (friend))
+"She likes you, Good sign."
+
+SILAS-ACT2-DATE  (Activity "Tend the hives" (date))
+"You have to tell them the important things,"
+
+
+==== Activity 3 ====
+
+SILAS-ACT3-DATE  (Activity "Sunflower walk" (date))
+"There. Now the bees will follow you too."
+
+
+==== Gift and bunny reactions ====
+
+SILAS-FAVORITEBUNNYREACTION  (favorite bunny reaction)
+"Oh, a bunny. Look at that. They've already decided you're family. Thank you, truly. I'll keep them safe and sweet."
+
+SILAS-BUNNYREACTION  (bunny reaction)
+"Welcome to the apiary. The bees won't mind you."
+
+SILAS-SHOWFAVORITEREACTION  (show favorite reaction)
+"A bunny. My favorite. Isn't that a gift."
+
+SILAS-LOVEDGIFTREACTION  (loved gift reaction)
+"Oh, you remembered. This is just the sweetest thing."
+
+SILAS-LIKEDGIFTREACTION  (liked gift reaction)
+"How lovely. Thank you. The bees will be jealous."
+
+SILAS-NEUTRALGIFTREACTION  (neutral gift reaction)
+"That's kind of you. Thank you."
+
+SILAS-DISLIKEDGIFTREACTION  (disliked gift reaction)
+"Ah, that's a bit too smoky for me. The bees don't care for it either. But I appreciate the thought, really."
+
+SILAS-F4-L2  (Chapter "Kettle Company")
+"For you. So you never have to ask if the kettle's on. It always is."
+
+SILAS-F4-RESP4  (Chapter "Kettle Company" (reply to your choice))
+"It's the only mug you own here, Best by default."
+
+SILAS-F6-L2  (Chapter "The Bees Remember")
+"Bees remember the people who are kind to them. So do I. This is so you'll remember too."
+
+SILAS-F6-L3  (Chapter "The Bees Remember")
+"Whatever happens, you'll always have a seat at my table and a spoon in my honey."
+
+SILAS-F6-RESP5  (Chapter "The Bees Remember" (reply to your choice))
+"I know. That's why I chose you."
+
+
+==== Story chapter 1 ====
+
+SILAS-1-L2  (Chapter "Telling the Bees")
+"Oh, hello. Sorry. She wandered over from my hives. She wanted to see your flowers."
+
+SILAS-1-L4  (Chapter "Telling the Bees")
+"There's a cake my grandfather used to make with that. I'll write it down for you."
+
+SILAS-1-RESP6  (Chapter "Telling the Bees" (reply to your choice))
+"She does. So do you."
+
+
+==== Story chapter 2 ====
+
+SILAS-2-L2  (Chapter "A Hard Day")
+"Ah. Come in. Kettle's on. You don't have to say anything."
+
+SILAS-2-L4  (Chapter "A Hard Day")
+"My grandfather said the bees know when someone's sad. Look. They've all come out to keep you company."
+
+SILAS-2-RESP6  (Chapter "A Hard Day" (reply to your choice))
+"You walked in like a rain cloud, Rainy days need cake."
+
+SILAS-2-RESP7  (Chapter "A Hard Day" (reply to your choice))
+"Anytime. I mean that. Anytime."
+
+
+==== Story chapter 3 ====
+
+SILAS-3-L2  (Chapter "The Honey Moon")
+"My grandfather called this the honey moon. He said it's the night you tell the bees what matters most."
+
+SILAS-3-L4  (Chapter "The Honey Moon")
+"I'm telling them about you. I hope that's all right."
+
+SILAS-3-CROSSROADS-ROMANCE  (Chapter "The Honey Moon" (romance answer))
+"Did you hear that? They're humming."
+
+SILAS-3-CROSSROADS-FRIEND  (Chapter "The Honey Moon" (friend answer))
+"They heard. I think they've always known."
+
+
+==== Romance chapter 4 ====
+
+SILAS-R4-L2  (Chapter "Borrowed Veil")
+"There. Safe. …You look nice in a veil. That came out strange. I meant it."
+
+SILAS-R4-RESP5  (Chapter "Borrowed Veil" (reply to your choice))
+"I'll wear the hat more often, then."
+
+
+==== Romance chapter 5 ====
+
+SILAS-R5-L2  (Chapter "Honey Tasting")
+"This last one is moonflower. I only ever made one jar. I've been saving it for something special."
+
+SILAS-R5-L3  (Chapter "Honey Tasting")
+"…For someone special."
+
+
+==== Romance chapter 6 ====
+
+SILAS-R6-L2  (Chapter "Forty Hives and One Home")
+"My grandfather said you build a hive for the people you plan to grow old beside."
+
+SILAS-R6-L4  (Chapter "Forty Hives and One Home")
+"I'd like to grow old beside you. Slowly. Sweetly. Will you share a home with me, and forty hives?"
+
+SILAS-R6-RESP7  (Chapter "Forty Hives and One Home" (reply to your choice))
+"I'm staying,"

@@ -1,0 +1,227 @@
+VOICE SCRIPT: Theo
+
+Please create voice lines for a cozy, pastel pixel-art farming game called Moonlit Meadows.
+
+CHARACTER: he/him, man, late 20s, keeper of the hilltop observatory. Hooded midnight cloak, crescent-moon brooch.
+VOICE: Low, calm, quiet young man. Dry deadpan humor, precise and a little awkward, introverted. Under the dryness he is tender: in romantic lines he softens and slows down.
+
+RULES:
+- Read only the text in quotes. Do not read the ID or the note.
+- Make one separate audio clip per line, and name each file with its ID (for example THEO-DAILY-EARLY-1.mp3).
+- Keep the same voice for every line. Cozy and natural, no background music or effects.
+- "…" means a soft pause.
+- Lines like ==== Everyday chat ==== are section titles. Do not read them.
+
+LINES:
+
+==== Everyday chat ====
+
+THEO-DAILY-EARLY-1  (Daily (stranger / acquaintance))
+"Hm. Hello. If you're here for the observatory tour, it's closed. There is no tour. I'm the tour."
+
+THEO-DAILY-EARLY-2  (Daily (stranger / acquaintance))
+"The moon's in a waxing gibbous. You didn't ask. I'm telling you anyway."
+
+THEO-DAILY-EARLY-3  (Daily (stranger / acquaintance))
+"I don't do mornings. Or crowds. Or… this is going well, isn't it."
+
+THEO-DAILY-FRIEND-1  (Daily (friend / close friend))
+"Nonno would have liked you. He liked people who ask good questions."
+
+THEO-DAILY-FRIEND-2  (Daily (friend / close friend))
+"I made extra cocoa. By accident. Twice. You should probably have one."
+
+THEO-DAILY-FRIEND-3  (Daily (friend / close friend))
+"You know Vega? Brightest star in Lyra. I've been thinking of calling it your star. Kidding. Mostly."
+
+THEO-DAILY-ROMANCE-1  (Daily (romance))
+"I mapped every star in the sky and still didn't find anything as bright as you. …That was terrible. I'm keeping it."
+
+THEO-DAILY-ROMANCE-2  (Daily (romance))
+"Stay a little longer. The good stars come out after midnight."
+
+THEO-DAILY-ROMANCE-3  (Daily (romance))
+"Nonno used to say the sky is too big to look at alone. I finally understand what he meant."
+
+THEO-DAILY-BESTIE-1  (Daily (best friend))
+"You're my favorite person to be quiet with. That's the highest honor I give."
+
+THEO-DAILY-BESTIE-2  (Daily (best friend))
+"I named an asteroid after you in my notebook. It's very small and very loyal."
+
+THEO-DAILY-BESTIE-3  (Daily (best friend))
+"Come to the observatory anytime. The spare key is under the moon-shaped rock. For you."
+
+
+==== Question 1 ====
+
+THEO-Q1  (Asks you a question)
+"Do you believe the stars mean anything? Or are they just… very far away fire?"
+
+THEO-Q1-REPLY1  (Reply to your answer)
+"…Nonno said exactly that. Huh."
+
+THEO-Q1-REPLY2  (Reply to your answer)
+"Practical and romantic. A rare combination."
+
+THEO-Q1-REPLY3  (Reply to your answer)
+"Then I'll have to show you. Tonight. If you're free."
+
+
+==== Question 2 ====
+
+THEO-Q2  (Asks you a question)
+"What's something you miss?"
+
+THEO-Q2-REPLY1  (Reply to your answer)
+"Then you understand. Thank you for telling me."
+
+THEO-Q2-REPLY2  (Reply to your answer)
+"Ah. The golden age of no taxes."
+
+THEO-Q2-REPLY3  (Reply to your answer)
+"Teach me that trick sometime."
+
+
+==== Activity 1 ====
+
+THEO-ACT1-FRIEND  (Activity "Stargazing" (friend))
+"Vain queen. Nonno's favorite. He said she reminded him of Nonna."
+
+
+==== Activity 3 ====
+
+THEO-ACT3-DATE  (Activity "Fix the telescope" (date))
+"Steady,"
+
+
+==== Gift and bunny reactions ====
+
+THEO-FAVORITEBUNNYREACTION  (favorite bunny reaction)
+"A bunny. Nonno used to say these were stars that fell asleep in the meadow. I'm fine. There's something in my eye. Thank you."
+
+THEO-BUNNYREACTION  (bunny reaction)
+"Hello. I'll show you the moon later."
+
+THEO-SHOWFAVORITEREACTION  (show favorite reaction)
+"That's a bunny. Do you know how rare… Can I just look at them for a minute?"
+
+THEO-LOVEDGIFTREACTION  (loved gift reaction)
+"This is… exactly right. You pay attention. I like that."
+
+THEO-LIKEDGIFTREACTION  (liked gift reaction)
+"Oh. That's thoughtful. Thank you."
+
+THEO-NEUTRALGIFTREACTION  (neutral gift reaction)
+"Thanks. I'll find somewhere to put it."
+
+THEO-DISLIKEDGIFTREACTION  (disliked gift reaction)
+"Ah. Leafy. …Thank you anyway."
+
+THEO-F4-L2  (Chapter "Observatory Club")
+"Club rules: one, no talking during meteor showers. Two, cocoa is mandatory. Three, you're the vice president."
+
+THEO-F4-L3  (Chapter "Observatory Club")
+"Your bunnies get star pins. They're junior members."
+
+THEO-F4-RESP5  (Chapter "Observatory Club" (reply to your choice))
+"Nonno. Honorary. Forever."
+
+THEO-F6-L2  (Chapter "Nonno's Chart")
+"Nonno made this. Every star he taught me is on it. I want you to have it."
+
+THEO-F6-L3  (Chapter "Nonno's Chart")
+"You helped me look at the sky again without it hurting. That's… what a best friend does, I think. I didn't know until you."
+
+THEO-F6-RESP5  (Chapter "Nonno's Chart" (reply to your choice))
+"He'd love that. Yes."
+
+THEO-F6-RESP6  (Chapter "Nonno's Chart" (reply to your choice))
+"I know. That's why it's yours."
+
+
+==== Story chapter 1 ====
+
+THEO-1-L2  (Chapter "The Observatory")
+"It's fine. It's fine. It does this. It's ninety years old and dramatic."
+
+THEO-1-L3  (Chapter "The Observatory")
+"…You can come look, if you want. Saturn's up."
+
+THEO-1-L5  (Chapter "The Observatory")
+"Here. My stargazer cocoa recipe. You'll need it if you keep coming up here. It's cold. I mean — if. If you keep coming."
+
+THEO-1-RESP7  (Chapter "The Observatory" (reply to your choice))
+"Good. Fine. Good."
+
+THEO-1-RESP8  (Chapter "The Observatory" (reply to your choice))
+"It is. Most people don't stop to look."
+
+
+==== Story chapter 2 ====
+
+THEO-2-L2  (Chapter "Nonno's Chair")
+"The right one was Nonno's. I haven't let anyone sit in it."
+
+THEO-2-L3  (Chapter "Nonno's Chair")
+"…You can. If you want. I think he'd want someone to."
+
+THEO-2-L5  (Chapter "Nonno's Chair")
+"Here. A spare telescope for your farm. So you can look up even when I'm not around."
+
+THEO-2-RESP8  (Chapter "Nonno's Chair" (reply to your choice))
+"Thank you. This helps."
+
+
+==== Story chapter 3 ====
+
+THEO-3-L2  (Chapter "The Brightest Star")
+"Fourteen. Fifteen. I'm keeping score. You're losing."
+
+THEO-3-L4  (Chapter "The Brightest Star")
+"I didn't think I'd ever want to share the sky with anyone again. And then you sat in Nonno's chair. Also, I knitted you a sweater. Badly. It has stars on it."
+
+THEO-3-CROSSROADS-ROMANCE  (Chapter "The Brightest Star" (romance answer))
+"Statistically, this was unlikely. I'm very glad it happened."
+
+THEO-3-CROSSROADS-FRIEND  (Chapter "The Brightest Star" (friend answer))
+"Always. That's a long time. I'm counting on it."
+
+
+==== Romance chapter 4 ====
+
+THEO-R4-L2  (Chapter "Constellation Lessons")
+"There. Vega. I told you I'd been thinking of calling it your star. I wasn't kidding."
+
+THEO-R4-L3  (Chapter "Constellation Lessons")
+"I made your bunnies little star pins. So they match the sky."
+
+THEO-R4-RESP5  (Chapter "Constellation Lessons" (reply to your choice))
+"Okay, Okay."
+
+THEO-R4-RESP6  (Chapter "Constellation Lessons" (reply to your choice))
+"I don't have one. Maybe you can pick."
+
+
+==== Romance chapter 5 ====
+
+THEO-R5-L2  (Chapter "Picnic on the Moon")
+"I may have spent three weeks on this. Don't tell anyone. I have a reputation."
+
+THEO-R5-L3  (Chapter "Picnic on the Moon")
+"It's called Lepus. The hare. Nonno said it's always running toward something it loves."
+
+THEO-R5-RESP6  (Chapter "Picnic on the Moon" (reply to your choice))
+"Good, That was the goal."
+
+
+==== Romance chapter 6 ====
+
+THEO-R6-L2  (Chapter "A Star With Your Name")
+"He would've liked you so much. He'd have embarrassed me constantly."
+
+THEO-R6-L3  (Chapter "A Star With Your Name")
+"I spent years looking up because I was afraid to look around. Now I look at you. I love you. Will you keep stargazing with me — for good?"
+
+THEO-R6-RESP5  (Chapter "A Star With Your Name" (reply to your choice))
+"That's about five billion years, Deal."

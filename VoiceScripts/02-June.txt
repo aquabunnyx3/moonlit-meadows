@@ -1,0 +1,233 @@
+VOICE SCRIPT: June (Juniper Ashwell)
+
+Please create voice lines for a cozy, pastel pixel-art farming game called Moonlit Meadows.
+
+CHARACTER: she/her, woman, mid-20s, herbalist at the Glasshouse. Long golden braid, periwinkle capelet, blue dress.
+VOICE: Soft, gentle, slightly breathy young woman. Shy and a little nervous, with small hesitant pauses, but warm and quietly funny. Speaks a bit faster when she rambles about plants. Never loud.
+
+RULES:
+- Read only the text in quotes. Do not read the ID or the note.
+- Make one separate audio clip per line, and name each file with its ID (for example JUNE-DAILY-EARLY-1.mp3).
+- Keep the same voice for every line. Cozy and natural, no background music or effects.
+- "…" means a soft pause.
+- Lines like ==== Everyday chat ==== are section titles. Do not read them.
+
+LINES:
+
+==== Everyday chat ====
+
+JUNE-DAILY-EARLY-1  (Daily (stranger / acquaintance))
+"Oh! Hello. Sorry, I was talking to the basil. It's a good listener."
+
+JUNE-DAILY-EARLY-2  (Daily (stranger / acquaintance))
+"Did you know chamomile grows better when it's walked on? Not that I'm… recommending walking on things."
+
+JUNE-DAILY-EARLY-3  (Daily (stranger / acquaintance))
+"The bunnies keep nibbling my mint. I can't even be mad. Look at their faces."
+
+JUNE-DAILY-FRIEND-1  (Daily (friend / close friend))
+"I saved you a cutting from Grandma's rosemary. It's… it's kind of a big deal. To me."
+
+JUNE-DAILY-FRIEND-2  (Daily (friend / close friend))
+"I've been sleeping better since I moved here. I think the meadow is good medicine."
+
+JUNE-DAILY-FRIEND-3  (Daily (friend / close friend))
+"You're easy to talk to. I don't say that to many people. Or plants."
+
+JUNE-DAILY-ROMANCE-1  (Daily (romance))
+"I wrote your name on a seed packet so I'd remember to plant something for you. Then I planted all of them."
+
+JUNE-DAILY-ROMANCE-2  (Daily (romance))
+"Every time you visit, the greenhouse feels warmer. That's not a plant fact. That's just true."
+
+JUNE-DAILY-ROMANCE-3  (Daily (romance))
+"Stay for tea? You don't have to. I'd like it, though. A lot."
+
+JUNE-DAILY-BESTIE-1  (Daily (best friend))
+"My best friend and my best fern. I'm so lucky."
+
+JUNE-DAILY-BESTIE-2  (Daily (best friend))
+"Let's start a rainy-day book club. Members: you, me, and a Lavender bunny."
+
+JUNE-DAILY-BESTIE-3  (Daily (best friend))
+"I told Grandma's photo all about you. She'd have adored you."
+
+
+==== Question 1 ====
+
+JUNE-Q1  (Asks you a question)
+"If you were a plant, which one would you be?"
+
+JUNE-Q1-REPLY1  (Reply to your answer)
+"That's lovely. Sunflowers follow the sun… I think I'd follow you around too. As a friend! Mostly."
+
+JUNE-Q1-REPLY2  (Reply to your answer)
+"Ha! Cacti bloom the brightest flowers, you know. I'll wait."
+
+JUNE-Q1-REPLY3  (Reply to your answer)
+"Clover, then. Humble and lucky."
+
+
+==== Question 2 ====
+
+JUNE-Q2  (Asks you a question)
+"Do you ever feel like you're not where you're supposed to be?"
+
+JUNE-Q2-REPLY1  (Reply to your answer)
+"Me too. Here feels right. Especially lately."
+
+JUNE-Q2-REPLY2  (Reply to your answer)
+"That's… really comforting, actually. Thank you."
+
+JUNE-Q2-REPLY3  (Reply to your answer)
+"I envy that. Maybe you can teach me."
+
+
+==== Activity 1 ====
+
+JUNE-ACT1-FRIEND  (Activity "Herb walk" (friend))
+"That one's lemon balm. It's good for… um, calm. Ironically I'm not."
+
+
+==== Activity 2 ====
+
+JUNE-ACT2-DATE  (Activity "Press flowers" (date))
+"So we remember today,"
+
+
+==== Activity 3 ====
+
+JUNE-ACT3-DATE  (Activity "Tea tasting" (date))
+"Like you,"
+
+
+==== Gift and bunny reactions ====
+
+JUNE-FAVORITEBUNNYREACTION  (favorite bunny reaction)
+"Oh, oh, oh. Hello, sweetheart. I'll take such good care of them. Thank you. Truly."
+
+JUNE-BUNNYREACTION  (bunny reaction)
+"Hello, little one. Welcome to the glasshouse."
+
+JUNE-SHOWFAVORITEREACTION  (show favorite reaction)
+"Is that a bunny? They're my favorite. Don't tell the other bunnies."
+
+JUNE-LOVEDGIFTREACTION  (loved gift reaction)
+"You remembered! This is perfect."
+
+JUNE-LIKEDGIFTREACTION  (liked gift reaction)
+"Oh, how thoughtful. Thank you."
+
+JUNE-NEUTRALGIFTREACTION  (neutral gift reaction)
+"Thank you! I'll find a use for it."
+
+JUNE-DISLIKEDGIFTREACTION  (disliked gift reaction)
+"Oh! That's… very kind. I'm sure someone will love it."
+
+JUNE-F4-L2  (Chapter "Book Club of Two")
+"I've never had a best friend before. I looked up how to do it. The internet said snacks."
+
+JUNE-F4-L3  (Chapter "Book Club of Two")
+"Also, I made this for your bunnies. A lavender sprig. Very calming. Very official club merch."
+
+JUNE-F4-RESP5  (Chapter "Book Club of Two" (reply to your choice))
+"It's laminated, It will last forever."
+
+JUNE-F4-RESP6  (Chapter "Book Club of Two" (reply to your choice))
+"Only on snack choices."
+
+JUNE-F6-L2  (Chapter "Grandmother's Garden")
+"Nobody's been in here since she passed. I wanted the first person to be you."
+
+JUNE-F6-L3  (Chapter "Grandmother's Garden")
+"She'd say you're the kind of friend you plant a tree for. So here — seeds from her garden. Wherever you go, you'll have a little of this place."
+
+JUNE-F6-RESP5  (Chapter "Grandmother's Garden" (reply to your choice))
+"I know,"
+
+
+==== Story chapter 1 ====
+
+JUNE-1-L2  (Chapter "The Glasshouse")
+"Oh! I— this is Gerald. He's having a hard week."
+
+JUNE-1-L3  (Chapter "The Glasshouse")
+"My grandmother kept this place alive for forty years. I'm trying not to be the one who loses it."
+
+JUNE-1-L4  (Chapter "The Glasshouse")
+"Here — this is her herbal posy recipe. She gave it to everyone she liked. I think… I'm supposed to give it to you."
+
+JUNE-1-RESP6  (Chapter "The Glasshouse" (reply to your choice))
+"I'll tell him you said so."
+
+JUNE-1-RESP7  (Chapter "The Glasshouse" (reply to your choice))
+"You'd do that? …Yes. Thank you."
+
+
+==== Story chapter 2 ====
+
+JUNE-2-L2  (Chapter "Rainy Day Reading")
+"I used to hate storms in the city. Here they sound like applause."
+
+JUNE-2-L4  (Chapter "Rainy Day Reading")
+"I made you something. For your farm. So you have a little piece of the glasshouse."
+
+JUNE-2-RESP6  (Chapter "Rainy Day Reading" (reply to your choice))
+"It likes morning light. Like me."
+
+JUNE-2-RESP7  (Chapter "Rainy Day Reading" (reply to your choice))
+"Every week, if you want."
+
+
+==== Story chapter 3 ====
+
+JUNE-3-L2  (Chapter "Lantern Moths")
+"Grandma called them lantern moths. She said they only come out for people who are paying attention."
+
+JUNE-3-L3  (Chapter "Lantern Moths")
+"I've been paying attention to… a lot of things lately. Mostly you."
+
+JUNE-3-L4  (Chapter "Lantern Moths")
+"I don't know what this is. I just know I'm happier when you're around. I knitted you a cardigan, by the way. It's very green."
+
+JUNE-3-CROSSROADS-ROMANCE  (Chapter "Lantern Moths" (romance answer))
+"Okay. Okay! The moths were right."
+
+JUNE-3-CROSSROADS-FRIEND  (Chapter "Lantern Moths" (friend answer))
+"Me too. You're my best person. That's a whole kind of love."
+
+
+==== Romance chapter 4 ====
+
+JUNE-R4-L2  (Chapter "Pressed Between Pages")
+"I keep everything from our days together. Is that silly?"
+
+JUNE-R4-L4  (Chapter "Pressed Between Pages")
+"Here — a sprig of lavender for your favorite bunny. So they smell like the glasshouse."
+
+JUNE-R4-RESP7  (Chapter "Pressed Between Pages" (reply to your choice))
+"It was always yours,"
+
+
+==== Romance chapter 5 ====
+
+JUNE-R5-L2  (Chapter "A Date in Bloom")
+"I made dinner. Everything's from the garden. Including the dessert. Don't ask how."
+
+JUNE-R5-L4  (Chapter "A Date in Bloom")
+"This is the best night I've had in years. Maybe ever."
+
+JUNE-R5-RESP7  (Chapter "A Date in Bloom" (reply to your choice))
+"Every week, Rain or shine."
+
+
+==== Romance chapter 6 ====
+
+JUNE-R6-L2  (Chapter "Rooted")
+"I wrote it down because I'm braver on paper. But I want to say it out loud, too."
+
+JUNE-R6-L3  (Chapter "Rooted")
+"I came here to hide. Then I met you, and I stopped hiding. I love you. I want to grow old in this meadow with you."
+
+JUNE-R6-RESP7  (Chapter "Rooted" (reply to your choice))
+"Yes, Yes, yes."

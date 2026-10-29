@@ -1,0 +1,152 @@
+VOICE SCRIPT: Vi (Violet Hollis)
+
+Please create voice lines for a cozy, pastel pixel-art farming game called Moonlit Meadows.
+
+CHARACTER: she/her, woman, mid-20s, florist with a flower cart. Lavender hair, long lilac dress.
+VOICE: Dreamy, soft-spoken young woman. Slow, gentle, poetic, a little wistful and romantic. Calm and breathy, like reading a poem aloud.
+
+RULES:
+- Read only the text in quotes. Do not read the ID or the note.
+- Make one separate audio clip per line, and name each file with its ID (for example VI-DAILY-EARLY-1.mp3).
+- Keep the same voice for every line. Cozy and natural, no background music or effects.
+- "…" means a soft pause.
+- Lines like ==== Everyday chat ==== are section titles. Do not read them.
+
+LINES:
+
+==== Everyday chat ====
+
+VI-DAILY-EARLY-1  (Daily (stranger / acquaintance))
+"Good evening. Would you like a flower? This one means “a new beginning.”"
+
+VI-DAILY-EARLY-2  (Daily (stranger / acquaintance))
+"Lilacs bloom best near people who are kind to them. I think they'd bloom for you."
+
+VI-DAILY-EARLY-3  (Daily (stranger / acquaintance))
+"I left a poem tied to your fence. You don't have to read it. But you can."
+
+VI-DAILY-FRIEND-1  (Daily (friend / close friend))
+"I made you a little bouquet. Lavender for calm, and daisy for… well. For you."
+
+VI-DAILY-FRIEND-2  (Daily (friend / close friend))
+"The sunsets here are like watercolors. I'm glad I have someone to watch them with."
+
+VI-DAILY-FRIEND-3  (Daily (friend / close friend))
+"I wrote a poem about your bunnies. It's mostly about their ears."
+
+VI-DAILY-ROMANCE-1  (Daily (romance))
+"Every flower in my cart reminds me of a friend. Most of them remind me of you."
+
+VI-DAILY-ROMANCE-2  (Daily (romance))
+"You're the kind of person a whole bouquet is named after."
+
+VI-DAILY-ROMANCE-3  (Daily (romance))
+"Walk with me again tonight? The moon's supposed to be lovely."
+
+VI-DAILY-BESTIE-1  (Daily (best friend))
+"Every flower in my cart reminds me of a friend. Most of them remind me of you."
+
+VI-DAILY-BESTIE-2  (Daily (best friend))
+"You're the kind of person a whole bouquet is named after."
+
+VI-DAILY-BESTIE-3  (Daily (best friend))
+"Walk with me again tonight? The moon's supposed to be lovely."
+
+
+==== Question 1 ====
+
+VI-Q1  (Asks you a question)
+"If you were a flower, what would you hope you meant?"
+
+VI-Q1-REPLY1  (Reply to your answer)
+"Pink camellia, then. It suits you."
+
+VI-Q1-REPLY2  (Reply to your answer)
+"Hmm. Snapdragon. A little bold. I like it."
+
+VI-Q1-REPLY3  (Reply to your answer)
+"I'll invent a flower for that."
+
+
+==== Activity 1 ====
+
+VI-ACT1-FRIEND  (Activity "Flower meanings" (friend))
+"jealousy"
+
+VI-ACT1-DATE  (Activity "Flower meanings" (date))
+"It means first friendship, Keep it."
+
+
+==== Activity 3 ====
+
+VI-ACT3-FRIEND  (Activity "Bouquet making" (friend))
+"expressive."
+
+
+==== Gift and bunny reactions ====
+
+VI-FAVORITEBUNNYREACTION  (favorite bunny reaction)
+"A bunny… There's a flower that means ‘you've made me happy.’ I'll grow a whole field of it for you."
+
+VI-BUNNYREACTION  (bunny reaction)
+"Welcome, sweet thing."
+
+VI-SHOWFAVORITEREACTION  (show favorite reaction)
+"A bunny. They're like a poem with ears."
+
+VI-LOVEDGIFTREACTION  (loved gift reaction)
+"Oh… you remembered. Thank you."
+
+VI-LIKEDGIFTREACTION  (liked gift reaction)
+"How lovely. Thank you."
+
+VI-NEUTRALGIFTREACTION  (neutral gift reaction)
+"That's kind of you."
+
+VI-DISLIKEDGIFTREACTION  (disliked gift reaction)
+"Oh. Well — every gift means something."
+
+
+==== Story chapter 1 ====
+
+VI-1-L2  (Chapter "A Flower for a Story")
+"Good evening. I trade flowers for stories. Do you have one?"
+
+VI-1-L4  (Chapter "A Flower for a Story")
+"thank you for a lovely time."
+
+VI-1-RESP6  (Chapter "A Flower for a Story" (reply to your choice))
+"Oh, I have so many. Walk with me."
+
+VI-1-RESP7  (Chapter "A Flower for a Story" (reply to your choice))
+"First friendship, Appropriate, don't you think?"
+
+
+==== Story chapter 2 ====
+
+VI-2-L2  (Chapter "The Pressed Flower Book")
+"I found this in a secondhand shop. Every flower in it came from this meadow. That's why I came here. To see if it was real."
+
+VI-2-L3  (Chapter "The Pressed Flower Book")
+"Look — this page is blank. I think it's waiting for something from your farm."
+
+VI-2-RESP5  (Chapter "The Pressed Flower Book" (reply to your choice))
+"From a friend."
+
+VI-2-RESP6  (Chapter "The Pressed Flower Book" (reply to your choice))
+"There. Now we're both in the story."
+
+
+==== Story chapter 3 ====
+
+VI-3-L2  (Chapter "The Poem on the Hill")
+"I write poems for strangers. I've never written one for a friend. I was too nervous to read it."
+
+VI-3-L4  (Chapter "The Poem on the Hill")
+"I'm glad you're here."
+
+VI-3-RESP6  (Chapter "The Poem on the Hill" (reply to your choice))
+"Thank you for listening."
+
+VI-3-RESP7  (Chapter "The Poem on the Hill" (reply to your choice))
+"A whole book,"

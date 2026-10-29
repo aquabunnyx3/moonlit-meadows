@@ -1,0 +1,146 @@
+VOICE SCRIPT: Bree (Brielle Moss)
+
+Please create voice lines for a cozy, pastel pixel-art farming game called Moonlit Meadows.
+
+CHARACTER: she/her, woman, early 20s, grows blueberries by the creek. Sage-green hair, blueberry pin, overalls.
+VOICE: Bright, bubbly, slightly chaotic young woman. Fast, excited, giggly, outdoorsy and sunny. Lots of energy, very friendly.
+
+RULES:
+- Read only the text in quotes. Do not read the ID or the note.
+- Make one separate audio clip per line, and name each file with its ID (for example BREE-DAILY-EARLY-1.mp3).
+- Keep the same voice for every line. Cozy and natural, no background music or effects.
+- "…" means a soft pause.
+- Lines like ==== Everyday chat ==== are section titles. Do not read them.
+
+LINES:
+
+==== Everyday chat ====
+
+BREE-DAILY-EARLY-1  (Daily (stranger / acquaintance))
+"Hi hi! Want a blueberry? I have, um, pockets full of them."
+
+BREE-DAILY-EARLY-2  (Daily (stranger / acquaintance))
+"Watch out for the third stepping stone in the creek. It's a frog."
+
+BREE-DAILY-EARLY-3  (Daily (stranger / acquaintance))
+"Your bunnies keep sneaking into my brambles. I'm not mad. I'm honored."
+
+BREE-DAILY-FRIEND-1  (Daily (friend / close friend))
+"I named a new bramble after you! It's very prickly but it means well. Like you! Kidding."
+
+BREE-DAILY-FRIEND-2  (Daily (friend / close friend))
+"Come wading later? The creek's perfect today."
+
+BREE-DAILY-FRIEND-3  (Daily (friend / close friend))
+"My aunt would've loved you. She loved anyone who loved the meadow."
+
+BREE-DAILY-ROMANCE-1  (Daily (romance))
+"You're officially an honorary creek person. There's no badge. I'll make one."
+
+BREE-DAILY-ROMANCE-2  (Daily (romance))
+"Best friends share berries. That's the rule."
+
+BREE-DAILY-ROMANCE-3  (Daily (romance))
+"I'm so glad you moved here. The meadow's brighter with you in it."
+
+BREE-DAILY-BESTIE-1  (Daily (best friend))
+"You're officially an honorary creek person. There's no badge. I'll make one."
+
+BREE-DAILY-BESTIE-2  (Daily (best friend))
+"Best friends share berries. That's the rule."
+
+BREE-DAILY-BESTIE-3  (Daily (best friend))
+"I'm so glad you moved here. The meadow's brighter with you in it."
+
+
+==== Question 1 ====
+
+BREE-Q1  (Asks you a question)
+"Okay, important question: sweet berries or tart berries?"
+
+BREE-Q1-REPLY1  (Reply to your answer)
+"YES. Finally, someone who gets it!"
+
+BREE-Q1-REPLY2  (Reply to your answer)
+"Valid. I'll pick you the ripe ones."
+
+BREE-Q1-REPLY3  (Reply to your answer)
+"Ha! Jam is the great equalizer."
+
+
+==== Activity 1 ====
+
+BREE-ACT1-DATE  (Activity "Berry picking" (date))
+"The good ones are for good people."
+
+
+==== Activity 3 ====
+
+BREE-ACT3-DATE  (Activity "Jam day" (date))
+"for my favorite neighbor"
+
+
+==== Gift and bunny reactions ====
+
+BREE-FAVORITEBUNNYREACTION  (favorite bunny reaction)
+"A bunny! For me?! You're going to love the brambles. I'll build you a little house. Two houses!"
+
+BREE-BUNNYREACTION  (bunny reaction)
+"Welcome to the creek crew!"
+
+BREE-SHOWFAVORITEREACTION  (show favorite reaction)
+"A bunny! Can I hold them? Please? I'll be so careful!"
+
+BREE-LOVEDGIFTREACTION  (loved gift reaction)
+"No way! This is my absolute favorite!"
+
+BREE-LIKEDGIFTREACTION  (liked gift reaction)
+"Ooh, thanks! That's so sweet."
+
+BREE-NEUTRALGIFTREACTION  (neutral gift reaction)
+"Aw, thank you!"
+
+BREE-DISLIKEDGIFTREACTION  (disliked gift reaction)
+"Oh! Um. The frogs might like it?"
+
+
+==== Story chapter 1 ====
+
+BREE-1-L2  (Chapter "Berry Stained")
+"Oh! Hi! You're the new farmer! I'm Bree. These are my brambles. Well, they're everybody's brambles. But I'm in charge."
+
+BREE-1-L3  (Chapter "Berry Stained")
+"Here, a welcome basket. Blueberries! Careful, they stain. Everything. Forever."
+
+BREE-1-RESP5  (Chapter "Berry Stained" (reply to your choice))
+"Yes! A berry person! I knew it."
+
+BREE-1-RESP6  (Chapter "Berry Stained" (reply to your choice))
+"Can you? Will you? I'll get you gloves!"
+
+
+==== Story chapter 2 ====
+
+BREE-2-L2  (Chapter "Admiral Puddles")
+"This is Admiral Puddles. He's the oldest frog in the creek. If he likes you, you're in."
+
+BREE-2-L4  (Chapter "Admiral Puddles")
+"HE LIKES YOU! Oh, this is the best day. Here — you get a creek crew badge. I made it from a bottle cap."
+
+BREE-2-RESP7  (Chapter "Admiral Puddles" (reply to your choice))
+"It looks so good on you!"
+
+
+==== Story chapter 3 ====
+
+BREE-3-L2  (Chapter "Stars on the Dock")
+"My aunt used to bring me here. She said the creek carries wishes to the sea."
+
+BREE-3-L3  (Chapter "Stars on the Dock")
+"I wished for a friend who'd love the meadow as much as I do. And then you showed up. So. Creek magic is real."
+
+BREE-3-L4  (Chapter "Stars on the Dock")
+"I want you to have her old berry basket. It's the best one. It never spills."
+
+BREE-3-RESP6  (Chapter "Stars on the Dock" (reply to your choice))
+"Best creek crew ever."

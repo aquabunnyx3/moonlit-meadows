@@ -133,7 +133,7 @@ struct DailyLines {
 
 // MARK: - People
 
-/// A character you can befriend: one of the five main characters (who can also be romanced) or a villager.
+/// A character you can befriend: one of the seven main characters (who can also be romanced) or a villager.
 struct Person: Identifiable {
     let id: String
     let name: String
@@ -182,8 +182,8 @@ struct Person: Identifiable {
         all.first { $0.id == id }
     }
 
-    /// The five romanceable main characters.
-    static let main: [Person] = [june, roz, theo, kai, sol]
+    /// The seven romanceable main characters.
+    static let main: [Person] = [june, roz, theo, kai, sol, rowan, silas]
     static let all: [Person] = main + villagers
 }
 
@@ -659,4 +659,196 @@ private let sol = Person(
     likedGiftReaction: "“Ooh, lovely! Thank you, friend.”",
     neutralGiftReaction: "“Aw, thank you! Every gift's a little melody.”",
     dislikedGiftReaction: "“Ha, not quite my rhythm — but I love that you thought of me.”"
+)
+
+// MARK: - Rowan
+
+private let rowan = Person(
+    id: "rowan",
+    name: "Rowan",
+    fullName: "Rowan Calloway",
+    pronouns: "he/him",
+    gender: "Man",
+    role: "Blacksmith at the stone forge",
+    personality: "Quiet, steady, and dependable. Says little and means all of it, with a dry, gentle humor. Shows he cares by making and mending things instead of talking.",
+    backstory: "Rowan grew up in his mother's forge in a mountain town, mending plows for people who couldn't always pay. When she passed, he loaded her anvil onto a cart and walked until he found somewhere quiet enough to think. Six years later he's still in the meadow, and he still keeps every thank-you note anyone has ever left on his doorstep, in a tin under the bed where no one will find it.",
+    interests: "Forging, mending, stargazing from the warm forge roof, walks before dawn",
+    looks: [
+        PersonLook(skin: RGB(0xF3D2BF), hair: RGB(0xC1502E), hairStyle: .ponytail, eyes: RGB(0x5E9E4B),
+                   outfit: RGB(0x6B4A33), outfitAccent: RGB(0xEFE6D6),
+                   styleNote: "A cream linen shirt, a brown leather apron, a hammer at his belt, and a short copper ponytail"),
+    ],
+    favoriteBreeds: ["emberBunny", "cometBunny", "stormBunny"],
+    lovedGifts: ["emberBake", "campfireStew", "moonMochi"],
+    likedGifts: ["pumpkin", "sweetPotato", "corn", "turnip", "hazelnutBread", "pie", "muffin"],
+    dislikedGifts: ["roseMacaron", "wisteria", "lilac"],
+    schedule: [
+        ScheduleSlot(time: .dawn, place: "Walking the meadow path before work", emoji: "🌄", inMeadow: true),
+        ScheduleSlot(time: .day, place: "The stone forge", emoji: "⚒️", inMeadow: false),
+        ScheduleSlot(time: .dusk, place: "Delivering mended tools around the meadow", emoji: "🧰", inMeadow: true),
+        ScheduleSlot(time: .night, place: "Forge cottage, banking the fire", emoji: "🔥", inMeadow: false),
+    ],
+    activities: [
+        SharedActivity(name: "Forge a Star Charm", emoji: "⭐️",
+                       friendLine: "Rowan lets you work the bellows. Your star comes out lopsided. He hangs it over the forge door anyway. “It stays.”",
+                       dateLine: "Rowan guides your hands on the hammer, his arms around yours. The star you make together is perfect. He keeps the one you botched, too."),
+        SharedActivity(name: "Mend something together", emoji: "🔧",
+                       friendLine: "You bring him a broken watering can. He fixes it in silence, then shows you how. Twice. He doesn't mind the second time.",
+                       dateLine: "Rowan mends your watering can and engraves a tiny bunny on the handle. He pretends not to notice you noticing."),
+        SharedActivity(name: "Stargazing on the forge roof", emoji: "🌙",
+                       friendLine: "You climb onto the warm forge roof. Rowan names three constellations and says nothing else for an hour. It's the nicest hour of your week.",
+                       dateLine: "On the warm roof, Rowan's hand finds yours in the dark. “Warmest spot in the meadow,” he says. He doesn't mean the roof."),
+    ],
+    lines: DailyLines(
+        early: [
+            "Mind the sparks. Everything I make, I make to last.",
+            "Bring me what's broken. I'll see what I can do.",
+            "Morning. Hm. Good day for it.",
+        ],
+        friend: [
+            "Fixed your gate latch. It was squeaking. You don't have to say anything.",
+            "Most people talk to fill the quiet. You don't. I like that.",
+            "Made you a trowel. Balanced it for your hand. Took a few tries.",
+        ],
+        romance: [
+            "I've made a thousand things to last. Never wanted anything to last this much.",
+            "I'm not good with words. So I made you this instead. …It's a little iron heart. It won't break.",
+            "Stay by the forge a while? It's warm. And you're here. That's two good things.",
+        ],
+        bestie: [
+            "You and me, we're built the same. Sturdy. Not flashy. Good to lean on.",
+            "I keep a tin of thank-you notes. Yours are on top.",
+            "Need anything mended? Even if it's just a bad day. I'm good at those too.",
+        ]
+    ),
+    questions: [
+        Question(id: "rowan-q1", prompt: "“What's something you'd want to last forever?”", answers: [
+            Answer(text: "This meadow, just like it is.", response: "Rowan nods slowly. “Then we'll look after it. Both of us.”", points: 15),
+            Answer(text: "A really good pair of boots.", response: "A short laugh, surprised out of him. “Practical. I can make those.”", points: 10),
+            Answer(text: "Nothing lasts forever.", response: "“No. But some things last long enough.”", points: 5),
+        ]),
+        Question(id: "rowan-q2", prompt: "“Do you talk to the things you fix? …Never mind.”", answers: [
+            Answer(text: "Always. They listen better.", response: "Rowan goes a little pink. “…They do, don't they.”", points: 15),
+            Answer(text: "Only when they won't work.", response: "“Fair.”", points: 10),
+            Answer(text: "That's a little odd.", response: "“Hm. Probably.”", points: 5),
+        ]),
+    ],
+    quests: [
+        Quest(id: "rowan-1", personID: "rowan", title: "Fuel for the Forge",
+              description: "Rowan has been at the anvil since dawn and forgot to eat. Sweet potatoes, please.", requiredStage: .acquaintance,
+              items: [ItemCount(itemID: "sweetPotato", count: 6)], points: 30, rewards: [.coins(60)]),
+        Quest(id: "rowan-2", personID: "rowan", title: "Bellows Weather",
+              description: "A storm is rolling in and Rowan wants a hearty pot going before it hits. He says a rain-grey bunny was watching him from the hedge.",
+              requiredStage: .friend,
+              items: [ItemCount(itemID: "pumpkin", count: 2), ItemCount(itemID: "wheat", count: 6)], points: 40,
+              rewards: [.gems(2), .hint("stormBunny")]),
+        Quest(id: "rowan-3", personID: "rowan", title: "Embers at Dusk",
+              description: "Rowan is forging new hinges for the whole meadow. He swears a bunny with glowing ember-red ears sat by the coals all night…",
+              requiredStage: .closeFriend,
+              items: [ItemCount(itemID: "turnip", count: 4), ItemCount(itemID: "hazelnutBread", count: 1)], points: 50,
+              rewards: [.gems(3), .hint("emberBunny")]),
+    ],
+    favoriteBunnyReaction: "Rowan sets down his hammer. “A {breed}.” He kneels, very slowly, and {bunny} hops into his apron pocket like it's always lived there. He's quiet for a long moment. “…I'll make you a little bed by the forge. Warm. Safe. Thank you.”",
+    bunnyReaction: "Rowan gives {bunny} a careful scratch with one big finger. “Welcome. Stay clear of the anvil.”",
+    showFavoriteReaction: "Rowan stops mid-swing. “Is that a {breed}?” A rare, full smile. “Those are my favorite.”",
+    lovedGiftReaction: "“…This is exactly what I needed. How did you know?”",
+    likedGiftReaction: "“Good. Thank you. That'll keep me going.”",
+    neutralGiftReaction: "“Hm. Thanks.”",
+    dislikedGiftReaction: "“Pretty. Too delicate for a forge, though. I'd only break it. Still, thank you for thinking of me.”"
+)
+
+// MARK: - Silas
+
+private let silas = Person(
+    id: "silas",
+    name: "Silas",
+    fullName: "Silas Okafor-Bell",
+    pronouns: "he/him",
+    gender: "Man",
+    role: "Beekeeper at the apiary cottage",
+    personality: "Warm, gentle, and unhurried. A patient listener who talks in little bee and weather sayings, never raises his voice, and is the one everyone visits when the day has been too much.",
+    backstory: "Silas inherited the apiary from his grandfather, along with forty hives, a straw hat, and the habit of telling the bees everything. He came here after years of working too hard in the city and promised himself he'd never rush anything again. Now he tends the hives, plants sunflowers for his bees, and keeps a kettle on for anyone who needs to sit a while.",
+    interests: "Beekeeping, wildflowers, honey tasting, reading the weather",
+    looks: [
+        PersonLook(skin: RGB(0x5A3A28), hair: RGB(0x1C1614), hairStyle: .short, eyes: RGB(0xA8702F),
+                   outfit: RGB(0xE8B64C), outfitAccent: RGB(0xF2E7CF),
+                   styleNote: "A cream shirt, a honey-yellow vest with honeycomb trim, a golden honey-dipper pendant, and short black locs, with a few friendly bees nearby"),
+    ],
+    favoriteBreeds: ["honeybunBunny", "daffodilBunny", "goldenBunny"],
+    lovedGifts: ["honeyCake", "honey", "chamomileTea"],
+    likedGifts: ["sunflower", "lavender", "daffodil", "clover", "melon", "blueberry", "carrot"],
+    dislikedGifts: ["campfireStew", "chili", "nightshade"],
+    schedule: [
+        ScheduleSlot(time: .dawn, place: "Apiary cottage, checking the hives", emoji: "🐝", inMeadow: false),
+        ScheduleSlot(time: .day, place: "Gathering wildflowers in the meadow", emoji: "🌼", inMeadow: true),
+        ScheduleSlot(time: .dusk, place: "Walking the meadow with his bees", emoji: "🌅", inMeadow: true),
+        ScheduleSlot(time: .night, place: "Apiary cottage, kettle on", emoji: "🫖", inMeadow: false),
+    ],
+    activities: [
+        SharedActivity(name: "Honey Tasting", emoji: "🍯",
+                       friendLine: "Silas sets out six little jars. Clover, lavender, sunflower… He tells you a story about each one. You like the sunflower best. So does he.",
+                       dateLine: "Silas feeds you a spoonful from the last jar. “Moonflower honey. I only ever made one batch.” He saved it for you."),
+        SharedActivity(name: "Tend the hives", emoji: "🐝",
+                       friendLine: "You help Silas check the hives in borrowed gloves. A bee lands on your nose. “She likes you,” he says. “Good sign.”",
+                       dateLine: "Silas tells the bees your name. “You have to tell them the important things,” he says, very seriously. Then he kisses your hand."),
+        SharedActivity(name: "Sunflower walk", emoji: "🌻",
+                       friendLine: "You walk the sunflower rows at Silas's pace, which is slow. You notice twelve things you've never seen before.",
+                       dateLine: "Silas tucks a sunflower behind your ear. “There. Now the bees will follow you too.” He walks very close the whole way home."),
+    ],
+    lines: DailyLines(
+        early: [
+            "The bees are calm tonight. They only hum like that when they are happy.",
+            "Long day? Sit a minute. The kettle's always on.",
+            "Smells like rain by evening. The bees are coming home early.",
+        ],
+        friend: [
+            "You've been carrying a lot lately. You can set some of it down here.",
+            "I told the bees about you. They approve. They're very picky.",
+            "Saved you a jar of the good honey. Don't tell the others.",
+        ],
+        romance: [
+            "My grandfather said you know it's love when the bees settle around someone. They settle around you.",
+            "Everything slows down when you're here. In the best way. Like honey.",
+            "Stay for supper? I'll make the honey cake. You can watch me pretend I'm not nervous.",
+        ],
+        bestie: [
+            "Some people are like sunshine after rain. You're one of them.",
+            "When your day is too much, you know where I am. Always.",
+            "The bees know your footsteps now. That makes you family, in bee terms.",
+        ]
+    ),
+    questions: [
+        Question(id: "silas-q1", prompt: "“What helps you most after a hard day?”", answers: [
+            Answer(text: "A friend who just listens.", response: "Silas smiles, slow and warm. “Then I'll keep listening.”", points: 15),
+            Answer(text: "A hot drink and a blanket.", response: "“Ah. A person of good sense.”", points: 10),
+            Answer(text: "I just keep working.", response: "“Hm. Even bees rest in winter, you know.”", points: 5),
+        ]),
+        Question(id: "silas-q2", prompt: "“If you were a flower, which would you be?”", answers: [
+            Answer(text: "Lavender. Calm, and a little wild.", response: "“The bees' favorite,” Silas says, pleased. “Good choice.”", points: 15),
+            Answer(text: "A dandelion. I grow anywhere.", response: "“Ha. Tough and cheerful. I can see it.”", points: 10),
+            Answer(text: "I'd rather be a bee.", response: "Silas laughs. “Busy, buzzy, and a little bit stingy? Sure.”", points: 5),
+        ]),
+    ],
+    quests: [
+        Quest(id: "silas-1", personID: "silas", title: "Flowers for the Hives",
+              description: "Silas's bees need more blooms near the apiary. Sunflowers, please.", requiredStage: .acquaintance,
+              items: [ItemCount(itemID: "sunflower", count: 5)], points: 30, rewards: [.coins(60)]),
+        Quest(id: "silas-2", personID: "silas", title: "A Sweet Exchange",
+              description: "Silas wants clover to plant for next season's honey. He mentions a sunny yellow bunny napping by the daffodils.",
+              requiredStage: .friend,
+              items: [ItemCount(itemID: "clover", count: 6), ItemCount(itemID: "daffodil", count: 3)], points: 40,
+              rewards: [.gems(2), .hint("daffodilBunny")]),
+        Quest(id: "silas-3", personID: "silas", title: "Golden Hour",
+              description: "Silas is setting a honey harvest feast. While laying the table, he saw a bunny that shimmered like gold in the evening light…",
+              requiredStage: .closeFriend,
+              items: [ItemCount(itemID: "lavender", count: 4), ItemCount(itemID: "chamomileTea", count: 1)], points: 50,
+              rewards: [.gems(3), .hint("goldenBunny")]),
+    ],
+    favoriteBunnyReaction: "Silas's whole face softens. “Oh, a {breed}.” {bunny} curls up in his hands while two bees circle overhead, perfectly calm. “Look at that. They've already decided you're family. Thank you, truly. I'll keep them safe and sweet.”",
+    bunnyReaction: "Silas strokes {bunny} gently. “Welcome to the apiary. The bees won't mind you.”",
+    showFavoriteReaction: "Silas lets out a slow, delighted breath. “A {breed}. My favorite. Isn't that a gift.”",
+    lovedGiftReaction: "“Oh, you remembered. This is just the sweetest thing.”",
+    likedGiftReaction: "“How lovely. Thank you. The bees will be jealous.”",
+    neutralGiftReaction: "“That's kind of you. Thank you.”",
+    dislikedGiftReaction: "“Ah, that's a bit too smoky for me. The bees don't care for it either. But I appreciate the thought, really.”"
 )

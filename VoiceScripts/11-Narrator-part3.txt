@@ -1,0 +1,260 @@
+VOICE SCRIPT: Narrator (part 3 of 4)
+
+Please create voice lines for a cozy, pastel pixel-art farming game called Moonlit Meadows.
+
+CHARACTER: Describes scenes in story chapters and moments.
+VOICE: Warm, gentle storyteller, like a cozy bedtime story. Calm, soft, unhurried, a little smile in the voice. Gender-neutral or a soft female voice.
+
+RULES:
+- Read only the text in quotes. Do not read the ID or the note.
+- Make one separate audio clip per line, and name each file with its ID (for example JUNE-ACT1-FRIEND-N.mp3).
+- Keep the same voice for every line. Cozy and natural, no background music or effects.
+- "…" means a soft pause.
+- Lines like ==== Everyday chat ==== are section titles. Do not read them.
+
+LINES:
+
+==== Scenes with Sol ====
+
+SOL-Q1-REPLY1-N  (Sol reacts)
+"Sol grins and grabs their notebook."
+
+SOL-Q2-REPLY1-N  (Sol reacts)
+"Sol's voice goes soft."
+
+SOL-ACT1-FRIEND-N  (Sol activity: Duet (friend))
+"Sol hands you a tambourine. You are terrible. Sol says you have … You both cry laughing."
+
+SOL-ACT1-DATE-N  (Sol activity: Duet (date))
+"Sol sings the chorus of their meadow song and changes one word in it — to your name."
+
+SOL-ACT2-FRIEND-N  (Sol activity: Sewing lesson (friend))
+"Sol teaches you a blanket stitch. You sew your sleeve to the pillow. Sol frames it."
+
+SOL-ACT2-DATE-N  (Sol activity: Sewing lesson (date))
+"Sol stitches a tiny heart into the hem of your sleeve. … they say."
+
+SOL-ACT3-FRIEND-N  (Sol activity: Lantern dance (friend))
+"Sol teaches you a folk dance from a town they once toured. You step on their toes twelve times. They count out loud."
+
+SOL-ACT3-DATE-N  (Sol activity: Lantern dance (date))
+"Under the lanterns, Sol pulls you close for a slow dance. Neither of you hears the music anymore."
+
+SOL-FAVORITEBUNNYREACTION-N  (Sol: favorite bunny reaction)
+"Sol drops their guitar pick. … They kneel and this little one bumps their nose against Sol's hand. Sol starts humming, and the bunny sways along."
+
+SOL-BUNNYREACTION-N  (Sol: bunny reaction)
+"Sol tips their hat to this little one."
+
+SOL-SHOWFAVORITEREACTION-N  (Sol: show favorite reaction)
+"Sol gasps dramatically."
+
+SOL-1-L1  (Chapter "Busking in the Meadow")
+"Sol is playing guitar in the middle of the meadow, surrounded by an audience of bunnies."
+
+SOL-1-L3-N  (Chapter "Busking in the Meadow")
+"Sing the chorus with me? It's just … You can't get it wrong."
+
+SOL-1-L4  (Chapter "Busking in the Meadow")
+"You get it wrong. Sol plays louder to cover you, grinning."
+
+SOL-1-RESP7-N  (Chapter "Busking in the Meadow")
+"Sol takes three more bows."
+
+SOL-1-RESP8-N  (Chapter "Busking in the Meadow")
+"Sol's whole face lights up."
+
+SOL-2-L1  (Chapter "The Atelier")
+"Sol's shop is a rainbow of fabric scraps. Outfits hang everywhere — frilly, sharp, cozy, wild."
+
+SOL-2-RESP6-N  (Chapter "The Atelier")
+"Sol gasps."
+
+SOL-2-RESP7-N  (Chapter "The Atelier")
+"Sol's smile flickers."
+
+SOL-3-L1  (Chapter "Unpacked")
+"Sol shows you a dusty suitcase in the back of the Atelier."
+
+SOL-3-L3  (Chapter "Unpacked")
+"They open it. It's empty."
+
+SOL-3-CROSSROADS-ROMANCE-N  (Chapter "Unpacked")
+"Sol laughs, then cries, then laughs again."
+
+SOL-3-CROSSROADS-FRIEND-N  (Chapter "Unpacked")
+"Sol hugs you so tight you squeak."
+
+SOL-R4-L1  (Chapter "Second Verse")
+"Sol plays you the second verse of the meadow song. It's about two people sharing an umbrella in the rain."
+
+SOL-R4-RESP5-N  (Chapter "Second Verse")
+"Sol plays it again. This time, they sing it looking right at you."
+
+SOL-R4-RESP6-N  (Chapter "Second Verse")
+"Sol leans into you mid-strum. The song gets a little softer."
+
+SOL-R5-L1  (Chapter "Lantern Dance")
+"Sol has turned the meadow bandstand into a dance floor, strung with lanterns and bunny bunting."
+
+SOL-R5-L3  (Chapter "Lantern Dance")
+"They teach you a slow dance. You step on their toes. They don't count this time."
+
+SOL-R5-RESP5-N  (Chapter "Lantern Dance")
+"Sol shrieks with laughter."
+
+SOL-R5-RESP6-N  (Chapter "Lantern Dance")
+"The last note hangs in the air. Sol forgets to play the next one."
+
+SOL-R6-L1  (Chapter "The Last Verse")
+"The whole meadow gathers at the bandstand. Sol is finally playing the finished song."
+
+SOL-R6-L2  (Chapter "The Last Verse")
+"The last verse has your name in it."
+
+SOL-R6-RESP6-N  (Chapter "The Last Verse")
+"Sol drops the guitar (gently, it's vintage) and runs to you. The meadow cheers."
+
+SOL-R6-RESP7-N  (Chapter "The Last Verse")
+"Sol laughs into your shoulder."
+
+SOL-F4-L1  (Chapter "Matching Outfits")
+"Sol presents two matching outfits. They are extremely sparkly."
+
+SOL-F4-RESP5-N  (Chapter "Matching Outfits")
+"Sol screams with joy and takes forty photos."
+
+SOL-F6-L1  (Chapter "Chorus")
+"Sol plays the finished meadow song for the whole village. The chorus is about a friend who made them stay."
+
+SOL-F6-L2  (Chapter "Chorus")
+"Afterwards, they tie a bracelet around your wrist, woven from scraps of every outfit they've made you."
+
+SOL-F6-RESP5-N  (Chapter "Chorus")
+"Sol laughs, eyes shiny."
+
+SOL-F6-RESP6-N  (Chapter "Chorus")
+"You fumble a messy knot. Sol wears it every single day."
+
+SOL-FINALE-N  (Collection-complete finale)
+"Sol whispers."
+
+
+==== Scenes with Wes ====
+
+WES-Q1-REPLY1-N  (Wes reacts)
+"Wes nods slowly."
+
+WES-Q1-REPLY3-N  (Wes reacts)
+"He chuckles."
+
+WES-ACT1-FRIEND-N  (Wes activity: Seed sorting (friend))
+"Wes shows you how to sort bean seeds by color. He hums an old tune the whole time and denies humming."
+
+WES-ACT1-DATE-N  (Wes activity: Seed sorting (date))
+"Wes labels a new seed envelope with your farm's name. … he says."
+
+WES-ACT2-FRIEND-N  (Wes activity: Read the sky (friend))
+"Wes squints at the clouds. … It rains at supper. He looks unbearably smug."
+
+WES-ACT2-DATE-N  (Wes activity: Read the sky (date))
+"You and Wes watch a storm roll in from the porch. He tells you about the year the creek flooded and the bunnies rode it out in his hat."
+
+WES-ACT3-FRIEND-N  (Wes activity: Fix the fence (friend))
+"You mend a fence rail together. Wes does it in three swings. You take eleven. He says that's about right for a first fence."
+
+WES-ACT3-DATE-N  (Wes activity: Fix the fence (date))
+"Wes carves your initials next to his on the fence post."
+
+WES-FAVORITEBUNNYREACTION-N  (Wes: favorite bunny reaction)
+"Wes takes off his cap. … He holds this little one like it's made of glass."
+
+WES-BUNNYREACTION-N  (Wes: bunny reaction)
+"Wes scratches this little one behind the ears."
+
+WES-SHOWFAVORITEREACTION-N  (Wes: show favorite reaction)
+"Wes stops mid-sentence."
+
+WES-LOVEDGIFTREACTION-N  (Wes: loved gift reaction)
+"Wes almost smiles. Almost."
+
+WES-1-L1  (Chapter "The Old Farmer")
+"You find Wes leaning on your fence at dawn, studying your carrots like a newspaper."
+
+WES-1-RESP5-N  (Chapter "The Old Farmer")
+"Wes snorts."
+
+WES-2-L1  (Chapter "The Seed Library")
+"Wes lets you into the Old Mill. Every wall is covered in tiny drawers, each labeled in careful handwriting."
+
+WES-2-RESP7-N  (Chapter "The Seed Library")
+"Wes sighs, but his ears go pink."
+
+WES-2-RESP8-N  (Chapter "The Seed Library")
+"Wes watches you write."
+
+WES-3-L1  (Chapter "Harvest Moon Porch")
+"Under a huge orange moon, Wes waves you up onto the mill's porch. Two mugs of cocoa are already waiting."
+
+WES-3-RESP7-N  (Chapter "Harvest Moon Porch")
+"Wes is quiet for a long moment."
+
+
+==== Scenes with Bree ====
+
+BREE-ACT1-FRIEND-N  (Bree activity: Berry picking (friend))
+"You and Bree pick berries. Your basket fills up. Hers somehow stays half-empty, and her mouth is very blue."
+
+BREE-ACT1-DATE-N  (Bree activity: Berry picking (date))
+"Bree saves you the plumpest berry of the season."
+
+BREE-ACT2-FRIEND-N  (Bree activity: Creek wading (friend))
+"Bree introduces you to Admiral Puddles, the creek's largest frog. He is unimpressed with you."
+
+BREE-ACT2-DATE-N  (Bree activity: Creek wading (date))
+"You skip stones with Bree until sunset. She wins. She always wins. She cheats a little."
+
+BREE-ACT3-FRIEND-N  (Bree activity: Jam day (friend))
+"You make jam together. There is jam on the ceiling. Neither of you knows how."
+
+BREE-ACT3-DATE-N  (Bree activity: Jam day (date))
+"Bree labels a jar … and hands it over before you can say anything."
+
+BREE-FAVORITEBUNNYREACTION-N  (Bree: favorite bunny reaction)
+"Bree squeals so loudly a frog jumps into the creek. … She spins this little one around very gently."
+
+BREE-BUNNYREACTION-N  (Bree: bunny reaction)
+"Bree boops this little one's nose."
+
+BREE-SHOWFAVORITEREACTION-N  (Bree: show favorite reaction)
+"Bree gasps."
+
+BREE-LOVEDGIFTREACTION-N  (Bree: loved gift reaction)
+"Bree hugs it."
+
+BREE-DISLIKEDGIFTREACTION-N  (Bree: disliked gift reaction)
+"Bree's nose wrinkles."
+
+BREE-1-L1  (Chapter "Berry Stained")
+"A girl with green hair pops out of a bramble bush, covered in leaves and holding a basket."
+
+BREE-2-L1  (Chapter "Admiral Puddles")
+"Bree drags you down to the creek. A very large frog sits on a very flat rock."
+
+BREE-2-L3  (Chapter "Admiral Puddles")
+"Admiral Puddles stares at you. You stare back. After a long moment, he croaks once."
+
+BREE-2-RESP6-N  (Chapter "Admiral Puddles")
+"Bree laughs so hard she has to sit down in the creek."
+
+BREE-2-RESP7-N  (Chapter "Admiral Puddles")
+"Bree beams."
+
+BREE-3-L1  (Chapter "Stars on the Dock")
+"At night, Bree shows you the old dock where she watches the stars. Fireflies drift over the water."
+
+BREE-3-RESP6-N  (Chapter "Stars on the Dock")
+"Bree sniffles and bumps your shoulder with hers."
+
+BREE-3-RESP7-N  (Chapter "Stars on the Dock")
+"You both close your eyes. Bree peeks. You both laugh."

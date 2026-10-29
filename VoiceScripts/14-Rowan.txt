@@ -1,0 +1,212 @@
+VOICE SCRIPT: Rowan (Rowan Calloway)
+
+Please create voice lines for a cozy, pastel pixel-art farming game called Moonlit Meadows.
+
+CHARACTER: he/him, man, about 30, the blacksmith at the stone forge. Fair skin, freckles, copper-red hair in a short low ponytail, green eyes, cream linen shirt, brown leather apron, hammer at his belt.
+VOICE: Low, quiet, steady young man. Says little and means all of it. Dry, gentle humor, soft underneath. Unhurried, warm, never loud. Short pauses between thoughts.
+
+RULES:
+- Read only the text in quotes. Do not read the ID or the note.
+- Make one separate audio clip per line, and name each file with its ID (for example ROWAN-DAILY-EARLY-1.mp3).
+- Keep the same voice for every line. Cozy and natural, no background music or effects.
+- "…" means a soft pause.
+- Lines like ==== Everyday chat ==== are section titles. Do not read them.
+
+LINES:
+
+==== Everyday chat ====
+
+ROWAN-DAILY-EARLY-1  (Daily (stranger / acquaintance))
+"Mind the sparks. Everything I make, I make to last."
+
+ROWAN-DAILY-EARLY-2  (Daily (stranger / acquaintance))
+"Bring me what's broken. I'll see what I can do."
+
+ROWAN-DAILY-EARLY-3  (Daily (stranger / acquaintance))
+"Morning. Hm. Good day for it."
+
+ROWAN-DAILY-FRIEND-1  (Daily (friend / close friend))
+"Fixed your gate latch. It was squeaking. You don't have to say anything."
+
+ROWAN-DAILY-FRIEND-2  (Daily (friend / close friend))
+"Most people talk to fill the quiet. You don't. I like that."
+
+ROWAN-DAILY-FRIEND-3  (Daily (friend / close friend))
+"Made you a trowel. Balanced it for your hand. Took a few tries."
+
+ROWAN-DAILY-ROMANCE-1  (Daily (romance))
+"I've made a thousand things to last. Never wanted anything to last this much."
+
+ROWAN-DAILY-ROMANCE-2  (Daily (romance))
+"I'm not good with words. So I made you this instead. …It's a little iron heart. It won't break."
+
+ROWAN-DAILY-ROMANCE-3  (Daily (romance))
+"Stay by the forge a while? It's warm. And you're here. That's two good things."
+
+ROWAN-DAILY-BESTIE-1  (Daily (best friend))
+"You and me, we're built the same. Sturdy. Not flashy. Good to lean on."
+
+ROWAN-DAILY-BESTIE-2  (Daily (best friend))
+"I keep a tin of thank-you notes. Yours are on top."
+
+ROWAN-DAILY-BESTIE-3  (Daily (best friend))
+"Need anything mended? Even if it's just a bad day. I'm good at those too."
+
+
+==== Question 1 ====
+
+ROWAN-Q1  (Asks you a question)
+"What's something you'd want to last forever?"
+
+ROWAN-Q1-REPLY1  (Reply to your answer)
+"Then we'll look after it. Both of us."
+
+ROWAN-Q1-REPLY2  (Reply to your answer)
+"Practical. I can make those."
+
+ROWAN-Q1-REPLY3  (Reply to your answer)
+"No. But some things last long enough."
+
+
+==== Question 2 ====
+
+ROWAN-Q2  (Asks you a question)
+"Do you talk to the things you fix? …Never mind."
+
+ROWAN-Q2-REPLY1  (Reply to your answer)
+"…They do, don't they."
+
+ROWAN-Q2-REPLY2  (Reply to your answer)
+"Fair."
+
+ROWAN-Q2-REPLY3  (Reply to your answer)
+"Hm. Probably."
+
+
+==== Activity 1 ====
+
+ROWAN-ACT1-FRIEND  (Activity "Forge a Star Charm" (friend))
+"It stays."
+
+
+==== Activity 3 ====
+
+ROWAN-ACT3-DATE  (Activity "Stargazing on the forge roof" (date))
+"Warmest spot in the meadow,"
+
+
+==== Gift and bunny reactions ====
+
+ROWAN-FAVORITEBUNNYREACTION  (favorite bunny reaction)
+"A bunny. …I'll make you a little bed by the forge. Warm. Safe. Thank you."
+
+ROWAN-BUNNYREACTION  (bunny reaction)
+"Welcome. Stay clear of the anvil."
+
+ROWAN-SHOWFAVORITEREACTION  (show favorite reaction)
+"Is that a bunny? Those are my favorite."
+
+ROWAN-LOVEDGIFTREACTION  (loved gift reaction)
+"…This is exactly what I needed. How did you know?"
+
+ROWAN-LIKEDGIFTREACTION  (liked gift reaction)
+"Good. Thank you. That'll keep me going."
+
+ROWAN-NEUTRALGIFTREACTION  (neutral gift reaction)
+"Hm. Thanks."
+
+ROWAN-DISLIKEDGIFTREACTION  (disliked gift reaction)
+"Pretty. Too delicate for a forge, though. I'd only break it. Still, thank you for thinking of me."
+
+ROWAN-F4-L2  (Chapter "Apprentice")
+"Every forge needs two. One to hammer, and one to tell the first one to eat lunch."
+
+ROWAN-F4-RESP4  (Chapter "Apprentice" (reply to your choice))
+"Suits you,"
+
+ROWAN-F4-RESP5  (Chapter "Apprentice" (reply to your choice))
+"You're the important one."
+
+ROWAN-F6-L2  (Chapter "The Mended Lantern")
+"She said a light should go to whoever keeps others warm. That's you."
+
+ROWAN-F6-L3  (Chapter "The Mended Lantern")
+"Friends like you are rare. I'm keeping you."
+
+ROWAN-F6-RESP5  (Chapter "The Mended Lantern" (reply to your choice))
+"I know you will."
+
+
+==== Story chapter 1 ====
+
+ROWAN-1-L2  (Chapter "The Quiet Forge")
+"Hm. Bad steel. Not your fault."
+
+ROWAN-1-L4  (Chapter "The Quiet Forge")
+"Here. Should outlast us both. And take this. A recipe. My mother's. Too hearty for one person."
+
+ROWAN-1-RESP7  (Chapter "The Quiet Forge" (reply to your choice))
+"…If you mind the sparks."
+
+
+==== Story chapter 2 ====
+
+ROWAN-2-L3  (Chapter "The Tin of Notes")
+"…Ah. You found that."
+
+ROWAN-2-L4  (Chapter "The Tin of Notes")
+"People say thank you and forget. I don't. Seemed wrong to throw them out."
+
+ROWAN-2-RESP6  (Chapter "The Tin of Notes" (reply to your choice))
+"Thanks. That's going in the tin too."
+
+ROWAN-2-RESP7  (Chapter "The Tin of Notes" (reply to your choice))
+"Don't tell anyone."
+
+
+==== Story chapter 3 ====
+
+ROWAN-3-L2  (Chapter "Iron and Starlight")
+"Made something. Took me a month. Kept getting it wrong."
+
+ROWAN-3-L4  (Chapter "Iron and Starlight")
+"I'm no good at saying things. So. This is me saying it."
+
+ROWAN-3-CROSSROADS-ROMANCE  (Chapter "Iron and Starlight" (romance answer))
+"Good. That's good. I was hoping."
+
+ROWAN-3-CROSSROADS-FRIEND  (Chapter "Iron and Starlight" (friend answer))
+"Good. Then it'll last. The best things do."
+
+
+==== Romance chapter 4 ====
+
+ROWAN-R4-L2  (Chapter "Two Hammers")
+"Made it for you. So you can work next to me. If you want."
+
+ROWAN-R4-L3  (Chapter "Two Hammers")
+"…I want."
+
+
+==== Romance chapter 5 ====
+
+ROWAN-R5-L2  (Chapter "Forge a Star Charm")
+"Slow. Let the metal tell you when it's ready. …You're a natural."
+
+ROWAN-R5-RESP5  (Chapter "Forge a Star Charm" (reply to your choice))
+"We match,"
+
+ROWAN-R5-RESP6  (Chapter "Forge a Star Charm" (reply to your choice))
+"Stay."
+
+
+==== Romance chapter 6 ====
+
+ROWAN-R6-L2  (Chapter "Made to Last")
+"I keep every thank-you anyone gives me. You've given me more than anyone. So I made you something to keep yours in."
+
+ROWAN-R6-L4  (Chapter "Made to Last")
+"Everything I make, I make to last. I want us to last. Will you stay with me? Always?"
+
+ROWAN-R6-RESP7  (Chapter "Made to Last" (reply to your choice))
+"There. Now it's finished."

@@ -1,0 +1,215 @@
+VOICE SCRIPT: Narrator (part 1 of 4)
+
+Please create voice lines for a cozy, pastel pixel-art farming game called Moonlit Meadows.
+
+CHARACTER: Describes scenes in story chapters and moments.
+VOICE: Warm, gentle storyteller, like a cozy bedtime story. Calm, soft, unhurried, a little smile in the voice. Gender-neutral or a soft female voice.
+
+RULES:
+- Read only the text in quotes. Do not read the ID or the note.
+- Make one separate audio clip per line, and name each file with its ID (for example JUNE-ACT1-FRIEND-N.mp3).
+- Keep the same voice for every line. Cozy and natural, no background music or effects.
+- "…" means a soft pause.
+- Lines like ==== Everyday chat ==== are section titles. Do not read them.
+
+LINES:
+
+==== Scenes with June ====
+
+JUNE-ACT1-FRIEND-N  (June activity: Herb walk (friend))
+"June points out every herb on the path."
+
+JUNE-ACT1-DATE-N  (June activity: Herb walk (date))
+"June hooks her pinky around yours halfway through the herb walk and doesn't let go."
+
+JUNE-ACT2-FRIEND-N  (June activity: Press flowers (friend))
+"You press violets between pages of an old encyclopedia. June labels each one in tiny handwriting."
+
+JUNE-ACT2-DATE-N  (June activity: Press flowers (date))
+"June presses a clover you found together. … she says, cheeks pink."
+
+JUNE-ACT3-FRIEND-N  (June activity: Tea tasting (friend))
+"You taste five blends. June takes notes like it's a science experiment. It is, she insists."
+
+JUNE-ACT3-DATE-N  (June activity: Tea tasting (date))
+"June names a new blend after you. It's sweet with a little bit of spice. … she whispers."
+
+JUNE-FAVORITEBUNNYREACTION-N  (June: favorite bunny reaction)
+"June gasps and cradles this little one the bunny. … She tucks a sprig of lavender behind its ear and her eyes go shiny."
+
+JUNE-BUNNYREACTION-N  (June: bunny reaction)
+"June holds this little one carefully."
+
+JUNE-SHOWFAVORITEREACTION-N  (June: show favorite reaction)
+"June's hand flies to her mouth."
+
+JUNE-LOVEDGIFTREACTION-N  (June: loved gift reaction)
+"June hugs it to her chest."
+
+JUNE-1-L1  (Chapter "The Glasshouse")
+"You find June on her knees in the glasshouse, whispering to a wilted fern."
+
+JUNE-1-RESP6-N  (Chapter "The Glasshouse")
+"June laughs, surprised."
+
+JUNE-2-L1  (Chapter "Rainy Day Reading")
+"A storm rolls over the meadow. June waves you into the glasshouse, where rain drums on the glass."
+
+JUNE-2-L3  (Chapter "Rainy Day Reading")
+"She reads you a passage from her grandmother's garden journal. Her voice gets steadier with every page."
+
+JUNE-2-RESP6-N  (Chapter "Rainy Day Reading")
+"June beams."
+
+JUNE-2-RESP7-N  (Chapter "Rainy Day Reading")
+"She sounds like she really hopes you do."
+
+JUNE-3-L1  (Chapter "Lantern Moths")
+"At dusk, June takes you to the edge of the meadow, where soft moths glow over the lavender."
+
+JUNE-3-CROSSROADS-ROMANCE-N  (Chapter "Lantern Moths")
+"June's breath catches. Then she laughs, bright and teary."
+
+JUNE-3-CROSSROADS-FRIEND-N  (Chapter "Lantern Moths")
+"June smiles, warm and relieved."
+
+JUNE-R4-L1  (Chapter "Pressed Between Pages")
+"June hands you a book. Between the pages, a pressed clover from your first herb walk."
+
+JUNE-R4-RESP6-N  (Chapter "Pressed Between Pages")
+"June goes completely still. Then she leans into your hand."
+
+JUNE-R4-RESP7-N  (Chapter "Pressed Between Pages")
+"she says softly."
+
+JUNE-R5-L1  (Chapter "A Date in Bloom")
+"June has decorated the glasshouse with fairy lights and a little table for two."
+
+JUNE-R5-L3  (Chapter "A Date in Bloom")
+"Halfway through, a Lavender bunny wanders in and falls asleep on June's foot. She doesn't dare move."
+
+JUNE-R5-RESP6-N  (Chapter "A Date in Bloom")
+"June laces her fingers through yours like she's been waiting all night."
+
+JUNE-R5-RESP7-N  (Chapter "A Date in Bloom")
+"she promises."
+
+JUNE-R6-L1  (Chapter "Rooted")
+"June meets you under the oldest tree in the meadow, holding a letter sealed with lavender."
+
+JUNE-R6-L4  (Chapter "Rooted")
+"The lantern moths rise around you both, glowing like they've been waiting for this."
+
+JUNE-R6-RESP6-N  (Chapter "Rooted")
+"June throws her arms around you, laughing and crying at once."
+
+JUNE-R6-RESP7-N  (Chapter "Rooted")
+"she echoes, like a promise."
+
+JUNE-F4-L1  (Chapter "Book Club of Two")
+"June founds the Rainy Day Book Club. Members: you, her, and a sleeping Lavender bunny."
+
+JUNE-F4-RESP5-N  (Chapter "Book Club of Two")
+"she says proudly."
+
+JUNE-F6-L1  (Chapter "Grandmother's Garden")
+"June takes you to a corner of the glasshouse you've never seen: her grandmother's private garden."
+
+JUNE-F6-RESP5-N  (Chapter "Grandmother's Garden")
+"she says, and for the first time she sounds certain."
+
+JUNE-F6-RESP6-N  (Chapter "Grandmother's Garden")
+"June hugs back hard, the way people do when they've missed hugs."
+
+
+==== Scenes with Roz ====
+
+ROZ-ACT1-FRIEND-N  (Roz activity: Bake-off (friend))
+"Roz challenges you to a cupcake bake-off. She wins. She also eats your cupcake and declares it the real winner."
+
+ROZ-ACT1-DATE-N  (Roz activity: Bake-off (date))
+"Flour everywhere. Roz wipes a smudge off your nose and leaves her hand on your cheek a second too long."
+
+ROZ-ACT2-FRIEND-N  (Roz activity: Market stroll (friend))
+"Roz haggles for peaches like it's a sport. You leave with three crates and a new nickname:"
+
+ROZ-ACT2-DATE-N  (Roz activity: Market stroll (date))
+"Roz buys you a flower crown at the market and insists you wear it all day. You do."
+
+ROZ-ACT3-FRIEND-N  (Roz activity: Picnic (friend))
+"Roz packs enough food for twelve. You eat until you can't move. Perfect afternoon."
+
+ROZ-ACT3-DATE-N  (Roz activity: Picnic (date))
+"Lying on the picnic blanket, Roz laces her fingers with yours. … It's more than okay."
+
+ROZ-FAVORITEBUNNYREACTION-N  (Roz: favorite bunny reaction)
+"Roz shrieks so loudly the birds take off. … She scoops up this little one and spins in a circle."
+
+ROZ-BUNNYREACTION-N  (Roz: bunny reaction)
+"Roz boops this little one on the nose."
+
+ROZ-1-L1  (Chapter "Sweet Pea")
+"Roz drags you into the Sweet Burrow before you can say hello."
+
+ROZ-1-RESP7-N  (Chapter "Sweet Pea")
+"Roz wipes it and leaves more."
+
+ROZ-2-L1  (Chapter "After Closing")
+"You find Roz sitting on the bakery floor after closing, back against the oven."
+
+ROZ-2-L4  (Chapter "After Closing")
+"You sit beside her. After a while, she rests her head on your shoulder."
+
+ROZ-2-RESP7-N  (Chapter "After Closing")
+"Roz blinks hard."
+
+ROZ-3-L1  (Chapter "The Midnight Cake")
+"Roz calls you at midnight. “Emergency. Bring an apron.” It is not an emergency. It's a cake."
+
+ROZ-3-L3  (Chapter "The Midnight Cake")
+"The cake is lopsided and perfect. Roz is quieter than usual. She keeps glancing at you."
+
+ROZ-3-CROSSROADS-ROMANCE-N  (Chapter "The Midnight Cake")
+"Roz drops the spatula. Then she laughs — that huge, room-filling laugh."
+
+ROZ-3-CROSSROADS-FRIEND-N  (Chapter "The Midnight Cake")
+"Roz grins and pulls you into a crushing hug."
+
+ROZ-R4-L1  (Chapter "Slow Morning")
+"For the first time in years, the Sweet Burrow opens late. Roz is sitting with you on the bench out front, drinking coffee."
+
+ROZ-R5-L1  (Chapter "A Table for Two")
+"Roz closes the bakery early and sets one table with a candle and an absurd number of desserts."
+
+ROZ-R5-L3  (Chapter "A Table for Two")
+"Course seven is a tiny cake shaped like two bunnies holding paws."
+
+ROZ-R5-RESP6-N  (Chapter "A Table for Two")
+"Roz laughs into the fork, then kisses your cheek, sticky with frosting."
+
+ROZ-R6-L1  (Chapter "Recipe for Forever")
+"Roz invites you to Sunday dinner with all six siblings. It is chaos. It is wonderful."
+
+ROZ-R6-L2  (Chapter "Recipe for Forever")
+"Afterwards, on the porch, she hands you a whisk bent into the shape of a heart."
+
+ROZ-R6-RESP5-N  (Chapter "Recipe for Forever")
+"Roz whoops so loudly that all six siblings cheer from inside."
+
+ROZ-R6-RESP6-N  (Chapter "Recipe for Forever")
+"You nod."
+
+ROZ-F4-L1  (Chapter "Bakery Besties")
+"Roz hangs a sign in the bakery: “EMPLOYEE OF THE MONTH: SWEET PEA.” You don't work there."
+
+ROZ-F6-L1  (Chapter "Family Recipes")
+"Roz invites you to Sunday dinner. All six siblings greet you by name. They've heard everything."
+
+ROZ-F6-L2  (Chapter "Family Recipes")
+"Afterwards, Roz hands you her family's recipe book. There's a new page at the back, in her handwriting: “Sweet Pea's Shortcake."
+
+ROZ-F6-RESP5-N  (Chapter "Family Recipes")
+"She hugs you hard."
+
+ROZ-F6-RESP6-N  (Chapter "Family Recipes")
+"Every sibling cheers. Roz pretends to faint."

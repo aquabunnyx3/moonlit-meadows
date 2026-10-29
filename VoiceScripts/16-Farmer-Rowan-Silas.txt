@@ -1,0 +1,119 @@
+VOICE SCRIPT: The Farmer (lines with Rowan and Silas)
+
+Please create voice lines for a cozy, pastel pixel-art farming game called Moonlit Meadows.
+
+CHARACTER: Two versions are needed: FEMALE and MALE. The new farmer. Same farmer voices as 10-Farmer.txt.
+VOICE: Warm, friendly, relaxed and easygoing. Please record every line twice: once as a female voice (file names end in -F) and once as a male voice (file names end in -M).
+
+RULES:
+- Read only the text in quotes. Do not read the ID or the note.
+- Make one separate audio clip per line, and name each file with its ID (for example ROWAN-Q1-ANSWER1-F.mp3 and ROWAN-Q1-ANSWER1-M.mp3).
+- Keep the same voice for every line. Cozy and natural, no background music or effects.
+- "…" means a soft pause.
+- Lines like ==== Everyday chat ==== are section titles. Do not read them.
+
+LINES:
+
+==== Talking with Rowan ====
+
+ROWAN-Q1-ANSWER1  (Your answer to Rowan)
+"This meadow, just like it is."
+
+ROWAN-Q1-ANSWER2  (Your answer to Rowan)
+"A really good pair of boots."
+
+ROWAN-Q1-ANSWER3  (Your answer to Rowan)
+"Nothing lasts forever."
+
+ROWAN-Q2-ANSWER1  (Your answer to Rowan)
+"Always. They listen better."
+
+ROWAN-Q2-ANSWER2  (Your answer to Rowan)
+"Only when they won't work."
+
+ROWAN-Q2-ANSWER3  (Your answer to Rowan)
+"That's a little odd."
+
+
+==== Talking with Silas ====
+
+SILAS-Q1-ANSWER1  (Your answer to Silas)
+"A friend who just listens."
+
+SILAS-Q1-ANSWER2  (Your answer to Silas)
+"A hot drink and a blanket."
+
+SILAS-Q1-ANSWER3  (Your answer to Silas)
+"I just keep working."
+
+SILAS-Q2-ANSWER1  (Your answer to Silas)
+"Lavender. Calm, and a little wild."
+
+SILAS-Q2-ANSWER2  (Your answer to Silas)
+"A dandelion. I grow anywhere."
+
+SILAS-Q2-ANSWER3  (Your answer to Silas)
+"I'd rather be a bee."
+
+
+==== Talking with Rowan ====
+
+ROWAN-1-CHOICE6  (Chapter "The Quiet Forge" (your choice))
+"Thank you. Really."
+
+ROWAN-1-CHOICE7  (Chapter "The Quiet Forge" (your choice))
+"Can I watch you work sometime?"
+
+ROWAN-2-CHOICE7  (Chapter "The Tin of Notes" (your choice))
+"That might be the sweetest thing I've ever seen."
+
+ROWAN-3-CROSSROADS-CONFESS  (Chapter "Iron and Starlight" (crossroads choice))
+"Rowan, I think I'm falling for you."
+
+ROWAN-3-CROSSROADS-FRIENDS  (Chapter "Iron and Starlight" (crossroads choice))
+"You're my closest friend, Rowan. I mean that."
+
+ROWAN-R5-CHOICE5  (Chapter "Forge a Star Charm" (your choice))
+"Now we match."
+
+ROWAN-R6-CHOICE6  (Chapter "Made to Last" (your choice))
+"Always."
+
+ROWAN-F4-CHOICE5  (Chapter "Apprentice" (your choice))
+"So I'm the lunch one?"
+
+ROWAN-F6-CHOICE5  (Chapter "The Mended Lantern" (your choice))
+"I'll keep it lit."
+
+
+==== Talking with Silas ====
+
+SILAS-1-CHOICE6  (Chapter "Telling the Bees" (your choice))
+"She has good taste in flowers."
+
+SILAS-2-CHOICE6  (Chapter "A Hard Day" (your choice))
+"How did you know I needed this?"
+
+SILAS-2-CHOICE7  (Chapter "A Hard Day" (your choice))
+"Thank you, Silas."
+
+SILAS-3-CROSSROADS-CONFESS  (Chapter "The Honey Moon" (crossroads choice))
+"Tell them I'm falling for you, Silas."
+
+SILAS-3-CROSSROADS-FRIENDS  (Chapter "The Honey Moon" (crossroads choice))
+"Tell them you've got a best friend for life."
+
+SILAS-R4-CHOICE5  (Chapter "Borrowed Veil" (your choice))
+"You look nice too."
+
+SILAS-R5-CHOICE6  (Chapter "Honey Tasting" (your choice))
+"Share it with me?"
+
+SILAS-R6-CHOICE6  (Chapter "Forty Hives and One Home" (your choice))
+"Yes. Every slow, sweet day."
+
+SILAS-F4-CHOICE4  (Chapter "Kettle Company" (your choice))
+"Best mug I own."
+
+SILAS-F6-CHOICE5  (Chapter "The Bees Remember" (your choice))
+"I'll remember. Always."

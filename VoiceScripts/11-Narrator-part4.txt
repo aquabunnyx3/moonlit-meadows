@@ -1,0 +1,98 @@
+VOICE SCRIPT: Narrator (part 4 of 4)
+
+Please create voice lines for a cozy, pastel pixel-art farming game called Moonlit Meadows.
+
+CHARACTER: Describes scenes in story chapters and moments.
+VOICE: Warm, gentle storyteller, like a cozy bedtime story. Calm, soft, unhurried, a little smile in the voice. Gender-neutral or a soft female voice.
+
+RULES:
+- Read only the text in quotes. Do not read the ID or the note.
+- Make one separate audio clip per line, and name each file with its ID (for example JUNE-ACT1-FRIEND-N.mp3).
+- Keep the same voice for every line. Cozy and natural, no background music or effects.
+- "…" means a soft pause.
+- Lines like ==== Everyday chat ==== are section titles. Do not read them.
+
+LINES:
+
+==== Scenes with Vi ====
+
+VI-Q1-REPLY1-N  (Vi reacts)
+"Vi smiles."
+
+VI-Q1-REPLY3-N  (Vi reacts)
+"Vi laughs."
+
+VI-ACT1-FRIEND-N  (Vi activity: Flower meanings (friend))
+"Vi tells you what each flower in her cart means. Apparently you've been gifting people … for weeks."
+
+VI-ACT1-DATE-N  (Vi activity: Flower meanings (date))
+"Vi tucks a sprig of lilac into your pocket. … she says."
+
+VI-ACT2-FRIEND-N  (Vi activity: Sunset walk (friend))
+"You walk the meadow path at sunset. Vi stops every few steps to say hello to a flower."
+
+VI-ACT2-DATE-N  (Vi activity: Sunset walk (date))
+"Vi reads you a poem at the top of the hill. It's about the meadow. Somewhere in the middle, it's about you."
+
+VI-ACT3-FRIEND-N  (Vi activity: Bouquet making (friend))
+"Vi helps you make a bouquet. Yours is lopsided. She calls it"
+
+VI-ACT3-DATE-N  (Vi activity: Bouquet making (date))
+"Vi ties your bouquet with a ribbon from her own hair."
+
+VI-FAVORITEBUNNYREACTION-N  (Vi: favorite bunny reaction)
+"Vi's eyes fill with tears. … She cradles this little one and tucks a tiny flower behind its ear."
+
+VI-BUNNYREACTION-N  (Vi: bunny reaction)
+"Vi gives this little one a little daisy crown."
+
+VI-SHOWFAVORITEREACTION-N  (Vi: show favorite reaction)
+"Vi presses a hand to her heart."
+
+VI-LOVEDGIFTREACTION-N  (Vi: loved gift reaction)
+"Vi holds it close."
+
+VI-DISLIKEDGIFTREACTION-N  (Vi: disliked gift reaction)
+"She smiles politely."
+
+VI-1-L1  (Chapter "A Flower for a Story")
+"A woman in a lilac dress pushes a flower cart along the path at sunset."
+
+VI-1-L4-N  (Chapter "A Flower for a Story")
+"That's a lovely story. It's only just beginning, so it's my favorite kind. Here — sweet peas. They mean"
+
+VI-1-RESP6-N  (Chapter "A Flower for a Story")
+"Vi's eyes light up."
+
+VI-1-RESP7-N  (Chapter "A Flower for a Story")
+"Vi says softly."
+
+VI-2-L1  (Chapter "The Pressed Flower Book")
+"Vi shows you an old book, its pages full of pressed flowers and tiny handwritten notes."
+
+VI-2-RESP5-N  (Chapter "The Pressed Flower Book")
+"Vi writes underneath it: … She underlines it twice."
+
+VI-2-RESP6-N  (Chapter "The Pressed Flower Book")
+"Vi presses a lilac beside your page."
+
+VI-3-L1  (Chapter "The Poem on the Hill")
+"Vi leads you to the top of the hill as the sky turns gold. She's holding a folded paper."
+
+VI-3-L3  (Chapter "The Poem on the Hill")
+"She reads it anyway. It's about the meadow, and the bunnies, and the way the light lands on your farm in the evening."
+
+VI-3-L4-N  (Chapter "The Poem on the Hill")
+"I tied it to a bouquet for you. Wisteria — it means"
+
+VI-3-RESP6-N  (Chapter "The Poem on the Hill")
+"Vi hides her face behind the bouquet, smiling."
+
+VI-3-RESP7-N  (Chapter "The Poem on the Hill")
+"she promises."
+
+
+==== The finale ====
+
+FINALE-N  (Collection-complete finale)
+"Under the full moon, all fifty breeds gather in the meadow. June, Roz, Theo, Kai, and Sol come out to watch. Seraph and Angel bow to you, Galaxy fills the sky with stars, and the bunnies weave you a crown of moonlight."

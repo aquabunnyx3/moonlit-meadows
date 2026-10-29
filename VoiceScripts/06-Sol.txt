@@ -1,0 +1,221 @@
+VOICE SCRIPT: Sol (Sol Rivera)
+
+Please create voice lines for a cozy, pastel pixel-art farming game called Moonlit Meadows.
+
+CHARACTER: they/them, gender-fluid, mid-20s, musician and tailor at the Patchwork Atelier. Pink curls, rose cardigan, lacy blossom dress.
+VOICE: Androgynous, mid-range, musical voice (not clearly male or female). Playful and theatrical with a sing-song lilt, sometimes half-humming. Deeply caring; quieter and sincere in emotional lines.
+
+RULES:
+- Read only the text in quotes. Do not read the ID or the note.
+- Make one separate audio clip per line, and name each file with its ID (for example SOL-DAILY-EARLY-1.mp3).
+- Keep the same voice for every line. Cozy and natural, no background music or effects.
+- "…" means a soft pause.
+- Lines like ==== Everyday chat ==== are section titles. Do not read them.
+
+LINES:
+
+==== Everyday chat ====
+
+SOL-DAILY-EARLY-1  (Daily (stranger / acquaintance))
+"Well, hello, new face! Want to hear a song? It's about a goose. It's mostly honking."
+
+SOL-DAILY-EARLY-2  (Daily (stranger / acquaintance))
+"I'm feeling very ruffles-and-ribbons today. Tomorrow? Who knows. That's the fun part."
+
+SOL-DAILY-EARLY-3  (Daily (stranger / acquaintance))
+"I've played in forty-two towns. None of them had bunnies this cute. Don't tell the other towns."
+
+SOL-DAILY-FRIEND-1  (Daily (friend / close friend))
+"I wrote a verse about you. Don't worry, it rhymes with “wonderful,” not “onion.”"
+
+SOL-DAILY-FRIEND-2  (Daily (friend / close friend))
+"I used to leave every place before it could leave me. I haven't packed my bags in months. Weird, huh?"
+
+SOL-DAILY-FRIEND-3  (Daily (friend / close friend))
+"Got a new jacket in the window. It'd look amazing on you. I may have made it for you."
+
+SOL-DAILY-ROMANCE-1  (Daily (romance))
+"Every song I write lately is secretly about you. The secret is out. Oops."
+
+SOL-DAILY-ROMANCE-2  (Daily (romance))
+"I'm not scared of staying anymore. Not with you here."
+
+SOL-DAILY-ROMANCE-3  (Daily (romance))
+"Come to the bandstand tonight? I saved you the best seat. It's right next to me."
+
+SOL-DAILY-BESTIE-1  (Daily (best friend))
+"My favorite person! Want to make matching outfits? Say yes. You're saying yes."
+
+SOL-DAILY-BESTIE-2  (Daily (best friend))
+"You're the chorus of my meadow song. Every verse comes back to you."
+
+SOL-DAILY-BESTIE-3  (Daily (best friend))
+"I've never had a best friend who stayed. You stayed. I'm going to cry, give me a second."
+
+
+==== Question 1 ====
+
+SOL-Q1  (Asks you a question)
+"If your life had a theme song, what would it sound like?"
+
+SOL-Q1-REPLY1  (Reply to your answer)
+"Challenge accepted."
+
+SOL-Q1-REPLY2  (Reply to your answer)
+"Mm, I can hear it. Lots of warm strings."
+
+SOL-Q1-REPLY3  (Reply to your answer)
+"Ha! Underrated genre. Very soothing."
+
+
+==== Question 2 ====
+
+SOL-Q2  (Asks you a question)
+"What do you think makes someone stay somewhere?"
+
+SOL-Q2-REPLY1  (Reply to your answer)
+"Yeah. That's exactly it."
+
+SOL-Q2-REPLY2  (Reply to your answer)
+"Like a good jacket. I like that."
+
+SOL-Q2-REPLY3  (Reply to your answer)
+"Ha! That's how I got here, honestly."
+
+
+==== Activity 1 ====
+
+SOL-ACT1-FRIEND  (Activity "Duet" (friend))
+"raw, untamed rhythm."
+
+
+==== Activity 2 ====
+
+SOL-ACT2-DATE  (Activity "Sewing lesson" (date))
+"A secret, Just between us."
+
+
+==== Gift and bunny reactions ====
+
+SOL-FAVORITEBUNNYREACTION  (favorite bunny reaction)
+"Is that a bunny? Oh, we're going to be in a band. Thank you. I'm writing you a song about this. Two songs."
+
+SOL-BUNNYREACTION  (bunny reaction)
+"Welcome to the Atelier, little star. I'll make you a scarf."
+
+SOL-SHOWFAVORITEREACTION  (show favorite reaction)
+"A bunny! My heart! It's doing a drumroll!"
+
+SOL-LOVEDGIFTREACTION  (loved gift reaction)
+"You know me so well! This is going in a song."
+
+SOL-LIKEDGIFTREACTION  (liked gift reaction)
+"Ooh, lovely! Thank you, friend."
+
+SOL-NEUTRALGIFTREACTION  (neutral gift reaction)
+"Aw, thank you! Every gift's a little melody."
+
+SOL-DISLIKEDGIFTREACTION  (disliked gift reaction)
+"Ha, not quite my rhythm — but I love that you thought of me."
+
+SOL-F4-L2  (Chapter "Matching Outfits")
+"Best friends who dress together, stress together. That's the saying. I made up the saying."
+
+SOL-F4-L3  (Chapter "Matching Outfits")
+"Also, ribbon bows for the bunnies. They're in the band now."
+
+SOL-F4-RESP6  (Chapter "Matching Outfits" (reply to your choice))
+"Can you— OF COURSE you can add a cape."
+
+SOL-F6-L3  (Chapter "Chorus")
+"You're the chorus. Every verse of my life comes back to you now. Best friends. Forever. That's a rhyme, technically."
+
+SOL-F6-RESP5  (Chapter "Chorus" (reply to your choice))
+"It counts!"
+
+
+==== Story chapter 1 ====
+
+SOL-1-L2  (Chapter "Busking in the Meadow")
+"My biggest crowd yet! They're very polite. No heckling."
+
+SOL-1-L3  (Chapter "Busking in the Meadow")
+"la la la."
+
+SOL-1-L5  (Chapter "Busking in the Meadow")
+"Here — my melody macaron recipe. Bake them and hum while you do. That's the secret ingredient."
+
+SOL-1-RESP7  (Chapter "Busking in the Meadow" (reply to your choice))
+"Thank you, thank you, I'm here all week!"
+
+SOL-1-RESP8  (Chapter "Busking in the Meadow" (reply to your choice))
+"For you? I'll play ten."
+
+
+==== Story chapter 2 ====
+
+SOL-2-L2  (Chapter "The Atelier")
+"I dress how I feel. Some days I'm all ribbons, some days I'm all suspenders. Today I'm… somewhere fun in between."
+
+SOL-2-L3  (Chapter "The Atelier")
+"People used to ask me to pick one. I don't have to. Neither does a song — it can change key and still be itself."
+
+SOL-2-L4  (Chapter "The Atelier")
+"Oh! I made a little music box for your farm. It plays my meadow song. Well — the first half. I haven't finished it."
+
+SOL-2-RESP6  (Chapter "The Atelier" (reply to your choice))
+"Genius. Visionary. Both it is."
+
+SOL-2-RESP7  (Chapter "The Atelier" (reply to your choice))
+"Finishing means staying. I'm… working on that."
+
+
+==== Story chapter 3 ====
+
+SOL-3-L2  (Chapter "Unpacked")
+"I used to keep this packed. Every town, every season. Ready to run."
+
+SOL-3-L4  (Chapter "Unpacked")
+"I unpacked it last week. Because of the meadow. Because of… you, mostly. Also I made you a patchwork jacket. Every scrap is from a town I left. You're the town I stayed in."
+
+SOL-3-CROSSROADS-ROMANCE  (Chapter "Unpacked" (romance answer))
+"Oh, I'm absolutely writing a song about this."
+
+SOL-3-CROSSROADS-FRIEND  (Chapter "Unpacked" (friend answer))
+"Family. I've never had one that stayed. Now I do."
+
+
+==== Romance chapter 4 ====
+
+SOL-R4-L2  (Chapter "Second Verse")
+"That one's based on a true story. You were there. Remember? You held the umbrella so I'd stay dry and got soaked."
+
+SOL-R4-L3  (Chapter "Second Verse")
+"I sewed ribbon bows for your bunnies. They're very dashing now."
+
+
+==== Romance chapter 5 ====
+
+SOL-R5-L2  (Chapter "Lantern Dance")
+"Private concert. Audience of one. Two, if you count the Cherry Blossom bunny. Three. There are many bunnies."
+
+SOL-R5-RESP5  (Chapter "Lantern Dance" (reply to your choice))
+"Yes! Again!"
+
+
+==== Romance chapter 6 ====
+
+SOL-R6-L3  (Chapter "The Last Verse")
+"I spent my whole life singing about places I was leaving. This is the first song about a place I'm staying. With the person I'm staying for."
+
+SOL-R6-L4  (Chapter "The Last Verse")
+"I love you. Will you be my home?"
+
+SOL-R6-RESP7  (Chapter "The Last Verse" (reply to your choice))
+"Best encore ever."
+
+
+==== Finale ====
+
+SOL-FINALE  (Collection-complete finale)
+"You found every one of them, I'm writing a song about this."

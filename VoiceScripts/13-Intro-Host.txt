@@ -1,0 +1,19 @@
+VOICE SCRIPT: The Lantern Host (opening story)
+
+Please create a voice line for a cozy, pastel pixel-art farming game called Moonlit Meadows.
+
+CHARACTER: she/her, woman, about 30. She waits at the farm gate at dusk with a glowing lantern to welcome the new farmer. Long brown braid, cream cardigan, sage green dress, brown boots.
+VOICE: Warm, kind and calm young woman. Softly welcoming, a gentle smile in her voice, like she's been looking forward to this moment. Never loud.
+
+RULES:
+- Read only the text in quotes. Do not read the ID or the note.
+- Make one separate audio clip per line, and name each file with its ID (for example INTRO-4-HOST.mp3).
+- Cozy and natural, no background music or effects.
+- Lines like ==== Opening story ==== are section titles. Do not read them.
+
+LINES:
+
+==== Opening story ====
+
+INTRO-4-HOST  (Intro scene 4: handing over the key)
+"The farm is yours now. It's been waiting for someone like you."

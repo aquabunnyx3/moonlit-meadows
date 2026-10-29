@@ -1,0 +1,389 @@
+VOICE SCRIPT: The Farmer (the player)
+
+Please create voice lines for a cozy, pastel pixel-art farming game called Moonlit Meadows.
+
+CHARACTER: Two versions are needed: FEMALE and MALE. Mid-20s, the new farmer in a leather jacket and jeans.
+VOICE: Warm, friendly, relaxed and easygoing. Natural and kind, a little playful. Please record every line twice: once as a female voice (file names end in -F) and once as a male voice (file names end in -M).
+
+RULES:
+- Read only the text in quotes. Do not read the ID or the note.
+- Make one separate audio clip per line, and name each file with its ID (for example JUNE-Q1-ANSWER1-F.mp3 and JUNE-Q1-ANSWER1-M.mp3).
+- Keep the same voice for every line. Cozy and natural, no background music or effects.
+- "…" means a soft pause.
+- Lines like ==== Everyday chat ==== are section titles. Do not read them.
+
+LINES:
+
+==== Talking with June ====
+
+JUNE-Q1-ANSWER1  (Your answer to June)
+"A sunflower, always facing the light."
+
+JUNE-Q1-ANSWER2  (Your answer to June)
+"A cactus. Prickly, but low-maintenance."
+
+JUNE-Q1-ANSWER3  (Your answer to June)
+"Whatever grows fastest."
+
+JUNE-Q2-ANSWER1  (Your answer to June)
+"Sometimes. But here feels right."
+
+JUNE-Q2-ANSWER2  (Your answer to June)
+"Everyone's figuring it out as they go."
+
+JUNE-Q2-ANSWER3  (Your answer to June)
+"Not really, no."
+
+JUNE-1-CHOICE6  (Chapter "The Glasshouse" (your choice))
+"Gerald's lucky to have you."
+
+JUNE-1-CHOICE7  (Chapter "The Glasshouse" (your choice))
+"Want help repotting him?"
+
+JUNE-2-CHOICE6  (Chapter "Rainy Day Reading" (your choice))
+"It's perfect. I'll put it somewhere sunny."
+
+JUNE-2-CHOICE7  (Chapter "Rainy Day Reading" (your choice))
+"Will you show me how to care for it?"
+
+JUNE-3-CROSSROADS-CONFESS  (Chapter "Lantern Moths" (crossroads choice))
+"I feel it too, June. More than friends."
+
+JUNE-3-CROSSROADS-FRIENDS  (Chapter "Lantern Moths" (crossroads choice))
+"You're one of my dearest friends. I treasure that."
+
+JUNE-R4-L3  (Chapter "Pressed Between Pages")
+"It's the opposite of silly."
+
+JUNE-R4-CHOICE7  (Chapter "Pressed Between Pages" (your choice))
+"Can I keep the clover?"
+
+JUNE-R5-CHOICE7  (Chapter "A Date in Bloom" (your choice))
+"Let's do this every week."
+
+JUNE-R6-CHOICE6  (Chapter "Rooted" (your choice))
+"I love you too. Let's grow together."
+
+JUNE-F4-CHOICE5  (Chapter "Book Club of Two" (your choice))
+"I'll treasure it forever."
+
+JUNE-F4-CHOICE6  (Chapter "Book Club of Two" (your choice))
+"Can the bunnies vote?"
+
+JUNE-F6-CHOICE5  (Chapter "Grandmother's Garden" (your choice))
+"I'm not going anywhere, June."
+
+
+==== Talking with Roz ====
+
+ROZ-Q1-ANSWER1  (Your answer to Roz)
+"Pie. Obviously."
+
+ROZ-Q1-ANSWER2  (Your answer to Roz)
+"Cake, for birthdays."
+
+ROZ-Q1-ANSWER3  (Your answer to Roz)
+"I don't really like sweets."
+
+ROZ-Q2-ANSWER1  (Your answer to Roz)
+"We should take one together."
+
+ROZ-Q2-ANSWER2  (Your answer to Roz)
+"Rest is important, Roz."
+
+ROZ-Q2-ANSWER3  (Your answer to Roz)
+"Never. Grind forever!"
+
+ROZ-1-CHOICE6  (Chapter "Sweet Pea" (your choice))
+"Best thing I've ever eaten."
+
+ROZ-2-CHOICE7  (Chapter "After Closing" (your choice))
+"Let someone feed you for once."
+
+ROZ-2-CHOICE8  (Chapter "After Closing" (your choice))
+"Rest is part of the recipe."
+
+ROZ-3-CROSSROADS-CONFESS  (Chapter "The Midnight Cake" (crossroads choice))
+"Roz, I think I'm falling for you."
+
+ROZ-3-CROSSROADS-FRIENDS  (Chapter "The Midnight Cake" (crossroads choice))
+"You're family to me, Roz. My favorite family."
+
+ROZ-R4-CHOICE5  (Chapter "Slow Morning" (your choice))
+"You look happy."
+
+ROZ-R4-CHOICE6  (Chapter "Slow Morning" (your choice))
+"Let's do nothing more often."
+
+ROZ-R5-CHOICE7  (Chapter "A Table for Two" (your choice))
+"It's the best date I've ever had."
+
+ROZ-R6-CHOICE5  (Chapter "Recipe for Forever" (your choice))
+"Forever sounds perfect."
+
+ROZ-F4-CHOICE6  (Chapter "Bakery Besties" (your choice))
+"I demand a raise."
+
+ROZ-F6-CHOICE5  (Chapter "Family Recipes" (your choice))
+"Thank you for choosing me, Roz."
+
+ROZ-F6-CHOICE6  (Chapter "Family Recipes" (your choice))
+"Next Sunday, I'm cooking."
+
+
+==== Talking with Theo ====
+
+THEO-Q1-ANSWER1  (Your answer to Theo)
+"They're stories we tell each other."
+
+THEO-Q1-ANSWER2  (Your answer to Theo)
+"Far away fire. But beautiful fire."
+
+THEO-Q1-ANSWER3  (Your answer to Theo)
+"I've never thought about it."
+
+THEO-Q2-ANSWER1  (Your answer to Theo)
+"Someone I lost. Like you miss Nonno."
+
+THEO-Q2-ANSWER2  (Your answer to Theo)
+"Being a kid and not worrying."
+
+THEO-Q2-ANSWER3  (Your answer to Theo)
+"Nothing. I live in the present."
+
+THEO-1-CHOICE7  (Chapter "The Observatory" (your choice))
+"I'll keep coming."
+
+THEO-1-CHOICE8  (Chapter "The Observatory" (your choice))
+"Saturn is beautiful."
+
+THEO-2-CHOICE7  (Chapter "Nonno's Chair" (your choice))
+"Tell me more about him."
+
+THEO-3-CROSSROADS-CONFESS  (Chapter "The Brightest Star" (crossroads choice))
+"I'd share every sky with you, Theo."
+
+THEO-3-CROSSROADS-FRIENDS  (Chapter "The Brightest Star" (crossroads choice))
+"You're my favorite stargazing partner. Always."
+
+THEO-R4-CHOICE6  (Chapter "Constellation Lessons" (your choice))
+"Which one is yours?"
+
+THEO-R5-CHOICE6  (Chapter "Picnic on the Moon" (your choice))
+"It's the most romantic thing anyone's done for me."
+
+THEO-R6-CHOICE5  (Chapter "A Star With Your Name" (your choice))
+"For as long as there are stars."
+
+THEO-F4-CHOICE5  (Chapter "Observatory Club" (your choice))
+"Who's president?"
+
+THEO-F4-CHOICE6  (Chapter "Observatory Club" (your choice))
+"I accept with honor."
+
+THEO-F6-CHOICE5  (Chapter "Nonno's Chart" (your choice))
+"Let's add new stars to it together."
+
+THEO-F6-CHOICE6  (Chapter "Nonno's Chart" (your choice))
+"I'll take care of it, Theo."
+
+
+==== Talking with Kai ====
+
+KAI-Q1-ANSWER1  (Your answer to Kai)
+"The people in it."
+
+KAI-Q1-ANSWER2  (Your answer to Kai)
+"A comfy bed and good snacks."
+
+KAI-Q1-ANSWER3  (Your answer to Kai)
+"I don't need a home."
+
+KAI-Q2-ANSWER1  (Your answer to Kai)
+"They're terrible. I love them."
+
+KAI-Q2-ANSWER2  (Your answer to Kai)
+"Some of them!"
+
+KAI-Q2-ANSWER3  (Your answer to Kai)
+"Please stop."
+
+KAI-1-CHOICE7  (Chapter "Helping Hands" (your choice))
+"You didn't have to help."
+
+KAI-2-L2  (Chapter "A Hutch for Everyone")
+"Have you built anything for yourself?"
+
+KAI-2-CHOICE7  (Chapter "A Hutch for Everyone" (your choice))
+"You deserve a home too, Kai."
+
+KAI-2-CHOICE8  (Chapter "A Hutch for Everyone" (your choice))
+"It's the best hutch in the meadow."
+
+KAI-3-CROSSROADS-CONFESS  (Chapter "Sunrise on the Hill" (crossroads choice))
+"Kai, I think I'm in love with you."
+
+KAI-3-CROSSROADS-FRIENDS  (Chapter "Sunrise on the Hill" (crossroads choice))
+"You're my best friend, Kai. My family."
+
+KAI-R4-CHOICE5  (Chapter "Measuring Twice" (your choice))
+"Measure twice, kiss once?"
+
+KAI-R5-CHOICE6  (Chapter "Porch Swing" (your choice))
+"You built this for us?"
+
+KAI-R6-CHOICE6  (Chapter "The First Beam" (your choice))
+"Yes. Let's build it together."
+
+KAI-F4-CHOICE6  (Chapter "Partners" (your choice))
+"What's our first job?"
+
+KAI-F6-CHOICE5  (Chapter "Matching Tool Belts" (your choice))
+"I'm proud of you, Kai."
+
+
+==== Talking with Sol ====
+
+SOL-Q1-ANSWER1  (Your answer to Sol)
+"Something you'd write."
+
+SOL-Q1-ANSWER2  (Your answer to Sol)
+"A cozy acoustic ballad."
+
+SOL-Q1-ANSWER3  (Your answer to Sol)
+"Elevator music."
+
+SOL-Q2-ANSWER1  (Your answer to Sol)
+"Finding people who make them feel seen."
+
+SOL-Q2-ANSWER2  (Your answer to Sol)
+"A place that feels like it fits."
+
+SOL-Q2-ANSWER3  (Your answer to Sol)
+"Running out of gas money."
+
+SOL-1-CHOICE8  (Chapter "Busking in the Meadow" (your choice))
+"Play another one?"
+
+SOL-2-CHOICE6  (Chapter "The Atelier" (your choice))
+"Why not wear both?"
+
+SOL-2-CHOICE7  (Chapter "The Atelier" (your choice))
+"Why haven't you finished the song?"
+
+SOL-3-CROSSROADS-CONFESS  (Chapter "Unpacked" (crossroads choice))
+"Sol, I want you to stay — with me."
+
+SOL-3-CROSSROADS-FRIENDS  (Chapter "Unpacked" (crossroads choice))
+"You're my dearest friend, Sol. Stay, and we'll be family."
+
+SOL-R4-CHOICE5  (Chapter "Second Verse" (your choice))
+"Play it again."
+
+SOL-R6-CHOICE6  (Chapter "The Last Verse" (your choice))
+"Always. You're mine, too."
+
+SOL-F4-CHOICE6  (Chapter "Matching Outfits" (your choice))
+"Can I add a cape?"
+
+SOL-F6-CHOICE5  (Chapter "Chorus" (your choice))
+"Forever's a rhyme with forever."
+
+
+==== Talking with Wes ====
+
+WES-Q1-ANSWER1  (Your answer to Wes)
+"Watching something grow from nothing."
+
+WES-Q1-ANSWER2  (Your answer to Wes)
+"Harvest day."
+
+WES-Q1-ANSWER3  (Your answer to Wes)
+"The bunnies, honestly."
+
+WES-1-CHOICE5  (Chapter "The Old Farmer" (your choice))
+"Teach me everything you know?"
+
+WES-1-CHOICE6  (Chapter "The Old Farmer" (your choice))
+"I'll take good care of it."
+
+WES-2-L4  (Chapter "The Seed Library")
+"You're giving me a drawer?"
+
+WES-2-CHOICE7  (Chapter "The Seed Library" (your choice))
+"It's a thing. I'm making it a thing."
+
+WES-3-CHOICE6  (Chapter "Harvest Moon Porch" (your choice))
+"Thank you for trusting me with it."
+
+WES-3-CHOICE7  (Chapter "Harvest Moon Porch" (your choice))
+"It's our farm, really."
+
+
+==== Talking with Bree ====
+
+BREE-Q1-ANSWER1  (Your answer to Bree)
+"Tart. They have personality."
+
+BREE-Q1-ANSWER2  (Your answer to Bree)
+"Sweet, always."
+
+BREE-Q1-ANSWER3  (Your answer to Bree)
+"Whatever's in jam."
+
+BREE-1-CHOICE6  (Chapter "Berry Stained" (your choice))
+"Can I help with the brambles sometime?"
+
+BREE-3-CHOICE6  (Chapter "Stars on the Dock" (your choice))
+"I wished for a friend like you, too."
+
+
+==== Talking with Vi ====
+
+VI-Q1-ANSWER1  (Your answer to Vi)
+"Kindness."
+
+VI-Q1-ANSWER2  (Your answer to Vi)
+"Adventure."
+
+VI-Q1-ANSWER3  (Your answer to Vi)
+"Snacks."
+
+VI-1-L3  (Chapter "A Flower for a Story")
+"I moved here to grow things, I guess."
+
+VI-1-CHOICE6  (Chapter "A Flower for a Story" (your choice))
+"Can I hear one of your stories?"
+
+VI-1-CHOICE7  (Chapter "A Flower for a Story" (your choice))
+"What do lilacs mean?"
+
+VI-2-CHOICE6  (Chapter "The Pressed Flower Book" (your choice))
+"You should press something too."
+
+VI-3-CHOICE6  (Chapter "The Poem on the Hill" (your choice))
+"That was beautiful, Vi."
+
+VI-3-CHOICE7  (Chapter "The Poem on the Hill" (your choice))
+"Will you write another one?"
+
+
+==== Goodnight lines ====
+
+FARMER-BEDTIME-1  (Goodnight line at the end of the day)
+"Whew… what a day. The bunnies are all tucked in, so I should be too."
+
+FARMER-BEDTIME-2  (Goodnight line at the end of the day)
+"The moon's up and my boots are muddy. Time for bed. Tomorrow's crops won't plant themselves!"
+
+FARMER-BEDTIME-3  (Goodnight line at the end of the day)
+"I can barely keep my eyes open. Goodnight, meadow. Goodnight, bunnies."
+
+FARMER-BEDTIME-4  (Goodnight line at the end of the day)
+"Another cozy day in the books. Bed sounds perfect right now."
+
+FARMER-BEDTIME-5  (Goodnight line at the end of the day)
+"The fireflies are out. That means it's way past my bedtime…"
+
+FARMER-BEDTIME-6  (Goodnight line at the end of the day)
+"I think I hear the bunnies snoring. Okay, I'm going, I'm going. Night!"

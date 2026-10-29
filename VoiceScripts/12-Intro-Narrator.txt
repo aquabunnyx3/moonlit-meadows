@@ -1,0 +1,32 @@
+VOICE SCRIPT: Narrator (opening story)
+
+Please create voice lines for a cozy, pastel pixel-art farming game called Moonlit Meadows.
+
+CHARACTER: Describes scenes in story chapters and moments.
+VOICE: Warm, gentle storyteller, like a cozy bedtime story. Calm, soft, unhurried, a little smile in the voice. Gender-neutral or a soft female voice.
+
+RULES:
+- Read only the text in quotes. Do not read the ID or the note.
+- Make one separate audio clip per line, and name each file with its ID (for example INTRO-1-N.mp3).
+- Keep the same voice for every line. Cozy and natural, no background music or effects.
+- "…" means a soft pause.
+- Lines like ==== Everyday chat ==== are section titles. Do not read them.
+
+LINES:
+
+==== Opening story ====
+
+INTRO-1-N  (Intro scene 1: the letter)
+"A letter arrived on a rainy evening… with a key, and a sprig of lavender."
+
+INTRO-2-N  (Intro scene 2: the road)
+"It led down a winding road, far from the city."
+
+INTRO-3-N  (Intro scene 3: the gate)
+"At the garden gate, someone was waiting with a lantern."
+
+INTRO-5-N  (Intro scene 5: the bunnies)
+"And two little friends hopped over to say hello."
+
+INTRO-6-N  (Intro scene 6: the moon (last line of the intro))
+"Welcome home to Moonlit Meadows."

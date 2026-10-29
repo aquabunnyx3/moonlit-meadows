@@ -1,0 +1,230 @@
+VOICE SCRIPT: Narrator (part 2 of 4)
+
+Please create voice lines for a cozy, pastel pixel-art farming game called Moonlit Meadows.
+
+CHARACTER: Describes scenes in story chapters and moments.
+VOICE: Warm, gentle storyteller, like a cozy bedtime story. Calm, soft, unhurried, a little smile in the voice. Gender-neutral or a soft female voice.
+
+RULES:
+- Read only the text in quotes. Do not read the ID or the note.
+- Make one separate audio clip per line, and name each file with its ID (for example JUNE-ACT1-FRIEND-N.mp3).
+- Keep the same voice for every line. Cozy and natural, no background music or effects.
+- "…" means a soft pause.
+- Lines like ==== Everyday chat ==== are section titles. Do not read them.
+
+LINES:
+
+==== Scenes with Theo ====
+
+THEO-Q2-REPLY1-N  (Theo reacts)
+"Theo is quiet a long time."
+
+THEO-ACT1-FRIEND-N  (Theo activity: Stargazing (friend))
+"Theo shows you Cassiopeia."
+
+THEO-ACT1-DATE-N  (Theo activity: Stargazing (date))
+"Theo adjusts the telescope for you, then forgets to step back. Neither of you mentions it."
+
+THEO-ACT2-FRIEND-N  (Theo activity: Comet watch (friend))
+"No comet tonight. Theo says that's statistically likely. You both stay out anyway."
+
+THEO-ACT2-DATE-N  (Theo activity: Comet watch (date))
+"A shooting star crosses the sky. Theo doesn't look at it. He's looking at you."
+
+THEO-ACT3-FRIEND-N  (Theo activity: Fix the telescope (friend))
+"You hand Theo tiny screwdrivers for an hour. He says you're the best assistant he's ever had. You're the only one."
+
+THEO-ACT3-DATE-N  (Theo activity: Fix the telescope (date))
+"Theo teaches you to calibrate the lens, his hands over yours. … he says. His voice isn't."
+
+THEO-FAVORITEBUNNYREACTION-N  (Theo: favorite bunny reaction)
+"Theo goes very still. … He kneels and this little one hops right into his hands. … He clears his throat."
+
+THEO-BUNNYREACTION-N  (Theo: bunny reaction)
+"Theo holds this little one like a delicate instrument."
+
+THEO-SHOWFAVORITEREACTION-N  (Theo: show favorite reaction)
+"Theo pulls his hood forward, trying not to grin."
+
+THEO-1-L1  (Chapter "The Observatory")
+"You climb the hill at dusk and find Theo fighting a very old telescope."
+
+THEO-1-L4  (Chapter "The Observatory")
+"Through the lens, Saturn's rings are impossibly tiny and perfect. Theo watches you instead of the planet."
+
+THEO-1-RESP7-N  (Chapter "The Observatory")
+"Theo looks away fast."
+
+THEO-2-L1  (Chapter "Nonno's Chair")
+"There are two chairs in the observatory. Theo always sits in the left one."
+
+THEO-2-L4  (Chapter "Nonno's Chair")
+"You sit. The stars feel closer. Theo tells you about the night Nonno taught him Orion."
+
+THEO-2-RESP7-N  (Chapter "Nonno's Chair")
+"Theo talks until the moon sets. He smiles more than you've ever seen."
+
+THEO-2-RESP8-N  (Chapter "Nonno's Chair")
+"After a long time, Theo whispers,"
+
+THEO-3-L1  (Chapter "The Brightest Star")
+"A meteor shower. Theo spreads a blanket on the hill and you count shooting stars."
+
+THEO-3-L3  (Chapter "The Brightest Star")
+"Then, quieter:"
+
+THEO-3-CROSSROADS-ROMANCE-N  (Chapter "The Brightest Star")
+"Theo laughs softly, disbelieving."
+
+THEO-3-CROSSROADS-FRIEND-N  (Chapter "The Brightest Star")
+"Theo nods, and his smile is real."
+
+THEO-R4-L1  (Chapter "Constellation Lessons")
+"Theo is teaching you to find Lyra. His hand guides yours across the sky."
+
+THEO-R4-RESP5-N  (Chapter "Constellation Lessons")
+"Theo's breath fogs in the cold. … he whispers."
+
+THEO-R4-RESP6-N  (Chapter "Constellation Lessons")
+"He pauses."
+
+THEO-R5-L1  (Chapter "Picnic on the Moon")
+"Theo has strung tiny lights in the shape of a bunny constellation across the observatory dome."
+
+THEO-R5-RESP5-N  (Chapter "Picnic on the Moon")
+"Theo's hood slips back. Neither of you notices."
+
+THEO-R5-RESP6-N  (Chapter "Picnic on the Moon")
+"he says, a little smug."
+
+THEO-R6-L1  (Chapter "A Star With Your Name")
+"Theo hands you a framed certificate. A star, officially named after you. Below his signature is a second one: “& Nonno."
+
+THEO-R6-RESP5-N  (Chapter "A Star With Your Name")
+"he says, voice thick."
+
+THEO-R6-RESP6-N  (Chapter "A Star With Your Name")
+"Theo holds on like you're the only fixed point in the sky."
+
+THEO-F4-L1  (Chapter "Observatory Club")
+"Theo has made two membership badges: “Observatory Club, Est. This Year."
+
+THEO-F4-RESP5-N  (Chapter "Observatory Club")
+"He smiles."
+
+THEO-F4-RESP6-N  (Chapter "Observatory Club")
+"Theo salutes. He is trying very hard not to grin."
+
+THEO-F6-L1  (Chapter "Nonno's Chart")
+"Theo unrolls an old, hand-inked star chart across the observatory desk."
+
+THEO-F6-RESP5-N  (Chapter "Nonno's Chart")
+"Theo's eyes shine."
+
+
+==== Scenes with Kai ====
+
+KAI-Q1-REPLY1-N  (Kai reacts)
+"Kai's smile wobbles a bit."
+
+KAI-ACT1-FRIEND-N  (Kai activity: Build a birdhouse (friend))
+"Kai hits his thumb twice. The birdhouse is crooked. He declares it … You agree."
+
+KAI-ACT1-DATE-N  (Kai activity: Build a birdhouse (date))
+"Kai carves your initials and his into the birdhouse roof."
+
+KAI-ACT2-FRIEND-N  (Kai activity: Morning jog (friend))
+"Kai jogs backwards so he can talk to you. He trips over a bunny. Both are fine."
+
+KAI-ACT2-DATE-N  (Kai activity: Morning jog (date))
+"You race to the hill. Kai lets you win, then pretends he didn't. You both collapse laughing in the grass."
+
+KAI-ACT3-FRIEND-N  (Kai activity: Campfire (friend))
+"Kai burns the marshmallows on purpose. … It's called burning, Kai."
+
+KAI-ACT3-DATE-N  (Kai activity: Campfire (date))
+"Kai wraps his flannel around your shoulders by the fire. … You weren't. You keep it anyway."
+
+KAI-FAVORITEBUNNYREACTION-N  (Kai: favorite bunny reaction)
+"Kai's jaw drops. … this little one climbs straight up his overalls and sits on his shoulder. Kai laughs so hard he has to sit down."
+
+KAI-BUNNYREACTION-N  (Kai: bunny reaction)
+"Kai gives this little one a gentle scritch."
+
+KAI-1-L1  (Chapter "Helping Hands")
+"Your fence has a broken post. Before you can grab a hammer, Kai is already there."
+
+KAI-1-L3  (Chapter "Helping Hands")
+"He fixes it in ten minutes, then stays for lunch. You make stew. He's amazed."
+
+KAI-1-RESP6-N  (Chapter "Helping Hands")
+"Kai goes a little pink."
+
+KAI-2-L1  (Chapter "A Hutch for Everyone")
+"Kai shows you his woodshop. Every shelf is full of tiny hutches, birdhouses, and benches — all for other people."
+
+KAI-2-L4  (Chapter "A Hutch for Everyone")
+"He goes quiet, then shakes it off with a grin."
+
+KAI-2-RESP7-N  (Chapter "A Hutch for Everyone")
+"Kai's grin falters. Then, softly:"
+
+KAI-3-L1  (Chapter "Sunrise on the Hill")
+"Kai convinces you to climb the hill before dawn. He brings two thermoses and trips only once."
+
+KAI-3-L3  (Chapter "Sunrise on the Hill")
+"The sky goes pink, then gold."
+
+KAI-3-CROSSROADS-ROMANCE-N  (Chapter "Sunrise on the Hill")
+"Kai drops his thermos. It rolls all the way down the hill. Neither of you chases it."
+
+KAI-3-CROSSROADS-FRIEND-N  (Chapter "Sunrise on the Hill")
+"Kai laughs and tackles you into a hug."
+
+KAI-R4-L1  (Chapter "Measuring Twice")
+"Kai asks you to hold one end of a measuring tape. He keeps walking closer instead of measuring."
+
+KAI-R4-RESP5-N  (Chapter "Measuring Twice")
+"Kai laughs so hard he has to sit on a sawhorse. Then he kisses you."
+
+KAI-R4-RESP6-N  (Chapter "Measuring Twice")
+"Kai goes completely red."
+
+KAI-R5-L1  (Chapter "Porch Swing")
+"Kai leads you to your farm with his hands over your eyes. When he lets go, there's a porch swing — just big enough for two."
+
+KAI-R5-L3  (Chapter "Porch Swing")
+"You swing together until the stars come out."
+
+KAI-R5-RESP5-N  (Chapter "Porch Swing")
+"You can hear his heartbeat. It's going very fast."
+
+KAI-R5-RESP6-N  (Chapter "Porch Swing")
+"he says, like he's tasting a new word."
+
+KAI-R6-L1  (Chapter "The First Beam")
+"Kai shows you a clearing at the edge of the meadow. There's a single wooden beam set into the ground."
+
+KAI-R6-L3  (Chapter "The First Beam")
+"He hands you a heart carved from the same wood."
+
+KAI-R6-RESP6-N  (Chapter "The First Beam")
+"Kai whoops, lifts you off the ground, and spins you until you're both dizzy."
+
+KAI-R6-RESP7-N  (Chapter "The First Beam")
+"you say. Kai laughs, eyes wet."
+
+KAI-F4-L1  (Chapter "Partners")
+"Kai paints a sign for the woodshop: “KAI & FRIEND, BUILDERS.” Then he crosses out FRIEND and writes BEST FRIEND."
+
+KAI-F4-RESP5-N  (Chapter "Partners")
+"Kai makes an explosion sound. You both do."
+
+KAI-F6-L1  (Chapter "Matching Tool Belts")
+"Kai finishes his first house — for himself. He invites you to the housewarming. You're the only guest. You're the guest of honor."
+
+KAI-F6-RESP5-N  (Chapter "Matching Tool Belts")
+"Kai has to look at the ceiling for a second."
+
+KAI-F6-RESP6-N  (Chapter "Matching Tool Belts")
+"Kai yells."

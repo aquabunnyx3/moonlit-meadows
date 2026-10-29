@@ -125,10 +125,17 @@ struct ChatLayout {
         "kai-happy": rect(0.1665, 0.147, 0.3195, 0.4243),
         "kai-sad": rect(0.162, 0.1611, 0.324, 0.441),
         "kai-surprised": rect(0.1715, 0.147, 0.325, 0.4313),
+        "rowan-happy": rect(0.1592, 0.0122, 0.3413, 0.4323),
+        "rowan-sad": rect(0.1637, 0.02, 0.3442, 0.4366),
+        "rowan-surprised": rect(0.186, 0.0851, 0.3542, 0.4618),
         "roz-blush": rect(0.1319, 0.0512, 0.376, 0.4792),
         "roz-happy": rect(0.1314, 0.0399, 0.3646, 0.4792),
         "roz-sad": rect(0.1319, 0.0356, 0.3631, 0.4835),
         "roz-surprised": rect(0.125, 0.0234, 0.3497, 0.4774),
+        "silas-blush": rect(0.185, 0.1215, 0.3274, 0.388),
+        "silas-happy": rect(0.1999, 0.112, 0.311, 0.3681),
+        "silas-sad": rect(0.2059, 0.1241, 0.3244, 0.375),
+        "silas-surprised": rect(0.1994, 0.0972, 0.3145, 0.3681),
         "sol-blush": rect(0.2405, 0.1382, 0.376, 0.419),
         "sol-happy": rect(0.2135, 0.1417, 0.371, 0.4208),
         "sol-sad": rect(0.214, 0.1382, 0.373, 0.4199),
@@ -173,6 +180,8 @@ struct ChatLayout {
         "farmer-male-s0-hoodie": ChatLayout(tag: rect(0.0546, 0.7535, 0.2381, 0.8203), box: rect(0.0248, 0.8247, 0.9722, 0.9766), tagIsLight: false),
         "farmer-male-s1-hoodie": ChatLayout(tag: rect(0.0546, 0.7535, 0.2381, 0.8203), box: rect(0.0248, 0.8247, 0.9722, 0.9766), tagIsLight: false),
         "farmer-male-s2-hoodie": ChatLayout(tag: rect(0.0546, 0.7535, 0.2381, 0.8203), box: rect(0.0248, 0.8247, 0.9722, 0.9766), tagIsLight: false),
+        "rowan": ChatLayout(tag: rect(0.1414, 0.6901, 0.31, 0.7595), box: rect(0.1017, 0.7639, 0.8929, 0.9679), tagIsLight: true),
+        "silas": ChatLayout(tag: rect(0.1414, 0.6901, 0.31, 0.7595), box: rect(0.1017, 0.7639, 0.8929, 0.9679), tagIsLight: true),
         "generic": ChatLayout(tag: rect(0.15, 0.6954, 0.29, 0.7526), box: rect(0.1135, 0.7773, 0.888, 0.9489), tagIsLight: true),
     ]
 }
@@ -236,12 +245,16 @@ struct ChatFaceParts {
                      blinks: [.neutral], openMouth: []),
         "farmer-male-s2-hoodie": ChatFaceParts(eyes: rect(0.1984, 0.2951, 0.3423, 0.349), mouth: rect(0.2282, 0.4297, 0.3175, 0.4991),
                      blinks: [.neutral, .happy, .sad, .surprised, .blush], openMouth: [.surprised, .happy]),
+        "silas": ChatFaceParts(eyes: rect(0.2059, 0.2031, 0.3051, 0.2431), mouth: rect(0.2292, 0.2899, 0.2867, 0.3385),
+                     blinks: [.neutral, .sad, .surprised, .blush], openMouth: [.surprised, .happy]),
+        "rowan": ChatFaceParts(eyes: rect(0.1895, 0.2483, 0.3051, 0.2891), mouth: rect(0.2207, 0.3472, 0.2902, 0.3906),
+                     blinks: [.neutral, .happy, .sad, .surprised], openMouth: [.surprised, .happy]),
     ]
 
     /// Talk blip pitch per speaker (1 is the recorded pitch).
     static let blipPitch: [String: Float] = [
         "june": 1.15, "roz": 1.3, "theo": 0.8, "kai": 0.95, "sol": 1.05,
-        "wes": 0.7, "bree": 1.4, "vi": 1.1, "farmer": 1.0, "narrator": 0.9,
+        "wes": 0.7, "bree": 1.4, "vi": 1.1, "rowan": 0.75, "silas": 0.85, "farmer": 1.0, "narrator": 0.9,
     ]
 
     private static var loggedMissing: Set<String> = []

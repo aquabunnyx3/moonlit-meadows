@@ -1,0 +1,158 @@
+VOICE SCRIPT: Wes (Wesley Barlow)
+
+Please create voice lines for a cozy, pastel pixel-art farming game called Moonlit Meadows.
+
+CHARACTER: he/him, man, about 60, retired farmer and seed keeper at the Old Mill. Green cap, brown overalls.
+VOICE: Older man, steady and unhurried, slightly gravelly but soft. Dry wit, uses few words, a gentle country warmth. Never rushed.
+
+RULES:
+- Read only the text in quotes. Do not read the ID or the note.
+- Make one separate audio clip per line, and name each file with its ID (for example WES-DAILY-EARLY-1.mp3).
+- Keep the same voice for every line. Cozy and natural, no background music or effects.
+- "…" means a soft pause.
+- Lines like ==== Everyday chat ==== are section titles. Do not read them.
+
+LINES:
+
+==== Everyday chat ====
+
+WES-DAILY-EARLY-1  (Daily (stranger / acquaintance))
+"Mornin'. Soil's looking better than it did in my day. Don't let it go to your head."
+
+WES-DAILY-EARLY-2  (Daily (stranger / acquaintance))
+"Plant your carrots a finger apart. They like elbow room, same as people."
+
+WES-DAILY-EARLY-3  (Daily (stranger / acquaintance))
+"The bunnies used to steal my lettuce too. Just plant extra. That's the whole secret."
+
+WES-DAILY-FRIEND-1  (Daily (friend / close friend))
+"Saved you a packet of my grandmother's pumpkin seeds. Don't make a fuss about it."
+
+WES-DAILY-FRIEND-2  (Daily (friend / close friend))
+"I was worried about handing this place over. I'm not worried anymore."
+
+WES-DAILY-FRIEND-3  (Daily (friend / close friend))
+"Come by the mill sometime. I'll put the kettle on. Probably burn the toast."
+
+WES-DAILY-ROMANCE-1  (Daily (romance))
+"You've made this old farm feel young again. That's no small thing."
+
+WES-DAILY-ROMANCE-2  (Daily (romance))
+"Glad you're here. I mean that."
+
+WES-DAILY-ROMANCE-3  (Daily (romance))
+"Best neighbor I ever had. And I've had a lot of neighbors."
+
+WES-DAILY-BESTIE-1  (Daily (best friend))
+"You've made this old farm feel young again. That's no small thing."
+
+WES-DAILY-BESTIE-2  (Daily (best friend))
+"Glad you're here. I mean that."
+
+WES-DAILY-BESTIE-3  (Daily (best friend))
+"Best neighbor I ever had. And I've had a lot of neighbors."
+
+
+==== Question 1 ====
+
+WES-Q1  (Asks you a question)
+"What's the best part of farming, you reckon?"
+
+WES-Q1-REPLY1  (Reply to your answer)
+"That's it. That's the whole of it."
+
+WES-Q1-REPLY2  (Reply to your answer)
+"Can't argue. Nothing like a full basket."
+
+WES-Q1-REPLY3  (Reply to your answer)
+"Can't argue with that either."
+
+
+==== Activity 1 ====
+
+WES-ACT1-DATE  (Activity "Seed sorting" (date))
+"Heirloom, Means it's worth keeping."
+
+
+==== Activity 2 ====
+
+WES-ACT2-FRIEND  (Activity "Read the sky" (friend))
+"Rain by supper."
+
+
+==== Activity 3 ====
+
+WES-ACT3-DATE  (Activity "Fix the fence" (date))
+"So the land remembers both of us."
+
+
+==== Gift and bunny reactions ====
+
+WES-FAVORITEBUNNYREACTION  (favorite bunny reaction)
+"Well, I'll be. A bunny. Thirty years I tried to find one of these. Thank you, friend."
+
+WES-BUNNYREACTION  (bunny reaction)
+"Welcome to the mill. Mind the flour."
+
+WES-SHOWFAVORITEREACTION  (show favorite reaction)
+"Is that a bunny? Haven't seen one since I was a boy."
+
+WES-LOVEDGIFTREACTION  (loved gift reaction)
+"Now that's a proper gift."
+
+WES-LIKEDGIFTREACTION  (liked gift reaction)
+"Good stuff. Thank you."
+
+WES-NEUTRALGIFTREACTION  (neutral gift reaction)
+"Appreciate it."
+
+WES-DISLIKEDGIFTREACTION  (disliked gift reaction)
+"Ah. That's… colorful. Thank you anyway."
+
+
+==== Story chapter 1 ====
+
+WES-1-L2  (Chapter "The Old Farmer")
+"Don't mind me. Habit. I farmed this land for thirty years."
+
+WES-1-L3  (Chapter "The Old Farmer")
+"You're doing all right. Better than all right. Here — the first seeds I ever saved off this field. They belong here."
+
+WES-1-RESP5  (Chapter "The Old Farmer" (reply to your choice))
+"That'd take thirty years. We'll start Tuesday."
+
+WES-1-RESP6  (Chapter "The Old Farmer" (reply to your choice))
+"I know you will. That's why I'm not worried."
+
+
+==== Story chapter 2 ====
+
+WES-2-L2  (Chapter "The Seed Library")
+"Every seed in here has a story. This one came over the mountains in my grandmother's coat pocket."
+
+WES-2-L3  (Chapter "The Seed Library")
+"I'm adding a drawer. For whatever you grow best."
+
+WES-2-L5  (Chapter "The Seed Library")
+"Don't make it a thing."
+
+WES-2-RESP8  (Chapter "The Seed Library" (reply to your choice))
+"Good handwriting. Better than mine."
+
+
+==== Story chapter 3 ====
+
+WES-3-L2  (Chapter "Harvest Moon Porch")
+"I almost sold the farm to a developer, you know. Before you came. Couldn't bring myself to."
+
+WES-3-L3  (Chapter "Harvest Moon Porch")
+"Glad I waited. Land knows who loves it."
+
+WES-3-L4  (Chapter "Harvest Moon Porch")
+"That old seed pouch I carried every season? It's yours now. Fill it with something good."
+
+WES-3-RESP6  (Chapter "Harvest Moon Porch" (reply to your choice))
+"Thank you for proving me right."
+
+WES-3-RESP7  (Chapter "Harvest Moon Porch" (reply to your choice))
+"…Yeah. I suppose it is."

@@ -1,0 +1,224 @@
+VOICE SCRIPT: Roz (Rosalind Okafor)
+
+Please create voice lines for a cozy, pastel pixel-art farming game called Moonlit Meadows.
+
+CHARACTER: she/her, woman, late 20s, baker at the Sweet Burrow. Brown hair in a bun, strawberry pin, cream overalls.
+VOICE: Bubbly, loud, warm young woman with a big easy laugh. Energetic and quick, confident and teasing, gives everyone nicknames. Sounds like she is smiling the whole time.
+
+RULES:
+- Read only the text in quotes. Do not read the ID or the note.
+- Make one separate audio clip per line, and name each file with its ID (for example ROZ-DAILY-EARLY-1.mp3).
+- Keep the same voice for every line. Cozy and natural, no background music or effects.
+- "…" means a soft pause.
+- Lines like ==== Everyday chat ==== are section titles. Do not read them.
+
+LINES:
+
+==== Everyday chat ====
+
+ROZ-DAILY-EARLY-1  (Daily (stranger / acquaintance))
+"Hey, new neighbor! Want a scone? That wasn't a question. Here's a scone."
+
+ROZ-DAILY-EARLY-2  (Daily (stranger / acquaintance))
+"Don't touch the sourdough starter. Her name is Beyoncé and she bites."
+
+ROZ-DAILY-EARLY-3  (Daily (stranger / acquaintance))
+"Six siblings and I still have the loudest laugh. It's a gift."
+
+ROZ-DAILY-FRIEND-1  (Daily (friend / close friend))
+"Sweet Pea! You're just in time to taste-test. Be honest. Actually, be nice."
+
+ROZ-DAILY-FRIEND-2  (Daily (friend / close friend))
+"Sometimes I sit in the bakery after closing and just… breathe. Is that weird?"
+
+ROZ-DAILY-FRIEND-3  (Daily (friend / close friend))
+"You know what? You're officially family. Sorry, no take-backs."
+
+ROZ-DAILY-ROMANCE-1  (Daily (romance))
+"I saved the last strawberry tart for you. I've never saved anything for anyone. Draw your own conclusions."
+
+ROZ-DAILY-ROMANCE-2  (Daily (romance))
+"You make me want to slow down. Nobody's ever made me want to slow down."
+
+ROZ-DAILY-ROMANCE-3  (Daily (romance))
+"Come by after closing? I'll make you something that's not on the menu."
+
+ROZ-DAILY-BESTIE-1  (Daily (best friend))
+"Bestie! I made you a cake shaped like your face. It's horrifying. You'll love it."
+
+ROZ-DAILY-BESTIE-2  (Daily (best friend))
+"If I ever open a second bakery, you're my business partner. Non-negotiable."
+
+ROZ-DAILY-BESTIE-3  (Daily (best friend))
+"My siblings keep asking about you. They think you're cooler than me. Rude. Accurate."
+
+
+==== Question 1 ====
+
+ROZ-Q1  (Asks you a question)
+"Settle a debate: cake or pie?"
+
+ROZ-Q1-REPLY1  (Reply to your answer)
+"YES. Finally, someone with taste!"
+
+ROZ-Q1-REPLY2  (Reply to your answer)
+"Okay, okay. Respectable. Wrong, but respectable."
+
+ROZ-Q1-REPLY3  (Reply to your answer)
+"…I'm going to pretend I didn't hear that."
+
+
+==== Question 2 ====
+
+ROZ-Q2  (Asks you a question)
+"Do you ever take a day off? Like, really off?"
+
+ROZ-Q2-REPLY1  (Reply to your answer)
+"A day off… with you? I could be talked into that."
+
+ROZ-Q2-REPLY2  (Reply to your answer)
+"Ugh, you sound like my mom. She's right too."
+
+ROZ-Q2-REPLY3  (Reply to your answer)
+"Ha! A kindred spirit. Though… maybe neither of us should."
+
+
+==== Activity 2 ====
+
+ROZ-ACT2-FRIEND  (Activity "Market stroll" (friend))
+"Sweet Pea."
+
+
+==== Activity 3 ====
+
+ROZ-ACT3-DATE  (Activity "Picnic" (date))
+"Is this okay?"
+
+
+==== Gift and bunny reactions ====
+
+ROZ-FAVORITEBUNNYREACTION  (favorite bunny reaction)
+"A bunny?! For ME? You're my new sous-chef. Your first job is being adorable. You're already great at it."
+
+ROZ-BUNNYREACTION  (bunny reaction)
+"Welcome to the bakery, little bun. No paws in the dough!"
+
+ROZ-SHOWFAVORITEREACTION  (show favorite reaction)
+"STOP. A bunny? That's my favorite in the whole world. Can I hold it? I'm holding it."
+
+ROZ-LOVEDGIFTREACTION  (loved gift reaction)
+"Are you kidding me? This is my favorite! C'mere, I'm hugging you."
+
+ROZ-LIKEDGIFTREACTION  (liked gift reaction)
+"Ooh, nice! This'll go in something delicious."
+
+ROZ-NEUTRALGIFTREACTION  (neutral gift reaction)
+"Aw, thanks, Sweet Pea!"
+
+ROZ-DISLIKEDGIFTREACTION  (disliked gift reaction)
+"Ha, you know I hate this! …Still, it's the thought that counts."
+
+ROZ-F4-L2  (Chapter "Bakery Besties")
+"Honorary employee. Lifetime position. Benefits include unlimited scones."
+
+ROZ-F4-L3  (Chapter "Bakery Besties")
+"Oh, and your bunnies get uniforms. Strawberry bows. They're mandatory."
+
+ROZ-F4-RESP5  (Chapter "Bakery Besties" (reply to your choice))
+"Ha! Welcome to the team!"
+
+ROZ-F4-RESP6  (Chapter "Bakery Besties" (reply to your choice))
+"Your raise is TWO scones."
+
+ROZ-F6-L3  (Chapter "Family Recipes")
+"Family recipes are for family. You're in the book now. No take-backs."
+
+ROZ-F6-RESP5  (Chapter "Family Recipes" (reply to your choice))
+"Pfft. You chose us first."
+
+
+==== Story chapter 1 ====
+
+ROZ-1-L2  (Chapter "Sweet Pea")
+"You! Taste this. No, this one. No, BOTH."
+
+ROZ-1-L3  (Chapter "Sweet Pea")
+"Okay, you've got good instincts. Here — my sunrise shortcake. Family recipe. Don't tell my grandma I shared it."
+
+ROZ-1-L4  (Chapter "Sweet Pea")
+"From now on you're Sweet Pea. That's not up for discussion."
+
+ROZ-1-RESP6  (Chapter "Sweet Pea" (reply to your choice))
+"I KNOW. But thank you for saying it."
+
+ROZ-1-RESP7  (Chapter "Sweet Pea" (reply to your choice))
+"It's a signature look."
+
+
+==== Story chapter 2 ====
+
+ROZ-2-L2  (Chapter "After Closing")
+"Don't look at me like that. I'm fine. I'm just… tired. I'm always tired."
+
+ROZ-2-L3  (Chapter "After Closing")
+"My whole life, someone needed feeding. I don't know how to stop."
+
+ROZ-2-L5  (Chapter "After Closing")
+"Thanks. Here — take this cake stand. You'll put it out and think of me. It's a trap. A sweet one."
+
+ROZ-2-RESP7  (Chapter "After Closing" (reply to your choice))
+"…Okay. Maybe. Yeah."
+
+ROZ-2-RESP8  (Chapter "After Closing" (reply to your choice))
+"Ugh. That's good. I'm stealing that."
+
+
+==== Story chapter 3 ====
+
+ROZ-3-L2  (Chapter "The Midnight Cake")
+"I wanted to make something with you. Not for a customer. Just for us."
+
+ROZ-3-L4  (Chapter "The Midnight Cake")
+"Sweet Pea… I don't know how to say this without a pastry metaphor. You make everything warmer. I made you an apron, by the way. It matches mine."
+
+ROZ-3-CROSSROADS-ROMANCE  (Chapter "The Midnight Cake" (romance answer))
+"Oh, thank goodness. Me too!"
+
+ROZ-3-CROSSROADS-FRIEND  (Chapter "The Midnight Cake" (friend answer))
+"Family. Yeah. Best family."
+
+
+==== Romance chapter 4 ====
+
+ROZ-R4-L2  (Chapter "Slow Morning")
+"My siblings think I've been replaced by a pod person. I took a MORNING OFF."
+
+ROZ-R4-L3  (Chapter "Slow Morning")
+"I made your bunnies little strawberry bows. Don't laugh. Okay, you can laugh."
+
+ROZ-R4-RESP5  (Chapter "Slow Morning" (reply to your choice))
+"I am. It's weird. I love it."
+
+ROZ-R4-RESP6  (Chapter "Slow Morning" (reply to your choice))
+"Doing nothing with you is my new favorite thing."
+
+
+==== Romance chapter 5 ====
+
+ROZ-R5-L2  (Chapter "A Table for Two")
+"I made a tasting menu. Twelve courses. All dessert. This is my love language, deal with it."
+
+ROZ-R5-L4  (Chapter "A Table for Two")
+"That one's just for decoration. It's us. Okay, it's a little bit us."
+
+ROZ-R5-RESP7  (Chapter "A Table for Two" (reply to your choice))
+"Better than the cake? Better than the cake. Wow."
+
+
+==== Romance chapter 6 ====
+
+ROZ-R6-L3  (Chapter "Recipe for Forever")
+"I'm not good at slow things. But I want to do the slowest thing with you: everything. Forever. Bake with me forever?"
+
+ROZ-R6-RESP6  (Chapter "Recipe for Forever" (reply to your choice))
+"…Is that a yes? That's a YES!"

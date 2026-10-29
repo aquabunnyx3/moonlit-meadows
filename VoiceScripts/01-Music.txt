@@ -1,0 +1,41 @@
+MUSIC REQUEST: Moonlit Meadows (cozy pastel pixel-art farming game)
+
+Please create calm, cozy, loopable background music. The game is soft pink, lavender and periwinkle pixel art: a moonlit cottage meadow full of bunnies, cherry-blossom trees, crops, and gentle villagers. The mood is safe, sweet, peaceful and a little magical, like Stardew Valley or Animal Crossing but softer.
+
+FOR EVERY TRACK:
+- Instrumental only, no vocals or lyrics.
+- Seamless loop: the end flows back into the start with no silence or fade.
+- 60 to 120 seconds long.
+- Soft and quiet enough to play under dialog. No loud drums, no sudden changes.
+- Name each file exactly as listed (for example music-day.mp3).
+
+TRACKS:
+
+1. music-menu (Main menu / title screen)
+   Gentle music box and soft piano, a dreamy lullaby with light twinkling chimes. Slow, about 70 BPM. Feels like opening a storybook under the moon.
+
+2. music-day (Daytime on the farm, the main background music)
+   Warm acoustic guitar, soft flute or recorder, light ukulele plucks and a soft glockenspiel. Relaxed and happy, about 85 BPM. Calm and cozy, gardening on a sunny spring afternoon.
+
+3. music-dusk (Evening, 5 to 8 PM)
+   Soft piano with warm strings and a little harp. Slower, about 75 BPM, golden-hour and wistful.
+
+4. music-night (Night on the farm)
+   Slow soft piano, airy synth pads, gentle chimes, very quiet crickets. About 60 BPM. Peaceful, starry, sleepy.
+
+5. music-home (Inside the cozy cottage)
+   Soft Rhodes or felt piano with light acoustic guitar, warm and close, like a cup of cocoa by the window. About 70 BPM.
+
+6. music-story (Story chapters and chatting with friends)
+   Light piano and pizzicato strings, sweet and gently playful. About 80 BPM.
+
+7. music-romance (Romantic chapters and dates)
+   Tender piano, soft strings and harp, warm and heartfelt but calm. About 65 BPM.
+
+8. music-sleep (Sleeping in bed, very short, can be 30 to 45 seconds)
+   A tiny lullaby on music box and soft pads, slowing down, very quiet.
+
+9. music-festival-spring, music-festival-summer, music-festival-autumn, music-festival-winter (Seasonal festivals, one each)
+   Spring: bright flute and plucked strings with blossoms in the air. Summer: sunny ukulele and marimba. Autumn: warm fiddle and acoustic guitar, harvest feel. Winter: sleigh-bell sparkles, celesta and soft strings. All cheerful but still gentle, about 95 BPM.
+
+Thank you!

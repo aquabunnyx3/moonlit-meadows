@@ -1,0 +1,224 @@
+VOICE SCRIPT: Kai
+
+Please create voice lines for a cozy, pastel pixel-art farming game called Moonlit Meadows.
+
+CHARACTER: he/him, man, mid-20s, carpenter and bunny-hutch builder. Teal bomber jacket, cargo pants.
+VOICE: Sunny, upbeat, sporty young man. Enthusiastic and friendly, a little clumsy, laughs at his own bad puns with total confidence. Warm mid-range voice.
+
+RULES:
+- Read only the text in quotes. Do not read the ID or the note.
+- Make one separate audio clip per line, and name each file with its ID (for example KAI-DAILY-EARLY-1.mp3).
+- Keep the same voice for every line. Cozy and natural, no background music or effects.
+- "…" means a soft pause.
+- Lines like ==== Everyday chat ==== are section titles. Do not read them.
+
+LINES:
+
+==== Everyday chat ====
+
+KAI-DAILY-EARLY-1  (Daily (stranger / acquaintance))
+"Hey! Need a hand? I've got two. Well — one and a half, I hit my thumb this morning."
+
+KAI-DAILY-EARLY-2  (Daily (stranger / acquaintance))
+"Why did the bunny join the band? It had a lot of hop-tential. …I'll see myself out."
+
+KAI-DAILY-EARLY-3  (Daily (stranger / acquaintance))
+"I'm building a hutch for the meadow bunnies. Wanna help? You can hold the nails!"
+
+KAI-DAILY-FRIEND-1  (Daily (friend / close friend))
+"You're always so busy helping everyone. Who helps you? …I volunteer."
+
+KAI-DAILY-FRIEND-2  (Daily (friend / close friend))
+"I never stayed anywhere long enough to have a best friend. I think I might have one now."
+
+KAI-DAILY-FRIEND-3  (Daily (friend / close friend))
+"Made you a little shelf. It's only a tiny bit wonky. Like me."
+
+KAI-DAILY-ROMANCE-1  (Daily (romance))
+"I've built a hundred homes in this meadow. You're the first person who's ever felt like one."
+
+KAI-DAILY-ROMANCE-2  (Daily (romance))
+"I'm usually good with my hands. Around you, I drop everything. Literally. Ask my hammer."
+
+KAI-DAILY-ROMANCE-3  (Daily (romance))
+"Wanna watch the sunrise tomorrow? I'll bring cocoa. And I'll try not to fall off the hill."
+
+KAI-DAILY-BESTIE-1  (Daily (best friend))
+"Partner! Ready for our next project? I'm thinking… a treehouse. For bunnies. Two stories."
+
+KAI-DAILY-BESTIE-2  (Daily (best friend))
+"You're the family I picked. That's a big deal for a guy like me."
+
+KAI-DAILY-BESTIE-3  (Daily (best friend))
+"I carved you a little bunny figure. It looks like a potato. It's a bunny. It's from the heart."
+
+
+==== Question 1 ====
+
+KAI-Q1  (Asks you a question)
+"What makes a place feel like home to you?"
+
+KAI-Q1-REPLY1  (Reply to your answer)
+"Yeah. Yeah, me too."
+
+KAI-Q1-REPLY2  (Reply to your answer)
+"Ha! Simple. Solid. I respect that."
+
+KAI-Q1-REPLY3  (Reply to your answer)
+"I used to say that too. I'm not sure I meant it."
+
+
+==== Question 2 ====
+
+KAI-Q2  (Asks you a question)
+"Be honest — are my puns funny?"
+
+KAI-Q2-REPLY1  (Reply to your answer)
+"That's the nicest thing anyone's ever said to me."
+
+KAI-Q2-REPLY2  (Reply to your answer)
+"I'll take some!"
+
+KAI-Q2-REPLY3  (Reply to your answer)
+"Never. But I respect the honesty."
+
+
+==== Activity 1 ====
+
+KAI-ACT1-FRIEND  (Activity "Build a birdhouse" (friend))
+"rustic."
+
+KAI-ACT1-DATE  (Activity "Build a birdhouse" (date))
+"So the birds know who built it."
+
+
+==== Activity 3 ====
+
+KAI-ACT3-FRIEND  (Activity "Campfire" (friend))
+"It's called caramelizing."
+
+KAI-ACT3-DATE  (Activity "Campfire" (date))
+"You looked cold."
+
+
+==== Gift and bunny reactions ====
+
+KAI-FAVORITEBUNNYREACTION  (favorite bunny reaction)
+"No way. A bunny? That's it. I'm building you the fanciest hutch in the meadow. Two floors. A balcony. Thank you, seriously."
+
+KAI-BUNNYREACTION  (bunny reaction)
+"Welcome to the crew, buddy. Hard hats optional."
+
+KAI-SHOWFAVORITEREACTION  (show favorite reaction)
+"Whoa, whoa! A bunny? Those are my favorite! Look at its little face!"
+
+KAI-LOVEDGIFTREACTION  (loved gift reaction)
+"Are you serious? This is my all-time favorite! You're the best!"
+
+KAI-LIKEDGIFTREACTION  (liked gift reaction)
+"Sweet, thanks! This'll fuel me through the whole afternoon."
+
+KAI-NEUTRALGIFTREACTION  (neutral gift reaction)
+"Oh, cool! Thanks!"
+
+KAI-DISLIKEDGIFTREACTION  (disliked gift reaction)
+"Ha, flowers make me sneeze. But that's really nice of you!"
+
+KAI-F4-L2  (Chapter "Partners")
+"Partners in crime! Well. Partners in carpentry. Less crime."
+
+KAI-F4-L3  (Chapter "Partners")
+"Your bunnies get hard hats. They're on the crew now."
+
+KAI-F4-RESP6  (Chapter "Partners" (reply to your choice))
+"Treehouse. For bunnies. Two stories. Maybe three."
+
+KAI-F6-L2  (Chapter "Matching Tool Belts")
+"I built a spare room. For you. For whenever. Because family has a room."
+
+KAI-F6-L3  (Chapter "Matching Tool Belts")
+"And these. Matching tool belts. Yours has a bunny patch. Partners forever."
+
+KAI-F6-RESP5  (Chapter "Matching Tool Belts" (reply to your choice))
+"Nobody's ever said that to me."
+
+KAI-F6-RESP6  (Chapter "Matching Tool Belts" (reply to your choice))
+"LOOK AT US, Unstoppable!"
+
+
+==== Story chapter 1 ====
+
+KAI-1-L2  (Chapter "Helping Hands")
+"Saw it on my jog! Don't worry, I've got it. Ow. I've got it."
+
+KAI-1-L4  (Chapter "Helping Hands")
+"Okay, you have to teach me — wait, here, I'll teach YOU my campfire stew. Trade secrets!"
+
+KAI-1-RESP6  (Chapter "Helping Hands" (reply to your choice))
+"Ha. Thanks. Nobody usually notices."
+
+KAI-1-RESP7  (Chapter "Helping Hands" (reply to your choice))
+"I know! I wanted to. That's the best kind."
+
+
+==== Story chapter 2 ====
+
+KAI-2-L3  (Chapter "A Hutch for Everyone")
+"Me? Nah. I never stayed anywhere long enough to need stuff."
+
+KAI-2-L5  (Chapter "A Hutch for Everyone")
+"Anyway! This one's for your bunnies. Two floors. Look at the little door!"
+
+KAI-2-RESP7  (Chapter "A Hutch for Everyone" (reply to your choice))
+"…Maybe I'm starting one."
+
+KAI-2-RESP8  (Chapter "A Hutch for Everyone" (reply to your choice))
+"RIGHT? It has a balcony!"
+
+
+==== Story chapter 3 ====
+
+KAI-3-L2  (Chapter "Sunrise on the Hill")
+"I've watched a hundred sunrises alone. Wanted to see one with someone who matters."
+
+KAI-3-L4  (Chapter "Sunrise on the Hill")
+"You matter a lot. Like — a lot a lot. Also I got you overalls. They match mine. That's not weird, right?"
+
+KAI-3-CROSSROADS-ROMANCE  (Chapter "Sunrise on the Hill" (romance answer))
+"You— really? Me?"
+
+KAI-3-CROSSROADS-FRIEND  (Chapter "Sunrise on the Hill" (friend answer))
+"Family! I have FAMILY! Okay, I'm gonna cry a little."
+
+
+==== Romance chapter 4 ====
+
+KAI-R4-L2  (Chapter "Measuring Twice")
+"Sorry. You're distracting. In a good way. In the best way."
+
+KAI-R4-L3  (Chapter "Measuring Twice")
+"I made tiny hard hats for your bunnies. Safety first, cuteness second. Actually, cuteness first."
+
+KAI-R4-RESP6  (Chapter "Measuring Twice" (reply to your choice))
+"You can't just DO that."
+
+
+==== Romance chapter 5 ====
+
+KAI-R5-L2  (Chapter "Porch Swing")
+"I carved bunnies on the arms. That one's yours. That one's mine. They're holding paws."
+
+KAI-R5-RESP6  (Chapter "Porch Swing" (reply to your choice))
+"For us,"
+
+
+==== Romance chapter 6 ====
+
+KAI-R6-L2  (Chapter "The First Beam")
+"First thing I've ever built for me. Well — for us. If you want. A house. Our house."
+
+KAI-R6-L4  (Chapter "The First Beam")
+"I never had a home. I think it was because I was waiting for you. I love you. Will you build a life with me?"
+
+KAI-R6-RESP7  (Chapter "The First Beam" (reply to your choice))
+"Steady, Steady. Yeah. With you, always."

@@ -340,6 +340,10 @@ struct Keepsake: Identifiable {
         Keepsake(id: "toolBelt", name: "Matching Tool Belt", emoji: "🧰", description: "“Partners need matching gear,” Kai said. Yours has a bunny patch."),
         Keepsake(id: "songForYou", name: "A Song For You", emoji: "🎼", description: "Sol's finished meadow song. The last verse has your name in it."),
         Keepsake(id: "friendshipBracelet", name: "Friendship Bracelet", emoji: "📿", description: "Sol wove it from scraps of every outfit they've made you."),
+        Keepsake(id: "starCharm", name: "Iron Star Charm", emoji: "⭐️", description: "Rowan's star charm, kept in the iron box he forged for every note you ever left him."),
+        Keepsake(id: "mendedLantern", name: "The Mended Lantern", emoji: "🏮", description: "Rowan's mother's forge lantern, every seam mended. “For whoever keeps others warm.”"),
+        Keepsake(id: "honeyDipper", name: "Golden Honey Dipper", emoji: "🍯", description: "Silas's grandfather's honey dipper, on a chain. Given the morning he asked you to share forty hives."),
+        Keepsake(id: "beeCharm", name: "Honeybee Charm", emoji: "🐝", description: "A single honeybee wing sealed in gold glass. “Bees remember the people who are kind to them. So do I.”"),
         Keepsake(id: "moonlitCrown", name: "Moonlit Crown", emoji: "👑", description: "Woven by every bunny in the meadow for the one who found them all."),
     ]
 }
@@ -409,7 +413,7 @@ struct Achievement: Identifiable {
         Achievement(id: "stage6", title: "Something Special", emoji: "💞", description: "Reach Dating or Kindred Spirit with someone.", metric: .bestStage, target: 6, rewards: [.gems(5)]),
         Achievement(id: "stage7", title: "Heart of the Meadow", emoji: "💖", description: "Reach Committed or Lifelong Friend with someone.", metric: .bestStage, target: 7, rewards: [.outfit("moonlitGown"), .gems(8)]),
         Achievement(id: "story1", title: "Happily Ever After", emoji: "📖", description: "Complete a character's storyline.", metric: .storylinesCompleted, target: 1, rewards: [.gems(5)]),
-        Achievement(id: "story5", title: "Beloved by All", emoji: "🏘️", description: "Complete all five storylines.", metric: .storylinesCompleted, target: 5, rewards: [.gems(20)]),
+        Achievement(id: "story5", title: "Beloved by All", emoji: "🏘️", description: "Complete five storylines.", metric: .storylinesCompleted, target: 5, rewards: [.gems(20)]),
         Achievement(id: "festival1", title: "Festival Goer", emoji: "🎉", description: "Complete a seasonal festival request.", metric: .festivalsJoined, target: 1, rewards: [.gems(2)]),
         Achievement(id: "festival4", title: "All Seasons", emoji: "🗓️", description: "Complete 4 festival requests.", metric: .festivalsJoined, target: 4, rewards: [.gems(8)]),
     ]

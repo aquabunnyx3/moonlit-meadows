@@ -53,7 +53,7 @@ struct StoryEvent: Identifiable {
         all.filter { $0.personID == personID }
     }
 
-    static let all: [StoryEvent] = juneEvents + rozEvents + theoEvents + kaiEvents + solEvents + villagerEvents
+    static let all: [StoryEvent] = juneEvents + rozEvents + theoEvents + kaiEvents + solEvents + rowanEvents + silasEvents + villagerEvents
 }
 
 private func n(_ text: String) -> StoryLine { StoryLine(speaker: .narrator, text: text) }
@@ -446,4 +446,151 @@ private let solEvents: [StoryEvent] = [
         StoryOption(text: "“Forever's a rhyme with forever.”", response: "“It counts!” Sol laughs, eyes shiny.", points: 20),
         StoryOption(text: "Make them one back.", response: "You fumble a messy knot. Sol wears it every single day.", points: 20),
     ]), rewards: [.keepsake("friendshipBracelet"), .gems(10)], isFinale: true),
+]
+
+// MARK: - Rowan
+
+private let rowanEvents: [StoryEvent] = [
+    StoryEvent(id: "rowan-1", personID: "rowan", title: "The Quiet Forge", stage: .acquaintance, path: .any, lines: [
+        n("Your hoe snaps in half. A neighbor points you to the stone forge with the smoking chimney."),
+        p("Hm. Bad steel. Not your fault."),
+        n("Rowan fixes it while you wait. He doesn't make small talk. Somehow, it isn't awkward."),
+        p("Here. Should outlast us both. And take this. A recipe. My mother's. Too hearty for one person."),
+    ], choice: StoryChoice(prompt: "Rowan wipes his hands on his apron.", options: [
+        StoryOption(text: "“Thank you. Really.”", response: "Rowan nods once. Later, you see him tuck your thank-you into his apron pocket like something precious.", points: 10),
+        StoryOption(text: "“Can I watch you work sometime?”", response: "A pause. “…If you mind the sparks.”", points: 10),
+    ]), rewards: [.recipe("emberBake")]),
+    StoryEvent(id: "rowan-2", personID: "rowan", title: "The Tin of Notes", stage: .friend, path: .any, lines: [
+        n("You drop by to return a borrowed trowel. Rowan isn't home, but his door is open, and a dented tin has tipped over by the bed."),
+        n("It's full of notes. Thank-yous, hundreds of them. Some are years old. One is yours."),
+        p("…Ah. You found that."),
+        p("People say thank you and forget. I don't. Seemed wrong to throw them out."),
+    ], choice: StoryChoice(prompt: "Rowan is very carefully not looking at you.", options: [
+        StoryOption(text: "Help him gather them up.", response: "You work in silence. When you're done, he lets out a breath. “Thanks. That's going in the tin too.”", points: 10),
+        StoryOption(text: "“That might be the sweetest thing I've ever seen.”", response: "Rowan turns the color of his hair. “Don't tell anyone.”", points: 10),
+    ]), rewards: [.hint("cometBunny"), .coins(150)]),
+    StoryEvent(id: "rowan-3", personID: "rowan", title: "Iron and Starlight", stage: .closeFriend, path: .any, lines: [
+        n("Rowan asks you to meet him on the forge roof after dark. The stone is still warm from the fire."),
+        p("Made something. Took me a month. Kept getting it wrong."),
+        n("It's a little iron star, polished until it shines like the real ones overhead."),
+        p("I'm no good at saying things. So. This is me saying it."),
+    ], choice: crossroads("rowan",
+        confess: "“Rowan, I think I'm falling for you.”",
+        friends: "“You're my closest friend, Rowan. I mean that.”",
+        romanceReply: "Rowan is quiet for so long you start to worry. Then he laughs, low and astonished. “Good. That's good. I was hoping.”",
+        friendReply: "Rowan nods, and his shoulders ease. “Good. Then it'll last. The best things do.”"),
+    rewards: [.gems(5)], isCrossroads: true),
+    StoryEvent(id: "rowan-r4", personID: "rowan", title: "Two Hammers", stage: .romanticInterest, path: .romance, lines: [
+        n("Rowan sets a second hammer beside his own at the anvil. It's smaller, balanced for your hand."),
+        p("Made it for you. So you can work next to me. If you want."),
+        p("…I want."),
+    ], choice: StoryChoice(prompt: "Rowan is waiting, very still.", options: [
+        StoryOption(text: "Pick up the hammer.", response: "You strike together. The ring of it fills the whole forge. Rowan grins like a boy.", points: 15),
+        StoryOption(text: "Kiss his sooty cheek.", response: "Rowan drops his hammer. On his foot. He doesn't seem to mind at all.", points: 10),
+    ]), rewards: [.gems(5)]),
+    StoryEvent(id: "rowan-r5", personID: "rowan", title: "Forge a Star Charm", stage: .dating, path: .romance, lines: [
+        n("Rowan teaches you to forge a star charm, his hands steady over yours."),
+        p("Slow. Let the metal tell you when it's ready. …You're a natural."),
+        n("You make two. He hangs one on your bag and one on his apron."),
+    ], choice: StoryChoice(prompt: "Two little stars cool on the anvil.", options: [
+        StoryOption(text: "“Now we match.”", response: "“We match,” he agrees, and he doesn't stop smiling for an hour.", points: 15),
+        StoryOption(text: "Lean against his shoulder.", response: "Rowan's arm settles around you, warm as the forge. “Stay.”", points: 10),
+    ]), rewards: [.coins(300)]),
+    StoryEvent(id: "rowan-r6", personID: "rowan", title: "Made to Last", stage: .committed, path: .romance, lines: [
+        n("Rowan brings you to the forge at dawn. The fire is already lit. On the anvil sits a small iron box."),
+        p("I keep every thank-you anyone gives me. You've given me more than anyone. So I made you something to keep yours in."),
+        n("Inside, on a scrap of velvet, is a star charm on a chain, and every note you ever left him."),
+        p("Everything I make, I make to last. I want us to last. Will you stay with me? Always?"),
+    ], choice: StoryChoice(prompt: "Rowan's hands are steady. His voice isn't.", options: [
+        StoryOption(text: "“Always.”", response: "Rowan pulls you close and holds on like he's never letting go. He isn't.", points: 20),
+        StoryOption(text: "Put the charm on.", response: "Rowan fastens it at your neck, gentle as anything. “There. Now it's finished.”", points: 20),
+    ]), rewards: [.keepsake("starCharm"), .gems(10)], isFinale: true),
+    StoryEvent(id: "rowan-f4", personID: "rowan", title: "Apprentice", stage: .romanticInterest, path: .friendship, lines: [
+        n("Rowan paints a new sign over the forge door: CALLOWAY & FRIEND, SMITHS. He made the FRIEND part bigger."),
+        p("Every forge needs two. One to hammer, and one to tell the first one to eat lunch."),
+    ], choice: StoryChoice(prompt: "Rowan hands you an apron with your name stitched on it.", options: [
+        StoryOption(text: "Put it on.", response: "“Suits you,” Rowan says. From him, that's a speech.", points: 15),
+        StoryOption(text: "“So I'm the lunch one?”", response: "A rare laugh. “You're the important one.”", points: 10),
+    ]), rewards: [.gems(5)]),
+    StoryEvent(id: "rowan-f6", personID: "rowan", title: "The Mended Lantern", stage: .committed, path: .friendship, lines: [
+        n("Rowan gives you his mother's old lantern, the one that hung in her forge for forty years. He's mended every seam."),
+        p("She said a light should go to whoever keeps others warm. That's you."),
+        p("Friends like you are rare. I'm keeping you."),
+    ], choice: StoryChoice(prompt: "The lantern glows warm in your hands.", options: [
+        StoryOption(text: "“I'll keep it lit.”", response: "Rowan nods, eyes bright. “I know you will.”", points: 20),
+        StoryOption(text: "Hug him.", response: "Rowan stiffens for a second, then hugs back like he's been waiting years. Maybe he has.", points: 20),
+    ]), rewards: [.keepsake("mendedLantern"), .gems(10)], isFinale: true),
+]
+
+// MARK: - Silas
+
+private let silasEvents: [StoryEvent] = [
+    StoryEvent(id: "silas-1", personID: "silas", title: "Telling the Bees", stage: .acquaintance, path: .any, lines: [
+        n("You find a stranger sitting by your sunflowers, talking softly to a bee on his knuckle."),
+        p("Oh, hello. Sorry. She wandered over from my hives. She wanted to see your flowers."),
+        n("He introduces himself as Silas, the beekeeper, and leaves a jar of honey on your step."),
+        p("There's a cake my grandfather used to make with that. I'll write it down for you."),
+    ], choice: StoryChoice(prompt: "The bee hums on Silas's hand.", options: [
+        StoryOption(text: "“She has good taste in flowers.”", response: "Silas laughs, warm and low. “She does. So do you.”", points: 10),
+        StoryOption(text: "Offer him a seat.", response: "He takes it, and stays for an hour, and it feels like ten minutes.", points: 10),
+    ]), rewards: [.recipe("honeyCake")]),
+    StoryEvent(id: "silas-2", personID: "silas", title: "A Hard Day", stage: .friend, path: .any, lines: [
+        n("It's been one of those days. Without quite meaning to, you end up at the apiary."),
+        p("Ah. Come in. Kettle's on. You don't have to say anything."),
+        n("He pours tea and lets you sit. Outside, the bees hum like a lullaby."),
+        p("My grandfather said the bees know when someone's sad. Look. They've all come out to keep you company."),
+    ], choice: StoryChoice(prompt: "Silas sets a slice of honey cake in front of you.", options: [
+        StoryOption(text: "“How did you know I needed this?”", response: "“You walked in like a rain cloud,” he says gently. “Rainy days need cake.”", points: 10),
+        StoryOption(text: "“Thank you, Silas.”", response: "He just smiles. “Anytime. I mean that. Anytime.”", points: 10),
+    ]), rewards: [.hint("honeybunBunny"), .coins(150)]),
+    StoryEvent(id: "silas-3", personID: "silas", title: "The Honey Moon", stage: .closeFriend, path: .any, lines: [
+        n("Silas invites you to the harvest on the night of the full moon, when the hives are calm and the honey runs gold."),
+        p("My grandfather called this the honey moon. He said it's the night you tell the bees what matters most."),
+        n("He takes off his hat and turns to the hives."),
+        p("I'm telling them about you. I hope that's all right."),
+    ], choice: crossroads("silas",
+        confess: "“Tell them I'm falling for you, Silas.”",
+        friends: "“Tell them you've got a best friend for life.”",
+        romanceReply: "Silas's breath catches. Then he smiles, slow as a sunrise. “Did you hear that?” he whispers to the hives. “They're humming.”",
+        friendReply: "Silas laughs, soft and glad. “They heard. I think they've always known.”"),
+    rewards: [.gems(5)], isCrossroads: true),
+    StoryEvent(id: "silas-r4", personID: "silas", title: "Borrowed Veil", stage: .romanticInterest, path: .romance, lines: [
+        n("Silas helps you into a beekeeper's veil, tying the strings with careful fingers."),
+        p("There. Safe. …You look nice in a veil. That came out strange. I meant it."),
+    ], choice: StoryChoice(prompt: "A bee lands on Silas's shoulder, perfectly calm.", options: [
+        StoryOption(text: "Lift the veil and kiss him.", response: "The bees hum louder. Silas swears it's a coincidence. He's smiling too hard to be convincing.", points: 15),
+        StoryOption(text: "“You look nice too.”", response: "Silas ducks his head, delighted. “I'll wear the hat more often, then.”", points: 10),
+    ]), rewards: [.gems(5)]),
+    StoryEvent(id: "silas-r5", personID: "silas", title: "Honey Tasting", stage: .dating, path: .romance, lines: [
+        n("Silas sets out a row of tiny jars under the lanterns. Clover, lavender, sunflower, and one with no label."),
+        p("This last one is moonflower. I only ever made one jar. I've been saving it for something special."),
+        p("…For someone special."),
+    ], choice: StoryChoice(prompt: "Silas holds out a little honey spoon.", options: [
+        StoryOption(text: "Taste it.", response: "It tastes like summer evenings. Silas watches you like you're the sweet thing.", points: 15),
+        StoryOption(text: "“Share it with me?”", response: "You share the spoon, laughing, and somehow end up sharing a kiss too.", points: 10),
+    ]), rewards: [.coins(300)]),
+    StoryEvent(id: "silas-r6", personID: "silas", title: "Forty Hives and One Home", stage: .committed, path: .romance, lines: [
+        n("At dawn, Silas leads you to the apiary. Among the white hives stands a new one, painted with sunflowers and your name."),
+        p("My grandfather said you build a hive for the people you plan to grow old beside."),
+        n("He hands you his grandfather's golden honey dipper on a chain."),
+        p("I'd like to grow old beside you. Slowly. Sweetly. Will you share a home with me, and forty hives?"),
+    ], choice: StoryChoice(prompt: "Silas's eyes are bright with tears and morning sun.", options: [
+        StoryOption(text: "“Yes. Every slow, sweet day.”", response: "Silas laughs through his tears and pulls you close. All forty hives hum at once.", points: 20),
+        StoryOption(text: "Tell the bees yourself.", response: "You turn to the hives. “I'm staying,” you tell them. Silas has to sit down, overwhelmed with joy.", points: 20),
+    ]), rewards: [.keepsake("honeyDipper"), .gems(10)], isFinale: true),
+    StoryEvent(id: "silas-f4", personID: "silas", title: "Kettle Company", stage: .romanticInterest, path: .friendship, lines: [
+        n("Silas hangs a second mug by the apiary door. It has a little bee painted on it, slightly crooked."),
+        p("For you. So you never have to ask if the kettle's on. It always is."),
+    ], choice: StoryChoice(prompt: "Silas pours your tea into the new mug.", options: [
+        StoryOption(text: "“Best mug I own.”", response: "“It's the only mug you own here,” he says, delighted. “Best by default.”", points: 15),
+        StoryOption(text: "Paint a bee on his mug too.", response: "Yours is worse. Silas declares it his favorite thing in the house.", points: 10),
+    ]), rewards: [.gems(5)]),
+    StoryEvent(id: "silas-f6", personID: "silas", title: "The Bees Remember", stage: .committed, path: .friendship, lines: [
+        n("Silas gives you a little glass charm with a single honeybee wing inside, sealed in gold."),
+        p("Bees remember the people who are kind to them. So do I. This is so you'll remember too."),
+        p("Whatever happens, you'll always have a seat at my table and a spoon in my honey."),
+    ], choice: StoryChoice(prompt: "The bees drift lazily around you both.", options: [
+        StoryOption(text: "“I'll remember. Always.”", response: "Silas squeezes your hand. “I know. That's why I chose you.”", points: 20),
+        StoryOption(text: "Hug him tight.", response: "Silas hugs like he does everything: slowly, warmly, and completely.", points: 20),
+    ]), rewards: [.keepsake("beeCharm"), .gems(10)], isFinale: true),
 ]

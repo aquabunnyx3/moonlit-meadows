@@ -1,0 +1,269 @@
+VOICE SCRIPT: Narrator (scenes with Rowan and Silas)
+
+Please create voice lines for a cozy, pastel pixel-art farming game called Moonlit Meadows.
+
+CHARACTER: Describes scenes in story chapters and moments. Same narrator voice as the 11-Narrator files.
+VOICE: Warm, gentle storyteller, like a cozy bedtime story. Calm, soft, unhurried, a little smile in the voice.
+
+RULES:
+- Read only the text in quotes. Do not read the ID or the note.
+- Make one separate audio clip per line, and name each file with its ID (for example ROWAN-ACT1-FRIEND-N.mp3).
+- Keep the same voice for every line. Cozy and natural, no background music or effects.
+- "…" means a soft pause.
+- Lines like ==== Everyday chat ==== are section titles. Do not read them.
+
+LINES:
+
+==== Scenes with Rowan ====
+
+ROWAN-Q1-REPLY1-N  (Rowan reacts)
+"Rowan nods slowly."
+
+ROWAN-Q1-REPLY2-N  (Rowan reacts)
+"A short laugh, surprised out of him."
+
+ROWAN-Q2-REPLY1-N  (Rowan reacts)
+"Rowan goes a little pink."
+
+ROWAN-ACT1-FRIEND-N  (Rowan activity: Forge a Star Charm (friend))
+"Rowan lets you work the bellows. Your star comes out lopsided. He hangs it over the forge door anyway."
+
+ROWAN-ACT1-DATE-N  (Rowan activity: Forge a Star Charm (date))
+"Rowan guides your hands on the hammer, his arms around yours. The star you make together is perfect. He keeps the one you botched, too."
+
+ROWAN-ACT2-FRIEND-N  (Rowan activity: Mend something together (friend))
+"You bring him a broken watering can. He fixes it in silence, then shows you how. Twice. He doesn't mind the second time."
+
+ROWAN-ACT2-DATE-N  (Rowan activity: Mend something together (date))
+"Rowan mends your watering can and engraves a tiny bunny on the handle. He pretends not to notice you noticing."
+
+ROWAN-ACT3-FRIEND-N  (Rowan activity: Stargazing on the forge roof (friend))
+"You climb onto the warm forge roof. Rowan names three constellations and says nothing else for an hour. It's the nicest hour of your week."
+
+ROWAN-ACT3-DATE-N  (Rowan activity: Stargazing on the forge roof (date))
+"On the warm roof, Rowan's hand finds yours in the dark. … he says. He doesn't mean the roof."
+
+ROWAN-FAVORITEBUNNYREACTION-N  (Rowan: favorite bunny reaction)
+"Rowan sets down his hammer. … He kneels, very slowly, and this little one hops into his apron pocket like it's always lived there. He's quiet for a long moment."
+
+ROWAN-BUNNYREACTION-N  (Rowan: bunny reaction)
+"Rowan gives this little one a careful scratch with one big finger."
+
+ROWAN-SHOWFAVORITEREACTION-N  (Rowan: show favorite reaction)
+"Rowan stops mid-swing. … A rare, full smile."
+
+
+==== Scenes with Silas ====
+
+SILAS-Q1-REPLY1-N  (Silas reacts)
+"Silas smiles, slow and warm."
+
+SILAS-Q2-REPLY1-N  (Silas reacts)
+"Silas says, pleased."
+
+SILAS-Q2-REPLY3-N  (Silas reacts)
+"Silas laughs."
+
+SILAS-ACT1-FRIEND-N  (Silas activity: Honey Tasting (friend))
+"Silas sets out six little jars. Clover, lavender, sunflower… He tells you a story about each one. You like the sunflower best. So does he."
+
+SILAS-ACT1-DATE-N  (Silas activity: Honey Tasting (date))
+"Silas feeds you a spoonful from the last jar. … He saved it for you."
+
+SILAS-ACT2-FRIEND-N  (Silas activity: Tend the hives (friend))
+"You help Silas check the hives in borrowed gloves. A bee lands on your nose. … he says."
+
+SILAS-ACT2-DATE-N  (Silas activity: Tend the hives (date))
+"Silas tells the bees your name. … he says, very seriously. Then he kisses your hand."
+
+SILAS-ACT3-FRIEND-N  (Silas activity: Sunflower walk (friend))
+"You walk the sunflower rows at Silas's pace, which is slow. You notice twelve things you've never seen before."
+
+SILAS-ACT3-DATE-N  (Silas activity: Sunflower walk (date))
+"Silas tucks a sunflower behind your ear. … He walks very close the whole way home."
+
+SILAS-FAVORITEBUNNYREACTION-N  (Silas: favorite bunny reaction)
+"Silas's whole face softens. … this little one curls up in his hands while two bees circle overhead, perfectly calm."
+
+SILAS-BUNNYREACTION-N  (Silas: bunny reaction)
+"Silas strokes this little one gently."
+
+SILAS-SHOWFAVORITEREACTION-N  (Silas: show favorite reaction)
+"Silas lets out a slow, delighted breath."
+
+
+==== Scenes with Rowan ====
+
+ROWAN-1-L1  (Chapter "The Quiet Forge")
+"Your hoe snaps in half. A neighbor points you to the stone forge with the smoking chimney."
+
+ROWAN-1-L3  (Chapter "The Quiet Forge")
+"Rowan fixes it while you wait. He doesn't make small talk. Somehow, it isn't awkward."
+
+ROWAN-1-RESP6-N  (Chapter "The Quiet Forge")
+"Rowan nods once. Later, you see him tuck your thank-you into his apron pocket like something precious."
+
+ROWAN-1-RESP7-N  (Chapter "The Quiet Forge")
+"A pause."
+
+ROWAN-2-L1  (Chapter "The Tin of Notes")
+"You drop by to return a borrowed trowel. Rowan isn't home, but his door is open, and a dented tin has tipped over by the bed."
+
+ROWAN-2-L2  (Chapter "The Tin of Notes")
+"It's full of notes. Thank-yous, hundreds of them. Some are years old. One is yours."
+
+ROWAN-2-RESP6-N  (Chapter "The Tin of Notes")
+"You work in silence. When you're done, he lets out a breath."
+
+ROWAN-2-RESP7-N  (Chapter "The Tin of Notes")
+"Rowan turns the color of his hair."
+
+ROWAN-3-L1  (Chapter "Iron and Starlight")
+"Rowan asks you to meet him on the forge roof after dark. The stone is still warm from the fire."
+
+ROWAN-3-L3  (Chapter "Iron and Starlight")
+"It's a little iron star, polished until it shines like the real ones overhead."
+
+ROWAN-3-CROSSROADS-ROMANCE-N  (Chapter "Iron and Starlight")
+"Rowan is quiet for so long you start to worry. Then he laughs, low and astonished."
+
+ROWAN-3-CROSSROADS-FRIEND-N  (Chapter "Iron and Starlight")
+"Rowan nods, and his shoulders ease."
+
+ROWAN-R4-L1  (Chapter "Two Hammers")
+"Rowan sets a second hammer beside his own at the anvil. It's smaller, balanced for your hand."
+
+ROWAN-R4-RESP5-N  (Chapter "Two Hammers")
+"You strike together. The ring of it fills the whole forge. Rowan grins like a boy."
+
+ROWAN-R4-RESP6-N  (Chapter "Two Hammers")
+"Rowan drops his hammer. On his foot. He doesn't seem to mind at all."
+
+ROWAN-R5-L1  (Chapter "Forge a Star Charm")
+"Rowan teaches you to forge a star charm, his hands steady over yours."
+
+ROWAN-R5-L3  (Chapter "Forge a Star Charm")
+"You make two. He hangs one on your bag and one on his apron."
+
+ROWAN-R5-RESP5-N  (Chapter "Forge a Star Charm")
+"he agrees, and he doesn't stop smiling for an hour."
+
+ROWAN-R5-RESP6-N  (Chapter "Forge a Star Charm")
+"Rowan's arm settles around you, warm as the forge."
+
+ROWAN-R6-L1  (Chapter "Made to Last")
+"Rowan brings you to the forge at dawn. The fire is already lit. On the anvil sits a small iron box."
+
+ROWAN-R6-L3  (Chapter "Made to Last")
+"Inside, on a scrap of velvet, is a star charm on a chain, and every note you ever left him."
+
+ROWAN-R6-RESP6-N  (Chapter "Made to Last")
+"Rowan pulls you close and holds on like he's never letting go. He isn't."
+
+ROWAN-R6-RESP7-N  (Chapter "Made to Last")
+"Rowan fastens it at your neck, gentle as anything."
+
+ROWAN-F4-L1  (Chapter "Apprentice")
+"Rowan paints a new sign over the forge door: CALLOWAY & FRIEND, SMITHS. He made the FRIEND part bigger."
+
+ROWAN-F4-RESP4-N  (Chapter "Apprentice")
+"Rowan says. From him, that's a speech."
+
+ROWAN-F4-RESP5-N  (Chapter "Apprentice")
+"A rare laugh."
+
+ROWAN-F6-L1  (Chapter "The Mended Lantern")
+"Rowan gives you his mother's old lantern, the one that hung in her forge for forty years. He's mended every seam."
+
+ROWAN-F6-RESP5-N  (Chapter "The Mended Lantern")
+"Rowan nods, eyes bright."
+
+ROWAN-F6-RESP6-N  (Chapter "The Mended Lantern")
+"Rowan stiffens for a second, then hugs back like he's been waiting years. Maybe he has."
+
+
+==== Scenes with Silas ====
+
+SILAS-1-L1  (Chapter "Telling the Bees")
+"You find a stranger sitting by your sunflowers, talking softly to a bee on his knuckle."
+
+SILAS-1-L3  (Chapter "Telling the Bees")
+"He introduces himself as Silas, the beekeeper, and leaves a jar of honey on your step."
+
+SILAS-1-RESP6-N  (Chapter "Telling the Bees")
+"Silas laughs, warm and low."
+
+SILAS-1-RESP7-N  (Chapter "Telling the Bees")
+"He takes it, and stays for an hour, and it feels like ten minutes."
+
+SILAS-2-L1  (Chapter "A Hard Day")
+"It's been one of those days. Without quite meaning to, you end up at the apiary."
+
+SILAS-2-L3  (Chapter "A Hard Day")
+"He pours tea and lets you sit. Outside, the bees hum like a lullaby."
+
+SILAS-2-RESP6-N  (Chapter "A Hard Day")
+"he says gently."
+
+SILAS-2-RESP7-N  (Chapter "A Hard Day")
+"He just smiles."
+
+SILAS-3-L1  (Chapter "The Honey Moon")
+"Silas invites you to the harvest on the night of the full moon, when the hives are calm and the honey runs gold."
+
+SILAS-3-L3  (Chapter "The Honey Moon")
+"He takes off his hat and turns to the hives."
+
+SILAS-3-CROSSROADS-ROMANCE-N  (Chapter "The Honey Moon")
+"Silas's breath catches. Then he smiles, slow as a sunrise. … he whispers to the hives."
+
+SILAS-3-CROSSROADS-FRIEND-N  (Chapter "The Honey Moon")
+"Silas laughs, soft and glad."
+
+SILAS-R4-L1  (Chapter "Borrowed Veil")
+"Silas helps you into a beekeeper's veil, tying the strings with careful fingers."
+
+SILAS-R4-RESP4-N  (Chapter "Borrowed Veil")
+"The bees hum louder. Silas swears it's a coincidence. He's smiling too hard to be convincing."
+
+SILAS-R4-RESP5-N  (Chapter "Borrowed Veil")
+"Silas ducks his head, delighted."
+
+SILAS-R5-L1  (Chapter "Honey Tasting")
+"Silas sets out a row of tiny jars under the lanterns. Clover, lavender, sunflower, and one with no label."
+
+SILAS-R5-RESP5-N  (Chapter "Honey Tasting")
+"It tastes like summer evenings. Silas watches you like you're the sweet thing."
+
+SILAS-R5-RESP6-N  (Chapter "Honey Tasting")
+"You share the spoon, laughing, and somehow end up sharing a kiss too."
+
+SILAS-R6-L1  (Chapter "Forty Hives and One Home")
+"At dawn, Silas leads you to the apiary. Among the white hives stands a new one, painted with sunflowers and your name."
+
+SILAS-R6-L3  (Chapter "Forty Hives and One Home")
+"He hands you his grandfather's golden honey dipper on a chain."
+
+SILAS-R6-RESP6-N  (Chapter "Forty Hives and One Home")
+"Silas laughs through his tears and pulls you close. All forty hives hum at once."
+
+SILAS-R6-RESP7-N  (Chapter "Forty Hives and One Home")
+"You turn to the hives. … you tell them. Silas has to sit down, overwhelmed with joy."
+
+SILAS-F4-L1  (Chapter "Kettle Company")
+"Silas hangs a second mug by the apiary door. It has a little bee painted on it, slightly crooked."
+
+SILAS-F4-RESP4-N  (Chapter "Kettle Company")
+"he says, delighted."
+
+SILAS-F4-RESP5-N  (Chapter "Kettle Company")
+"Yours is worse. Silas declares it his favorite thing in the house."
+
+SILAS-F6-L1  (Chapter "The Bees Remember")
+"Silas gives you a little glass charm with a single honeybee wing inside, sealed in gold."
+
+SILAS-F6-RESP5-N  (Chapter "The Bees Remember")
+"Silas squeezes your hand."
+
+SILAS-F6-RESP6-N  (Chapter "The Bees Remember")
+"Silas hugs like he does everything: slowly, warmly, and completely."

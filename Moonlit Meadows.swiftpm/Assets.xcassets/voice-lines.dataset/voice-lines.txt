@@ -193,6 +193,84 @@ sol	SOL-LOVEDGIFTREACTION	“You know me so well! This is going in a song.”
 sol	SOL-LIKEDGIFTREACTION	“Ooh, lovely! Thank you, friend.”
 sol	SOL-NEUTRALGIFTREACTION	“Aw, thank you! Every gift's a little melody.”
 sol	SOL-DISLIKEDGIFTREACTION	“Ha, not quite my rhythm — but I love that you thought of me.”
+rowan	ROWAN-DAILY-EARLY-1	Mind the sparks. Everything I make, I make to last.
+rowan	ROWAN-DAILY-EARLY-2	Bring me what's broken. I'll see what I can do.
+rowan	ROWAN-DAILY-EARLY-3	Morning. Hm. Good day for it.
+rowan	ROWAN-DAILY-FRIEND-1	Fixed your gate latch. It was squeaking. You don't have to say anything.
+rowan	ROWAN-DAILY-FRIEND-2	Most people talk to fill the quiet. You don't. I like that.
+rowan	ROWAN-DAILY-FRIEND-3	Made you a trowel. Balanced it for your hand. Took a few tries.
+rowan	ROWAN-DAILY-ROMANCE-1	I've made a thousand things to last. Never wanted anything to last this much.
+rowan	ROWAN-DAILY-ROMANCE-2	I'm not good with words. So I made you this instead. …It's a little iron heart. It won't break.
+rowan	ROWAN-DAILY-ROMANCE-3	Stay by the forge a while? It's warm. And you're here. That's two good things.
+rowan	ROWAN-DAILY-BESTIE-1	You and me, we're built the same. Sturdy. Not flashy. Good to lean on.
+rowan	ROWAN-DAILY-BESTIE-2	I keep a tin of thank-you notes. Yours are on top.
+rowan	ROWAN-DAILY-BESTIE-3	Need anything mended? Even if it's just a bad day. I'm good at those too.
+rowan	ROWAN-Q1	“What's something you'd want to last forever?”
+farmer	ROWAN-Q1-ANSWER1	This meadow, just like it is.
+rowan	ROWAN-Q1-REPLY1-N,ROWAN-Q1-REPLY1	Rowan nods slowly. “Then we'll look after it. Both of us.”
+farmer	ROWAN-Q1-ANSWER2	A really good pair of boots.
+rowan	ROWAN-Q1-REPLY2-N,ROWAN-Q1-REPLY2	A short laugh, surprised out of him. “Practical. I can make those.”
+farmer	ROWAN-Q1-ANSWER3	Nothing lasts forever.
+rowan	ROWAN-Q1-REPLY3	“No. But some things last long enough.”
+rowan	ROWAN-Q2	“Do you talk to the things you fix? …Never mind.”
+farmer	ROWAN-Q2-ANSWER1	Always. They listen better.
+rowan	ROWAN-Q2-REPLY1-N,ROWAN-Q2-REPLY1	Rowan goes a little pink. “…They do, don't they.”
+farmer	ROWAN-Q2-ANSWER2	Only when they won't work.
+rowan	ROWAN-Q2-REPLY2	“Fair.”
+farmer	ROWAN-Q2-ANSWER3	That's a little odd.
+rowan	ROWAN-Q2-REPLY3	“Hm. Probably.”
+rowan	ROWAN-ACT1-FRIEND-N,ROWAN-ACT1-FRIEND	Rowan lets you work the bellows. Your star comes out lopsided. He hangs it over the forge door anyway. “It stays.”
+rowan	ROWAN-ACT1-DATE-N	Rowan guides your hands on the hammer, his arms around yours. The star you make together is perfect. He keeps the one you botched, too.
+rowan	ROWAN-ACT2-FRIEND-N	You bring him a broken watering can. He fixes it in silence, then shows you how. Twice. He doesn't mind the second time.
+rowan	ROWAN-ACT2-DATE-N	Rowan mends your watering can and engraves a tiny bunny on the handle. He pretends not to notice you noticing.
+rowan	ROWAN-ACT3-FRIEND-N	You climb onto the warm forge roof. Rowan names three constellations and says nothing else for an hour. It's the nicest hour of your week.
+rowan	ROWAN-ACT3-DATE-N,ROWAN-ACT3-DATE	On the warm roof, Rowan's hand finds yours in the dark. “Warmest spot in the meadow,” he says. He doesn't mean the roof.
+rowan	ROWAN-FAVORITEBUNNYREACTION-N,ROWAN-FAVORITEBUNNYREACTION	Rowan sets down his hammer. “A {breed}.” He kneels, very slowly, and {bunny} hops into his apron pocket like it's always lived there. He's quiet for a long moment. “…I'll make you a little bed by the forge. Warm. Safe. Thank you.”
+rowan	ROWAN-BUNNYREACTION-N,ROWAN-BUNNYREACTION	Rowan gives {bunny} a careful scratch with one big finger. “Welcome. Stay clear of the anvil.”
+rowan	ROWAN-SHOWFAVORITEREACTION-N,ROWAN-SHOWFAVORITEREACTION	Rowan stops mid-swing. “Is that a {breed}?” A rare, full smile. “Those are my favorite.”
+rowan	ROWAN-LOVEDGIFTREACTION	“…This is exactly what I needed. How did you know?”
+rowan	ROWAN-LIKEDGIFTREACTION	“Good. Thank you. That'll keep me going.”
+rowan	ROWAN-NEUTRALGIFTREACTION	“Hm. Thanks.”
+rowan	ROWAN-DISLIKEDGIFTREACTION	“Pretty. Too delicate for a forge, though. I'd only break it. Still, thank you for thinking of me.”
+silas	SILAS-DAILY-EARLY-1	The bees are calm tonight. They only hum like that when they are happy.
+silas	SILAS-DAILY-EARLY-2	Long day? Sit a minute. The kettle's always on.
+silas	SILAS-DAILY-EARLY-3	Smells like rain by evening. The bees are coming home early.
+silas	SILAS-DAILY-FRIEND-1	You've been carrying a lot lately. You can set some of it down here.
+silas	SILAS-DAILY-FRIEND-2	I told the bees about you. They approve. They're very picky.
+silas	SILAS-DAILY-FRIEND-3	Saved you a jar of the good honey. Don't tell the others.
+silas	SILAS-DAILY-ROMANCE-1	My grandfather said you know it's love when the bees settle around someone. They settle around you.
+silas	SILAS-DAILY-ROMANCE-2	Everything slows down when you're here. In the best way. Like honey.
+silas	SILAS-DAILY-ROMANCE-3	Stay for supper? I'll make the honey cake. You can watch me pretend I'm not nervous.
+silas	SILAS-DAILY-BESTIE-1	Some people are like sunshine after rain. You're one of them.
+silas	SILAS-DAILY-BESTIE-2	When your day is too much, you know where I am. Always.
+silas	SILAS-DAILY-BESTIE-3	The bees know your footsteps now. That makes you family, in bee terms.
+silas	SILAS-Q1	“What helps you most after a hard day?”
+farmer	SILAS-Q1-ANSWER1	A friend who just listens.
+silas	SILAS-Q1-REPLY1-N,SILAS-Q1-REPLY1	Silas smiles, slow and warm. “Then I'll keep listening.”
+farmer	SILAS-Q1-ANSWER2	A hot drink and a blanket.
+silas	SILAS-Q1-REPLY2	“Ah. A person of good sense.”
+farmer	SILAS-Q1-ANSWER3	I just keep working.
+silas	SILAS-Q1-REPLY3	“Hm. Even bees rest in winter, you know.”
+silas	SILAS-Q2	“If you were a flower, which would you be?”
+farmer	SILAS-Q2-ANSWER1	Lavender. Calm, and a little wild.
+silas	SILAS-Q2-REPLY1,SILAS-Q2-REPLY1-N	“The bees' favorite,” Silas says, pleased. “Good choice.”
+farmer	SILAS-Q2-ANSWER2	A dandelion. I grow anywhere.
+silas	SILAS-Q2-REPLY2	“Ha. Tough and cheerful. I can see it.”
+farmer	SILAS-Q2-ANSWER3	I'd rather be a bee.
+silas	SILAS-Q2-REPLY3-N,SILAS-Q2-REPLY3	Silas laughs. “Busy, buzzy, and a little bit stingy? Sure.”
+silas	SILAS-ACT1-FRIEND-N	Silas sets out six little jars. Clover, lavender, sunflower… He tells you a story about each one. You like the sunflower best. So does he.
+silas	SILAS-ACT1-DATE-N,SILAS-ACT1-DATE	Silas feeds you a spoonful from the last jar. “Moonflower honey. I only ever made one batch.” He saved it for you.
+silas	SILAS-ACT2-FRIEND-N,SILAS-ACT2-FRIEND	You help Silas check the hives in borrowed gloves. A bee lands on your nose. “She likes you,” he says. “Good sign.”
+silas	SILAS-ACT2-DATE-N,SILAS-ACT2-DATE	Silas tells the bees your name. “You have to tell them the important things,” he says, very seriously. Then he kisses your hand.
+silas	SILAS-ACT3-FRIEND-N	You walk the sunflower rows at Silas's pace, which is slow. You notice twelve things you've never seen before.
+silas	SILAS-ACT3-DATE-N,SILAS-ACT3-DATE	Silas tucks a sunflower behind your ear. “There. Now the bees will follow you too.” He walks very close the whole way home.
+silas	SILAS-FAVORITEBUNNYREACTION-N,SILAS-FAVORITEBUNNYREACTION	Silas's whole face softens. “Oh, a {breed}.” {bunny} curls up in his hands while two bees circle overhead, perfectly calm. “Look at that. They've already decided you're family. Thank you, truly. I'll keep them safe and sweet.”
+silas	SILAS-BUNNYREACTION-N,SILAS-BUNNYREACTION	Silas strokes {bunny} gently. “Welcome to the apiary. The bees won't mind you.”
+silas	SILAS-SHOWFAVORITEREACTION-N,SILAS-SHOWFAVORITEREACTION	Silas lets out a slow, delighted breath. “A {breed}. My favorite. Isn't that a gift.”
+silas	SILAS-LOVEDGIFTREACTION	“Oh, you remembered. This is just the sweetest thing.”
+silas	SILAS-LIKEDGIFTREACTION	“How lovely. Thank you. The bees will be jealous.”
+silas	SILAS-NEUTRALGIFTREACTION	“That's kind of you. Thank you.”
+silas	SILAS-DISLIKEDGIFTREACTION	“Ah, that's a bit too smoky for me. The bees don't care for it either. But I appreciate the thought, really.”
 wes	WES-DAILY-EARLY-1	Mornin'. Soil's looking better than it did in my day. Don't let it go to your head.
 wes	WES-DAILY-EARLY-2	Plant your carrots a finger apart. They like elbow room, same as people.
 wes	WES-DAILY-EARLY-3	The bunnies used to steal my lettuce too. Just plant extra. That's the whole secret.
@@ -561,6 +639,110 @@ sol	SOL-F6-L3	You're the chorus. Every verse of my life comes back to you now. B
 farmer	SOL-F6-CHOICE5	“Forever's a rhyme with forever.”
 sol	SOL-F6-RESP5,SOL-F6-RESP5-N	“It counts!” Sol laughs, eyes shiny.
 sol	SOL-F6-RESP6-N	You fumble a messy knot. Sol wears it every single day.
+narrator	ROWAN-1-L1	Your hoe snaps in half. A neighbor points you to the stone forge with the smoking chimney.
+rowan	ROWAN-1-L2	Hm. Bad steel. Not your fault.
+narrator	ROWAN-1-L3	Rowan fixes it while you wait. He doesn't make small talk. Somehow, it isn't awkward.
+rowan	ROWAN-1-L4	Here. Should outlast us both. And take this. A recipe. My mother's. Too hearty for one person.
+farmer	ROWAN-1-CHOICE6	“Thank you. Really.”
+rowan	ROWAN-1-RESP6-N	Rowan nods once. Later, you see him tuck your thank-you into his apron pocket like something precious.
+farmer	ROWAN-1-CHOICE7	“Can I watch you work sometime?”
+rowan	ROWAN-1-RESP7-N,ROWAN-1-RESP7	A pause. “…If you mind the sparks.”
+narrator	ROWAN-2-L1	You drop by to return a borrowed trowel. Rowan isn't home, but his door is open, and a dented tin has tipped over by the bed.
+narrator	ROWAN-2-L2	It's full of notes. Thank-yous, hundreds of them. Some are years old. One is yours.
+rowan	ROWAN-2-L3	…Ah. You found that.
+rowan	ROWAN-2-L4	People say thank you and forget. I don't. Seemed wrong to throw them out.
+rowan	ROWAN-2-RESP6-N,ROWAN-2-RESP6	You work in silence. When you're done, he lets out a breath. “Thanks. That's going in the tin too.”
+farmer	ROWAN-2-CHOICE7	“That might be the sweetest thing I've ever seen.”
+rowan	ROWAN-2-RESP7-N,ROWAN-2-RESP7	Rowan turns the color of his hair. “Don't tell anyone.”
+narrator	ROWAN-3-L1	Rowan asks you to meet him on the forge roof after dark. The stone is still warm from the fire.
+rowan	ROWAN-3-L2	Made something. Took me a month. Kept getting it wrong.
+narrator	ROWAN-3-L3	It's a little iron star, polished until it shines like the real ones overhead.
+rowan	ROWAN-3-L4	I'm no good at saying things. So. This is me saying it.
+farmer	ROWAN-3-CROSSROADS-CONFESS	“Rowan, I think I'm falling for you.”
+farmer	ROWAN-3-CROSSROADS-FRIENDS	“You're my closest friend, Rowan. I mean that.”
+rowan	ROWAN-3-CROSSROADS-ROMANCE-N,ROWAN-3-CROSSROADS-ROMANCE	Rowan is quiet for so long you start to worry. Then he laughs, low and astonished. “Good. That's good. I was hoping.”
+rowan	ROWAN-3-CROSSROADS-FRIEND-N,ROWAN-3-CROSSROADS-FRIEND	Rowan nods, and his shoulders ease. “Good. Then it'll last. The best things do.”
+narrator	ROWAN-R4-L1	Rowan sets a second hammer beside his own at the anvil. It's smaller, balanced for your hand.
+rowan	ROWAN-R4-L2	Made it for you. So you can work next to me. If you want.
+rowan	ROWAN-R4-L3	…I want.
+rowan	ROWAN-R4-RESP5-N	You strike together. The ring of it fills the whole forge. Rowan grins like a boy.
+rowan	ROWAN-R4-RESP6-N	Rowan drops his hammer. On his foot. He doesn't seem to mind at all.
+narrator	ROWAN-R5-L1	Rowan teaches you to forge a star charm, his hands steady over yours.
+rowan	ROWAN-R5-L2	Slow. Let the metal tell you when it's ready. …You're a natural.
+narrator	ROWAN-R5-L3	You make two. He hangs one on your bag and one on his apron.
+farmer	ROWAN-R5-CHOICE5	“Now we match.”
+rowan	ROWAN-R5-RESP5,ROWAN-R5-RESP5-N	“We match,” he agrees, and he doesn't stop smiling for an hour.
+rowan	ROWAN-R5-RESP6-N,ROWAN-R5-RESP6	Rowan's arm settles around you, warm as the forge. “Stay.”
+narrator	ROWAN-R6-L1	Rowan brings you to the forge at dawn. The fire is already lit. On the anvil sits a small iron box.
+rowan	ROWAN-R6-L2	I keep every thank-you anyone gives me. You've given me more than anyone. So I made you something to keep yours in.
+narrator	ROWAN-R6-L3	Inside, on a scrap of velvet, is a star charm on a chain, and every note you ever left him.
+rowan	ROWAN-R6-L4	Everything I make, I make to last. I want us to last. Will you stay with me? Always?
+farmer	ROWAN-R6-CHOICE6	“Always.”
+rowan	ROWAN-R6-RESP6-N	Rowan pulls you close and holds on like he's never letting go. He isn't.
+rowan	ROWAN-R6-RESP7-N,ROWAN-R6-RESP7	Rowan fastens it at your neck, gentle as anything. “There. Now it's finished.”
+narrator	ROWAN-F4-L1	Rowan paints a new sign over the forge door: CALLOWAY & FRIEND, SMITHS. He made the FRIEND part bigger.
+rowan	ROWAN-F4-L2	Every forge needs two. One to hammer, and one to tell the first one to eat lunch.
+rowan	ROWAN-F4-RESP4,ROWAN-F4-RESP4-N	“Suits you,” Rowan says. From him, that's a speech.
+farmer	ROWAN-F4-CHOICE5	“So I'm the lunch one?”
+rowan	ROWAN-F4-RESP5-N,ROWAN-F4-RESP5	A rare laugh. “You're the important one.”
+narrator	ROWAN-F6-L1	Rowan gives you his mother's old lantern, the one that hung in her forge for forty years. He's mended every seam.
+rowan	ROWAN-F6-L2	She said a light should go to whoever keeps others warm. That's you.
+rowan	ROWAN-F6-L3	Friends like you are rare. I'm keeping you.
+farmer	ROWAN-F6-CHOICE5	“I'll keep it lit.”
+rowan	ROWAN-F6-RESP5-N,ROWAN-F6-RESP5	Rowan nods, eyes bright. “I know you will.”
+rowan	ROWAN-F6-RESP6-N	Rowan stiffens for a second, then hugs back like he's been waiting years. Maybe he has.
+narrator	SILAS-1-L1	You find a stranger sitting by your sunflowers, talking softly to a bee on his knuckle.
+silas	SILAS-1-L2	Oh, hello. Sorry. She wandered over from my hives. She wanted to see your flowers.
+narrator	SILAS-1-L3	He introduces himself as Silas, the beekeeper, and leaves a jar of honey on your step.
+silas	SILAS-1-L4	There's a cake my grandfather used to make with that. I'll write it down for you.
+farmer	SILAS-1-CHOICE6	“She has good taste in flowers.”
+silas	SILAS-1-RESP6-N,SILAS-1-RESP6	Silas laughs, warm and low. “She does. So do you.”
+silas	SILAS-1-RESP7-N	He takes it, and stays for an hour, and it feels like ten minutes.
+narrator	SILAS-2-L1	It's been one of those days. Without quite meaning to, you end up at the apiary.
+silas	SILAS-2-L2	Ah. Come in. Kettle's on. You don't have to say anything.
+narrator	SILAS-2-L3	He pours tea and lets you sit. Outside, the bees hum like a lullaby.
+silas	SILAS-2-L4	My grandfather said the bees know when someone's sad. Look. They've all come out to keep you company.
+farmer	SILAS-2-CHOICE6	“How did you know I needed this?”
+silas	SILAS-2-RESP6,SILAS-2-RESP6-N	“You walked in like a rain cloud,” he says gently. “Rainy days need cake.”
+farmer	SILAS-2-CHOICE7	“Thank you, Silas.”
+silas	SILAS-2-RESP7-N,SILAS-2-RESP7	He just smiles. “Anytime. I mean that. Anytime.”
+narrator	SILAS-3-L1	Silas invites you to the harvest on the night of the full moon, when the hives are calm and the honey runs gold.
+silas	SILAS-3-L2	My grandfather called this the honey moon. He said it's the night you tell the bees what matters most.
+narrator	SILAS-3-L3	He takes off his hat and turns to the hives.
+silas	SILAS-3-L4	I'm telling them about you. I hope that's all right.
+farmer	SILAS-3-CROSSROADS-CONFESS	“Tell them I'm falling for you, Silas.”
+farmer	SILAS-3-CROSSROADS-FRIENDS	“Tell them you've got a best friend for life.”
+silas	SILAS-3-CROSSROADS-ROMANCE-N,SILAS-3-CROSSROADS-ROMANCE	Silas's breath catches. Then he smiles, slow as a sunrise. “Did you hear that?” he whispers to the hives. “They're humming.”
+silas	SILAS-3-CROSSROADS-FRIEND-N,SILAS-3-CROSSROADS-FRIEND	Silas laughs, soft and glad. “They heard. I think they've always known.”
+narrator	SILAS-R4-L1	Silas helps you into a beekeeper's veil, tying the strings with careful fingers.
+silas	SILAS-R4-L2	There. Safe. …You look nice in a veil. That came out strange. I meant it.
+silas	SILAS-R4-RESP4-N	The bees hum louder. Silas swears it's a coincidence. He's smiling too hard to be convincing.
+farmer	SILAS-R4-CHOICE5	“You look nice too.”
+silas	SILAS-R4-RESP5-N,SILAS-R4-RESP5	Silas ducks his head, delighted. “I'll wear the hat more often, then.”
+narrator	SILAS-R5-L1	Silas sets out a row of tiny jars under the lanterns. Clover, lavender, sunflower, and one with no label.
+silas	SILAS-R5-L2	This last one is moonflower. I only ever made one jar. I've been saving it for something special.
+silas	SILAS-R5-L3	…For someone special.
+silas	SILAS-R5-RESP5-N	It tastes like summer evenings. Silas watches you like you're the sweet thing.
+farmer	SILAS-R5-CHOICE6	“Share it with me?”
+silas	SILAS-R5-RESP6-N	You share the spoon, laughing, and somehow end up sharing a kiss too.
+narrator	SILAS-R6-L1	At dawn, Silas leads you to the apiary. Among the white hives stands a new one, painted with sunflowers and your name.
+silas	SILAS-R6-L2	My grandfather said you build a hive for the people you plan to grow old beside.
+narrator	SILAS-R6-L3	He hands you his grandfather's golden honey dipper on a chain.
+silas	SILAS-R6-L4	I'd like to grow old beside you. Slowly. Sweetly. Will you share a home with me, and forty hives?
+farmer	SILAS-R6-CHOICE6	“Yes. Every slow, sweet day.”
+silas	SILAS-R6-RESP6-N	Silas laughs through his tears and pulls you close. All forty hives hum at once.
+silas	SILAS-R6-RESP7-N,SILAS-R6-RESP7	You turn to the hives. “I'm staying,” you tell them. Silas has to sit down, overwhelmed with joy.
+narrator	SILAS-F4-L1	Silas hangs a second mug by the apiary door. It has a little bee painted on it, slightly crooked.
+silas	SILAS-F4-L2	For you. So you never have to ask if the kettle's on. It always is.
+farmer	SILAS-F4-CHOICE4	“Best mug I own.”
+silas	SILAS-F4-RESP4,SILAS-F4-RESP4-N	“It's the only mug you own here,” he says, delighted. “Best by default.”
+silas	SILAS-F4-RESP5-N	Yours is worse. Silas declares it his favorite thing in the house.
+narrator	SILAS-F6-L1	Silas gives you a little glass charm with a single honeybee wing inside, sealed in gold.
+silas	SILAS-F6-L2	Bees remember the people who are kind to them. So do I. This is so you'll remember too.
+silas	SILAS-F6-L3	Whatever happens, you'll always have a seat at my table and a spoon in my honey.
+farmer	SILAS-F6-CHOICE5	“I'll remember. Always.”
+silas	SILAS-F6-RESP5-N,SILAS-F6-RESP5	Silas squeezes your hand. “I know. That's why I chose you.”
+silas	SILAS-F6-RESP6-N	Silas hugs like he does everything: slowly, warmly, and completely.
 narrator	WES-1-L1	You find Wes leaning on your fence at dawn, studying your carrots like a newspaper.
 wes	WES-1-L2	Don't mind me. Habit. I farmed this land for thirty years.
 wes	WES-1-L3	You're doing all right. Better than all right. Here — the first seeds I ever saved off this field. They belong here.

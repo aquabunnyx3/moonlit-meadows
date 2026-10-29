@@ -156,6 +156,10 @@ struct Recipe: Identifiable {
                sellPrice: 95, xp: 7, taughtBy: "kai"),
         Recipe(id: "melodyMacarons", name: "Melody Macarons", emoji: "🍭", unlockLevel: 3,
                ingredients: [.init(itemID: "strawberry", count: 2), .init(itemID: "chamomile", count: 1)], sellPrice: 110, xp: 7, taughtBy: "sol"),
+        Recipe(id: "emberBake", name: "Ember Potato Bake", emoji: "🥘", unlockLevel: 3,
+               ingredients: [.init(itemID: "sweetPotato", count: 2), .init(itemID: "carrot", count: 1)], sellPrice: 105, xp: 7, taughtBy: "rowan"),
+        Recipe(id: "honeyCake", name: "Honey Cake", emoji: "🍯", unlockLevel: 3,
+               ingredients: [.init(itemID: "honey", count: 2), .init(itemID: "wheat", count: 1)], sellPrice: 105, xp: 7, taughtBy: "silas"),
     ]
 
     static func find(_ id: String) -> Recipe? {

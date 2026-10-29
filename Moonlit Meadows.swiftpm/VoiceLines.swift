@@ -11,6 +11,9 @@ import UIKit
 /// A line that mixes narration with speech has two clips (the character's, and the narrator's
 /// `-N`), played in the order the text starts with. Your farmer's clips come in `-F` and `-M`.
 enum VoiceLines {
+    /// Clip ID prefixes that are scripted but not recorded yet (those lines use talk blips).
+    static let notRecordedYet = ["ROWAN-", "SILAS-"]
+
     /// The opening story's clips, scene by scene.
     static let intro = ["INTRO-1-N", "INTRO-2-N", "INTRO-3-N", "INTRO-4-HOST", "INTRO-5-N", "INTRO-6-N"]
 
