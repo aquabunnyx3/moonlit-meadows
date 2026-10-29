@@ -756,7 +756,7 @@ enum SelfTests {
         for id in ["june", "roz", "sol", "wes", "bree", "vi"] {
             c.expect(PersonArt.hasFrontSprite(id), "\(id) faces you when standing still")
         }
-        for id in ["june", "roz", "theo", "kai", "sol", "wes", "bree", "vi", "farmer-male", "farmer-female"] {
+        for id in ["june", "theo", "kai", "sol", "wes", "bree", "vi", "farmer-male", "farmer-female", "farmer-female-s0"] {
             for mood in ["happy", "sad", "surprised", "blush"] {
                 c.expect(UIImage(named: "chat-\(id)-\(mood)") != nil && ChatLayout.faces["\(id)-\(mood)"] != nil,
                          "chat-\(id)-\(mood) is in the assets with its place")
