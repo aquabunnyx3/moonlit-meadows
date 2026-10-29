@@ -747,6 +747,15 @@ enum SelfTests {
             c.expect(UIImage(named: "chat-\(id)-mouthopen") != nil && UIImage(named: "chat-\(id)-mouthclosed") != nil, "\(id) has talking mouths")
         }
         c.expect(NSDataAsset(name: "sfx-talk-blip") != nil, "The talk blip is in the assets")
+        for keepsake in Keepsake.all {
+            c.expect(UIImage(named: "keepsake-\(keepsake.id)") != nil, "\(keepsake.name) has its icon")
+        }
+        for accessory in BunnyAccessory.all {
+            c.expect(UIImage(named: "accessory-\(accessory.id)") != nil, "\(accessory.name) has its icon")
+        }
+        for id in ["june", "roz", "sol", "wes", "bree", "vi"] {
+            c.expect(PersonArt.hasFrontSprite(id), "\(id) faces you when standing still")
+        }
         for id in ["june", "roz", "theo", "kai", "sol", "wes", "bree", "vi", "farmer-male", "farmer-female"] {
             for mood in ["happy", "sad", "surprised", "blush"] {
                 c.expect(UIImage(named: "chat-\(id)-\(mood)") != nil && ChatLayout.faces["\(id)-\(mood)"] != nil,

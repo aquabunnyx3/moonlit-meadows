@@ -169,7 +169,11 @@ struct JournalTab: View {
             let owned = meadow.keepsakes.contains(keepsake.id)
             CozyCard(tint: owned ? Palette.blush : .white) {
                 HStack(alignment: .top, spacing: 10) {
-                    Text(owned ? keepsake.emoji : "🔒").font(.title2)
+                    if owned {
+                        ArtIcon(name: "keepsake-\(keepsake.id)", emoji: keepsake.emoji, size: 34)
+                    } else {
+                        Text("🔒").font(.title2)
+                    }
                     VStack(alignment: .leading, spacing: 2) {
                         Text(owned ? keepsake.name : "A keepsake yet to be earned").font(.subheadline.bold())
                         Text(owned ? keepsake.description : "Finish a story — or the whole collection — to earn it.")

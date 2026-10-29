@@ -117,7 +117,7 @@ struct CollectionTab: View {
                         HStack(spacing: 6) {
                             accessoryButton(nil, label: "No accessory")
                             ForEach(accessories) { accessory in
-                                accessoryButton(accessory.id, label: "\(accessory.emoji) \(accessory.name)")
+                                accessoryButton(accessory.id, label: accessory.name, icon: accessory)
                             }
                         }
                     }
@@ -132,10 +132,15 @@ struct CollectionTab: View {
         .scrollIndicators(.hidden)
     }
 
-    private func accessoryButton(_ id: String?, label: String) -> some View {
+    private func accessoryButton(_ id: String?, label: String, icon: BunnyAccessory? = nil) -> some View {
         let isOn = meadow.equippedAccessory == id
-        return Button(label) {
+        return Button {
             meadow.equipAccessory(id)
+        } label: {
+            HStack(spacing: 4) {
+                if let icon { ArtIcon(name: "accessory-\(icon.id)", emoji: icon.emoji, size: 18) }
+                Text(label)
+            }
         }
         .font(.caption.bold())
         .padding(.horizontal, 10)

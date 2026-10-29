@@ -58,7 +58,7 @@ struct BreedBunnyView: View {
                     .frame(width: s, height: s)
                     .overlay(alignment: .topTrailing) {
                         if let accessory {
-                            Text(accessory).font(.system(size: s * 0.16))
+                            AccessoryMark(emoji: accessory, size: s * 0.2)
                         }
                     }
             } else {
@@ -385,7 +385,7 @@ private struct BunnyFigure: View {
             Text("🍓").font(.system(size: s * 0.1)).offset(x: -s * 0.2, y: top + s * 0.04)
         }
         if let accessory {
-            Text(accessory).font(.system(size: s * 0.14)).offset(x: s * 0.2, y: top + s * 0.04)
+            AccessoryMark(emoji: accessory, size: s * 0.18).offset(x: s * 0.2, y: top + s * 0.04)
         }
     }
 
@@ -537,4 +537,18 @@ struct Triangle: Shape {
         .padding()
     }
     .background(Palette.meadow)
+}
+
+/// A bunny's accessory: its icon (`accessory-<id>`) when there is one, otherwise its emoji.
+struct AccessoryMark: View {
+    let emoji: String
+    let size: CGFloat
+
+    var body: some View {
+        if let accessory = BunnyAccessory.all.first(where: { $0.emoji == emoji }) {
+            ArtIcon(name: "accessory-\(accessory.id)", emoji: emoji, size: size)
+        } else {
+            Text(emoji).font(.system(size: size * 0.8))
+        }
+    }
 }
