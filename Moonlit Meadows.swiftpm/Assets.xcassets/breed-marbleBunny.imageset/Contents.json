@@ -1,0 +1,12 @@
+{
+  "images" : [
+    {
+      "filename" : "breed-marbleBunny.png",
+      "idiom" : "universal"
+    }
+  ],
+  "info" : {
+    "author" : "xcode",
+    "version" : 1
+  }
+}
