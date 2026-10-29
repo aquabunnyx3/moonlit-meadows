@@ -413,10 +413,19 @@ enum FarmerRenderer {
             guard label > 0, label < 8, let table = ramps[label] else { continue }
             let alpha = Int(px[o + 3])
             guard alpha > 0 else { continue }
-            let (r, g, b) = table[Int(lb[o + 1])]
-            px[o] = UInt8(Int(r) * alpha / 255)
-            px[o + 1] = UInt8(Int(g) * alpha / 255)
-            px[o + 2] = UInt8(Int(b) * alpha / 255)
+            var (r, g, b) = (Int(table[Int(lb[o + 1])].0), Int(table[Int(lb[o + 1])].1), Int(table[Int(lb[o + 1])].2))
+            // Blue marks blush on skin: a soft pink laid over whatever skin tone you chose,
+            // instead of the drawn (darker) cheek color.
+            let blush = Int(lb[o + 2])
+            if label == Label.skin.rawValue, blush > 0 {
+                let k = blush * 45 / 255
+                r = (r * (100 - k) + 0xF2 * k) / 100
+                g = (g * (100 - k) + 0x84 * k) / 100
+                b = (b * (100 - k) + 0x9A * k) / 100
+            }
+            px[o] = UInt8(r * alpha / 255)
+            px[o + 1] = UInt8(g * alpha / 255)
+            px[o + 2] = UInt8(b * alpha / 255)
         }
 
         let image: CGImage? = px.withUnsafeMutableBytes { buffer in

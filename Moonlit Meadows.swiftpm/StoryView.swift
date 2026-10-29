@@ -282,8 +282,15 @@ struct ChatScene: View {
     /// When the speaker's own mouth moves: their voice clips (not the narrator's), or the typing.
     @State private var talkTimes: [ClosedRange<Date>] = []
 
+    /// The chat buttons: pause the line, skip to its end, say it again, and mute voices.
+    @State private var chatPaused = false
+    @State private var pausedAt: Date?
+    @State private var replayCount = 0
+    @State private var skipLine = false
+    @AppStorage("voicesMuted") private var voicesMuted = false
+
     private var voiceKey: String {
-        "\(VoiceLines.owner(of: speaker))|\(text)|\(voiceAfter.joined(separator: ","))"
+        "\(VoiceLines.owner(of: speaker))|\(text)|\(voiceAfter.joined(separator: ","))|\(replayCount)"
     }
 
     private struct Art {
@@ -372,6 +379,7 @@ struct ChatScene: View {
                         .clipped()
                     scene(art, size: fit)
                         .frame(width: fit.width, height: fit.height)
+                        .overlay(alignment: .topTrailing) { chatControls(size: fit.height) }
                 }
                 .frame(width: geo.size.width, height: geo.size.height)
             }
@@ -385,10 +393,14 @@ struct ChatScene: View {
         // Moving on stops it and starts the next line.
         .task(id: voiceKey) {
             let owner = VoiceLines.owner(of: speaker)
-            let clips = VoiceLines.clips(owner: owner, text: text, prefer: voiceHint, farmer: meadow.farmerGender)
+            chatPaused = false
+            pausedAt = nil
+            skipLine = false
+            // Muted, the line just types out (no voice, no blips) with the mouth moving along.
+            let clips = voicesMuted ? [] : VoiceLines.clips(owner: owner, text: text, prefer: voiceHint, farmer: meadow.farmerGender)
             let lengths = MusicPlayer.shared.clipSeconds(clips)
             let spoken = lengths.reduce(0, +) + MusicPlayer.clipGap * Double(max(clips.count - 1, 0))
-            voiceToken = MusicPlayer.shared.speak(clips + voiceAfter)
+            voiceToken = MusicPlayer.shared.speak(voicesMuted ? [] : clips + voiceAfter)
             let letters = Array(text)
             let perLetter = spoken > 0 ? min(spoken / Double(max(letters.count, 1)), 0.08) : 0.032
             // The mouth only moves for the speaker's own words: the narrator's clips (ending -N)
@@ -413,17 +425,66 @@ struct ChatScene: View {
             while index < letters.count {
                 try? await Task.sleep(for: .seconds(perLetter))
                 if Task.isCancelled { return }
-                // The pause menu holds the typing and the mouth.
-                if meadow.isPaused { continue }
+                if skipLine { break }
+                // The pause menu and the chat's pause button hold the typing and the mouth.
+                if meadow.isPaused || chatPaused { continue }
                 index += 1
                 typed = index
-                if spoken == 0, index % 2 == 0, !letters[index - 1].isWhitespace {
+                if spoken == 0, !voicesMuted, index % 2 == 0, !letters[index - 1].isWhitespace {
                     MusicPlayer.shared.playBlip(pitch: ChatFaceParts.blipPitch[owner] ?? 1)
                 }
             }
             typed = Int.max
         }
         .onDisappear { MusicPlayer.shared.stopVoice(token: voiceToken) }
+    }
+
+    /// Pause / play, skip to the end of the line, replay it, and mute voices.
+    private func chatControls(size: CGFloat) -> some View {
+        let side = max(28, size * 0.075)
+        func control(_ symbol: String, _ label: String, action: @escaping () -> Void) -> some View {
+            Button(action: action) {
+                Image(systemName: symbol)
+                    .font(.system(size: side * 0.42, weight: .bold))
+                    .foregroundStyle(.white)
+                    .frame(width: side, height: side)
+                    .pixelPanel(Palette.ink.opacity(0.75), edge: Palette.lilacEdge, cornerRadius: side * 0.25)
+            }
+            .buttonStyle(SquishButtonStyle())
+            .accessibilityLabel(label)
+        }
+        return HStack(spacing: side * 0.2) {
+            control(chatPaused ? "play.fill" : "pause.fill", chatPaused ? "Resume" : "Pause") { togglePause() }
+            control("forward.end.fill", "Skip to the end of the line") { skipToEnd() }
+            control("arrow.counterclockwise", "Replay the line") { replayCount += 1 }
+            control(voicesMuted ? "speaker.slash.fill" : "speaker.wave.2.fill", voicesMuted ? "Unmute voices" : "Mute voices") {
+                voicesMuted.toggle()
+                if voicesMuted { MusicPlayer.shared.stopVoice(token: voiceToken) }
+            }
+        }
+        .padding(side * 0.3)
+    }
+
+    private func togglePause() {
+        if chatPaused {
+            // Pick up where it stopped: the mouth's timing moves later by the time spent paused.
+            let held = pausedAt.map { Date().timeIntervalSince($0) } ?? 0
+            talkTimes = talkTimes.map { $0.lowerBound.addingTimeInterval(held)...$0.upperBound.addingTimeInterval(held) }
+            MusicPlayer.shared.resumeVoice(token: voiceToken)
+            chatPaused = false
+        } else {
+            pausedAt = Date()
+            MusicPlayer.shared.pauseVoice(token: voiceToken)
+            chatPaused = true
+        }
+    }
+
+    private func skipToEnd() {
+        skipLine = true
+        chatPaused = false
+        typed = Int.max
+        talkTimes = []
+        MusicPlayer.shared.stopVoice(token: voiceToken)
     }
 
     /// The scene at its own shape (most are 2000 × 1136; Theo's is 3:2), as big as fits.
@@ -454,7 +515,7 @@ struct ChatScene: View {
             let phase = (t + seed).truncatingRemainder(dividingBy: period)
             let blink: String? = !parts.blinks.contains(mood) || phase > 0.2 ? nil
                 : (phase < 0.06 || phase > 0.14 ? "blink1" : "blink2")
-            let talking = talkTimes.contains { $0.contains(timeline.date) }
+            let talking = !chatPaused && talkTimes.contains { $0.contains(timeline.date) }
             let mouthOpen = talking ? Int(t * 8) % 2 == 0 : false
             let mouth: String? = mouthOpen ? (parts.openMouth.contains(mood) ? nil : "mouthopen")
                 : (parts.openMouth.contains(mood) ? "mouthclosed" : nil)

@@ -288,6 +288,18 @@ final class MusicPlayer {
         return voiceToken
     }
 
+    /// Holds the line playing (the chat's pause button), to carry on with `resumeVoice`.
+    func pauseVoice(token: Int? = nil) {
+        if let token, token != voiceToken { return }
+        voicePlayer?.pause()
+    }
+
+    func resumeVoice(token: Int? = nil) {
+        if let token, token != voiceToken { return }
+        if !engine.isRunning { try? engine.start() }
+        voicePlayer?.play()
+    }
+
     /// Stops the line playing. With a token, only if that line is still the one playing (so a
     /// screen closing doesn't cut off the next screen's line).
     func stopVoice(token: Int? = nil) {
