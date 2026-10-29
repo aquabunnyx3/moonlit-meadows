@@ -154,7 +154,7 @@ enum PersonArt {
     }
 
     /// The step of each walk cycle with the feet closest together, for standing still side-on.
-    static let standFrames: [String: Int] = ["farmer-female-s0-right": 11, "farmer-female-s1-right": 8, "farmer-female-s1-sundress-right": 6, "farmer-female-s2-right": 5, "farmer-female-s2-sundress-right": 1, "farmer-male-s1-hoodie-right": 16, "farmer-male-s1-right": 3, "farmer-male-s2-hoodie-right": 20, "farmer-male-s2-right": 7, "walk-bree-right": 25, "walk-june-right": 14, "walk-kai-right": 8, "walk-roz-right": 10, "walk-sol-right": 20, "walk-theo-right": 6, "walk-vi-right": 5, "walk-wes-right": 16]
+    static let standFrames: [String: Int] = ["farmer-female-s0-right": 11, "farmer-female-s0-sundress-right": 3, "farmer-female-s1-right": 8, "farmer-female-s1-sundress-right": 6, "farmer-female-s2-right": 5, "farmer-female-s2-sundress-right": 1, "farmer-male-s0-hoodie-right": 12, "farmer-male-s0-right": 17, "farmer-male-s1-hoodie-right": 16, "farmer-male-s1-right": 3, "farmer-male-s2-hoodie-right": 20, "farmer-male-s2-right": 7, "walk-bree-right": 25, "walk-june-right": 14, "walk-kai-right": 8, "walk-roz-right": 10, "walk-sol-right": 20, "walk-theo-right": 6, "walk-vi-right": 5, "walk-wes-right": 16]
 
     /// Standing still side-on: the feet-together step of their walk (for someone with no front
     /// picture). `nil` facing the front, or without a walk cycle.

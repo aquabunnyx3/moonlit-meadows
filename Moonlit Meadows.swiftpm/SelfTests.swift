@@ -679,7 +679,7 @@ enum SelfTests {
 
     private static func voices(_ c: Check) {
         let all = VoiceLines.allClipIDs
-        c.expect(all.count == 882 && Set(all).count == 882, "882 voice clips are listed, got \(all.count)")
+        c.expect(all.count == 887 && Set(all).count == 887, "887 voice clips are listed, got \(all.count)")
         let missing = all.filter { NSDataAsset(name: $0) == nil }
         c.expect(missing.isEmpty, "Every voice clip is in the assets, missing \(missing.prefix(5))")
 
@@ -711,7 +711,7 @@ enum SelfTests {
                 }
             }
             if let choice = event.choice {
-                if choice.prompt.contains("“") { check(event.personID, choice.prompt) }
+                check(event.personID, choice.prompt)
                 for option in choice.options { check("farmer", option.text); check(event.personID, option.response) }
             }
         }

@@ -633,3 +633,8 @@ farmer	FARMER-BEDTIME-5	The fireflies are out. That means it's way past my bedti
 farmer	FARMER-BEDTIME-6	I think I hear the bunnies snoring. Okay, I'm going, I'm going. Night!
 sol	SOL-FINALE,SOL-FINALE-N	“You found every one of them,” Sol whispers. “I'm writing a song about this.”
 narrator	FINALE-N	Under the full moon, all fifty breeds gather in the meadow. June, Roz, Theo, Kai, and Sol come out to watch. Seraph and Angel bow to you, Galaxy fills the sky with stars, and the bunnies weave you a crown of moonlight.
+june	JUNE-CROSSROADS-PROMPT	How do you feel?
+roz	ROZ-CROSSROADS-PROMPT	How do you feel?
+theo	THEO-CROSSROADS-PROMPT	How do you feel?
+kai	KAI-CROSSROADS-PROMPT	How do you feel?
+sol	SOL-CROSSROADS-PROMPT	How do you feel?
