@@ -258,7 +258,7 @@ struct JournalTab: View {
 /// A short guide to the game, in the Journal.
 private struct HowToPlay: View {
     private let topics: [(emoji: String, title: String, text: String)] = [
-        ("🕹️", "Walking", "Hold the D-pad to walk; let go to stop. She faces the way she last walked, and the big pink button works whatever she's facing. Its name is written just above it."),
+        ("🕹️", "Walking", "Hold the D-pad to walk; let go to stop. Your farmer faces the way you last walked, and the big pink button works whatever way you're facing. Its name is written just above it."),
         ("🌱", "Farming", "Walk up to a bed or a field plot. With the seed packet in hand, the button plants; when a crop is ready, it harvests. Tap the seed packet again to pick another seed. The carrot slot harvests and replants everything at once, and the watering can grows everything for gems."),
         ("🎒", "Your things", "The grid in the middle of the deck is everything you're carrying. Tap something to hold it; the pink-framed bar below is your quick inventory. Sell crops and cook treats in the Pantry."),
         ("🐰", "Bunnies", "Walk to the lure basket below your crop beds and set a lure with crops and treats. Visitors arrive over time: greet them to meet new breeds. Every breed you discover goes in the Bunnies book."),

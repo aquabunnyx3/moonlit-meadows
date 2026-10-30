@@ -157,6 +157,8 @@ final class Meadow {
     var quickSlot = QuickSlot.seeds
     /// Seeds picked lately, newest first, for the quick inventory's spare slots.
     var recentSeeds: [String] = []
+    /// Items dragged into the quick bar's two spare slots (Michelle, 2026-10-30).
+    var quickPins: [String] = []
     /// The deck's action button opened someone's profile with Gift: start on their gifts.
     var profileOpensGifts = false
     /// Off the farm: in the village or inside someone's house. `nil` on the farm. Not saved.

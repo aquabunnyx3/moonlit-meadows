@@ -769,6 +769,31 @@ extension Meadow {
         }
         return Array(picks.prefix(2))
     }
+
+    /// The quick bar's two spare slots: your pinned items first, then the
+    /// spare seeds in whatever room is left.
+    var quickPinSlots: [QuickSlot?] {
+        (0..<2).map { index in
+            if index < quickPins.count { return .item(quickPins[index]) }
+            let spareIndex = index - quickPins.count
+            return spareIndex < spareSeeds.count ? .spareSeed(spareSeeds[spareIndex]) : nil
+        }
+    }
+
+    /// Dragging a carried item onto a spare quick slot pins it there.
+    func pinQuickItem(_ id: String, at index: Int) {
+        guard count(of: id) > 0, (0..<2).contains(index) else { return }
+        quickPins.removeAll { $0 == id }
+        if index < quickPins.count { quickPins[index] = id } else { quickPins.append(id) }
+        feedbackCount += 1
+    }
+
+    /// Dragging a pinned item back onto the big grid unpins it.
+    func unpinQuickItem(_ id: String) {
+        guard quickPins.contains(id) else { return }
+        quickPins.removeAll { $0 == id }
+        feedbackCount += 1
+    }
 }
 
 // MARK: - The deck
@@ -1087,15 +1112,13 @@ struct ControlDeck: View {
     /// The quick inventory: five squares the same size as the main grid's, inside their own
     /// pink pixel frame.
     private func quickBar(_ layout: Layout) -> some View {
-        let spares = meadow.spareSeeds
         var slots: [QuickSlot?] = [QuickSlot.harvest, QuickSlot.seeds, QuickSlot.water]
-        for index in 0..<2 {
-            slots.append(index < spares.count ? QuickSlot.spareSeed(spares[index]) : nil)
-        }
+        slots += meadow.quickPinSlots
 
         return HStack(spacing: layout.gap) {
-            ForEach(Array(slots.enumerated()), id: \.offset) { _, item in
-                QuickSlotView(meadow: meadow, slot: item, size: layout.slot)
+            ForEach(Array(slots.enumerated()), id: \.offset) { offset, item in
+                QuickSlotView(meadow: meadow, slot: item, size: layout.slot,
+                              pinIndex: offset >= 3 ? offset - 3 : nil)
             }
         }
         .padding(Layout.frame)
@@ -1211,6 +1234,8 @@ private struct InventorySlotView: View {
         .disabled(stack == nil)
         .accessibilityLabel(stack.map { "\(ItemInfo.name($0.id)), \($0.count)" } ?? "Empty slot")
         .accessibilityAddTraits(isSelected ? .isSelected : [])
+        .modifier(DraggableIfPresent(itemID: stack?.id))
+        .modifier(UnpinDropTarget(meadow: meadow))
     }
 }
 
@@ -1257,6 +1282,9 @@ private struct QuickSlotView: View {
     let meadow: Meadow
     let slot: QuickSlot?
     let size: CGFloat
+    /// Set for the two spare slots: they take drops, and a pinned item in one
+    /// can be dragged back to the big grid.
+    var pinIndex: Int? = nil
 
     var body: some View {
         let isSelected = slot.map { $0 == meadow.quickSlot } ?? false
@@ -1286,6 +1314,14 @@ private struct QuickSlotView: View {
         }
         .accessibilityLabel(label)
         .accessibilityAddTraits(isSelected ? .isSelected : [])
+        .modifier(DraggableIfPresent(itemID: dragID))
+        .modifier(PinDropTarget(meadow: meadow, pinIndex: pinIndex))
+    }
+
+    /// The pinned item this slot can be dragged by, when it holds one.
+    private var dragID: String? {
+        guard pinIndex != nil, let slot, case .item(let id) = slot else { return nil }
+        return id
     }
 
     @ViewBuilder
@@ -1436,5 +1472,52 @@ struct CollisionOverlay: View {
         }
         .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .topLeading)
         .allowsHitTesting(false)
+    }
+}
+
+// MARK: - Quick bar drag and drop
+
+/// Makes a view draggable by item ID when it has one (Michelle, 2026-10-30:
+/// drag between the big grid and the quick inventory).
+private struct DraggableIfPresent: ViewModifier {
+    let itemID: String?
+
+    func body(content: Content) -> some View {
+        if let itemID {
+            content.draggable(itemID)
+        } else {
+            content
+        }
+    }
+}
+
+/// A spare quick slot takes a dropped item and pins it there.
+private struct PinDropTarget: ViewModifier {
+    let meadow: Meadow
+    let pinIndex: Int?
+
+    func body(content: Content) -> some View {
+        if let pinIndex {
+            content.dropDestination(for: String.self) { items, _ in
+                guard let id = items.first else { return false }
+                meadow.pinQuickItem(id, at: pinIndex)
+                return true
+            } isTargeted: { _ in }
+        } else {
+            content
+        }
+    }
+}
+
+/// Dropping a pinned item back on the big grid unpins it.
+private struct UnpinDropTarget: ViewModifier {
+    let meadow: Meadow
+
+    func body(content: Content) -> some View {
+        content.dropDestination(for: String.self) { items, _ in
+            guard let id = items.first else { return false }
+            meadow.unpinQuickItem(id)
+            return true
+        } isTargeted: { _ in }
     }
 }
