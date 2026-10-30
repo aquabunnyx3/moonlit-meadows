@@ -72,6 +72,8 @@ struct WorldScene: View {
             // A character's profile: their portrait and story up top, buttons on the deck below.
             PersonProfileScene(meadow: meadow, person: person)
                 .clipped()
+        } else if let town = meadow.town {
+            TownScene(meadow: meadow, place: town)
         } else if meadow.isAtHome {
             HomeScene(meadow: meadow)
                 .clipped()
@@ -115,6 +117,15 @@ struct WorldScene: View {
                     HabitatBunnies(meadow: meadow, map: map, t: t)
 
                     LureGarden(meadow: meadow, map: map, t: t)
+
+                    // The path to the village, at the bottom of the farm.
+                    Text("🏘️ Village")
+                        .font(.system(size: max(map.unit * 0.022, 9), weight: .bold, design: .rounded))
+                        .padding(.horizontal, 6)
+                        .padding(.vertical, 2)
+                        .background(Palette.cream.opacity(0.9), in: .capsule)
+                        .position(map.point(0.5, 0.955))
+                        .allowsHitTesting(false)
 
                     // What the deck's action button would work on, once you're walking.
                     if meadow.isDeckDriving, let target = meadow.deckTarget() {

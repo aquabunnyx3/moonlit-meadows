@@ -32,6 +32,9 @@ struct DeckTarget: Equatable {
         case lureBasket
         case plot(Int)
         case bed, chair, chest, petBed, homeDoor
+        case goToTown, goToFarm, enterHouse(String), leaveHouse, shop, seedStall, sellStall
+        /// Something to look at: the action button shows its line.
+        case look(String)
     }
 
     enum Icon: Equatable {
@@ -107,7 +110,7 @@ extension Meadow {
     static let homeBlocks = [homeBed, homeDesk, homeChest, homePetBed]
 
     /// The art's width over height where you're walking, so a step is the same length every way.
-    private var deckAspect: Double { isAtHome ? 2096.0 / 1184.0 : worldAspect }
+    private var deckAspect: Double { isAtHome || town != nil ? 2096.0 / 1184.0 : worldAspect }
 
     var isDeckMoving: Bool { !deckDirection.isZero }
 
@@ -121,7 +124,7 @@ extension Meadow {
                 isSitting = false
                 homeSpot = Spot(x: 0.79, y: 0.66)
             }
-            if !isAtHome, !isDeckDriving {
+            if !isAtHome, town == nil, !isDeckDriving {
                 isDeckDriving = true
                 farmerSpot = WorldLayout.farmerStep(at: Date().timeIntervalSinceReferenceDate, aspect: worldAspect).spot
             }
@@ -143,7 +146,16 @@ extension Meadow {
         } else {
             farmerFacing = d.y < 0 ? .back : .front
         }
-        if isAtHome {
+        if let town {
+            switch town {
+            case .hub:
+                townSpot = walk(from: townSpot, by: d, step: step, aspect: aspect, bounds: TownLayout.hubBounds, blocks: TownLayout.hubBlocks)
+            case .house(let id):
+                if let room = TownLayout.interiors[id] {
+                    townSpot = walk(from: townSpot, by: d, step: step, aspect: aspect, bounds: room.bounds, blocks: room.blocks)
+                }
+            }
+        } else if isAtHome {
             homeSpot = walk(from: homeSpot, by: d, step: step, aspect: aspect, bounds: Self.homeBounds, blocks: Self.homeBlocks)
         } else if isDeckDriving, let spot = farmerSpot {
             farmerSpot = walk(from: spot, by: d, step: step, aspect: aspect, bounds: Self.farmBounds, blocks: Self.farmBlocks)
@@ -188,6 +200,7 @@ extension Meadow {
     /// those, what you're facing before what's merely nearby.
     func deckTarget() -> DeckTarget? {
         guard !isSleeping else { return nil }
+        if town != nil { return townTarget() }
         if isAtHome { return homeTarget() }
         guard isDeckDriving, let spot = farmerSpot else { return nil }
         let faced = facedPoint(from: spot)
@@ -215,6 +228,9 @@ extension Meadow {
         if reaches(Self.cottageDoorZone) {
             return DeckTarget(kind: .cottageDoor, verb: "Enter", icon: .emoji("🚪"), spot: Spot(x: 0.497, y: 0.27))
         }
+        if reaches(Self.farmToTownZone) {
+            return DeckTarget(kind: .goToTown, verb: "Go to the Village", icon: .emoji("🏘️"), spot: Spot(x: 0.5, y: 0.93))
+        }
         if reaches(Self.lureBasketZone) {
             let arrived = lureSlots.contains(where: \.hasArrived)
             return DeckTarget(kind: .lureBasket, verb: arrived ? "Greet Visitor" : "Set Lure",
@@ -225,6 +241,83 @@ extension Meadow {
             return plotTarget(index)
         }
         return nil
+    }
+
+    /// In reach: faced, or right next to your feet.
+    private func reaches(_ zone: DeckRect, from spot: Spot, facing faced: Spot) -> Bool {
+        zone.contains(faced.x, faced.y) || zone.distance(spot.x, spot.y, aspect: deckAspect) <= Self.nearReach
+    }
+
+    /// The faced one of these, or else the nearest in reach.
+    private func closest<T>(_ items: [(T, DeckRect)], from spot: Spot, facing faced: Spot) -> T? {
+        if let hit = items.first(where: { $0.1.contains(faced.x, faced.y) }) { return hit.0 }
+        var best: (item: T, distance: Double)?
+        for item in items {
+            let distance = item.1.distance(spot.x, spot.y, aspect: deckAspect)
+            if distance <= Self.nearReach, best == nil || distance < best!.distance {
+                best = (item.0, distance)
+            }
+        }
+        return best?.item
+    }
+
+    /// In the village: people, then doors and the path home, then the market stalls.
+    /// In a house: whoever lives there, then the way out, then things to look at.
+    private func townTarget() -> DeckTarget? {
+        guard let town else { return nil }
+        let spot = townSpot
+        let faced = facedPoint(from: spot)
+        switch town {
+        case .hub:
+            let people = townWalkers.map { walker in
+                (walker, DeckRect(minX: walker.step.spot.x - 0.03, minY: walker.step.spot.y - 0.09,
+                                  maxX: walker.step.spot.x + 0.03, maxY: walker.step.spot.y + 0.02))
+            }
+            if let walker = closest(people, from: spot, facing: faced) {
+                return personTarget(walker.person, at: walker.step.spot)
+            }
+            let doors = TownLayout.houses.map { ($0, $0.doorZone) }
+            if let house = closest(doors, from: spot, facing: faced) {
+                if house.ownerID != nil {
+                    return DeckTarget(kind: .enterHouse(house.id), verb: "Enter \(house.name.capitalizedFirst)", icon: .emoji("🚪"), spot: house.doorstep)
+                }
+                return DeckTarget(kind: .look("The Village Library is closed today. A note on the door says “Back after the harvest festival! — the librarian”."),
+                                  verb: "Look at the Library", icon: .emoji("📚"), spot: house.doorstep)
+            }
+            if reaches(TownLayout.shopZone, from: spot, facing: faced) {
+                return DeckTarget(kind: .shop, verb: "Enter the Shop", icon: .asset("icon-shop"), spot: TownLayout.shopDoorstep)
+            }
+            if reaches(TownLayout.farmExit, from: spot, facing: faced) {
+                return DeckTarget(kind: .goToFarm, verb: "Back to the Farm", icon: .emoji("🌾"), spot: Spot(x: 0.57, y: 0.97))
+            }
+            if let stall = closest(TownLayout.seedStalls.map { ($0, $0) }, from: spot, facing: faced) {
+                return DeckTarget(kind: .seedStall, verb: "Buy Seeds", icon: .asset("icon-seed-packet"), spot: Spot(x: stall.center.x, y: stall.maxY))
+            }
+            if let stall = closest(TownLayout.sellStalls.map { ($0, $0) }, from: spot, facing: faced) {
+                return DeckTarget(kind: .sellStall, verb: "Sell Crops", icon: .asset("icon-carrot"), spot: Spot(x: stall.center.x, y: stall.maxY))
+            }
+            return nil
+        case .house(let id):
+            guard let room = TownLayout.interiors[id] else { return nil }
+            if let resident = houseResident {
+                let box = DeckRect(minX: room.resident.x - 0.06, minY: room.resident.y - 0.16, maxX: room.resident.x + 0.06, maxY: room.resident.y + 0.03)
+                if reaches(box, from: spot, facing: faced) {
+                    return personTarget(resident, at: room.resident)
+                }
+            }
+            if reaches(room.exit, from: spot, facing: faced) {
+                return DeckTarget(kind: .leaveHouse, verb: "Go Outside", icon: .emoji("🚪"), spot: room.exit.center)
+            }
+            if let thing = closest(room.things.map { ($0, $0.zone) }, from: spot, facing: faced) {
+                return DeckTarget(kind: .look(thing.text), verb: "Look at \(thing.name)", icon: .emoji("👀"), spot: thing.zone.center)
+            }
+            return nil
+        }
+    }
+
+    private func personTarget(_ person: Person, at spot: Spot) -> DeckTarget {
+        DeckTarget(kind: .person(person.id), verb: canTalk(to: person.id) ? "Talk to \(person.name)" : "Visit \(person.name)",
+                   icon: .emoji("💬"), spot: spot, secondary: "Gift")
     }
 
     private func plotRect(_ index: Int) -> DeckRect {
@@ -351,6 +444,23 @@ extension Meadow {
             }
         case .homeDoor:
             leaveHome()
+        case .goToTown:
+            goToTown()
+        case .goToFarm:
+            goToFarm()
+        case .enterHouse(let id):
+            enterHouse(id)
+        case .leaveHouse:
+            leaveHouse()
+        case .shop:
+            panelTabID = PanelTab.shop.rawValue
+        case .seedStall:
+            panelTabID = "seeds"
+        case .sellStall:
+            panelTabID = PanelTab.pantry.rawValue
+        case .look(let text):
+            showToast(text)
+            feedbackCount += 1
         }
     }
 

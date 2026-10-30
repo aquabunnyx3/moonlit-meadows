@@ -37,8 +37,6 @@ private struct FriendRow: View {
     var body: some View {
         let state = meadow.relationship(person.id)
         let newChapters = meadow.unseenEvents(for: person.id).count
-        let slot = person.slot(at: meadow.timeOfDay)
-
         CozyCard {
             HStack(spacing: 10) {
                 PersonPortrait(look: person.look(onDay: meadow.today), artID: person.id, size: 56, isBlushing: state.path == .romance)
@@ -51,7 +49,7 @@ private struct FriendRow: View {
                         if state.path == .romance { Text("💕") }
                         if state.path == .friendship { Text("🤝") }
                     }
-                    Text("\(meadow.stageTitle(of: person.id)) · \(slot.emoji) \(slot.place)")
+                    Text("\(meadow.stageTitle(of: person.id)) · \(meadow.whereaboutsText(of: person))")
                         .font(.caption)
                         .opacity(0.75)
                         .lineLimit(1)
@@ -119,7 +117,7 @@ struct PersonProfileScene: View {
                                 .font(.callout)
                                 .lineLimit(3)
                                 .minimumScaleFactor(0.8)
-                            Text("\(person.slot(at: meadow.timeOfDay).emoji) Now: \(person.slot(at: meadow.timeOfDay).place)")
+                            Text("Now: \(meadow.whereaboutsText(of: person))")
                                 .font(.caption.bold())
                                 .opacity(0.8)
                         }
@@ -562,7 +560,12 @@ struct PersonActionsPanel: View {
                 HStack {
                     Text("\(slot.time.emoji) \(slot.time.name)").font(.caption.bold()).frame(width: 90, alignment: .leading)
                     Text("\(slot.emoji) \(slot.place)").font(.caption)
-                    if slot.inMeadow { CozyTag(text: "In the meadow") }
+                    switch meadow.whereabouts(of: person.id, at: slot.time) {
+                    case .farm: CozyTag(text: "On your farm")
+                    case .town: CozyTag(text: "In the village")
+                    case .home: CozyTag(text: "At home")
+                    case .errand: EmptyView()
+                    }
                 }
             }
         }

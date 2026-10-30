@@ -215,7 +215,7 @@ private let june = Person(
     schedule: [
         ScheduleSlot(time: .dawn, place: "The Glasshouse", emoji: "🌿", inMeadow: false),
         ScheduleSlot(time: .day, place: "Meadow herb garden", emoji: "🌼", inMeadow: true),
-        ScheduleSlot(time: .dusk, place: "Village library", emoji: "📚", inMeadow: false),
+        ScheduleSlot(time: .dusk, place: "Reading by the village library", emoji: "📚", inMeadow: false),
         ScheduleSlot(time: .night, place: "Reading at home", emoji: "🕯️", inMeadow: false),
     ],
     activities: [
@@ -310,7 +310,7 @@ private let roz = Person(
     dislikedGifts: ["mint", "lettuce"],
     schedule: [
         ScheduleSlot(time: .dawn, place: "Sweet Burrow Bakery", emoji: "🥐", inMeadow: false),
-        ScheduleSlot(time: .day, place: "Meadow market stall", emoji: "🧺", inMeadow: true),
+        ScheduleSlot(time: .day, place: "Market stall in the village plaza", emoji: "🧺", inMeadow: false),
         ScheduleSlot(time: .dusk, place: "Meadow picnic blanket", emoji: "🍓", inMeadow: true),
         ScheduleSlot(time: .night, place: "Sweet Burrow, prepping dough", emoji: "🌙", inMeadow: false),
     ],
@@ -602,7 +602,7 @@ private let sol = Person(
     schedule: [
         ScheduleSlot(time: .dawn, place: "Patchwork Atelier", emoji: "🧵", inMeadow: false),
         ScheduleSlot(time: .day, place: "Busking in the meadow", emoji: "🎸", inMeadow: true),
-        ScheduleSlot(time: .dusk, place: "The bandstand", emoji: "🎶", inMeadow: true),
+        ScheduleSlot(time: .dusk, place: "Playing in the village plaza", emoji: "🎶", inMeadow: false),
         ScheduleSlot(time: .night, place: "Sewing by lamplight", emoji: "🪡", inMeadow: false),
     ],
     activities: [

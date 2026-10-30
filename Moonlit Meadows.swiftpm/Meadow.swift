@@ -132,6 +132,12 @@ final class Meadow {
     var recentSeeds: [String] = []
     /// The deck's action button opened someone's profile with Gift: start on their gifts.
     var profileOpensGifts = false
+    /// Off the farm: in the village or inside someone's house. `nil` on the farm. Not saved.
+    var town: TownPlace?
+    /// Where your farmer's feet are in the village or a house, as fractions of its picture.
+    var townSpot = TownLayout.arrival
+    /// Whoever was home when you walked into their house: they stay until you leave.
+    var heldHome: Set<String> = []
     /// The meadow art's aspect on screen, kept by the world scene so deck movement is even.
     var worldAspect: Double = 2096.0 / 1184.0
     /// The start screen shows when the app opens. Not saved.
@@ -335,6 +341,8 @@ final class Meadow {
         prepareNewContent()
         showsIntro = false
         isAtHome = false
+        town = nil
+        heldHome = []
         isSitting = false
         isSleeping = false
         isCustomizingFarmer = false

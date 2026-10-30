@@ -54,6 +54,7 @@ enum SelfTests {
         ("Hearts: dislikes, rude answers, and making up", warmthRules),
         ("Date scenes: videos play on dates and stay in the Journal", dateScenes),
         ("Control deck: D-pad walking, walls, and the action button", controlDeck),
+        ("Village: the walk there, houses, stalls, and who's where", village),
     ]
 
     static func runAll() -> [TestResult] {
@@ -481,6 +482,67 @@ enum SelfTests {
         meadow.homeSpot = Spot(x: 0.5, y: 0.7)
         meadow.deckSecondaryAction()
         c.expect(!meadow.isAtHome && meadow.farmerSpot?.y == Meadow.cottageDoorstep.y, "Leaving puts you on the doorstep")
+    }
+
+    private static func village(_ c: Check) {
+        c.expect(UIImage(named: "city-hub-map") != nil, "The village map is in the assets")
+        for (id, _) in TownLayout.interiors {
+            c.expect(UIImage(named: "interior-\(id)-v2") != nil, "interior-\(id)-v2 is in the assets")
+            c.expect(TownLayout.house(id) != nil, "\(id) has a house in the village")
+        }
+        let meadow = freshMeadow()
+        for person in Person.all {
+            c.expect(TownLayout.interiors[person.id] != nil, "\(person.name) has a room to visit")
+            for time in TimeOfDay.allCases where meadow.whereabouts(of: person.id, at: time) == .town {
+                c.expect(TownLayout.townSpots[person.id] != nil, "\(person.name) has a spot in the village")
+            }
+        }
+
+        meadow.isAtMainMenu = false
+        meadow.setFarmer(FarmerLook(gender: .female))
+        meadow.finishIntro()
+        meadow.holdDirection(DeckVector(x: 0, y: 1))
+        meadow.holdDirection(.zero)
+        meadow.farmerSpot = Spot(x: 0.5, y: 0.92)
+        meadow.deckFacing = DeckVector(x: 0, y: 1)
+        c.expect(meadow.deckTarget()?.kind == .goToTown, "The bottom of the farm leads to the village")
+        meadow.deckAction()
+        c.expect(meadow.town == .hub, "Going to the village")
+
+        // Every house door works, and the empty houses are just as enterable.
+        for house in TownLayout.houses where house.ownerID != nil {
+            meadow.townSpot = house.doorstep
+            meadow.deckFacing = DeckVector(x: 0, y: -1)
+            c.expect(meadow.deckTarget()?.kind == .enterHouse(house.id), "\(house.name)'s door says Enter")
+        }
+        meadow.townSpot = TownLayout.shopDoorstep
+        meadow.deckFacing = DeckVector(x: 0, y: -1)
+        c.expect(meadow.deckTarget()?.kind == .shop, "The shop door opens the shop")
+
+        meadow.townSpot = TownLayout.house("june")?.doorstep ?? TownLayout.arrival
+        meadow.deckFacing = DeckVector(x: 0, y: -1)
+        meadow.deckAction()
+        c.expect(meadow.town == .house("june"), "Entering June's house")
+        let juneHome = meadow.whereabouts(of: "june") == .home
+        c.expect((meadow.houseResident != nil) == juneHome, "June is inside exactly when she's home")
+        meadow.townSpot = Spot(x: 0.27, y: 0.62)
+        meadow.deckFacing = DeckVector(x: -1, y: 0)
+        let bed = meadow.deckTarget()
+        c.expect(bed?.verb == "Look at June's bed", "Beds in villagers' houses are Look, not Sleep, got \(bed?.verb ?? "nothing")")
+        meadow.townSpot = Spot(x: 0.68, y: 0.8)
+        meadow.deckFacing = DeckVector(x: 1, y: 0)
+        c.expect(meadow.deckTarget()?.kind == .leaveHouse, "The way out says Go Outside")
+        meadow.deckAction()
+        c.expect(meadow.town == .hub, "Back out in the village")
+
+        meadow.townSpot = TownLayout.arrival
+        meadow.deckFacing = DeckVector(x: 0, y: 1)
+        c.expect(meadow.deckTarget()?.kind == .goToFarm, "The bottom path leads home")
+        meadow.deckAction()
+        c.expect(meadow.town == nil && meadow.isDeckDriving, "Back on the farm")
+        for person in Person.all {
+            c.expect(!meadow.whereaboutsText(of: person).isEmpty, "\(person.name)'s whereabouts are written out")
+        }
     }
 
     private static func dateScenes(_ c: Check) {

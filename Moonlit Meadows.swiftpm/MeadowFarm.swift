@@ -322,6 +322,8 @@ extension Meadow {
     /// Goes to bed: the room goes dark, and `wakeUp` starts the next morning.
     func goToBed() {
         closeProfile()
+        town = nil
+        heldHome = []
         isAtHome = true
         isSitting = false
         isSleeping = true
