@@ -87,7 +87,7 @@ struct ItemIcon: View {
     var size: CGFloat = 24
 
     var body: some View {
-        if let art = UIImage(named: "crop-\(itemID)") {
+        if let art = UIImage(named: "crop-\(itemID)") ?? (itemID.hasPrefix("fish-") ? UIImage(named: itemID) : nil) {
             Image(uiImage: art)
                 .resizable()
                 .interpolation(.none)

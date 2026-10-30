@@ -1,0 +1,12 @@
+{
+  "images" : [
+    {
+      "filename" : "fish-opal-betta.png",
+      "idiom" : "universal"
+    }
+  ],
+  "info" : {
+    "author" : "xcode",
+    "version" : 1
+  }
+}

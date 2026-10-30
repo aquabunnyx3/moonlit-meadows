@@ -1,0 +1,12 @@
+{
+  "images" : [
+    {
+      "filename" : "fish-velvet-sturgeon.png",
+      "idiom" : "universal"
+    }
+  ],
+  "info" : {
+    "author" : "xcode",
+    "version" : 1
+  }
+}

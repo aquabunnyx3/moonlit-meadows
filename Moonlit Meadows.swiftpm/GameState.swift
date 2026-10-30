@@ -96,6 +96,8 @@ struct SaveData: Codable, Equatable {
     var lureSlotsBought = 0
     /// Breed ID → when it was first discovered. Never shrinks.
     var discovered: [String: Date] = [:]
+    /// Fish species ID → when it was first caught. Never shrinks.
+    var fishBook: [String: Date] = [:]
     var bunnies: [BunnyInstance] = []
     var habitatCapacity = 6
     var habitatUpgradesBought = 0
@@ -144,7 +146,7 @@ struct SaveData: Codable, Equatable {
 
     private enum CodingKeys: String, CodingKey {
         case version, coins, gems, level, xp, inventory, plots, decor, canLevel, lastSeen
-        case lureSlots, lureLevel, lureSlotsBought, discovered, bunnies, habitatCapacity, habitatUpgradesBought
+        case lureSlots, lureLevel, lureSlotsBought, discovered, fishBook, bunnies, habitatCapacity, habitatUpgradesBought
         case relationships, gifts
         case learnedRecipes, outfits, equippedOutfit, farmerGender, skinTone, hairStyle, hairColor, eyeColor, accessories, equippedAccessory, keepsakes, dateScenesSeen, hints
         case claimedMilestones, claimedAchievements, completedQuests, festivalCycles, cropsHarvested
@@ -169,6 +171,7 @@ struct SaveData: Codable, Equatable {
         lureLevel = try c.decodeIfPresent(Int.self, forKey: .lureLevel) ?? d.lureLevel
         lureSlotsBought = try c.decodeIfPresent(Int.self, forKey: .lureSlotsBought) ?? d.lureSlotsBought
         discovered = try c.decodeIfPresent([String: Date].self, forKey: .discovered) ?? d.discovered
+        fishBook = try c.decodeIfPresent([String: Date].self, forKey: .fishBook) ?? d.fishBook
         bunnies = try c.decodeIfPresent([BunnyInstance].self, forKey: .bunnies) ?? d.bunnies
         habitatCapacity = try c.decodeIfPresent(Int.self, forKey: .habitatCapacity) ?? d.habitatCapacity
         habitatUpgradesBought = try c.decodeIfPresent(Int.self, forKey: .habitatUpgradesBought) ?? d.habitatUpgradesBought

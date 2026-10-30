@@ -6,12 +6,14 @@ struct CollectionTab: View {
     @State private var section = CollectionSection.book
     @State private var rarityFilter: Rarity?
     @State private var selectedBreed: Breed?
+    @State private var selectedFish: Fish?
     @State private var giftingBunny: BunnyInstance?
     @State private var renamingBunny: BunnyInstance?
     @State private var newName = ""
 
     enum CollectionSection: String, CaseIterable {
         case book = "Book"
+        case fish = "Fish"
         case habitat = "Habitat"
         case milestones = "Milestones"
     }
@@ -27,12 +29,17 @@ struct CollectionTab: View {
 
             switch section {
             case .book: book
+            case .fish: fishBookView
             case .habitat: habitat
             case .milestones: milestones
             }
         }
         .sheet(item: $selectedBreed) { breed in
             BreedDetailView(meadow: meadow, breed: breed)
+                .presentationDetents([.medium, .large])
+        }
+        .sheet(item: $selectedFish) { fish in
+            FishDetailView(meadow: meadow, fish: fish)
                 .presentationDetents([.medium, .large])
         }
         .sheet(item: $giftingBunny) { bunny in
@@ -83,6 +90,35 @@ struct CollectionTab: View {
                             selectedBreed = breed
                         } label: {
                             BookCard(meadow: meadow, breed: breed)
+                        }
+                        .buttonStyle(SquishButtonStyle())
+                    }
+                }
+            }
+            .scrollIndicators(.hidden)
+        }
+    }
+
+    // MARK: Fish book
+
+    private var fishBookView: some View {
+        VStack(spacing: 8) {
+            HStack {
+                Text("🎣 \(meadow.fishBook.count) / \(Fish.all.count) caught")
+                    .font(.headline)
+                Spacer()
+                Text("From the Pond").font(.caption).opacity(0.7)
+            }
+            ProgressView(value: Double(meadow.fishBook.count), total: Double(Fish.all.count))
+                .tint(Palette.periwinkle)
+
+            ScrollView {
+                LazyVGrid(columns: [GridItem(.adaptive(minimum: 92), spacing: 8)], spacing: 8) {
+                    ForEach(Fish.all) { fish in
+                        Button {
+                            selectedFish = fish
+                        } label: {
+                            FishCard(meadow: meadow, fish: fish)
                         }
                         .buttonStyle(SquishButtonStyle())
                     }
@@ -442,5 +478,99 @@ struct GiftBunnyView: View {
             Text(bunny.isFavorite ? "\(bunny.name) is one of your starred favorites." : "This can't be undone.")
         }
         .presentsScenes(meadow)
+    }
+}
+
+// MARK: - Fish card + detail
+
+private struct FishCard: View {
+    let meadow: Meadow
+    let fish: Fish
+
+    var body: some View {
+        let known = meadow.fishBook[fish.id] != nil
+
+        VStack(spacing: 3) {
+            Group {
+                if let art = UIImage(named: "fish-\(fish.id)") {
+                    Image(uiImage: art)
+                        .resizable()
+                        .scaledToFit()
+                } else {
+                    Text("🐟").font(.system(size: 40))
+                }
+            }
+            .frame(height: 56)
+            .opacity(known ? 1 : 0.22)
+            .grayscale(known ? 0 : 1)
+            Text(known ? fish.name : "???")
+                .font(.caption2.bold())
+                .multilineTextAlignment(.center)
+                .lineLimit(2)
+                .frame(height: 26)
+            RarityTag(rarity: fish.rarity, showsName: false, height: 11)
+        }
+        .padding(6)
+        .frame(maxWidth: .infinity)
+        .background(Color(fish.rarity.color).opacity(known ? 0.35 : 0.12), in: .rect(cornerRadius: 16))
+        .foregroundStyle(Palette.cocoa)
+        .accessibilityElement(children: .ignore)
+        .accessibilityLabel(known ? "\(fish.name), \(fish.rarity.name)" : "Uncaught \(fish.rarity.name) fish")
+    }
+}
+
+/// A fish-book page: art, stars, description, value and when it was first caught.
+struct FishDetailView: View {
+    let meadow: Meadow
+    let fish: Fish
+
+    var body: some View {
+        let known = meadow.fishBook[fish.id] != nil
+
+        ScrollView {
+            VStack(spacing: 12) {
+                Group {
+                    if let art = UIImage(named: "fish-\(fish.id)") {
+                        Image(uiImage: art)
+                            .resizable()
+                            .scaledToFit()
+                    } else {
+                        Text("🐟").font(.system(size: 90))
+                    }
+                }
+                .frame(height: 150)
+                .frame(maxWidth: .infinity)
+                .padding(10)
+                .background(Color(fish.rarity.color).opacity(0.3), in: .rect(cornerRadius: 24))
+                .opacity(known ? 1 : 0.3)
+                .grayscale(known ? 0 : 1)
+
+                Text(known ? fish.name : "Uncaught Fish")
+                    .font(.title2.bold())
+                RarityTag(rarity: fish.rarity)
+
+                if known {
+                    Text(fish.description)
+                        .multilineTextAlignment(.center)
+                    Text("Sells for \(fish.value) 🪙 · Grows to \(fish.sizeCM.min)–\(fish.sizeCM.max) cm")
+                        .font(.callout)
+                        .opacity(0.8)
+                    if let date = meadow.fishBook[fish.id] {
+                        Text("First caught \(date.formatted(date: .abbreviated, time: .omitted)) · \(meadow.count(of: "fish-\(fish.id)")) in your Pantry")
+                            .font(.caption)
+                            .opacity(0.7)
+                    }
+                } else {
+                    Text("Catch one at the Pond to fill in this page.")
+                        .font(.callout)
+                        .opacity(0.7)
+                        .multilineTextAlignment(.center)
+                }
+            }
+            .padding(20)
+        }
+        .background(Palette.cream)
+        .foregroundStyle(Palette.cocoa)
+        .fontDesign(.rounded)
     }
 }

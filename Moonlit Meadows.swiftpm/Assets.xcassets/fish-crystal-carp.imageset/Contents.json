@@ -1,0 +1,12 @@
+{
+  "images" : [
+    {
+      "filename" : "fish-crystal-carp.png",
+      "idiom" : "universal"
+    }
+  ],
+  "info" : {
+    "author" : "xcode",
+    "version" : 1
+  }
+}

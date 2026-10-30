@@ -1,0 +1,12 @@
+{
+  "images" : [
+    {
+      "filename" : "fish-pond-minnow.png",
+      "idiom" : "universal"
+    }
+  ],
+  "info" : {
+    "author" : "xcode",
+    "version" : 1
+  }
+}

@@ -58,6 +58,8 @@ final class Meadow {
     var lureLevel = 0
     var lureSlotsBought = 0
     var discovered: [String: Date] = [:]
+    /// Fish species ID → first catch. The Fish collection book.
+    var fishBook: [String: Date] = [:]
     var bunnies: [BunnyInstance] = []
     var habitatCapacity = 6
     var habitatUpgradesBought = 0
@@ -290,6 +292,7 @@ final class Meadow {
         data.lureLevel = lureLevel
         data.lureSlotsBought = lureSlotsBought
         data.discovered = discovered
+        data.fishBook = fishBook
         data.bunnies = bunnies
         data.habitatCapacity = habitatCapacity
         data.habitatUpgradesBought = habitatUpgradesBought
@@ -392,6 +395,7 @@ final class Meadow {
         lureLevel = data.lureLevel
         lureSlotsBought = data.lureSlotsBought
         discovered = data.discovered.filter { Breed.find($0.key) != nil }
+        fishBook = data.fishBook.filter { Fish.find($0.key) != nil }
         bunnies = data.bunnies.filter { Breed.find($0.breedID) != nil }
         habitatCapacity = data.habitatCapacity
         habitatUpgradesBought = data.habitatUpgradesBought

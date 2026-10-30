@@ -97,6 +97,13 @@ enum SoundEffect: String, CaseIterable {
     case startSparkle = "sfx-start-sparkle"
     case glassDoorOpen = "sfx-glass-door-open"
     case glassDoorClose = "sfx-glass-door-close"
+    case fishCast = "sfx-fish-cast"
+    case fishBobber = "sfx-fish-bobber"
+    case fishBite = "sfx-fish-bite"
+    case fishReel = "sfx-fish-reel"
+    case fishCatch = "sfx-fish-catch"
+    case fishPerfect = "sfx-fish-perfect"
+    case fishEscape = "sfx-fish-escape"
 }
 
 // MARK: - Player

@@ -167,18 +167,23 @@ struct Recipe: Identifiable {
     }
 }
 
-/// Looks up crops and treats by ID, so the basket, gifts, quests, and lures treat them alike.
+/// Looks up crops, treats and fish by ID, so the basket, gifts, quests, and lures treat them alike.
 enum ItemInfo {
+    /// The fish behind a `fish-<species>` item ID, if it is one.
+    static func fish(_ id: String) -> Fish? {
+        id.hasPrefix("fish-") ? Fish.find(String(id.dropFirst(5))) : nil
+    }
+
     static func emoji(_ id: String) -> String {
-        Crop.find(id)?.emoji ?? Recipe.find(id)?.emoji ?? "❓"
+        Crop.find(id)?.emoji ?? Recipe.find(id)?.emoji ?? (fish(id) != nil ? "🐟" : "❓")
     }
 
     static func name(_ id: String) -> String {
-        Crop.find(id)?.name ?? Recipe.find(id)?.name ?? id
+        Crop.find(id)?.name ?? Recipe.find(id)?.name ?? fish(id)?.name ?? id
     }
 
     static func basePrice(_ id: String) -> Int {
-        Crop.find(id)?.sellPrice ?? Recipe.find(id)?.sellPrice ?? 1
+        Crop.find(id)?.sellPrice ?? Recipe.find(id)?.sellPrice ?? fish(id)?.value ?? 1
     }
 
     static func xp(_ id: String) -> Int {
@@ -190,9 +195,9 @@ enum ItemInfo {
     }
 
     static func exists(_ id: String) -> Bool {
-        Crop.find(id) != nil || Recipe.find(id) != nil
+        Crop.find(id) != nil || Recipe.find(id) != nil || fish(id) != nil
     }
 
     /// Every item ID, crops first, in shop order.
-    static let allIDs: [String] = Crop.all.map(\.id) + Recipe.all.map(\.id)
+    static let allIDs: [String] = Crop.all.map(\.id) + Recipe.all.map(\.id) + Fish.all.map { "fish-\($0.id)" }
 }
