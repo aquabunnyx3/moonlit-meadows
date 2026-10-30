@@ -1,22 +1,30 @@
 import SwiftUI
 
-/// Quests, the seasonal festival, achievements, wardrobe, keepsakes, and the self-check.
+/// Quests, the seasonal festival, achievements, wardrobe, keepsakes, how to play, and (for
+/// testing only, with developer mode on) the self-check.
 struct JournalTab: View {
     let meadow: Meadow
     @State private var section = JournalSection.quests
     @State private var testResults: [TestResult]?
+    @AppStorage("developerMode") private var developerMode = false
 
     enum JournalSection: String, CaseIterable {
         case quests = "Quests"
         case rewards = "Rewards"
         case wardrobe = "Wardrobe"
+        case help = "How to play"
         case checks = "Self-check"
+    }
+
+    /// The self-check is a testing tool: players never see it.
+    private var sections: [JournalSection] {
+        JournalSection.allCases.filter { $0 != .checks || developerMode }
     }
 
     var body: some View {
         VStack(spacing: 10) {
             Picker("Journal", selection: $section) {
-                ForEach(JournalSection.allCases, id: \.self) { section in
+                ForEach(sections, id: \.self) { section in
                     Text(section.rawValue)
                 }
             }
@@ -28,11 +36,15 @@ struct JournalTab: View {
                     case .quests: quests
                     case .rewards: rewards
                     case .wardrobe: wardrobe
+                    case .help: HowToPlay()
                     case .checks: checks
                     }
                 }
             }
             .scrollIndicators(.hidden)
+        }
+        .onChange(of: developerMode) { _, on in
+            if !on, section == .checks { section = .quests }
         }
     }
 
@@ -237,6 +249,35 @@ struct JournalTab: View {
                     }
                 }
                 .frame(maxWidth: .infinity, alignment: .leading)
+            }
+        }
+    }
+}
+
+/// A short guide to the game, in the Journal.
+private struct HowToPlay: View {
+    private let topics: [(emoji: String, title: String, text: String)] = [
+        ("🕹️", "Walking", "Hold the D-pad to walk; let go to stop. She faces the way she last walked, and the big pink button works whatever she's facing. Its name is written just above it."),
+        ("🌱", "Farming", "Walk up to a bed or a field plot. With the seed packet in hand, the button plants; when a crop is ready, it harvests. Tap the seed packet again to pick another seed. The carrot slot harvests and replants everything at once, and the watering can grows everything for gems."),
+        ("🎒", "Your things", "The grid in the middle of the deck is everything you're carrying. Tap something to hold it; the pink-framed bar below is your quick inventory. Sell crops and cook treats in the Pantry."),
+        ("🐰", "Bunnies", "Walk to the round fence around the lure basket and set a lure with crops and treats. Visitors arrive over time: greet them to meet new breeds. Every breed you discover goes in the Bunnies book."),
+        ("💬", "Friends", "Walk up to someone and press the button to talk, once a day. The blue button gives a gift. Some gifts they love, some they don't: rude answers and disliked gifts cost hearts, and you can apologize."),
+        ("💕", "Hearts and dating", "Talk, give gifts, do activities and finish story chapters to grow closer. At the crossroads you choose friendship or romance; dates unlock scenes you can watch again in the Journal."),
+        ("🏘️", "The village", "Walk down the path at the bottom of the farm. Every house has its own door, the shop and market stalls buy and sell, and villagers move around on their daily schedules. The Friends tab always says where everyone is."),
+        ("🌙", "Days", "A day lasts about 15 minutes. Go home and sleep in your bed to start the next one. Crops keep growing while you're away."),
+    ]
+
+    var body: some View {
+        ForEach(topics, id: \.title) { topic in
+            CozyCard {
+                HStack(alignment: .top, spacing: 10) {
+                    Text(topic.emoji).font(.title2)
+                    VStack(alignment: .leading, spacing: 3) {
+                        Text(topic.title).font(.subheadline.bold())
+                        Text(topic.text).font(.caption).opacity(0.85)
+                    }
+                    Spacer(minLength: 0)
+                }
             }
         }
     }

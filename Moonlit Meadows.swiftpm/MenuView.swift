@@ -284,6 +284,7 @@ private struct SettingsSheet: View {
     @AppStorage("laptopMode") private var isLaptopMode = false
     @AppStorage(MusicPlayer.volumeKey) private var musicVolume = MusicPlayer.defaultVolume
     @AppStorage("debugCollision") private var showsCollision = false
+    @AppStorage("developerMode") private var developerMode = false
     @State private var versionTaps = 0
     @Environment(\.dismiss) private var dismiss
 
@@ -314,14 +315,26 @@ private struct SettingsSheet: View {
                             versionTaps += 1
                             if versionTaps >= 5 {
                                 versionTaps = 0
-                                showsCollision.toggle()
+                                developerMode.toggle()
                             }
                         }
-                    if showsCollision {
-                        Text("Collision overlay is on: red is where your farmer can't walk. Tap the version 5 more times to hide it.")
+                    Text("Animations follow your device's Reduce Motion setting.")
+                        .font(.caption)
+                }
+                // Testing tools, only after tapping the version five times. Players never see these.
+                if developerMode {
+                    Section("Developer") {
+                        Toggle("Collision overlay", isOn: $showsCollision)
+                        Text("Red is where your farmer can't walk. The game's self-check is in the Journal while developer mode is on. Tap the version 5 times to turn developer mode off.")
                             .font(.caption)
                     }
-                    Text("Animations follow your device's Reduce Motion setting.")
+                }
+                Section("Credits") {
+                    LabeledContent("Made by", value: "Aqua Bunny Studios")
+                    LabeledContent("Created by", value: "Michelle")
+                    LabeledContent("Art, music and voices", value: "Merlin")
+                    LabeledContent("Programming", value: "Claude")
+                    Text("Thank you for playing Moonlit Meadows. 🌙🐰")
                         .font(.caption)
                 }
             }

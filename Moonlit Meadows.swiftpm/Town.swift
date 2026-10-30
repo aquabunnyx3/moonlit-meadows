@@ -635,7 +635,9 @@ enum TownArt {
 struct TownScene: View {
     let meadow: Meadow
     let place: TownPlace
-    @AppStorage("debugCollision") private var showsCollision = false
+    @AppStorage("debugCollision") private var collisionOn = false
+    @AppStorage("developerMode") private var developerMode = false
+    private var showsCollision: Bool { developerMode && collisionOn }
 
     private var art: String {
         switch place {

@@ -1,6 +1,6 @@
 # Moonlit Meadows 🌙🐰
 
-A cozy, pastel idle game for the iPhone Duo (and iPad). Grow crops, lure bunnies, discover all 50 breeds, and build friendships and romances with five villagers.
+A cozy, pastel idle game for the iPhone Duo (and iPad). Grow crops, lure bunnies, discover all 50 breeds, and build friendships and romances with seven villagers (plus three friends in the village). You walk your farmer around the farm, the village and everyone's homes with the D-pad.
 
 This is the expansion of **Bunny Meadows**. The farming, crafting, shop and idle systems are kept, and existing saves upgrade automatically.
 
@@ -11,7 +11,7 @@ This is the expansion of **Bunny Meadows**. The farming, crafting, shop and idle
 3. **Lure.** In the Lures tab, put 1–3 items in a basket. A visitor starts walking over: you see a silhouette approaching in the world, then a ❗️ when it arrives.
 4. **Discover.** Greet the visitor. New breeds get a sparkle animation and rewards, and go into your collection book. Repeat visits never count as new.
 5. **Collect and care.** Bunnies join your habitat (shown in the world). You can name them, star favorites, pet them daily and dress them in accessories. Every 3 bunnies become farm helpers.
-6. **Befriend.** Talk to June, Roz, Theo, Kai and Sol daily, give gifts, show them new breeds, do activities, and finish their quests.
+6. **Befriend.** Talk to June, Roz, Theo, Kai, Sol, Rowan and Silas daily (and Wes, Bree and Vi as friends), give gifts, show them new breeds, do activities, and finish their quests.
 7. **Gift bunnies.** A favorite breed gives a big relationship boost and a special scene. The bunny moves in with them, and your collection book keeps the breed.
 8. **Fall in love, or stay best friends.** Story chapters unlock at each stage. At Close Friend you choose a path, and you can change your mind later.
 9. **Complete the book.** Milestones at 5, 10, 20, 35 and 50 breeds unlock decor, habitat space, outfits, accessories, and a finale scene.
@@ -27,8 +27,12 @@ Discovery is driven by clues, not luck. Each breed has a lure recipe (shown in t
 | **Theo** (Theodore Marchetti), man | he/him | Dry-humored astronomer | Midnight, Comet, Galaxy |
 | **Kai** (Kai Nakamura-Hale), man | he/him | Sunny carpenter and hutch builder | Maple, Cocoa, Willowbark |
 | **Sol** (Sol Rivera), **gender-fluid** | they/them | Musician and tailor at the Patchwork Atelier | Cherry Blossom, Pixel, Aurora |
+| **Rowan** (Rowan Calloway), man | he/him | Blacksmith at the stone forge | Ember, Comet, Storm |
+| **Silas** (Silas Okafor-Bell), man | he/him | Beekeeper at the apiary cottage | Honeybun, Daffodil, Golden |
 
-Each character has a backstory, a personality, a daily schedule (they walk around the meadow when they're out), loved, liked and disliked gifts, three quests, three activities (which become dates on the romance path), two dialogue questions, and **8 story chapters**: three shared, three romance and two friendship. Sol's outfit changes day to day. It's part of their style, while their story is about music and finally putting down roots.
+Wes, Bree and Vi are friends you can grow close to (up to Close Friend), but not romance.
+
+Each character has a backstory, a personality, a daily schedule (they visit your farm, stand at their spot in the village, or stay home; the Friends tab says where), loved, liked and disliked gifts, three quests, three activities (which become dates on the romance path), two dialogue questions, and **8 story chapters**: three shared, three romance and two friendship. Sol's outfit changes day to day. It's part of their style, while their story is about music and finally putting down roots.
 
 **Relationship stages:** Stranger → Acquaintance → Friend → Close Friend → (crossroads) → Romantic Interest → Dating → Committed. On the friendship path, the last three are Best Friend → Kindred Spirit → Lifelong Friend.
 
@@ -95,8 +99,8 @@ Swift Playgrounds treats this whole folder as one app module.
 
 ## Testing
 
-Swift Playgrounds can't run XCTest, so the tests run inside the app: **Journal → Self-check → Run tests**. They use a separate in-memory test save and cover:
-- Catalog integrity (50 unique breeds and the rarity spread, 5 characters, 40 chapters, every reward reference)
+Swift Playgrounds can't run XCTest, so the tests run inside the app. Turn on developer mode first (Settings → tap **Version** 5 times), then **Journal → Self-check → Run tests**. Players never see the self-check or the collision overlay. They use a separate in-memory test save and cover:
+- Catalog integrity (50 unique breeds and the rarity spread, every character and chapter, every reward reference)
 - That **every breed can be discovered** by following clues alone
 - Starters, new versus repeat discoveries, and time-of-day conditions
 - Lure validation and cancelling

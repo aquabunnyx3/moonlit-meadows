@@ -126,6 +126,7 @@ struct ChatLayout {
         "kai-happy": rect(0.1665, 0.147, 0.3195, 0.4243),
         "kai-sad": rect(0.162, 0.1611, 0.324, 0.441),
         "kai-surprised": rect(0.1715, 0.147, 0.325, 0.4313),
+        "rowan-blush": rect(0.1696, 0.2899, 0.3299, 0.3542),
         "rowan-happy": rect(0.1592, 0.0122, 0.3413, 0.4323),
         "rowan-sad": rect(0.1637, 0.02, 0.3442, 0.4366),
         "rowan-surprised": rect(0.186, 0.0851, 0.3542, 0.4618),
@@ -249,7 +250,7 @@ struct ChatFaceParts {
         "silas": ChatFaceParts(eyes: rect(0.2059, 0.2031, 0.3051, 0.2431), mouth: rect(0.2292, 0.2899, 0.2867, 0.3385),
                      blinks: [.neutral, .sad, .surprised, .blush], openMouth: [.surprised, .happy]),
         "rowan": ChatFaceParts(eyes: rect(0.1895, 0.2483, 0.3051, 0.2891), mouth: rect(0.2207, 0.3472, 0.2902, 0.3906),
-                     blinks: [.neutral, .happy, .sad, .surprised], openMouth: [.surprised, .happy]),
+                     blinks: [.neutral, .happy, .sad, .surprised, .blush], openMouth: [.surprised, .happy]),
     ]
 
     /// Talk blip pitch per speaker (1 is the recorded pitch).

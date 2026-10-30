@@ -7,7 +7,9 @@ import UIKit
 /// and fades into morning.
 struct HomeScene: View {
     let meadow: Meadow
-    @AppStorage("debugCollision") private var showsCollision = false
+    @AppStorage("debugCollision") private var collisionOn = false
+    @AppStorage("developerMode") private var developerMode = false
+    private var showsCollision: Bool { developerMode && collisionOn }
     /// The sleeping bedroom (blanket breathing, Z's floating) is showing.
     @State private var showsSleepArt = false
     @State private var wantsToWake = false

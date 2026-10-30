@@ -67,7 +67,9 @@ struct WorldMap {
 /// meadow, characters stroll by on their schedules, and decor appears as you earn it.
 struct WorldScene: View {
     let meadow: Meadow
-    @AppStorage("debugCollision") private var showsCollision = false
+    @AppStorage("debugCollision") private var collisionOn = false
+    @AppStorage("developerMode") private var developerMode = false
+    private var showsCollision: Bool { developerMode && collisionOn }
 
     var body: some View {
         // While the farmer creator is open, the top screen previews your farmer.
