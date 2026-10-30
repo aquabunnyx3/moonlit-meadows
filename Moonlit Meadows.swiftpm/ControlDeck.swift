@@ -987,7 +987,8 @@ struct ControlDeck: View {
         let target = meadow.deckTarget()
         let enabled = target?.canAct ?? false
         return Button {
-            meadow.deckAction()
+            // While the welcome card is up, the action button is its "okay".
+            if meadow.showsWelcome { meadow.dismissWelcome() } else { meadow.deckAction() }
         } label: {
             ZStack {
                 DeckArt(name: "icon-action-button", fallback: Palette.rose)

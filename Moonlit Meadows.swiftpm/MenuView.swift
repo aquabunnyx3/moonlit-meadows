@@ -17,7 +17,10 @@ extension View {
                     MainMenuView(meadow: meadow)
                         .transition(.move(edge: .bottom).combined(with: .opacity))
                 } else if meadow.showsIntro {
-                    IntroView(meadow: meadow)
+                    IntroDramaView(meadow: meadow)
+                        .transition(.opacity)
+                } else if meadow.showsWelcome {
+                    WelcomeCard(meadow: meadow)
                         .transition(.opacity)
                 } else if meadow.isPaused {
                     PauseMenuView(meadow: meadow)

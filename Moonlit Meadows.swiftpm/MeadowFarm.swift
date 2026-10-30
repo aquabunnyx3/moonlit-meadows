@@ -456,6 +456,17 @@ extension Meadow {
 
     func finishIntro() {
         showsIntro = false
+        // The movie hands over to the welcome card on the farm, once per save.
+        if !introWelcomeSeen { showsWelcome = true }
+    }
+
+    /// Saying okay to the "Let's get started" card (its button, or the deck's
+    /// action button while it's up).
+    func dismissWelcome() {
+        guard showsWelcome else { return }
+        showsWelcome = false
+        introWelcomeSeen = true
+        save()
     }
 
     func equipOutfit(_ id: String) {

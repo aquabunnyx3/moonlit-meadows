@@ -131,6 +131,8 @@ struct SaveData: Codable, Equatable {
     var dayElapsed: Double = 0
     /// Items kept in the storage chest at home.
     var storage: [String: Int] = [:]
+    /// Whether the post-intro "Let's get started" card has been dismissed.
+    var introWelcomeSeen = false
 
     init() {}
 
@@ -140,7 +142,7 @@ struct SaveData: Codable, Equatable {
         case relationships, gifts
         case learnedRecipes, outfits, equippedOutfit, farmerGender, skinTone, hairStyle, hairColor, eyeColor, accessories, equippedAccessory, keepsakes, dateScenesSeen, hints
         case claimedMilestones, claimedAchievements, completedQuests, festivalCycles, cropsHarvested
-        case favoriteBunnyGifts, completionSceneSeen, dayNumber, firstDay, dayElapsed, storage
+        case favoriteBunnyGifts, completionSceneSeen, dayNumber, firstDay, dayElapsed, storage, introWelcomeSeen
     }
 
     init(from decoder: Decoder) throws {
@@ -193,6 +195,7 @@ struct SaveData: Codable, Equatable {
         firstDay = try c.decodeIfPresent(Int.self, forKey: .firstDay)
         dayElapsed = try c.decodeIfPresent(Double.self, forKey: .dayElapsed) ?? d.dayElapsed
         storage = try c.decodeIfPresent([String: Int].self, forKey: .storage) ?? d.storage
+        introWelcomeSeen = try c.decodeIfPresent(Bool.self, forKey: .introWelcomeSeen) ?? d.introWelcomeSeen
     }
 }
 

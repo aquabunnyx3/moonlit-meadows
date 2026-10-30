@@ -90,6 +90,7 @@ final class Meadow {
     var keepsakes: Set<String> = []
     var dateScenesSeen: Set<String> = []
     var hints: Set<String> = []
+    var introWelcomeSeen = false
 
     var claimedMilestones: Set<Int> = []
     var claimedAchievements: Set<String> = []
@@ -150,6 +151,8 @@ final class Meadow {
     var showsStartSparkle = false
     /// The opening story plays once, right after you make your farmer. Not saved.
     var showsIntro = false
+    /// The "Let's get started" card waiting over the farm after the intro movie. Not saved.
+    var showsWelcome = false
     /// The panel open on the control deck, by `PanelTab` raw value, or `seeds` or `storage`.
     /// `farm` means none: the D-pad, quick inventory and action button show.
     var panelTabID = "farm"
@@ -294,6 +297,7 @@ final class Meadow {
         data.keepsakes = keepsakes.sorted()
         data.dateScenesSeen = dateScenesSeen.sorted()
         data.hints = hints.sorted()
+        data.introWelcomeSeen = introWelcomeSeen
         data.claimedMilestones = claimedMilestones.sorted()
         data.claimedAchievements = claimedAchievements.sorted()
         data.completedQuests = completedQuests.sorted()
@@ -397,6 +401,7 @@ final class Meadow {
         keepsakes = Set(data.keepsakes)
         dateScenesSeen = Set(data.dateScenesSeen)
         hints = Set(data.hints)
+        introWelcomeSeen = data.introWelcomeSeen
         claimedMilestones = Set(data.claimedMilestones)
         claimedAchievements = Set(data.claimedAchievements)
         completedQuests = Set(data.completedQuests)
