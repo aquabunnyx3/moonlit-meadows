@@ -68,6 +68,9 @@ private struct BackgroundMusic: ViewModifier {
             .onChange(of: volume, initial: true) { _, value in
                 MusicPlayer.shared.volume = Float(value)
             }
+            .onChange(of: meadow.glassDoorOpen) { _, open in
+                MusicPlayer.shared.playEffect(open ? .glassDoorOpen : .glassDoorClose)
+            }
             .onChange(of: meadow.isNightBell) { _, isNight in
                 // A bell when day turns to night and night to day, not on menus or the intro.
                 guard !meadow.isAtMainMenu && !meadow.showsIntro && !meadow.showsFarmerCreator else { return }
@@ -92,6 +95,8 @@ enum SoundEffect: String, CaseIterable {
     case dayBell = "sfx-day-bell"
     case nightBell = "sfx-night-bell"
     case startSparkle = "sfx-start-sparkle"
+    case glassDoorOpen = "sfx-glass-door-open"
+    case glassDoorClose = "sfx-glass-door-close"
 }
 
 // MARK: - Player

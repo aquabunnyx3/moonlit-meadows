@@ -136,6 +136,8 @@ final class Meadow {
     var town: TownPlace?
     /// Where your farmer's feet are in the village or a house, as fractions of its picture.
     var townSpot = TownLayout.arrival
+    /// A room's glass door is slid open because you're standing by it. Not saved.
+    var glassDoorOpen = false
     /// Whoever was home when you walked into their house: they stay until you leave.
     var heldHome: Set<String> = []
     /// The meadow art's aspect on screen, kept by the world scene so deck movement is even.

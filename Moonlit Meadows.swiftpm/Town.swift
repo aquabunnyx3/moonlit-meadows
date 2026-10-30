@@ -58,11 +58,41 @@ struct TownInterior {
     /// Where the person who lives there stands when they're home.
     let resident: Spot
     let things: [RoomThing]
+    /// A glass door to an outdoor area (June's patio, Silas's porch), drawn in the room's art.
+    var glassDoor: GlassDoor? = nil
 
     /// Walking rules for this room: your farmer is drawn big indoors.
     var collision: SceneCollision {
         SceneCollision(name: name, bounds: bounds, blocks: blocks, figure: 0.34, reach: 0.06)
     }
+}
+
+/// A sliding glass door in a room's side wall. It's never solid: walking into its approach
+/// area slides the panels open (with a sound), and leaving it slides them shut. Nobody else
+/// uses these doors.
+struct GlassDoor {
+    struct Panel {
+        /// The panel cut from the room's art, drawn exactly where it is in the picture.
+        let art: String
+        let rect: DeckRect
+        /// How far it slides when open, as fractions of the picture.
+        let slide: Spot
+    }
+
+    let approach: DeckRect
+    /// The doorway's outline; the panels slide out of sight past its edges.
+    let opening: [Spot]
+    /// The doorway with the panels gone (what's seen through it when open).
+    let openArt: String
+    let panels: [Panel]
+
+    static let slideSeconds = 0.35
+}
+
+/// Which picture each house's room uses: June's and Silas's have their glass doors.
+enum InteriorArt {
+    static let names: [String: String] = ["june": "interior-june-v3", "silas": "interior-silas-v7"]
+    static func name(_ id: String) -> String { names[id] ?? "interior-\(id)-v2" }
 }
 
 enum TownLayout {
@@ -248,20 +278,40 @@ enum TownLayout {
     // Each room on its own, so the compiler checks them one at a time.
     static let juneRoom = TownInterior(
         name: "June's room",
-        bounds: DeckRect(minX: 0.1, minY: 0.5, maxX: 0.72, maxY: 0.94),
-        blocks: [BlockZone(label: "June's room: bed", rect: DeckRect(minX: 0.08, minY: 0.38, maxX: 0.24, maxY: 0.85)),
-                 BlockZone(label: "June's room: seedling rack", rect: DeckRect(minX: 0.49, minY: 0.42, maxX: 0.7, maxY: 0.68)),
-                 BlockZone(label: "June's room: worktable", rect: DeckRect(minX: 0.33, minY: 0.77, maxX: 0.56, maxY: 0.95))],
-        entrance: Spot(x: 0.64, y: 0.78), exit: DeckRect(minX: 0.7, minY: 0.6, maxX: 0.8, maxY: 0.94),
-        resident: Spot(x: 0.4, y: 0.62),
+        bounds: DeckRect(minX: 0.08, minY: 0.4, maxX: 0.99, maxY: 0.995),
+        blocks: [BlockZone(label: "June's room: back wall", rect: DeckRect(minX: 0.06, minY: 0, maxX: 0.665, maxY: 0.5)),
+                 BlockZone(label: "June's room: left wall", rect: DeckRect(minX: 0, minY: 0, maxX: 0.09, maxY: 1)),
+                 BlockZone(label: "June's room: bed", rect: DeckRect(minX: 0.08, minY: 0.38, maxX: 0.245, maxY: 0.86)),
+                 BlockZone(label: "June's room: seedling shelf", rect: DeckRect(minX: 0.485, minY: 0.43, maxX: 0.685, maxY: 0.69)),
+                 BlockZone(label: "June's room: worktable", rect: DeckRect(minX: 0.32, minY: 0.77, maxX: 0.545, maxY: 0.95)),
+                 BlockZone(label: "June's room: wall above the glass door", rect: DeckRect(minX: 0.64, minY: 0, maxX: 0.76, maxY: 0.56)),
+                 BlockZone(label: "June's patio: planter box", rect: DeckRect(minX: 0.74, minY: 0.3, maxX: 0.875, maxY: 0.43)),
+                 BlockZone(label: "June's patio: lavender (top)", rect: DeckRect(minX: 0.875, minY: 0.1, maxX: 1, maxY: 0.42)),
+                 BlockZone(label: "June's patio: raised bed", rect: DeckRect(minX: 0.865, minY: 0.42, maxX: 1, maxY: 0.58)),
+                 BlockZone(label: "June's patio: potted herb", rect: DeckRect(minX: 0.855, minY: 0.52, maxX: 0.91, maxY: 0.62)),
+                 BlockZone(label: "June's patio: herb bed", rect: DeckRect(minX: 0.9, minY: 0.58, maxX: 1, maxY: 0.76)),
+                 BlockZone(label: "June's patio: lavender (bottom)", rect: DeckRect(minX: 0.875, minY: 0.76, maxX: 1, maxY: 1))],
+        entrance: Spot(x: 0.28, y: 0.91), exit: DeckRect(minX: 0.1, minY: 0.955, maxX: 0.32, maxY: 1),
+        resident: Spot(x: 0.4, y: 0.66),
         things: [
-            RoomThing(name: "June's bed", zone: DeckRect(minX: 0.08, minY: 0.38, maxX: 0.24, maxY: 0.85),
+            RoomThing(name: "June's bed", zone: DeckRect(minX: 0.08, minY: 0.38, maxX: 0.245, maxY: 0.86),
                       text: "A flowery quilt, perfectly tucked. A pressed clover is tucked under the pillow."),
-            RoomThing(name: "Seedling rack", zone: DeckRect(minX: 0.49, minY: 0.42, maxX: 0.7, maxY: 0.68),
+            RoomThing(name: "Seedling shelf", zone: DeckRect(minX: 0.485, minY: 0.43, maxX: 0.685, maxY: 0.69),
                       text: "Rows of seedlings, each with a tiny handwritten label. One just says “hopeful”."),
-            RoomThing(name: "Worktable", zone: DeckRect(minX: 0.33, minY: 0.77, maxX: 0.56, maxY: 0.95),
+            RoomThing(name: "Worktable", zone: DeckRect(minX: 0.32, minY: 0.77, maxX: 0.545, maxY: 0.95),
                       text: "A mortar and pestle, a jar of dried petals, and a fresh bundle of rosemary. It smells like tea."),
-        ])
+            RoomThing(name: "Windowsill herbs", zone: DeckRect(minX: 0.25, minY: 0, maxX: 0.48, maxY: 0.5),
+                      text: "Rosemary, mint and chamomile in a row of little pots, with bundles drying overhead."),
+            RoomThing(name: "Herb planters", zone: DeckRect(minX: 0.855, minY: 0.42, maxX: 1, maxY: 0.76),
+                      text: "June's patio garden: thyme, sage and lemon balm, every one labeled."),
+            RoomThing(name: "Lavender", zone: DeckRect(minX: 0.875, minY: 0.76, maxX: 1, maxY: 1),
+                      text: "Great clouds of lavender. Bees bump lazily from flower to flower."),
+        ],
+        glassDoor: GlassDoor(approach: DeckRect(minX: 0.6, minY: 0.55, maxX: 0.82, maxY: 1),
+                             opening: [Spot(x: 0.683, y: 0.305), Spot(x: 0.746, y: 0.37), Spot(x: 0.749, y: 0.965), Spot(x: 0.729, y: 0.965)],
+                             openArt: "door-june-open",
+                             panels: [GlassDoor.Panel(art: "door-june-panel", rect: DeckRect(minX: 0.6827, minY: 0.3049, maxX: 0.749, maxY: 0.9654),
+                                                      slide: Spot(x: -0.05, y: -0.08))]))
     static let rozRoom = TownInterior(
         name: "Roz's bakery",
         bounds: DeckRect(minX: 0.1, minY: 0.58, maxX: 0.95, maxY: 0.94),
@@ -419,26 +469,37 @@ enum TownLayout {
         ])
     static let silasRoom = TownInterior(
         name: "Silas's cottage",
-        bounds: DeckRect(minX: 0.05, minY: 0.6, maxX: 0.95, maxY: 0.95),
-        blocks: [BlockZone(label: "Silas's cottage: bed", rect: DeckRect(minX: 0.03, minY: 0.4, maxX: 0.22, maxY: 0.7)),
-                 BlockZone(label: "Silas's cottage: honey shelves", rect: DeckRect(minX: 0.23, minY: 0, maxX: 0.52, maxY: 0.58)),
-                 BlockZone(label: "Silas's cottage: honey pot table", rect: DeckRect(minX: 0.3, minY: 0.48, maxX: 0.44, maxY: 0.7)),
-                 BlockZone(label: "Silas's cottage: porch wall and curtain", rect: DeckRect(minX: 0.5, minY: 0, maxX: 0.61, maxY: 0.85)),
-                 BlockZone(label: "Silas's cottage: beehives", rect: DeckRect(minX: 0.71, minY: 0.38, maxX: 0.84, maxY: 0.66)),
-                 BlockZone(label: "Silas's cottage: porch planters (right)", rect: DeckRect(minX: 0.84, minY: 0.4, maxX: 1, maxY: 1)),
-                 BlockZone(label: "Silas's cottage: porch planter (left)", rect: DeckRect(minX: 0.61, minY: 0.38, maxX: 0.7, maxY: 0.52))],
-        entrance: Spot(x: 0.3, y: 0.88), exit: DeckRect(minX: 0.2, minY: 0.94, maxX: 0.45, maxY: 1),
-        resident: Spot(x: 0.47, y: 0.76),
+        bounds: DeckRect(minX: 0.02, minY: 0.45, maxX: 0.95, maxY: 0.995),
+        blocks: [BlockZone(label: "Silas's cottage: back wall", rect: DeckRect(minX: 0, minY: 0, maxX: 0.56, maxY: 0.5)),
+                 BlockZone(label: "Silas's cottage: bed", rect: DeckRect(minX: 0.02, minY: 0.32, maxX: 0.225, maxY: 0.69)),
+                 BlockZone(label: "Silas's cottage: honey pot table", rect: DeckRect(minX: 0.3, minY: 0.47, maxX: 0.44, maxY: 0.72)),
+                 BlockZone(label: "Silas's cottage: wall and curtain", rect: DeckRect(minX: 0.5, minY: 0, maxX: 0.56, maxY: 0.62)),
+                 BlockZone(label: "Silas's cottage: wall beside the glass doors", rect: DeckRect(minX: 0.555, minY: 0, maxX: 0.612, maxY: 0.86)),
+                 BlockZone(label: "Silas's porch: back of the porch", rect: DeckRect(minX: 0.6, minY: 0, maxX: 0.95, maxY: 0.6)),
+                 BlockZone(label: "Silas's porch: beehive", rect: DeckRect(minX: 0.665, minY: 0.4, maxX: 0.755, maxY: 0.63)),
+                 BlockZone(label: "Silas's porch: flower box", rect: DeckRect(minX: 0.8, minY: 0.6, maxX: 0.925, maxY: 0.82)),
+                 BlockZone(label: "Silas's porch: right post", rect: DeckRect(minX: 0.925, minY: 0, maxX: 1, maxY: 1))],
+        entrance: Spot(x: 0.3, y: 0.88), exit: DeckRect(minX: 0.18, minY: 0.955, maxX: 0.45, maxY: 1),
+        resident: Spot(x: 0.47, y: 0.8),
         things: [
-            RoomThing(name: "Honey shelves", zone: DeckRect(minX: 0.23, minY: 0.3, maxX: 0.5, maxY: 0.6),
+            RoomThing(name: "Honey shelves", zone: DeckRect(minX: 0.23, minY: 0.05, maxX: 0.5, maxY: 0.5),
                       text: "Jar after jar of golden honey, glowing in the light. Each lid is labeled with a flower."),
-            RoomThing(name: "Honey pot", zone: DeckRect(minX: 0.3, minY: 0.48, maxX: 0.44, maxY: 0.72),
+            RoomThing(name: "Honey pot", zone: DeckRect(minX: 0.3, minY: 0.47, maxX: 0.44, maxY: 0.74),
                       text: "A pot of honey with the dipper still in it, and two cups. Chamomile, by the smell."),
-            RoomThing(name: "Beehives", zone: DeckRect(minX: 0.71, minY: 0.38, maxX: 0.84, maxY: 0.68),
-                      text: "Two white hives, humming softly. A bee lands on your sleeve, looks at you, and leaves."),
-            RoomThing(name: "Silas's bed", zone: DeckRect(minX: 0.03, minY: 0.4, maxX: 0.22, maxY: 0.72),
+            RoomThing(name: "Beehive", zone: DeckRect(minX: 0.66, minY: 0.4, maxX: 0.76, maxY: 0.64),
+                      text: "A white hive, humming softly. A bee lands on your sleeve, looks at you, and leaves."),
+            RoomThing(name: "Flower box", zone: DeckRect(minX: 0.8, minY: 0.6, maxX: 0.925, maxY: 0.82),
+                      text: "Lavender and pink blossoms, planted just for the bees."),
+            RoomThing(name: "Silas's bed", zone: DeckRect(minX: 0.02, minY: 0.32, maxX: 0.225, maxY: 0.71),
                       text: "A honeycomb quilt in sunny yellow. Very on brand."),
-        ])
+        ],
+        glassDoor: GlassDoor(approach: DeckRect(minX: 0.5, minY: 0.6, maxX: 0.95, maxY: 1),
+                             opening: [Spot(x: 0.6069, y: 0.2897), Spot(x: 0.9365, y: 0.2897), Spot(x: 0.9365, y: 0.9679), Spot(x: 0.6069, y: 0.9679)],
+                             openArt: "door-silas-open",
+                             panels: [GlassDoor.Panel(art: "door-silas-left", rect: DeckRect(minX: 0.6069, minY: 0.2897, maxX: 0.7653, maxY: 0.9679),
+                                                      slide: Spot(x: -0.16, y: 0)),
+                                      GlassDoor.Panel(art: "door-silas-right", rect: DeckRect(minX: 0.7653, minY: 0.2897, maxX: 0.9365, maxY: 0.9679),
+                                                      slide: Spot(x: 0.172, y: 0))]))
 
     static let interiors: [String: TownInterior] = [
         "june": juneRoom,
@@ -484,12 +545,14 @@ extension Meadow {
         heldHome = whereabouts(of: id) == .home && hubWalker(id) == nil ? [id] : []
         town = .house(id)
         townSpot = room.entrance
+        glassDoorOpen = false
         faceUp()
     }
 
     func leaveHouse() {
         guard case .house(let id) = town else { return }
         heldHome = []
+        glassDoorOpen = false
         town = .hub
         townSpot = TownLayout.house(id)?.doorstep ?? TownLayout.arrival
         farmerFacing = .front
@@ -642,7 +705,7 @@ struct TownScene: View {
     private var art: String {
         switch place {
         case .hub: return "city-hub-map"
-        case .house(let id): return "interior-\(id)-v2"
+        case .house(let id): return InteriorArt.name(id)
         }
     }
 
@@ -664,6 +727,10 @@ struct TownScene: View {
                             .interpolation(.none)
                             .frame(width: map.rect.width, height: map.rect.height)
                             .position(x: map.rect.midX, y: map.rect.midY)
+                    }
+
+                    if case .house(let id) = place, let door = TownLayout.interiors[id]?.glassDoor {
+                        GlassDoorView(door: door, rect: map.rect, isOpen: meadow.glassDoorOpen)
                     }
 
                     // The way home, at the bottom path.
@@ -771,6 +838,62 @@ struct TownScene: View {
             PauseButton(meadow: meadow)
         }
         .foregroundStyle(Palette.ink)
+    }
+}
+
+/// A glass door's panels, sliding open over the doorway behind them. Closed, it looks exactly
+/// like the room's art.
+private struct GlassDoorView: View {
+    let door: GlassDoor
+    let rect: CGRect
+    let isOpen: Bool
+
+    var body: some View {
+        let w = rect.width, h = rect.height
+        ZStack(alignment: .topLeading) {
+            if let open = TownArt.image(door.openArt), let first = door.panels.first {
+                // The doorway itself, under the panels.
+                let all = door.panels.map(\.rect)
+                let box = DeckRect(minX: all.map(\.minX).min() ?? first.rect.minX, minY: all.map(\.minY).min() ?? first.rect.minY,
+                                   maxX: all.map(\.maxX).max() ?? first.rect.maxX, maxY: all.map(\.maxY).max() ?? first.rect.maxY)
+                Image(uiImage: open)
+                    .resizable()
+                    .interpolation(.none)
+                    .frame(width: (box.maxX - box.minX) * w, height: (box.maxY - box.minY) * h)
+                    .offset(x: box.minX * w, y: box.minY * h)
+            }
+            ForEach(Array(door.panels.enumerated()), id: \.offset) { _, panel in
+                if let image = TownArt.image(panel.art) {
+                    Image(uiImage: image)
+                        .resizable()
+                        .interpolation(.none)
+                        .frame(width: (panel.rect.maxX - panel.rect.minX) * w, height: (panel.rect.maxY - panel.rect.minY) * h)
+                        .offset(x: (panel.rect.minX + (isOpen ? panel.slide.x : 0)) * w,
+                                y: (panel.rect.minY + (isOpen ? panel.slide.y : 0)) * h)
+                }
+            }
+        }
+        .frame(width: w, height: h, alignment: .topLeading)
+        .clipShape(DoorwayShape(points: door.opening))
+        .animation(.easeInOut(duration: GlassDoor.slideSeconds), value: isOpen)
+        .position(x: rect.midX, y: rect.midY)
+        .allowsHitTesting(false)
+        .accessibilityHidden(true)
+    }
+}
+
+private struct DoorwayShape: Shape {
+    let points: [Spot]
+
+    func path(in rect: CGRect) -> Path {
+        Path { path in
+            guard let first = points.first else { return }
+            path.move(to: CGPoint(x: rect.minX + first.x * rect.width, y: rect.minY + first.y * rect.height))
+            for spot in points.dropFirst() {
+                path.addLine(to: CGPoint(x: rect.minX + spot.x * rect.width, y: rect.minY + spot.y * rect.height))
+            }
+            path.closeSubpath()
+        }
     }
 }
 

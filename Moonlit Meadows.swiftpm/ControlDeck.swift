@@ -311,6 +311,11 @@ extension Meadow {
         let moved = (((x - from.x) * SceneCollision.aspect) * ((x - from.x) * SceneCollision.aspect) + (y - from.y) * (y - from.y)).squareRoot()
         walkerSpot = Spot(x: x, y: y)
         walkedFigures += moved / scene.figure
+        // Glass doors slide open while you're by them, and shut when you walk away.
+        if case .house(let id)? = town, let door = TownLayout.interiors[id]?.glassDoor {
+            let near = door.approach.contains(x, y)
+            if near != glassDoorOpen { glassDoorOpen = near }
+        }
         // Walking down off the end of the path between the farm and the village takes you there.
         if d.y > 0 {
             if town == .hub, TownLayout.farmExitPath.contains(x, y) {

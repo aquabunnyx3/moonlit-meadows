@@ -504,7 +504,7 @@ enum SelfTests {
     private static func village(_ c: Check) {
         c.expect(TownArt.image("city-hub-map") != nil, "The village map is in the assets")
         for (id, _) in TownLayout.interiors {
-            c.expect(TownArt.image("interior-\(id)-v2") != nil, "interior-\(id)-v2 is in the assets")
+            c.expect(TownArt.image(InteriorArt.name(id)) != nil, "\(InteriorArt.name(id)) is in the assets")
             c.expect(TownLayout.house(id) != nil, "\(id) has a house in the village")
         }
         let meadow = freshMeadow()
@@ -560,6 +560,25 @@ enum SelfTests {
         c.expect(meadow.deckTarget()?.verb == "Exit", "The way out says Exit")
         meadow.deckAction()
         c.expect(meadow.town == .hub, "Back out in the village")
+
+        // June's glass door to her patio: never solid, opens as you walk up, shuts as you leave.
+        meadow.townSpot = TownLayout.house("june")?.doorstep ?? TownLayout.arrival
+        meadow.deckFacing = DeckVector(x: 0, y: -1)
+        meadow.deckAction()
+        if let door = TownLayout.interiors["june"]?.glassDoor {
+            meadow.townSpot = Spot(x: 0.62, y: 0.8)
+            meadow.holdDirection(DeckVector(x: 1, y: 0))
+            for _ in 0..<8 { meadow.deckStep(dt: 1.0 / 30) }
+            c.expect(meadow.glassDoorOpen, "Walking up to June's glass door slides it open")
+            for _ in 0..<60 { meadow.deckStep(dt: 1.0 / 30) }
+            c.expect(meadow.townSpot.x > 0.76, "You can walk through the glass door onto the patio")
+            meadow.holdDirection(DeckVector(x: 0, y: -1))
+            for _ in 0..<60 { meadow.deckStep(dt: 1.0 / 30) }
+            meadow.holdDirection(.zero)
+            c.expect(!door.approach.contains(meadow.townSpot.x, meadow.townSpot.y) && !meadow.glassDoorOpen,
+                     "Walking away slides it shut")
+        }
+        meadow.leaveHouse()
 
         meadow.townSpot = TownLayout.arrival
         meadow.deckFacing = DeckVector(x: 0, y: 1)
