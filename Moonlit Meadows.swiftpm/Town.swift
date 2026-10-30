@@ -75,13 +75,13 @@ enum TownLayout {
     static let rightLane = 0.86
 
     static let houses: [TownHouse] = [
-        TownHouse(id: "library", name: "the Village Library", doorstep: Spot(x: 0.125, y: 0.245)),
+        TownHouse(id: "wes", name: "Wes's Cottage", doorstep: Spot(x: 0.125, y: 0.245)),
         TownHouse(id: "june", name: "June's Glasshouse", doorstep: Spot(x: 0.432, y: 0.215)),
         TownHouse(id: "roz", name: "the Sweet Burrow", doorstep: Spot(x: 0.665, y: 0.245)),
         TownHouse(id: "theo", name: "Theo's Observatory", doorstep: Spot(x: 0.89, y: 0.245)),
-        TownHouse(id: "bree", name: "Bree's Bramble Cottage", doorstep: Spot(x: 0.10, y: 0.6)),
+        TownHouse(id: "library", name: "the Village Library", doorstep: Spot(x: 0.10, y: 0.6)),
         TownHouse(id: "kai", name: "Kai's Woodshop", doorstep: Spot(x: 0.925, y: 0.63)),
-        TownHouse(id: "wes", name: "Wes's Cottage", doorstep: Spot(x: 0.095, y: 0.95)),
+        TownHouse(id: "bree", name: "Bree's Bramble Cottage", doorstep: Spot(x: 0.095, y: 0.95)),
         TownHouse(id: "vi", name: "Vi's Flower Cottage", doorstep: Spot(x: 0.265, y: 0.96)),
         TownHouse(id: "silas", name: "Silas's Apiary Cottage", doorstep: Spot(x: 0.44, y: 0.955)),
         TownHouse(id: "rowan", name: "Rowan's Forge", doorstep: Spot(x: 0.69, y: 0.95)),
@@ -136,7 +136,7 @@ enum TownLayout {
 
     /// Each villager's favorite spot in the village, for when their schedule brings them here.
     static let townSpots: [String: (spot: Spot, label: String)] = [
-        "june": (Spot(x: 0.16, y: 0.27), "Reading outside the village library"),
+        "june": (Spot(x: 0.165, y: 0.625), "Reading outside the village library"),
         "roz": (Spot(x: 0.555, y: 0.49), "Running the market stall in the plaza"),
         "sol": (Spot(x: 0.45, y: 0.6), "Playing guitar in the plaza"),
         "vi": (Spot(x: 0.355, y: 0.68), "Selling flowers at the plaza stall"),
