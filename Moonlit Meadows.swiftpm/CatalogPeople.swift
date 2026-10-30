@@ -126,6 +126,20 @@ struct Quest: Identifiable {
     let rewards: [Reward]
 }
 
+extension Quest {
+    /// Quests that belong to the farm itself, not a person. They sit at the top of the
+    /// Journal until they're done. The tour's send-off promises "Settle In" by name,
+    /// so it has to really live here (Michelle caught that it didn't, 2026-10-30).
+    static let starter: [Quest] = [
+        Quest(id: "settle-in", personID: nil, season: nil, title: "Settle In",
+              description: "Welcome to Moonlit Meadows! Harvest 3 carrots from your plots and hand them in here — a proper first harvest to settle in with.",
+              requiredStage: .stranger,
+              items: [ItemCount(itemID: "carrot", count: 3)],
+              points: 0,
+              rewards: [.coins(60), .gems(2)]),
+    ]
+}
+
 struct DailyLines {
     /// Stranger and Acquaintance.
     let early: [String]

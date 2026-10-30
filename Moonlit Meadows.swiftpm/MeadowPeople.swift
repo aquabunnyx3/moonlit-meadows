@@ -669,7 +669,8 @@ extension Meadow {
     // MARK: Quests
 
     var availableQuests: [Quest] {
-        var quests = Person.all.flatMap(\.quests).filter {
+        var quests = Quest.starter.filter { !completedQuests.contains($0.id) }
+        quests += Person.all.flatMap(\.quests).filter {
             !completedQuests.contains($0.id) && stage(of: $0.personID ?? "") >= $0.requiredStage
                 && !isDistant($0.personID ?? "")
         }
