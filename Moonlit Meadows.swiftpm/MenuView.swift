@@ -42,6 +42,9 @@ private struct MenuLayout<Buttons: View>: View {
     let title: String
     /// How many buttons, so they're sized to all fit on the panel.
     var rows = 4
+    /// The picture on top. The main menu's has the game's name painted in, so it shows no title.
+    var art = "menu-art"
+    var showsTitle = true
     var dimmed = false
     @ViewBuilder let buttons: () -> Buttons
 
@@ -54,7 +57,7 @@ private struct MenuLayout<Buttons: View>: View {
             VStack(spacing: gap) {
                 ZStack {
                     Palette.night
-                    if let art = UIImage(named: "menu-art") {
+                    if let art = UIImage(named: art) ?? UIImage(named: "menu-art") {
                         Image(uiImage: art)
                             .resizable()
                             .interpolation(.none)
@@ -70,11 +73,13 @@ private struct MenuLayout<Buttons: View>: View {
                 let spacing: CGFloat = 10
                 let buttonHeight = max(36, min(62, (panel - 40 - 48 - spacing * CGFloat(rows)) / CGFloat(rows)))
                 VStack(spacing: spacing) {
+                    if showsTitle {
                     Text(title)
                         .font(.system(size: min(34, buttonHeight * 0.6), weight: .heavy, design: .rounded))
                         .foregroundStyle(Palette.lilac)
                         .shadow(color: .white, radius: 0, x: 2, y: 2)
                         .shadow(color: Palette.ink.opacity(0.5), radius: 0, x: -1, y: -1)
+                    }
                     buttons()
                         .environment(\.menuButtonHeight, buttonHeight)
                 }
@@ -168,7 +173,7 @@ struct MainMenuView: View {
     @State private var showsFeedback = false
 
     var body: some View {
-        MenuLayout(title: "Moonlit Meadows", rows: 4) {
+        MenuLayout(title: "Moonlit Meadows", rows: 4, art: "menu-art-title", showsTitle: UIImage(named: "menu-art-title") == nil) {
             MenuButton(title: "New Game", icon: "menu-newgame", fill: MenuColors.pink, edge: MenuColors.pinkEdge) {
                 if meadow.hasSavedGame { confirmsNewGame = true } else { startNewGame() }
             }
