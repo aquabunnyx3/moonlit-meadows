@@ -172,7 +172,8 @@ struct WorldScene: View {
                     timeTint(mood: mood, date: timeline.date)
                         .allowsHitTesting(false)
 
-                    // Only characters with walking sprites stroll the meadow.
+                    // Nobody strolls the meadow: the farm is the farmer's alone
+                    // (Michelle's rule). This layer stays empty on purpose.
                     ForEach(Array(meadow.peopleInMeadow()
                         .filter { PersonArt.walking(for: $0.id, facing: .front) != nil }
                         .enumerated()), id: \.element.id) { index, person in

@@ -715,6 +715,9 @@ extension Meadow {
     // MARK: Who's around
 
     func peopleInMeadow() -> [Person] {
-        Person.all.filter { $0.slot(at: timeOfDay).inMeadow }
+        // Michelle's farm rule: no villagers on the farm screen, ever — only the
+        // farmer. Kept as an empty list so the farm scene's stroller layer renders
+        // nothing; characters live in the hub, their homes and their themed areas.
+        []
     }
 }

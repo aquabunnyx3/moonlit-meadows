@@ -14,7 +14,8 @@ enum TownPlace: Equatable {
 
 /// Where someone is right now, from their schedule.
 enum Whereabouts: Equatable {
-    /// Visiting your farm (they stroll the meadow there).
+    /// RETIRED: villagers used to visit the farm. Michelle's rule is the farmer is
+    /// the only person on the farm screen, so nothing returns this anymore.
     case farm
     /// Inside their own house in the village.
     case home
@@ -697,7 +698,13 @@ extension Meadow {
         guard let person = Person.find(personID) else { return .home }
         if personID == "imani" { return .pond }
         if (TownLayout.workTimes[personID]?.contains(time) ?? false) { return .work }
-        if person.slot(at: time).inMeadow { return .farm }
+        if person.slot(at: time).inMeadow {
+            // Michelle's farm rule, enforced here at last (2026-10-30): NOBODY visits
+            // the farm — the farmer is the only person on that screen. A "meadow" slot
+            // in a schedule now means out in the village instead (same out-day
+            // rotation as town slots), or at home on their off days. Never .farm.
+            return TownLayout.isOutDay(personID, day: today) ? .town : .home
+        }
         if (TownLayout.townTimes[personID]?.contains(time) ?? false) && TownLayout.isOutDay(personID, day: today) { return .town }
         if TownLayout.errands[personID]?.contains(time) ?? false { return .errand }
         return .home

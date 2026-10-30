@@ -27,9 +27,9 @@ extension Person {
         likedGifts: ["corn", "wheat", "turnip", "pie"],
         dislikedGifts: ["mintyFizz", "crystalCake"],
         schedule: [
-            ScheduleSlot(time: .dawn, place: "Walking the fields", emoji: "🌾", inMeadow: true),
+            ScheduleSlot(time: .dawn, place: "Early rounds in the village", emoji: "🌾", inMeadow: true),
             ScheduleSlot(time: .day, place: "Old Mill seed library", emoji: "🌱", inMeadow: false),
-            ScheduleSlot(time: .dusk, place: "Checking on your crops", emoji: "👀", inMeadow: true),
+            ScheduleSlot(time: .dusk, place: "Evening rounds in the village", emoji: "👀", inMeadow: true),
             ScheduleSlot(time: .night, place: "Porch at the Old Mill", emoji: "🪵", inMeadow: false),
         ],
         activities: [
@@ -117,7 +117,7 @@ extension Person {
         dislikedGifts: ["chili", "eggplant"],
         schedule: [
             ScheduleSlot(time: .dawn, place: "Picking blueberries by her cottage", emoji: "🫐", inMeadow: false),
-            ScheduleSlot(time: .day, place: "Wandering the meadow", emoji: "🌿", inMeadow: true),
+            ScheduleSlot(time: .day, place: "Wandering the village lanes", emoji: "🌿", inMeadow: true),
             ScheduleSlot(time: .dusk, place: "Wading in the creek", emoji: "🐸", inMeadow: false),
             ScheduleSlot(time: .night, place: "Home with a cup of blueberry tea", emoji: "🫖", inMeadow: false),
         ],
