@@ -340,9 +340,14 @@ enum FarmerRenderer {
         var colors = targets(for: look)
         if colors[.skin] == nil { colors[.skin] = drawnSkin }
         var result = base
-        if !colors.isEmpty, let labels = UIImage(named: "\(name)-labels"),
-           let recolored = recolor(base, labels: labels, colors: colors) {
-            result = recolored
+        if !colors.isEmpty, let labels = UIImage(named: "\(name)-labels") {
+            // A map drawn for an older version of the picture would paint colors in the wrong
+            // places, so it's only used when it matches the picture pixel for pixel.
+            if labels.size == base.size, labels.scale == base.scale {
+                if let recolored = recolor(base, labels: labels, colors: colors) { result = recolored }
+            } else {
+                artLog.notice("\(name, privacy: .public)-labels doesn't match the picture; showing it as drawn")
+            }
         }
         cache.setObject(result, forKey: key)
         return result
