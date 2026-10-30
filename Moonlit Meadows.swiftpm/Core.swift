@@ -133,6 +133,16 @@ enum Season: String, CaseIterable {
         case .winter: return "❄️"
         }
     }
+
+    /// The drawn icon for the HUD weather card, so the season never shows as an emoji.
+    var iconName: String {
+        switch self {
+        case .spring: return "decor-icon-flowers"
+        case .summer: return "crop-sunflower"
+        case .autumn: return "decor-icon-mushrooms"
+        case .winter: return "decor-icon-snowBunny"
+        }
+    }
 }
 
 /// Weather changes every few minutes. Rain makes crops grow faster.

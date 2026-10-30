@@ -73,11 +73,24 @@ extension Color {
 /// Prices and rewards keep using "🪙" in their strings, so this is the one place that turns
 /// it into the coin image.
 func coinText(_ string: String) -> Text {
-    let parts = string.components(separatedBy: "🪙")
-    var text = Text(parts[0])
-    for part in parts.dropFirst() {
-        text = text + Text(Image("moon-coin")).baselineOffset(-3) + Text(part)
+    // "🪙" becomes the moon-coin art and "💎" the gem icon, so prices never show emoji.
+    var text = Text("")
+    var run = ""
+    func flush() {
+        if !run.isEmpty { text = text + Text(run); run = "" }
     }
+    for ch in string {
+        if ch == "🪙" {
+            flush()
+            text = text + Text(Image("moon-coin")).baselineOffset(-3)
+        } else if ch == "💎" {
+            flush()
+            text = text + Text(Image("icon-gem")).baselineOffset(-2)
+        } else {
+            run.append(ch)
+        }
+    }
+    flush()
     return text
 }
 

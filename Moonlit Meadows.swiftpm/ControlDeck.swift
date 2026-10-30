@@ -575,7 +575,7 @@ extension Meadow {
         case .homeDoor:
             return DeckTarget(kind: kind, verb: "Go Outside", icon: .emoji("🚪"), spot: Spot(x: 0.5, y: 0.94))
         case .bed:
-            return DeckTarget(kind: kind, verb: "Sleep", icon: .emoji("🌙"), spot: zone.center)
+            return DeckTarget(kind: kind, verb: "Sleep", icon: .asset("moon-coin"), spot: zone.center)
         case .chair:
             return DeckTarget(kind: kind, verb: "Sit", icon: .emoji("🪑"), spot: Spot(x: 0.79, y: 0.6))
         case .chest:
@@ -1035,7 +1035,7 @@ struct ControlDeck: View {
     /// The action button's label, just above it: Shop, Enter, Talk to June…
     private func actionCaption(width: CGFloat) -> some View {
         let target = meadow.deckTarget()
-        return Text(target?.verb ?? " ")
+        return coinText(target?.verb ?? " ")
             .font(.caption.bold())
             .lineLimit(1)
             .minimumScaleFactor(0.6)
@@ -1091,7 +1091,8 @@ struct ControlDeck: View {
                     if let target {
                         DeckIconView(icon: target.icon, size: size * 0.46)
                     } else {
-                        Text("🌙").font(.system(size: size * 0.36))
+                        DeckArt(name: "moon-coin", fallback: Palette.lavender)
+                            .frame(width: size * 0.52, height: size * 0.52)
                     }
                 }
                 .offset(y: size * 0.02)
@@ -1269,7 +1270,7 @@ private struct QuickSlotView: View {
     private func badge(_ text: String?) -> some View {
         Group {
             if let text {
-                Text(text)
+                coinText(text)
                     .font(.system(size: max(size * 0.17, 9), weight: .heavy, design: .rounded))
                     .padding(.horizontal, 3)
                     .background(Palette.cream.opacity(0.9), in: .capsule)

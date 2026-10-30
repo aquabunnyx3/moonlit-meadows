@@ -158,7 +158,7 @@ struct WelcomeCard: View {
             Palette.ink.opacity(0.45)
                 .ignoresSafeArea()
             VStack(spacing: 12) {
-                Text("🌙").font(.system(size: 40))
+                Image("moon-coin").resizable().frame(width: 46, height: 46)
                 Text("Let's get started!")
                     .font(.title2.bold())
                     .multilineTextAlignment(.center)

@@ -520,14 +520,18 @@ private struct WorldHUD: View {
     private func bar(showsTitle: Bool) -> some View {
         HStack(alignment: .top, spacing: 6) {
             HStack(spacing: 6) {
-                Text("🐰").font(.system(size: 20))
+                Image("icon-bunnies").resizable().frame(width: 24, height: 24)
                 VStack(alignment: .leading, spacing: 2) {
                     if showsTitle {
                         Text("Moonlit Meadows")
                             .font(.caption.bold())
                     }
-                    Text("Lv. \(meadow.level) · 🐰 \(meadow.discoveredCount)/50")
-                        .font(.caption2.bold())
+                    HStack(spacing: 3) {
+                        Text("Lv. \(meadow.level) ·")
+                        Image("icon-bunnies").resizable().frame(width: 12, height: 12)
+                        Text("\(meadow.discoveredCount)/50")
+                    }
+                    .font(.caption2.bold())
                     ProgressView(value: Double(meadow.xp), total: Double(meadow.xpToNextLevel))
                         .tint(Palette.rose)
                         .frame(width: 80)
@@ -544,15 +548,15 @@ private struct WorldHUD: View {
             HStack(alignment: .top, spacing: 6) {
                 PauseButton(meadow: meadow)
                 pill(value: meadow.coins.cozy) {
-                    Text("☽").font(.system(size: 14, weight: .bold))
+                    Image("moon-coin").resizable().frame(width: 15, height: 15)
                 }
                 .popOnIncrease(meadow.coins)
                 pill(value: meadow.gems.cozy) {
-                    Text("💎").font(.system(size: 12))
+                    Image("icon-gem").resizable().frame(width: 14, height: 14)
                 }
                 .popOnIncrease(meadow.gems)
                 HStack(spacing: 6) {
-                    Text(Season.at(date).emoji).font(.system(size: 20))
+                    Image(Season.at(date).iconName).resizable().frame(width: 22, height: 22)
                     VStack(alignment: .leading, spacing: 1) {
                         HStack(spacing: 3) {
                             // The drawn weather icon when there is one (breezy so far), otherwise its emoji.
