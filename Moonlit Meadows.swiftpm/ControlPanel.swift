@@ -63,16 +63,9 @@ struct ControlPanel: View {
                     .padding(12)
                     .background(hasPaper ? Palette.cream.opacity(0.35) : Palette.cream, in: .rect(cornerRadius: 26))
                     .transition(.panelSlide)
-            } else if meadow.shopCounterOpen && meadow.shopMode == .buy {
-                // At the shop counter, buying: the shop's own shelves, in the panel.
-                ShopTab(meadow: meadow)
-                    .frame(maxWidth: .infinity, maxHeight: .infinity)
-                    .padding(12)
-                    .background(hasPaper ? Palette.cream.opacity(0.35) : Palette.cream, in: .rect(cornerRadius: 26))
-                    .transition(.panelSlide)
-            } else if meadow.shopCounterOpen && meadow.shopMode == .sell {
-                // At the shop counter, selling: everything you carry, with prices.
-                ShopSellView(meadow: meadow)
+            } else if meadow.shopCounterOpen {
+                // At the shop counter: buying, selling, or the chat's reply buttons.
+                ShopPanel(meadow: meadow)
                     .frame(maxWidth: .infinity, maxHeight: .infinity)
                     .padding(12)
                     .background(hasPaper ? Palette.cream.opacity(0.35) : Palette.cream, in: .rect(cornerRadius: 26))

@@ -553,6 +553,12 @@ enum SelfTests {
         meadow.townSpot = Spot(x: 0.5, y: 0.72)
         meadow.deckFacing = DeckVector(x: 0, y: -1)
         c.expect(meadow.deckTarget()?.kind == .shopCounter, "The shop counter offers its chat screen")
+        meadow.deckAction()
+        c.expect(meadow.shopCounterOpen, "The counter opens its chat screen")
+        meadow.shopStartChat()
+        c.expect(meadow.shopChat != nil, "Bree chats with you at her counter")
+        meadow.closeShopCounter()
+        c.expect(!meadow.shopCounterOpen && meadow.shopChat == nil, "Exit leaves the counter")
         meadow.leaveHouse()
         for stall in TownLayout.stalls {
             meadow.townSpot = Spot(x: stall.center.x, y: stall.maxY + 0.02)

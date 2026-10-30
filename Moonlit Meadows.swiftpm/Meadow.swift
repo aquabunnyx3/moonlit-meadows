@@ -185,6 +185,11 @@ final class Meadow {
     var shopCounterOpen = false
     /// What the shop counter is doing: choosing, buying, or selling. Not saved.
     var shopMode: ShopMode = .options
+    /// The conversation with the shopkeeper at the counter, if you're chatting.
+    /// Not saved.
+    var shopChat: TalkResult?
+    /// Her reply to the answer you picked, while counter-chatting. Not saved.
+    var shopChatAnswer: String?
     /// The panel open on the control deck, by `PanelTab` raw value, or `seeds` or `storage`.
     /// `farm` means none: the D-pad, quick inventory and action button show.
     var panelTabID = "farm"
