@@ -907,7 +907,7 @@ private let imani = Person(
     backstory: "Imani is Silas's younger sister. Their grandfather left Silas the apiary and Imani the pond cabin, and each is certain the other got the better inheritance. She studied aquatics in the city, cataloguing rivers, until the valley called her home to keep its pond: stocking, studying and defending every fish in it. She can name every fish in the pond, and most of their relatives.",
     interests: "Aquatics, the fish census, night fishing, pond ecology, teasing her brother",
     looks: [
-        PersonLook(skin: RGB(0x5A3A28), hair: RGB(0x1C1614), hairStyle: .long, eyes: RGB(0xA8702F),
+        PersonLook(skin: RGB(0x9E664B), hair: RGB(0x1C1614), hairStyle: .long, eyes: RGB(0xA8702F),
                    outfit: RGB(0x62A89E), outfitAccent: RGB(0xF2E7CF),
                    styleNote: "A seafoam-teal fishing vest over a cream shirt, navy waders and teal boots, a silver fish-hook pendant, and long black box braids threaded with teal and white beads"),
     ],
