@@ -532,7 +532,7 @@ private struct WorldHUD: View {
                     VStack(alignment: .leading, spacing: 1) {
                         HStack(spacing: 3) {
                             // The drawn weather icon when there is one (breezy so far), otherwise its emoji.
-                            if !(isNight && weather == .sunny), let icon = UIImage(named: "weather-\(weather.rawValue)") {
+                            if let icon = UIImage(named: isNight && weather == .sunny ? "weather-clearnight" : "weather-\(weather.rawValue)") {
                                 Image(uiImage: icon).resizable().interpolation(.none).frame(width: 16, height: 16)
                             } else {
                                 Text(isNight && weather == .sunny ? "🌙" : weather.emoji)
