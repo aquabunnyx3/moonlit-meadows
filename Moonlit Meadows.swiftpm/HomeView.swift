@@ -215,7 +215,6 @@ private struct SleepingRoom: View {
 /// something in the chest to take it out, or in your backpack to put it away.
 struct HomePanel: View {
     let meadow: Meadow
-    @State private var showsStorage = true
 
     var body: some View {
         backpackArea
@@ -226,21 +225,15 @@ struct HomePanel: View {
     private var backpackArea: some View {
         ScrollView {
             VStack(alignment: .leading, spacing: 8) {
-                if showsStorage {
-                        Text("📦 Storage chest · tap to take out").font(.caption.bold())
-                        grid(items: ItemInfo.allIDs.filter { meadow.count(inStorage: $0) > 0 },
-                             count: meadow.count(inStorage:), minimumSlots: 10) { meadow.takeFromStorage($0) }
-                        Text("🎒 Backpack · tap to put away").font(.caption.bold()).padding(.top, 4)
-                        grid(items: backpack, count: meadow.count(of:), minimumSlots: 10) { meadow.putInStorage($0) }
-                    } else {
-                        Text("🎒 Backpack").font(.caption.bold())
-                        grid(items: backpack, count: meadow.count(of:), minimumSlots: 15) { id in
-                            meadow.showToast("\(ItemInfo.emoji(id)) \(ItemInfo.name(id)) ×\(meadow.count(of: id))")
-                        }
-                    }
-                }
+                Text("📦 Storage chest · tap to take out").font(.caption.bold())
+                grid(items: ItemInfo.allIDs.filter { meadow.count(inStorage: $0) > 0 },
+                     count: meadow.count(inStorage:), minimumSlots: 10) { meadow.takeFromStorage($0) }
+                Text("🎒 Backpack · tap to put away").font(.caption.bold()).padding(.top, 4)
+                grid(items: backpack, count: meadow.count(of:), minimumSlots: 10) { meadow.putInStorage($0) }
             }
-            .scrollIndicators(.hidden)
+            .padding(.bottom, 60)
+        }
+        .scrollIndicators(.hidden)
     }
 
     private var backpack: [String] {
@@ -279,20 +272,5 @@ struct HomePanel: View {
                 .accessibilityLabel(id.map { "\(ItemInfo.name($0)), \(count($0))" } ?? "Empty slot")
             }
         }
-    }
-
-    private func action(_ title: String, icon: String, fill: Color, edge: Color, perform: @escaping () -> Void) -> some View {
-        Button(action: perform) {
-            VStack(spacing: 2) {
-                if let image = UIImage(named: icon) {
-                    Image(uiImage: image).resizable().interpolation(.none).scaledToFit().frame(height: 28)
-                }
-                Text(title).font(.caption.bold())
-            }
-            .frame(maxWidth: .infinity)
-            .frame(height: 62)
-            .pixelPanel(fill, edge: edge, cornerRadius: 16)
-        }
-        .buttonStyle(SquishButtonStyle())
     }
 }

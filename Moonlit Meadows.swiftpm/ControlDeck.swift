@@ -281,11 +281,20 @@ extension Meadow {
             (.chest, Self.homeChest),
             (.petBed, Self.homePetBed),
         ]
-        let kind = things.first { $0.1.contains(faced.x, faced.y) }?.0
-            ?? things.map { ($0.0, $0.1.distance(spot.x, spot.y, aspect: aspect)) }
-                .filter { $0.1 <= Self.nearReach }
-                .min { $0.1 < $1.1 }?.0
-        guard let kind, let zone = things.first(where: { $0.0 == kind })?.1 else { return nil }
+        var found: (kind: DeckTarget.Kind, zone: DeckRect)?
+        if let hit = things.first(where: { $0.1.contains(faced.x, faced.y) }) {
+            found = (hit.0, hit.1)
+        } else {
+            var best = Self.nearReach
+            for thing in things {
+                let distance = thing.1.distance(spot.x, spot.y, aspect: aspect)
+                if distance <= best {
+                    best = distance
+                    found = (thing.0, thing.1)
+                }
+            }
+        }
+        guard let kind = found?.kind, let zone = found?.zone else { return nil }
         switch kind {
         case .homeDoor:
             return DeckTarget(kind: kind, verb: "Go Outside", icon: .emoji("🚪"), spot: Spot(x: 0.5, y: 0.94))
@@ -578,7 +587,10 @@ struct ControlDeck: View {
 
     private func quickBar(slot: CGFloat) -> some View {
         let spares = meadow.spareSeeds
-        let slots: [QuickSlot?] = [.harvest, .seeds, .water] + (0..<2).map { $0 < spares.count ? .spareSeed(spares[$0]) : nil }
+        var slots: [QuickSlot?] = [QuickSlot.harvest, QuickSlot.seeds, QuickSlot.water]
+        for index in 0..<2 {
+            slots.append(index < spares.count ? QuickSlot.spareSeed(spares[index]) : nil)
+        }
 
         return HStack(spacing: 6) {
             ForEach(Array(slots.enumerated()), id: \.offset) { _, item in
@@ -711,16 +723,16 @@ private struct QuickSlotView: View {
     @ViewBuilder
     private var content: some View {
         switch slot {
-        case .harvest:
+        case .harvest?:
             DeckArt(name: "icon-carrot", fallback: .clear).padding(size * 0.18)
                 .overlay(alignment: .bottomTrailing) { badge(meadow.readyPlotCount > 0 ? "\(meadow.readyPlotCount)" : nil) }
-        case .seeds:
+        case .seeds?:
             DeckArt(name: "icon-seed-packet", fallback: .clear).padding(size * 0.16)
                 .overlay(alignment: .bottomTrailing) { ItemIcon(itemID: meadow.selectedSeed, size: size * 0.36).padding(size * 0.06) }
-        case .water:
+        case .water?:
             DeckArt(name: "icon-watering-can", fallback: .clear).padding(size * 0.14)
                 .overlay(alignment: .bottomTrailing) { badge("\(Meadow.growAllGemCost)💎") }
-        case .spareSeed(let id):
+        case .spareSeed(let id)?:
             ItemIcon(itemID: id, size: size * 0.55)
         case nil:
             EmptyView()
@@ -741,10 +753,10 @@ private struct QuickSlotView: View {
 
     private var label: String {
         switch slot {
-        case .harvest: return "Harvest and replant everything ready"
-        case .seeds: return "\(Crop.find(meadow.selectedSeed)?.name ?? "Seed") seeds. Tap again to pick another seed"
-        case .water: return "Watering can: grow everything for \(Meadow.growAllGemCost) gems"
-        case .spareSeed(let id): return "\(Crop.find(id)?.name ?? "Seed") seeds"
+        case .harvest?: return "Harvest and replant everything ready"
+        case .seeds?: return "\(Crop.find(meadow.selectedSeed)?.name ?? "Seed") seeds. Tap again to pick another seed"
+        case .water?: return "Watering can: grow everything for \(Meadow.growAllGemCost) gems"
+        case .spareSeed(let id)?: return "\(Crop.find(id)?.name ?? "Seed") seeds"
         case nil: return "Empty slot"
         }
     }
