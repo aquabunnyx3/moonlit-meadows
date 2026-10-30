@@ -18,7 +18,7 @@ extension Meadow {
             case .story(let event):
                 return event.path == .romance || event.isCrossroads ? "music-romance" : "music-story"
             case .moment(let moment):
-                return isDating(moment.personID) ? "music-romance" : "music-story"
+                return moment.video != nil || isDating(moment.personID) ? "music-romance" : "music-story"
             case .completion:
                 return "music-story"
             }

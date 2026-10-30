@@ -52,6 +52,7 @@ enum SelfTests {
         ("Voices: every line has its recording", voices),
         ("Chat faces: expressions for each line", chatMoods),
         ("Hearts: dislikes, rude answers, and making up", warmthRules),
+        ("Date scenes: videos play on dates and stay in the Journal", dateScenes),
     ]
 
     static func runAll() -> [TestResult] {
@@ -415,6 +416,44 @@ enum SelfTests {
     }
 
     // MARK: Saving
+
+    private static func dateScenes(_ c: Check) {
+        let scenes = Person.main.flatMap { $0.activities.compactMap(\.dateScene) }
+        c.expect(scenes.count == 7, "Seven date scenes, got \(scenes.count)")
+        for scene in scenes {
+            c.expect(NSDataAsset(name: scene) != nil, "\(scene) is in the assets")
+        }
+        let store = MemoryStore()
+        let meadow = Meadow(store: store, now: date(hour: 12), seed: 3)
+        meadow.isAtMainMenu = false
+        meadow.setFarmer(FarmerLook(gender: .female))
+        meadow.finishIntro()
+        guard let tea = Person.find("june")?.activities.firstIndex(where: { $0.dateScene != nil }) else {
+            c.expect(false, "June has a date scene")
+            return
+        }
+        meadow.relationships["june"]?.points = RelationshipStage.friend.threshold
+        let friendly = meadow.doActivity(tea, with: "june")
+        c.expect(friendly != nil && friendly?.video == nil, "Friends get the chat, not the date video")
+        c.expect(meadow.unlockedDateScenes.isEmpty, "Nothing unlocked before dating")
+        meadow.sleep()
+        meadow.relationships["june"]?.points = RelationshipStage.dating.threshold
+        meadow.relationships["june"]?.path = .romance
+        let dated = meadow.doActivity(tea, with: "june")
+        c.expect(dated?.video == "scene-june-tea-tasting-date", "Dating June plays her tea tasting video")
+        c.expect(meadow.musicTrack == "music-romance", "Date videos play music-romance")
+        c.expect(meadow.unlockedDateScenes.count == 1, "The date scene unlocks in the Journal")
+        meadow.presentedScene = nil
+        meadow.replayDateScene("scene-june-tea-tasting-date")
+        if case .moment(let moment) = meadow.presentedScene {
+            c.expect(moment.video == "scene-june-tea-tasting-date", "The Journal replays the video")
+        } else {
+            c.expect(false, "The Journal replays the video")
+        }
+        meadow.save()
+        let reloaded = Meadow(store: store, now: date(hour: 12), seed: 3)
+        c.expect(reloaded.dateScenesSeen == meadow.dateScenesSeen, "Seen date scenes persist")
+    }
 
     private static func saveLoadRoundTrip(_ c: Check) {
         let store = MemoryStore()

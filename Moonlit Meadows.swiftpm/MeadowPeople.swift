@@ -6,6 +6,8 @@ struct Moment: Identifiable {
     let personID: String
     let title: String
     let text: String
+    /// A date scene video to play with it.
+    var video: String? = nil
 }
 
 /// Something to show full-screen: a story chapter, a moment, or the collection finale.
@@ -439,15 +441,36 @@ extension Meadow {
         if firstDate {
             remember("Your first date with \(person.name): \(activity.emoji) \(activity.name).", with: personID)
         }
-        let moment = Moment(
+        var moment = Moment(
             personID: personID,
             title: dating ? "Date: \(activity.emoji) \(activity.name)" : "\(activity.emoji) \(activity.name)",
             text: dating ? activity.dateLine : activity.friendLine
         )
+        if dating, let scene = activity.dateScene {
+            moment.video = scene
+            dateScenesSeen.insert(scene)
+        }
         presentedScene = .moment(moment)
         feedbackCount += 1
         save()
         return moment
+    }
+
+    // MARK: Date scenes
+
+    /// The date scenes you've seen, to watch again from the Journal.
+    var unlockedDateScenes: [(person: Person, activity: SharedActivity)] {
+        Person.all.flatMap { person in
+            person.activities.compactMap { activity in
+                activity.dateScene.flatMap { dateScenesSeen.contains($0) ? (person, activity) : nil }
+            }
+        }
+    }
+
+    func replayDateScene(_ scene: String) {
+        guard let (person, activity) = unlockedDateScenes.first(where: { $0.activity.dateScene == scene }) else { return }
+        presentedScene = .moment(Moment(personID: person.id, title: "Date: \(activity.emoji) \(activity.name)",
+                                        text: activity.dateLine, video: scene))
     }
 
     // MARK: Story chapters

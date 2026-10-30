@@ -431,7 +431,7 @@ struct StartSparkle: View {
 }
 
 /// Shows a video player's picture filling the screen, with no controls.
-private struct VideoLayer: UIViewRepresentable {
+struct VideoLayer: UIViewRepresentable {
     let player: AVPlayer
 
     final class PlayerView: UIView {

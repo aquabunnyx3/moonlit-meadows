@@ -88,6 +88,7 @@ final class Meadow {
     var accessories: Set<String> = []
     var equippedAccessory: String?
     var keepsakes: Set<String> = []
+    var dateScenesSeen: Set<String> = []
     var hints: Set<String> = []
 
     var claimedMilestones: Set<Int> = []
@@ -261,6 +262,7 @@ final class Meadow {
         data.accessories = accessories.sorted()
         data.equippedAccessory = equippedAccessory
         data.keepsakes = keepsakes.sorted()
+        data.dateScenesSeen = dateScenesSeen.sorted()
         data.hints = hints.sorted()
         data.claimedMilestones = claimedMilestones.sorted()
         data.claimedAchievements = claimedAchievements.sorted()
@@ -358,6 +360,7 @@ final class Meadow {
         accessories = Set(data.accessories)
         equippedAccessory = data.equippedAccessory.flatMap { accessories.contains($0) ? $0 : nil }
         keepsakes = Set(data.keepsakes)
+        dateScenesSeen = Set(data.dateScenesSeen)
         hints = Set(data.hints)
         claimedMilestones = Set(data.claimedMilestones)
         claimedAchievements = Set(data.claimedAchievements)

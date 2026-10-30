@@ -115,6 +115,7 @@ struct SaveData: Codable, Equatable {
     var accessories: [String] = []
     var equippedAccessory: String?
     var keepsakes: [String] = []
+    var dateScenesSeen: [String] = []
     var hints: [String] = []
 
     var claimedMilestones: [Int] = []
@@ -137,7 +138,7 @@ struct SaveData: Codable, Equatable {
         case version, coins, gems, level, xp, inventory, plots, decor, canLevel, lastSeen
         case lureSlots, lureLevel, lureSlotsBought, discovered, bunnies, habitatCapacity, habitatUpgradesBought
         case relationships, gifts
-        case learnedRecipes, outfits, equippedOutfit, farmerGender, skinTone, hairStyle, hairColor, eyeColor, accessories, equippedAccessory, keepsakes, hints
+        case learnedRecipes, outfits, equippedOutfit, farmerGender, skinTone, hairStyle, hairColor, eyeColor, accessories, equippedAccessory, keepsakes, dateScenesSeen, hints
         case claimedMilestones, claimedAchievements, completedQuests, festivalCycles, cropsHarvested
         case favoriteBunnyGifts, completionSceneSeen, dayNumber, firstDay, dayElapsed, storage
     }
@@ -178,6 +179,7 @@ struct SaveData: Codable, Equatable {
         accessories = try c.decodeIfPresent([String].self, forKey: .accessories) ?? d.accessories
         equippedAccessory = try c.decodeIfPresent(String.self, forKey: .equippedAccessory)
         keepsakes = try c.decodeIfPresent([String].self, forKey: .keepsakes) ?? d.keepsakes
+        dateScenesSeen = try c.decodeIfPresent([String].self, forKey: .dateScenesSeen) ?? d.dateScenesSeen
         hints = try c.decodeIfPresent([String].self, forKey: .hints) ?? d.hints
 
         claimedMilestones = try c.decodeIfPresent([Int].self, forKey: .claimedMilestones) ?? d.claimedMilestones

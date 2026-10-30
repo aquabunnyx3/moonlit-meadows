@@ -93,6 +93,8 @@ struct SharedActivity {
     let emoji: String
     let friendLine: String
     let dateLine: String
+    /// A first-person video for the date version (the farmer is the camera), a data set name.
+    var dateScene: String? = nil
 }
 
 struct Answer {
@@ -225,7 +227,7 @@ private let june = Person(
                        dateLine: "June presses a clover you found together. “So we remember today,” she says, cheeks pink."),
         SharedActivity(name: "Tea tasting", emoji: "🍵",
                        friendLine: "You taste five blends. June takes notes like it's a science experiment. It is, she insists.",
-                       dateLine: "June names a new blend after you. It's sweet with a little bit of spice. “Like you,” she whispers."),
+                       dateLine: "June names a new blend after you. It's sweet with a little bit of spice. “Like you,” she whispers.", dateScene: "scene-june-tea-tasting-date"),
     ],
     lines: DailyLines(
         early: [
@@ -321,7 +323,7 @@ private let roz = Person(
                        dateLine: "Roz buys you a flower crown at the market and insists you wear it all day. You do."),
         SharedActivity(name: "Picnic", emoji: "🍓",
                        friendLine: "Roz packs enough food for twelve. You eat until you can't move. Perfect afternoon.",
-                       dateLine: "Lying on the picnic blanket, Roz laces her fingers with yours. “Is this okay?” It's more than okay."),
+                       dateLine: "Lying on the picnic blanket, Roz laces her fingers with yours. “Is this okay?” It's more than okay.", dateScene: "scene-roz-picnic-date-fpv3"),
     ],
     lines: DailyLines(
         early: [
@@ -417,7 +419,7 @@ private let theo = Person(
                        dateLine: "A shooting star crosses the sky. Theo doesn't look at it. He's looking at you."),
         SharedActivity(name: "Fix the telescope", emoji: "🔧",
                        friendLine: "You hand Theo tiny screwdrivers for an hour. He says you're the best assistant he's ever had. You're the only one.",
-                       dateLine: "Theo teaches you to calibrate the lens, his hands over yours. “Steady,” he says. His voice isn't."),
+                       dateLine: "Theo teaches you to calibrate the lens, his hands over yours. “Steady,” he says. His voice isn't.", dateScene: "scene-theo-telescope-date-fpv"),
     ],
     lines: DailyLines(
         early: [
@@ -514,7 +516,7 @@ private let kai = Person(
                        dateLine: "You race to the hill. Kai lets you win, then pretends he didn't. You both collapse laughing in the grass."),
         SharedActivity(name: "Campfire", emoji: "🔥",
                        friendLine: "Kai burns the marshmallows on purpose. “It's called caramelizing.” It's called burning, Kai.",
-                       dateLine: "Kai wraps his flannel around your shoulders by the fire. “You looked cold.” You weren't. You keep it anyway."),
+                       dateLine: "Kai wraps his flannel around your shoulders by the fire. “You looked cold.” You weren't. You keep it anyway.", dateScene: "scene-kai-campfire-date-fpv"),
     ],
     lines: DailyLines(
         early: [
@@ -609,7 +611,7 @@ private let sol = Person(
                        dateLine: "Sol sings the chorus of their meadow song and changes one word in it — to your name."),
         SharedActivity(name: "Sewing lesson", emoji: "🧵",
                        friendLine: "Sol teaches you a blanket stitch. You sew your sleeve to the pillow. Sol frames it.",
-                       dateLine: "Sol stitches a tiny heart into the hem of your sleeve. “A secret,” they say. “Just between us.”"),
+                       dateLine: "Sol stitches a tiny heart into the hem of your sleeve. “A secret,” they say. “Just between us.”", dateScene: "scene-sol-sewing-date"),
         SharedActivity(name: "Lantern dance", emoji: "🏮",
                        friendLine: "Sol teaches you a folk dance from a town they once toured. You step on their toes twelve times. They count out loud.",
                        dateLine: "Under the lanterns, Sol pulls you close for a slow dance. Neither of you hears the music anymore."),
@@ -703,7 +705,7 @@ private let rowan = Person(
     activities: [
         SharedActivity(name: "Forge a Star Charm", emoji: "⭐️",
                        friendLine: "Rowan lets you work the bellows. Your star comes out lopsided. He hangs it over the forge door anyway. “It stays.”",
-                       dateLine: "Rowan guides your hands on the hammer, his arms around yours. The star you make together is perfect. He keeps the one you botched, too."),
+                       dateLine: "Rowan guides your hands on the hammer, his arms around yours. The star you make together is perfect. He keeps the one you botched, too.", dateScene: "scene-rowan-forge-date"),
         SharedActivity(name: "Mend something together", emoji: "🔧",
                        friendLine: "You bring him a broken watering can. He fixes it in silence, then shows you how. Twice. He doesn't mind the second time.",
                        dateLine: "Rowan mends your watering can and engraves a tiny bunny on the handle. He pretends not to notice you noticing."),
@@ -801,7 +803,7 @@ private let silas = Person(
     activities: [
         SharedActivity(name: "Honey Tasting", emoji: "🍯",
                        friendLine: "Silas sets out six little jars. Clover, lavender, sunflower… He tells you a story about each one. You like the sunflower best. So does he.",
-                       dateLine: "Silas feeds you a spoonful from the last jar. “Moonflower honey. I only ever made one batch.” He saved it for you."),
+                       dateLine: "Silas feeds you a spoonful from the last jar. “Moonflower honey. I only ever made one batch.” He saved it for you.", dateScene: "scene-silas-honey-date"),
         SharedActivity(name: "Tend the hives", emoji: "🐝",
                        friendLine: "You help Silas check the hives in borrowed gloves. A bee lands on your nose. “She likes you,” he says. “Good sign.”",
                        dateLine: "Silas tells the bees your name. “You have to tell them the important things,” he says, very seriously. Then he kisses your hand."),

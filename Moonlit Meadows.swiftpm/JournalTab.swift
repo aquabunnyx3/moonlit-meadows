@@ -164,6 +164,32 @@ struct JournalTab: View {
             }
         }
 
+        SectionTitle(text: "Date memories")
+        ForEach(Person.main) { person in
+            ForEach(person.activities.filter { $0.dateScene != nil }, id: \.name) { activity in
+                let scene = activity.dateScene ?? ""
+                let seen = meadow.dateScenesSeen.contains(scene)
+                CozyCard(tint: seen ? Palette.blush : .white) {
+                    HStack(spacing: 10) {
+                        Text(seen ? activity.emoji : "🔒").font(.title2)
+                        VStack(alignment: .leading, spacing: 2) {
+                            Text(seen ? "\(person.name): \(activity.name)" : "A date with \(person.name)").font(.subheadline.bold())
+                            Text(seen ? "Watch it again any time." : "Date \(person.name), then share \(activity.name.lowercased()) together.")
+                                .font(.caption)
+                                .opacity(0.75)
+                        }
+                        Spacer()
+                        if seen {
+                            PriceButton(label: "▶︎ Watch", isEnabled: true) {
+                                meadow.replayDateScene(scene)
+                            }
+                            .fixedSize()
+                        }
+                    }
+                }
+            }
+        }
+
         SectionTitle(text: "Keepsakes")
         ForEach(Keepsake.all) { keepsake in
             let owned = meadow.keepsakes.contains(keepsake.id)

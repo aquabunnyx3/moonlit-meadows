@@ -287,6 +287,8 @@ struct ChatScene: View {
     var voiceHint: String?
     /// More clips to say after this line, like the question that follows it.
     var voiceAfter: [String] = []
+    /// False to type the line out with no voice or blips (a date scene says it over its video).
+    var speaksAloud = true
     /// The portrait slides in a little from the left when the window opens.
     @State private var bustIn = false
     @State private var voiceToken: Int?
@@ -410,10 +412,12 @@ struct ChatScene: View {
             pausedAt = nil
             skipLine = false
             // Muted, the line just types out (no voice, no blips) with the mouth moving along.
-            let clips = voicesMuted ? [] : VoiceLines.clips(owner: owner, text: text, prefer: voiceHint, farmer: meadow.farmerGender)
+            let clips = voicesMuted || !speaksAloud ? [] : VoiceLines.clips(owner: owner, text: text, prefer: voiceHint, farmer: meadow.farmerGender)
             let lengths = MusicPlayer.shared.clipSeconds(clips)
             let spoken = lengths.reduce(0, +) + MusicPlayer.clipGap * Double(max(clips.count - 1, 0))
-            voiceToken = MusicPlayer.shared.speak(voicesMuted ? [] : clips + voiceAfter)
+            if speaksAloud {
+                voiceToken = MusicPlayer.shared.speak(voicesMuted ? [] : clips + voiceAfter)
+            }
             let letters = Array(text)
             let perLetter = spoken > 0 ? min(spoken / Double(max(letters.count, 1)), 0.08) : 0.032
             // The mouth only moves for the speaker's own words: the narrator's clips (ending -N)
@@ -443,13 +447,13 @@ struct ChatScene: View {
                 if meadow.isPaused || chatPaused { continue }
                 index += 1
                 typed = index
-                if spoken == 0, !voicesMuted, index % 2 == 0, !letters[index - 1].isWhitespace {
+                if spoken == 0, !voicesMuted, speaksAloud, index % 2 == 0, !letters[index - 1].isWhitespace {
                     MusicPlayer.shared.playBlip(pitch: ChatFaceParts.blipPitch[owner] ?? 1)
                 }
             }
             typed = Int.max
         }
-        .onDisappear { MusicPlayer.shared.stopVoice(token: voiceToken) }
+        .onDisappear { if speaksAloud { MusicPlayer.shared.stopVoice(token: voiceToken) } }
     }
 
     /// Pause / play, skip to the end of the line, replay it, and mute voices.
@@ -807,9 +811,17 @@ private struct MomentView: View {
     let close: () -> Void
 
     var body: some View {
+        if let video = moment.video, DateSceneView.url(for: video) != nil {
+            DateSceneView(meadow: meadow, moment: moment, video: video, close: close)
+        } else {
+            chat
+        }
+    }
+
+    private var chat: some View {
         let person = Person.find(moment.personID)
 
-        ChatDialogScreen {
+        return ChatDialogScreen {
             ChatScene(meadow: meadow, speaker: person.map { ChatSpeaker.person($0) } ?? ChatSpeaker.narrator(nil),
                       name: person?.name, text: moment.text)
         } controls: {
