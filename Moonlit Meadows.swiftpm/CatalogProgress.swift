@@ -344,6 +344,8 @@ struct Keepsake: Identifiable {
         Keepsake(id: "mendedLantern", name: "The Mended Lantern", emoji: "🏮", description: "Rowan's mother's forge lantern, every seam mended. “For whoever keeps others warm.”"),
         Keepsake(id: "honeyDipper", name: "Golden Honey Dipper", emoji: "🍯", description: "Silas's grandfather's honey dipper, on a chain. Given the morning he asked you to share forty hives."),
         Keepsake(id: "beeCharm", name: "Honeybee Charm", emoji: "🐝", description: "A single honeybee wing sealed in gold glass. “Bees remember the people who are kind to them. So do I.”"),
+        Keepsake(id: "hookPendant", name: "Silver Hook Pendant", emoji: "🪝", description: "Imani's own pendant, pressed into your palm at dawn. “Now we match. Don't lose it — I file losses.”"),
+        Keepsake(id: "keeperLog", name: "Pond Keeper's Log", emoji: "📓", description: "Your own keeper's log, your name on the cover in Imani's careful hand. The first page is Gerald's file. Handle with care."),
         Keepsake(id: "moonlitCrown", name: "Moonlit Crown", emoji: "👑", description: "Woven by every bunny in the meadow for the one who found them all."),
         Keepsake(id: "kidRibbon", name: "A Faded Ribbon", emoji: "🎀", description: "Small, sun-faded, tied a hundred times by small hands. It was left for you under the moon."),
         Keepsake(id: "smoothStone", name: "A Smooth Stone", emoji: "🪨", description: "Pond-smooth and warm from a pocket. Somebody carried this a long time, waiting."),

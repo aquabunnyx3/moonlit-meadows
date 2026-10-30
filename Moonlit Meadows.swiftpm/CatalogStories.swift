@@ -624,10 +624,12 @@ private let imaniEvents: [StoryEvent] = [
         p("And there's a bee that follows it. One bee, lavender stripe. My brother's little spy, moonlighting."),
         n("She looks at you for a long moment, deciding something."),
         p("Whatever that bunny is, keeper to keeper — it's yours, isn't it? …All right. The pond keeps your secrets. So do I."),
-    ], choice: StoryChoice(prompt: "The water settles back into ordinary ripples.", options: [
-        StoryOption(text: "“Thank you for not asking more.”", response: "“Asking's easy. Waiting's the skill.” She bumps your shoulder with hers. “I can wait.”", points: 10),
-        StoryOption(text: "“The fish really go quiet?”", response: "“Every time. Animals know things first. My brother's bees know it too — ask his spy.”", points: 10),
-    ]), rewards: [.coins(150)]),
+    ], choice: crossroads("imani",
+        confess: "“Imani… I'm falling for you.”",
+        friends: "“You're the best friend I have in this valley.”",
+        romanceReply: "Imani goes very still — pond still. Then she smiles, slow and certain. “Well. That goes in the permanent file.” She takes your hand. “Front page.”",
+        friendReply: "“Good,” Imani says, and bumps your shoulder with hers. “Pond family's for life. The fish knew before I did — they usually do.”"),
+    rewards: [.gems(5)], isCrossroads: true),
     StoryEvent(id: "imani-r4", personID: "imani", title: "Dock Light", stage: .romanticInterest, path: .romance, lines: [
         n("Imani has strung the dock with lanterns — for the fish census, she claims, at an hour when fish cannot be counted."),
         p("Sit. The good spot. I keep saving it and pretending I don't."),
@@ -655,7 +657,7 @@ private let imaniEvents: [StoryEvent] = [
     ], choice: StoryChoice(prompt: "Dawn comes up over the pond you share.", options: [
         StoryOption(text: "“Front page. I like it there.”", response: "“Good.” She takes your hand for the walk home. “Because I'm not done writing it.”", points: 10),
         StoryOption(text: "“Does Silas really know?”", response: "“Silas knows everything by breakfast. It's the family curse. Ours too, now.”", points: 10),
-    ]), rewards: [.coins(300)]),
+    ]), rewards: [.keepsake("hookPendant"), .gems(10)], isFinale: true),
     StoryEvent(id: "imani-f4", personID: "imani", title: "Pond Family", stage: .romanticInterest, path: .friendship, lines: [
         n("Imani has made a second keeper's log and written your name on the cover in her careful hand."),
         p("Pond family isn't blood. It's who shows up at dawn when the net's torn. You show up."),
@@ -672,5 +674,5 @@ private let imaniEvents: [StoryEvent] = [
     ], choice: StoryChoice(prompt: "Two keepers, one valley, no score kept anymore.", options: [
         StoryOption(text: "“Took you both long enough.”", response: "“A year for a jar of honey is FAST, for us.” She grins. “The next one only took a day. Progress.”", points: 10),
         StoryOption(text: "“Front page. I know.”", response: "“You do know.” She bumps your shoulder. “Pond family.”", points: 10),
-    ]), rewards: [.coins(300)]),
+    ]), rewards: [.keepsake("keeperLog"), .gems(10)], isFinale: true),
 ]
