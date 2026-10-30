@@ -340,10 +340,10 @@ extension Meadow {
             }
             // Theo & Kai just can't stand each other.
             if personID == "theo", relationship("kai").path == .romance, stage(of: "kai") >= .romanticInterest {
-                return TalkResult(line: "You and Nakamura-Hale. Hm. He'll build you shelves and whistle while he works. For your sake I hope you like whistling. …That was nearly a blessing. Take it as one.", points: earnedPoints, question: nil)
+                return TalkResult(line: "So it's him. Then don't expect a blessing from me. I hate Kai Nakamura-Hale — his noise, his grin, his need to be adored by every room he walks into. Keep him away from my observatory, and don't ask me to smile about it.", points: earnedPoints, question: nil)
             }
             if personID == "theo", stage(of: "kai") >= .closeFriend {
-                return TalkResult(line: "Nakamura-Hale was by the observatory earlier. He whistled. For twenty minutes. The stars have filed a complaint, but there is no form for whistling.", points: earnedPoints, question: nil)
+                return TalkResult(line: "Don't dress it up — I hate Kai. The grin, the racket, the way he turns every room into an audience. If I could go the rest of my life without hearing that laugh again, I'd call it mercy.", points: earnedPoints, question: nil)
             }
             if personID == "kai", relationship("theo").path == .romance, stage(of: "theo") >= .romanticInterest {
                 return TalkResult(line: "Wait. You and THEO? Huh. Didn't have that on my chart. Does he smile? Like, with his whole face? …Good for him. Seriously. Don't tell him I said that — he'll get strange about it.", points: earnedPoints, question: nil)
