@@ -23,7 +23,7 @@ enum TourStep: String, Codable, Equatable {
         case .move: return "👣 Use the D-pad to take a little walk."
         case .plant: return "🌱 Walk to a garden bed, face it, and tap the glowing button to plant a seed."
         case .water: return "💧 Tap the watering can. It grows everything at once for gems — a handy shortcut. Plant, water, wait, pick: that's farming!"
-        case .pantry: return "🧺 Tap Pantry to see everything you're carrying."
+        case .pantry: return "🧺 Tap Pantry to sell crops and cook treats."
         case .journal: return "📖 Last one — tap Journal. Your quests and notes live there."
         case .notStarted, .done: return ""
         }
