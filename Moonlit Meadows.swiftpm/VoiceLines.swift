@@ -12,8 +12,8 @@ import UIKit
 /// `-N`), played in the order the text starts with. Your farmer's clips come in `-F` and `-M`.
 enum VoiceLines {
     /// Clip IDs (or parts of them) that are scripted but not recorded yet: those lines use talk
-    /// blips. Rowan and Silas, and the rude answers (always the fourth answer) with their replies.
-    static let notRecordedYet = ["ROWAN-", "SILAS-", "-ANSWER4", "-REPLY4"]
+    /// blips, and the self-check doesn't count them as missing. Everything is recorded now.
+    static let notRecordedYet: [String] = []
 
     /// The opening story's clips, scene by scene.
     static let intro = ["INTRO-1-N", "INTRO-2-N", "INTRO-3-N", "INTRO-4-HOST", "INTRO-5-N", "INTRO-6-N"]
