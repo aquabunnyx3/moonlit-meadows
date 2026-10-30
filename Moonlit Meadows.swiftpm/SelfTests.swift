@@ -962,6 +962,13 @@ enum SelfTests {
         }
         c.expect(UIImage(named: "chat-farmer-female-s1-sundress-blush") != nil && ChatLayout.faces["farmer-female-s1-sundress-blush"] != nil,
                  "Long Waves in her sundress blushes")
+        if let sol = Person.find("sol") {
+            for day in 0..<sol.looks.count {
+                let sprite = sol.spriteID(onDay: day)
+                c.expect(PersonArt.hasFrontSprite(sprite) && PersonArt.hasWalkCycle(for: sprite, facing: .right),
+                         "Sol's outfit on day \(day) has its front sprite and walk")
+            }
+        }
         for weather in Weather.allCases {
             c.expect(UIImage(named: "weather-\(weather.rawValue)") != nil, "The \(weather.rawValue) weather icon is in the assets")
         }

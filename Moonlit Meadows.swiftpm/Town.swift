@@ -722,7 +722,7 @@ struct TownScene: View {
         case .hub:
             for walker in meadow.townWalkers {
                 list.append(Figure(id: walker.person.id, person: walker.person, spot: walker.step.spot,
-                                   facing: WalkFacing.facing(for: walker.step, id: walker.person.id), isWalking: walker.step.isWalking))
+                                   facing: WalkFacing.facing(for: walker.step, id: walker.person.spriteID(onDay: meadow.today)), isWalking: walker.step.isWalking))
             }
         case .house:
             if let resident = meadow.houseResident, let room = TownLayout.interiors[resident.id] {
@@ -737,7 +737,7 @@ struct TownScene: View {
     private func figureView(_ figure: Figure, size: CGFloat, t: Double) -> some View {
         if let person = figure.person {
             VStack(spacing: 2) {
-                PersonFigure(look: person.look(onDay: meadow.today), artID: person.id, size: size, time: t,
+                PersonFigure(look: person.look(onDay: meadow.today), artID: person.spriteID(onDay: meadow.today), size: size, time: t,
                              facing: figure.facing, isWalking: figure.isWalking)
                 Text(person.name)
                     .font(.system(size: max(size * 0.09, 9), weight: .bold, design: .rounded))

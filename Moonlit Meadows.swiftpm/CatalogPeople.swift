@@ -71,6 +71,8 @@ struct PersonLook {
     var accessoryColor = RGB(0xFFFFFF)
     /// A short note for the profile, like "Sage cardigan and a daisy clip".
     var styleNote = ""
+    /// Walking sprites drawn for this outfit: `walk-<id>-<suffix>-…`. `nil` uses the usual ones.
+    var spriteSuffix: String? = nil
 }
 
 // MARK: - Supporting types
@@ -176,6 +178,11 @@ struct Person: Identifiable {
 
     func look(onDay day: Int) -> PersonLook {
         looks[((day % looks.count) + looks.count) % looks.count]
+    }
+
+    /// Whose walking sprites to draw today: their own, or the ones for today's outfit.
+    func spriteID(onDay day: Int) -> String {
+        look(onDay: day).spriteSuffix.map { "\(id)-\($0)" } ?? id
     }
 
     func slot(at time: TimeOfDay) -> ScheduleSlot {
@@ -594,6 +601,10 @@ private let sol = Person(
         PersonLook(skin: RGB(0xFBE1D6), hair: RGB(0xE48FA8), hairStyle: .wavy, eyes: RGB(0xB5566E),
                    outfit: RGB(0xF4C3CF), outfitAccent: RGB(0xEFD9DC), accessory: .beanie, accessoryColor: RGB(0xF2B3C3),
                    styleNote: "A rose cardigan over a lacy blossom dress, pearl earrings, bow shoes, and a cloud of pink curls"),
+        PersonLook(skin: RGB(0xFBE1D6), hair: RGB(0xE48FA8), hairStyle: .wavy, eyes: RGB(0xB5566E),
+                   outfit: RGB(0xC9B2E6), outfitAccent: RGB(0xFFFFFF), accessory: .bow, accessoryColor: RGB(0xF2A3B8),
+                   styleNote: "A lavender pinafore over a white blouse, a little pink bow in their curls, and brown Mary Janes",
+                   spriteSuffix: "pinafore"),
     ],
     favoriteBreeds: ["cherryBlossomBunny", "pixelBunny", "auroraBunny"],
     lovedGifts: ["melodyMacarons", "roseMacaron", "cherry"],

@@ -373,7 +373,8 @@ private struct WalkingPerson: View {
         let step = WorldLayout.routeStep(route, at: t + offset, aspect: map.aspect, speed: 0.045)
         let atBunnies = ownsFavorite && step.stop == 2
         let size = map.unit * 0.13
-        let facing = WalkFacing.facing(for: step, id: person.id)
+        let sprite = person.spriteID(onDay: meadow.today)
+        let facing = WalkFacing.facing(for: step, id: sprite)
         let bubble: String? = atBunnies ? "🐰💕" : (step.stop != nil && sin(t * 0.3 + offset) > 0.2 ? person.slot(at: meadow.timeOfDay).emoji : nil)
 
         VStack(spacing: 2) {
@@ -385,7 +386,7 @@ private struct WalkingPerson: View {
                     .background(Palette.cream, in: .capsule)
                     .transition(.scale.combined(with: .opacity))
             }
-            PersonFigure(look: person.look(onDay: meadow.today), artID: person.id, size: size, time: t + offset,
+            PersonFigure(look: person.look(onDay: meadow.today), artID: sprite, size: size, time: t + offset,
                          facing: facing, isWalking: step.isWalking)
             Text(person.name)
                 .font(.system(size: max(size * 0.09, 9), weight: .bold, design: .rounded))

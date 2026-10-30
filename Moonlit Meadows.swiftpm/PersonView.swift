@@ -143,6 +143,8 @@ enum PersonArt {
     /// Walk cycles cut from video: `<sprite>-00`, `<sprite>-01`, … (like `farmer-female-s1-right-00`
     /// or `walk-june-right-00`), played at the video's 24 frames a second.
     static let cycleFPS = 24.0
+    /// Short drawn walk cycles play slower, so a full stride takes about as long as a filmed one.
+    static let cycleRates: [String: Double] = ["walk-sol-pinafore-left": 4.6]
     private static var cycleLengths: [String: Int] = [:]
 
     private static func cycleLength(_ name: String) -> Int {
@@ -189,7 +191,7 @@ enum PersonArt {
                 ?? "walk-\(id)-\(option.direction.rawValue)"
             let count = cycleLength(name)
             guard count > 0 else { continue }
-            let frame = name + String(format: "-%02d", Int(max(time, 0) * cycleFPS) % count)
+            let frame = name + String(format: "-%02d", Int(max(time, 0) * (cycleRates[name] ?? cycleFPS)) % count)
             let image = look.map { FarmerRenderer.image(named: frame, look: $0) } ?? UIImage(named: frame)
             if let image { return (image, option.flipped) }
             logMissing(frame, using: nil)
