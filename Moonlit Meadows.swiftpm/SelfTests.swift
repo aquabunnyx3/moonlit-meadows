@@ -485,9 +485,9 @@ enum SelfTests {
     }
 
     private static func village(_ c: Check) {
-        c.expect(UIImage(named: "city-hub-map") != nil, "The village map is in the assets")
+        c.expect(TownArt.image("city-hub-map") != nil, "The village map is in the assets")
         for (id, _) in TownLayout.interiors {
-            c.expect(UIImage(named: "interior-\(id)-v2") != nil, "interior-\(id)-v2 is in the assets")
+            c.expect(TownArt.image("interior-\(id)-v2") != nil, "interior-\(id)-v2 is in the assets")
             c.expect(TownLayout.house(id) != nil, "\(id) has a house in the village")
         }
         let meadow = freshMeadow()

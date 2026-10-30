@@ -509,6 +509,23 @@ extension Meadow {
 
 // MARK: - The village (top screen)
 
+/// The village map and the house rooms. They're kept as plain data in the assets (like the
+/// videos and voices), not as image sets, so building the app doesn't have to process 11 more
+/// big pictures; each is decoded the first time it's shown.
+enum TownArt {
+    private static var cache: [String: UIImage] = [:]
+
+    static func image(_ name: String) -> UIImage? {
+        if let image = cache[name] { return image }
+        guard let data = NSDataAsset(name: name)?.data, let image = UIImage(data: data) else {
+            artLog.notice("Missing village art \(name, privacy: .public)")
+            return nil
+        }
+        cache[name] = image
+        return image
+    }
+}
+
 /// The village map or a house's room, with the people there and your farmer, who you
 /// walk with the D-pad just like on the farm.
 struct TownScene: View {
@@ -534,7 +551,7 @@ struct TownScene: View {
 
                 ZStack(alignment: .topLeading) {
                     if place == .hub { Palette.ground } else { Color(red: 0.07, green: 0.07, blue: 0.2) }
-                    if let image = UIImage(named: art) {
+                    if let image = TownArt.image(art) {
                         Image(uiImage: image)
                             .resizable()
                             .interpolation(.none)
