@@ -811,6 +811,9 @@ struct ControlDeck: View {
                 meadow.tourAdvance()
             }
         }
+        .onChange(of: meadow.dayNumber) { _, _ in meadow.checkAmbientMoments() }
+        .onChange(of: meadow.timeOfDay) { _, _ in meadow.checkAmbientMoments() }
+        .onAppear { meadow.checkAmbientMoments() }
         .background {
             // Walking: one step per screen frame while the D-pad is held, by the time that
             // actually passed, so she moves at a constant pace.

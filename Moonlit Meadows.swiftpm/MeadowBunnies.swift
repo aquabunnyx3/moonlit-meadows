@@ -184,6 +184,7 @@ extension Meadow {
         var rewards: [Reward]
         if isNew {
             discovered[breed.id] = now
+            moment("firstBunny", "🐰 Your first bunny! The Bunnies tab keeps track of every breed you discover.")
             rewards = [.coins(breed.rarity.discoveryCoins), .gems(breed.rarity.discoveryGems), .xp(breed.rarity.discoveryXP)]
         } else {
             rewards = [.coins(max(breed.rarity.discoveryCoins / 3, 5)), .xp(max(breed.rarity.discoveryXP / 3, 2))]

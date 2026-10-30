@@ -251,6 +251,7 @@ extension Meadow {
 
         let unanswered = person.questions.filter { relationship(personID).choices[$0.id] == nil }
         let question = today % 2 == 0 ? unanswered.first : nil
+        moment("firstChat", "💬 That's chatting! The Friends tab keeps track of everyone's hearts and favorites.")
         return TalkResult(line: line, points: 10, question: question)
     }
 
@@ -295,6 +296,7 @@ extension Meadow {
         guard let person = Person.find(personID), ItemInfo.exists(itemID), count(of: itemID) > 0 else { return .notAvailable }
         guard canGiveItem(to: personID) else { return .alreadyGiftedToday }
         removeItems(itemID, 1)
+        moment("firstGift", "🎁 Gift given! Everyone has favorites — the Friends tab shows what each person loves.")
 
         let mood = reaction(to: itemID, from: person)
         let points: Int
@@ -357,6 +359,7 @@ extension Meadow {
         guard canGiveBunny(to: personID) else { return .alreadyGiftedToday }
 
         let bunny = bunnies.remove(at: index)
+        moment("firstGift", "🎁 Gift given! Everyone has favorites — the Friends tab shows what each person loves.")
         let isFavoriteBreed = person.favoriteBreeds.contains(breed.id)
         let reaction: GiftRecord.Reaction = isFavoriteBreed ? .favorite : (breed.rarity >= .rare ? .loved : .liked)
         let points = isFavoriteBreed ? 80 : (breed.rarity >= .rare ? 35 : 20)
@@ -586,6 +589,9 @@ extension Meadow {
             grant(reward)
         }
         spawn(.sparkle, "📜 \(quest.title)!", at: Spot(x: 0.5, y: 0.5))
+        if quest.season != nil {
+            moment("firstFestival", "🎪 That's a festival request done! Every season has one — and they always come back around.")
+        }
         feedbackCount += 1
         save()
         return true

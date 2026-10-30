@@ -526,6 +526,7 @@ extension Meadow {
         townSpot = TownLayout.arrival
         heldHome = []
         faceUp()
+        moment("firstHub", "🏘️ Welcome to the village! Everyone keeps their own schedule — some are out, some are home.")
     }
 
     func goToFarm() {

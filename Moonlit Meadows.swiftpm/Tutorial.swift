@@ -156,3 +156,51 @@ struct TourRing: View {
             }
     }
 }
+
+// MARK: - Moments
+
+extension Meadow {
+    /// A one-time tutorial Moment (Michelle's design): the first time something
+    /// happens, a banner line explains the feature it belongs to. Fires once
+    /// ever per save. The Moon Bunny and Theo moments join in with the story
+    /// systems; the fishing ones with the pond.
+    func moment(_ id: String, _ text: String) {
+        guard !momentsSeen.contains(id) else { return }
+        momentsSeen.insert(id)
+        tourToast = text
+        feedbackCount += 1
+        save()
+    }
+
+    /// Rain and evening come from the world's turning, not a button: the deck
+    /// checks in whenever the day or the time block changes (and on appear).
+    func checkAmbientMoments() {
+        if weather == .rainy {
+            moment("firstRain", "🌧️ Rain! Your crops drink it up and grow faster — and the fish at the pond love a rainy day.")
+        }
+        if timeOfDay == .dusk {
+            moment("firstEvening", "🌆 Evening already? When you're tired, head home and sleep — tomorrow starts fresh.")
+        }
+    }
+
+    /// The First Sale quest: handed out at the first harvest, paid at the
+    /// first crop sale (+20 coins).
+    func noteFirstHarvest() {
+        if !momentsSeen.contains("firstSaleDone") { firstSalePending = true }
+        moment("firstHarvest", "🧺 First harvest! New quest — First Sale: take a crop to the Shop in the village and sell it.")
+    }
+
+    func noteSale(of itemID: String) {
+        guard firstSalePending, Crop.find(itemID) != nil else { return }
+        firstSalePending = false
+        momentsSeen.insert("firstSaleDone")
+        coins += 20
+        tourToast = "🎉 First Sale complete! +20 coins. The Shop buys crops, fish and crafts — that's how the farm earns."
+        feedbackCount += 1
+        save()
+    }
+
+    func noteFirstPurchase() {
+        moment("firstPurchase", "🪙 First purchase! Coins come from selling crops, fish and crafts at the Shop.")
+    }
+}

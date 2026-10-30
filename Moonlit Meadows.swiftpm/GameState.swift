@@ -135,6 +135,10 @@ struct SaveData: Codable, Equatable {
     var introWelcomeSeen = false
     /// Where the new-farmer Tour stands (a `TourStep` raw value).
     var tourStep = "notStarted"
+    /// Tutorial Moments already shown (ids). Never repeats.
+    var momentsSeen: [String] = []
+    /// The First Sale quest is waiting for its first crop sale.
+    var firstSalePending = false
 
     init() {}
 
@@ -144,7 +148,7 @@ struct SaveData: Codable, Equatable {
         case relationships, gifts
         case learnedRecipes, outfits, equippedOutfit, farmerGender, skinTone, hairStyle, hairColor, eyeColor, accessories, equippedAccessory, keepsakes, dateScenesSeen, hints
         case claimedMilestones, claimedAchievements, completedQuests, festivalCycles, cropsHarvested
-        case favoriteBunnyGifts, completionSceneSeen, dayNumber, firstDay, dayElapsed, storage, introWelcomeSeen, tourStep
+        case favoriteBunnyGifts, completionSceneSeen, dayNumber, firstDay, dayElapsed, storage, introWelcomeSeen, tourStep, momentsSeen, firstSalePending
     }
 
     init(from decoder: Decoder) throws {
@@ -199,6 +203,8 @@ struct SaveData: Codable, Equatable {
         storage = try c.decodeIfPresent([String: Int].self, forKey: .storage) ?? d.storage
         introWelcomeSeen = try c.decodeIfPresent(Bool.self, forKey: .introWelcomeSeen) ?? d.introWelcomeSeen
         tourStep = try c.decodeIfPresent(String.self, forKey: .tourStep) ?? d.tourStep
+        momentsSeen = try c.decodeIfPresent([String].self, forKey: .momentsSeen) ?? d.momentsSeen
+        firstSalePending = try c.decodeIfPresent(Bool.self, forKey: .firstSalePending) ?? d.firstSalePending
     }
 }
 

@@ -299,6 +299,11 @@ struct PersonActionsPanel: View {
         }
         .foregroundStyle(Palette.ink)
         .fontDesign(.rounded)
+        .onChange(of: section) { _, newSection in
+            if newSection == .requests {
+                meadow.moment("firstRequest", "📜 Requests are little jobs from villagers — bring what they ask for and you'll grow closer.")
+            }
+        }
         .onAppear {
             // Opened with the deck's Gift button: start on the gifts.
             if meadow.profileOpensGifts {

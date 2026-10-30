@@ -128,7 +128,7 @@ extension Meadow {
         } else {
             plots[index] = Plot()
         }
-        if !byHelper { feedbackCount += 1 }
+        if !byHelper { feedbackCount += 1; noteFirstHarvest() }
     }
 
     func growCrops(bySeconds effectiveSeconds: TimeInterval) {
@@ -197,6 +197,7 @@ extension Meadow {
         coins += earned
         spawn(.text, "+\(earned.cozy) 🪙", at: WorldLayout.cottageDoor)
         feedbackCount += 1
+        noteSale(of: itemID)
     }
 
     // MARK: Shop
@@ -212,6 +213,7 @@ extension Meadow {
             gems -= item.price
         }
         decor.insert(item.id)
+        noteFirstPurchase()
         spawn(.sparkle, "✨ \(item.emoji) ✨", at: item.spot)
         feedbackCount += 1
         save()
@@ -221,6 +223,7 @@ extension Meadow {
         guard let cost = nextPlotCost, coins >= cost else { return }
         coins -= cost
         plots.append(Plot())
+        noteFirstPurchase()
         spawn(.sparkle, "✨ New plot!", at: plotSpot(plots.count - 1))
         feedbackCount += 1
         save()
@@ -249,6 +252,7 @@ extension Meadow {
         coins -= cost
         lureSlotsBought += 1
         lureSlots.append(LureSlot())
+        noteFirstPurchase()
         spawn(.sparkle, "🧺 New lure basket!", at: WorldLayout.lureBasket)
         feedbackCount += 1
         save()

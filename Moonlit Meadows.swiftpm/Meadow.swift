@@ -96,6 +96,10 @@ final class Meadow {
     var tourStep: TourStep = .notStarted
     /// The spot the Tour's move step measures from. Not saved.
     var tourAnchor: Spot?
+    /// Tutorial Moments already shown (ids).
+    var momentsSeen: Set<String> = []
+    /// The First Sale quest is waiting for its first crop sale.
+    var firstSalePending = false
     /// The Tour's current banner override (a wrong-tap nudge, or the send-off). Not saved.
     var tourToast: String?
 
@@ -306,6 +310,8 @@ final class Meadow {
         data.hints = hints.sorted()
         data.introWelcomeSeen = introWelcomeSeen
         data.tourStep = tourStep.rawValue
+        data.momentsSeen = momentsSeen.sorted()
+        data.firstSalePending = firstSalePending
         data.claimedMilestones = claimedMilestones.sorted()
         data.claimedAchievements = claimedAchievements.sorted()
         data.completedQuests = completedQuests.sorted()
@@ -411,6 +417,8 @@ final class Meadow {
         hints = Set(data.hints)
         introWelcomeSeen = data.introWelcomeSeen
         tourStep = TourStep(rawValue: data.tourStep) ?? .notStarted
+        momentsSeen = Set(data.momentsSeen)
+        firstSalePending = data.firstSalePending
         claimedMilestones = Set(data.claimedMilestones)
         claimedAchievements = Set(data.claimedAchievements)
         completedQuests = Set(data.completedQuests)
