@@ -96,7 +96,7 @@ struct PersonProfileScene: View {
 
     private func profile(state: RelationshipState, look: PersonLook) -> some View {
         ZStack {
-            DialogBackdrop(isRomantic: state.path == .romance)
+            themeBackdrop
             GeometryReader { proxy in
                 HStack(alignment: .bottom, spacing: 12) {
                     if let art = PersonArt.image(for: person.id) {
@@ -107,26 +107,12 @@ struct PersonProfileScene: View {
                             .frame(maxWidth: proxy.size.width * 0.3)
                             .accessibilityHidden(true)
                     }
-                    // Everything up here fits without scrolling; the long reads live in the
-                    // About tab on the bottom screen.
-                    VStack(spacing: 8) {
-                        card {
-                            Text(person.personality)
-                                .font(.callout)
-                                .lineLimit(3)
-                                .minimumScaleFactor(0.8)
-                            HStack(spacing: 4) {
-                                Image(systemName: "mappin.and.ellipse")
-                                    .foregroundStyle(Palette.rose)
-                                Text("Now: \(meadow.whereaboutsText(of: person))")
-                            }
-                            .font(.caption.bold())
-                            .opacity(0.8)
-                        }
-                        favorites
-                    }
-                    .padding(.vertical, 10)
-                    .frame(maxHeight: .infinity, alignment: .top)
+                    // Name and friendship live up here now, beside their portrait;
+                    // the about cards moved down to the bottom screen
+                    // (Michelle, 2026-10-30).
+                    PersonInfoCard(meadow: meadow, person: person)
+                        .padding(.vertical, 10)
+                        .frame(maxHeight: .infinity, alignment: .top)
                 }
                 .padding(.horizontal, 14)
                 .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .bottom)
@@ -134,6 +120,22 @@ struct PersonProfileScene: View {
         }
         .foregroundStyle(Palette.ink)
         .fontDesign(.rounded)
+    }
+
+    /// Their own backdrop: colors and a motif that suit who they are,
+    /// instead of the shared dialog paper (Michelle, 2026-10-30).
+    private var themeBackdrop: some View {
+        let theme = PersonTheme.of(person.id)
+        return ZStack {
+            LinearGradient(colors: [theme.top, theme.bottom], startPoint: .top, endPoint: .bottom)
+            Text(theme.motif)
+                .font(.system(size: 190))
+                .opacity(0.13)
+                .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .topTrailing)
+                .padding(24)
+                .accessibilityHidden(true)
+        }
+        .ignoresSafeArea()
     }
 
     private func card<Content: View>(_ fill: Color = Palette.cream.opacity(0.94), edge: Color = Palette.lilacEdge,
@@ -770,5 +772,169 @@ struct HeartPop: View {
         .opacity(shown ? 0 : 1)
         .animation(.easeOut(duration: 1.2), value: shown)
         .allowsHitTesting(false)
+    }
+}
+
+// MARK: - Profile themes
+
+/// Each character's profile backdrop: two colors and a motif that suit them.
+struct PersonTheme {
+    let top: Color
+    let bottom: Color
+    let motif: String
+
+    static func of(_ id: String) -> PersonTheme {
+        switch id {
+        case "theo": return PersonTheme(top: Color(red: 0.30, green: 0.28, blue: 0.52), bottom: Color(red: 0.62, green: 0.58, blue: 0.85), motif: "🌙")
+        case "roz": return PersonTheme(top: Color(red: 0.98, green: 0.80, blue: 0.78), bottom: Color(red: 0.99, green: 0.92, blue: 0.85), motif: "🧁")
+        case "june": return PersonTheme(top: Color(red: 0.62, green: 0.82, blue: 0.60), bottom: Color(red: 0.88, green: 0.95, blue: 0.78), motif: "🌿")
+        case "kai": return PersonTheme(top: Color(red: 0.55, green: 0.78, blue: 0.95), bottom: Color(red: 0.99, green: 0.87, blue: 0.60), motif: "☀️")
+        case "sol": return PersonTheme(top: Color(red: 0.72, green: 0.62, blue: 0.92), bottom: Color(red: 0.95, green: 0.80, blue: 0.92), motif: "🎵")
+        case "rowan": return PersonTheme(top: Color(red: 0.85, green: 0.52, blue: 0.38), bottom: Color(red: 0.96, green: 0.78, blue: 0.58), motif: "🔥")
+        case "silas": return PersonTheme(top: Color(red: 0.95, green: 0.76, blue: 0.38), bottom: Color(red: 0.99, green: 0.90, blue: 0.66), motif: "🍯")
+        case "imani": return PersonTheme(top: Color(red: 0.35, green: 0.72, blue: 0.72), bottom: Color(red: 0.75, green: 0.92, blue: 0.90), motif: "🎣")
+        case "wes": return PersonTheme(top: Color(red: 0.35, green: 0.55, blue: 0.42), bottom: Color(red: 0.75, green: 0.86, blue: 0.70), motif: "🌲")
+        case "bree": return PersonTheme(top: Color(red: 0.60, green: 0.78, blue: 0.62), bottom: Color(red: 0.86, green: 0.94, blue: 0.80), motif: "🫐")
+        case "vi": return PersonTheme(top: Color(red: 0.96, green: 0.66, blue: 0.80), bottom: Color(red: 0.99, green: 0.86, blue: 0.90), motif: "💐")
+        default: return PersonTheme(top: Palette.periwinkle, bottom: Palette.blush, motif: "✿")
+        }
+    }
+}
+
+// MARK: - Profile panels (bottom screen)
+
+/// The deck's own tab menu, small, for the top of a profile panel — so the
+/// menu is always reachable and nobody is stuck on a profile (Michelle, 2026-10-30).
+struct ProfileTabStrip: View {
+    let meadow: Meadow
+
+    private let tabs: [(tab: PanelTab, label: String)] = [
+        (.pantry, "🧺 Pantry"), (.bunnies, "🐰 Bunnies"), (.friends, "💞 Friends"),
+        (.journal, "📔 Journal"), (.shop, "🛍️ Shop"),
+    ]
+
+    var body: some View {
+        HStack(spacing: 6) {
+            ForEach(tabs, id: \.tab.id) { item in
+                Button {
+                    meadow.closeProfile()
+                    meadow.panelTabID = item.tab.rawValue
+                } label: {
+                    Text(item.label)
+                        .font(.caption.bold())
+                        .lineLimit(1)
+                        .minimumScaleFactor(0.7)
+                        .frame(maxWidth: .infinity)
+                        .padding(.vertical, 7)
+                        .background(Palette.pinkCard, in: .rect(cornerRadius: 12))
+                        .overlay(RoundedRectangle(cornerRadius: 12).strokeBorder(Palette.pinkEdge, lineWidth: 2))
+                }
+                .buttonStyle(.plain)
+            }
+        }
+        .foregroundStyle(Palette.ink)
+    }
+}
+
+/// The bottom screen for a profile opened from the Friends tab: the about
+/// cards that used to crowd the top screen — personality, where they are now,
+/// and their favorites — under the tab menu.
+struct PersonAboutPanel: View {
+    let meadow: Meadow
+    let person: Person
+
+    var body: some View {
+        VStack(spacing: 10) {
+            ProfileTabStrip(meadow: meadow)
+            ScrollView {
+                VStack(spacing: 10) {
+                    card {
+                        Text(person.personality)
+                            .font(.callout)
+                        HStack(spacing: 4) {
+                            Image(systemName: "mappin.and.ellipse")
+                                .foregroundStyle(Palette.rose)
+                            Text("Now: \(meadow.whereaboutsText(of: person))")
+                        }
+                        .font(.caption.bold())
+                        .opacity(0.8)
+                    }
+                    favorites
+                }
+            }
+            .scrollIndicators(.hidden)
+        }
+        .foregroundStyle(Palette.ink)
+        .fontDesign(.rounded)
+    }
+
+    private func card<Content: View>(_ fill: Color = Palette.cream.opacity(0.94), edge: Color = Palette.lilacEdge,
+                                     @ViewBuilder content: () -> Content) -> some View {
+        VStack(alignment: .leading, spacing: 6) { content() }
+            .padding(12)
+            .frame(maxWidth: .infinity, alignment: .leading)
+            .pixelPanel(fill, edge: edge, cornerRadius: 16)
+    }
+
+    private var favorites: some View {
+        let revealed = meadow.revealedFavorites(of: person.id)
+        let lovesRevealed = meadow.stage(of: person.id) >= .friend
+
+        return card {
+            SectionTitle(text: "♥ Favorites")
+            HStack(spacing: 10) {
+                ForEach(person.favoriteBreeds, id: \.self) { id in
+                    if let breed = Breed.find(id) {
+                        let isRevealed = revealed.contains(id)
+                        VStack(spacing: 2) {
+                            BreedBunnyView(breed: breed, size: 40, isSilhouette: !isRevealed || !meadow.isDiscovered(breed))
+                                .frame(height: 44)
+                            Text(isRevealed ? breed.name : "???").font(.caption2.bold())
+                        }
+                        .frame(maxWidth: .infinity)
+                    }
+                }
+            }
+            HStack(spacing: 4) {
+                Text("Loves:").font(.caption.bold())
+                if lovesRevealed {
+                    ForEach(person.lovedGifts, id: \.self) { ItemIcon(itemID: $0, size: 18) }
+                } else {
+                    Text("Become Friends to find out").font(.caption).opacity(0.6)
+                }
+            }
+        }
+    }
+}
+
+/// The bottom screen when you walked up to someone and chose Talk: the chat
+/// is on the top screen, and here are its controls — an apology when one is
+/// owed, and a way out (Michelle, 2026-10-30).
+struct TalkPanel: View {
+    let meadow: Meadow
+    let person: Person
+
+    var body: some View {
+        VStack(spacing: 10) {
+            ProfileTabStrip(meadow: meadow)
+            Spacer()
+            if meadow.profileAnswer != nil {
+                Text("\(person.name) heard you out.")
+                    .font(.callout)
+                    .opacity(0.8)
+            } else {
+                Text("You're chatting with \(person.name).")
+                    .font(.callout)
+                    .opacity(0.8)
+            }
+            if meadow.profileAnswer == nil, meadow.warmthLevel(of: person.id) != .warm,
+               meadow.canApologize(to: person.id) {
+                DialogButton(label: "💔 Apologize") { meadow.apologize(to: person.id) }
+            }
+            DialogButton(label: "👋 Done", pink: false) { meadow.closeProfile() }
+            Spacer()
+        }
+        .foregroundStyle(Palette.ink)
+        .fontDesign(.rounded)
     }
 }

@@ -1050,11 +1050,11 @@ enum SelfTests {
         c.expect(!meadow.availableQuests.contains { $0.personID == id }, "Requests pause while Distant")
         c.expect(meadow.stage(of: id) >= .friend, "The friendship stage itself is kept")
         meadow.apologize(to: id)
-        c.expect(meadow.warmth(of: id) == 3 && !meadow.canApologize(to: id), "Apologizing gives a heart, once a day")
+        c.expect(meadow.warmth(of: id) == -3 && !meadow.canApologize(to: id), "Apologizing gives a heart, once a day")
         meadow.changeWarmth(20, for: id)
         c.expect(meadow.warmth(of: id) == Meadow.maxWarmth, "Hearts top out at ten")
         meadow.changeWarmth(-20, for: id)
-        c.expect(meadow.warmth(of: id) == 0, "Hearts never go below zero")
+        c.expect(meadow.warmth(of: id) == -6, "Hearts bottom out at minus six")
         for person in Person.all {
             for question in person.questions {
                 c.expect(question.answers.filter(\.isRude).count == 1, "\(question.id) has one rude answer")

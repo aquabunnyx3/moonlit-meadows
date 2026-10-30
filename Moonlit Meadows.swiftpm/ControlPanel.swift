@@ -81,8 +81,18 @@ struct ControlPanel: View {
                         .padding(12)
                         .background(hasPaper ? Palette.cream.opacity(0.35) : Palette.cream, in: .rect(cornerRadius: 26))
                         .transition(.panelSlide)
+                } else if meadow.profileTalk != nil || meadow.profileAnswer != nil {
+                    // You walked up and chose Talk: the chat's own controls —
+                    // an apology when one is owed, and Done (Michelle, 2026-10-30).
+                    TalkPanel(meadow: meadow, person: person)
+                        .frame(maxWidth: .infinity, maxHeight: .infinity)
+                        .padding(12)
+                        .background(hasPaper ? Palette.cream.opacity(0.35) : Palette.cream, in: .rect(cornerRadius: 26))
+                        .transition(.panelSlide)
                 } else {
-                    PersonInfoCard(meadow: meadow, person: person)
+                    // Opened from the Friends tab: their about cards, with the
+                    // tab menu on top so the deck is always one tap away.
+                    PersonAboutPanel(meadow: meadow, person: person)
                         .frame(maxWidth: .infinity, maxHeight: .infinity)
                         .padding(12)
                         .background(hasPaper ? Palette.cream.opacity(0.35) : Palette.cream, in: .rect(cornerRadius: 26))

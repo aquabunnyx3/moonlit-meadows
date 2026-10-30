@@ -135,7 +135,7 @@ extension Meadow {
 
     // MARK: Hearts (warmth)
 
-    static let startingWarmth = 6
+    static let startingWarmth = 0
     static let maxWarmth = 10
 
     func warmth(of personID: String) -> Int {
@@ -144,8 +144,8 @@ extension Meadow {
 
     func warmthLevel(of personID: String) -> Warmth {
         switch warmth(of: personID) {
-        case ...2: return .distant
-        case 3...4: return .strained
+        case ...(-4): return .distant
+        case -3...(-2): return .strained
         default: return .warm
         }
     }
@@ -157,7 +157,7 @@ extension Meadow {
         guard amount != 0, let person = Person.find(personID) else { return }
         var state = relationship(personID)
         let before = state.warmth ?? Self.startingWarmth
-        let after = min(max(before + amount, 0), Self.maxWarmth)
+        let after = min(max(before + amount, -6), Self.maxWarmth)
         guard after != before else { return }
         state.warmth = after
         relationships[personID] = state
