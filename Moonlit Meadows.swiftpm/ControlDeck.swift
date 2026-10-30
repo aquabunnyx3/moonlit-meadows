@@ -74,113 +74,252 @@ struct DeckRect {
     var center: Spot { Spot(x: (minX + maxX) / 2, y: (minY + maxY) / 2) }
 }
 
+/// A solid thing your farmer can't walk into, named so the collision overlay can label it:
+/// a rectangle, or a simple outline (like a gable roof) where a rectangle can't fit.
+struct BlockZone {
+    let label: String
+    /// Its outline, in order around the edge.
+    let points: [Spot]
+
+    init(label: String, rect: DeckRect) {
+        self.label = label
+        points = [Spot(x: rect.minX, y: rect.minY), Spot(x: rect.maxX, y: rect.minY),
+                  Spot(x: rect.maxX, y: rect.maxY), Spot(x: rect.minX, y: rect.maxY)]
+    }
+
+    init(label: String, outline: [Spot]) {
+        self.label = label
+        points = outline
+    }
+
+    var bounds: DeckRect {
+        DeckRect(minX: points.map(\.x).min() ?? 0, minY: points.map(\.y).min() ?? 0,
+                 maxX: points.map(\.x).max() ?? 0, maxY: points.map(\.y).max() ?? 0)
+    }
+
+    /// Whether a point is inside the outline.
+    func contains(_ spot: Spot) -> Bool {
+        var inside = false
+        var j = points.count - 1
+        for i in points.indices {
+            let a = points[i], b = points[j]
+            if (a.y > spot.y) != (b.y > spot.y),
+               spot.x < (b.x - a.x) * (spot.y - a.y) / (b.y - a.y) + a.x {
+                inside.toggle()
+            }
+            j = i
+        }
+        return inside
+    }
+
+    /// Whether it overlaps a (small) box: any of the box's corners, edge middles or center
+    /// inside the outline, or any outline corner inside the box.
+    func overlaps(_ box: DeckRect) -> Bool {
+        guard bounds.intersects(box) else { return false }
+        let xs = [box.minX, (box.minX + box.maxX) / 2, box.maxX]
+        let ys = [box.minY, (box.minY + box.maxY) / 2, box.maxY]
+        for x in xs { for y in ys where contains(Spot(x: x, y: y)) { return true } }
+        return points.contains { box.contains($0.x, $0.y) }
+    }
+}
+
+/// Where your farmer can walk in one scene, measured from that scene's own picture (as
+/// fractions of it, like `farmerSpot`): the walkable area, a backstop at the edges of the
+/// world, and every solid thing in it. Doors, gates and exits are never in here; they're
+/// separate trigger zones.
+struct SceneCollision {
+    let name: String
+    let bounds: DeckRect
+    let blocks: [BlockZone]
+    /// Your farmer's height here, in art heights. Her foot box and pace scale with it.
+    let figure: Double
+    /// How far ahead of her feet the action button reaches, in art heights.
+    let reach: Double
+
+    /// Every scene's picture is 2096 × 1184 and shown at that shape.
+    static let aspect = 2096.0 / 1184.0
+
+    /// Only her feet collide: a small box across the bottom of the sprite, so her head and
+    /// body can pass in front of tree tops, awnings and roofs.
+    func footBox(at spot: Spot) -> DeckRect {
+        let halfWidth = figure * 0.1 / Self.aspect
+        return DeckRect(minX: spot.x - halfWidth, minY: spot.y - figure * 0.12, maxX: spot.x + halfWidth, maxY: spot.y)
+    }
+
+    func isFree(_ spot: Spot) -> Bool {
+        guard bounds.contains(spot.x, spot.y) else { return false }
+        let feet = footBox(at: spot)
+        return !blocks.contains { $0.overlaps(feet) }
+    }
+}
+
+extension DeckRect {
+    func intersects(_ other: DeckRect) -> Bool {
+        minX < other.maxX && other.minX < maxX && minY < other.maxY && other.minY < maxY
+    }
+}
+
 extension Meadow {
-    /// Walking speed, in art heights per second.
-    static let walkSpeed = 0.2
-    /// How far in front of your farmer the action button reaches, in art heights.
-    static let faceReach = 0.06
+    /// Walking pace, in your farmer's own heights per second (so she crosses a room and the
+    /// farm at the same brisk pace, whatever size she's drawn).
+    static let pace = 1.1
+    /// How far one walk cycle (two steps) carries her, in her own heights. The walk cycle is
+    /// driven by distance walked, so her feet keep up with the ground.
+    static let stride = 0.75
     /// Things this close to your farmer's feet count as in reach even when not faced.
     static let nearReach = 0.07
 
-    /// Where you can walk on the farm, by your farmer's feet.
-    static let farmBounds = DeckRect(minX: 0.12, minY: 0.29, maxX: 0.88, maxY: 0.93)
-    /// What your farmer can't walk through: the cottage, the shed, the planting beds,
-    /// the big field and the lure basket.
-    static let farmBlocks: [DeckRect] = [
-        DeckRect(minX: 0.42, minY: 0, maxX: 0.575, maxY: 0.29),
-        DeckRect(minX: 0.36, minY: 0.16, maxX: 0.405, maxY: 0.275),
-        DeckRect(minX: WorldLayout.field.minX, minY: WorldLayout.field.minY, maxX: WorldLayout.field.maxX, maxY: WorldLayout.field.maxY),
-        DeckRect(minX: 0.472, minY: 0.735, maxX: 0.518, maxY: 0.79),
-    ] + WorldLayout.beds.map { bed in
-        DeckRect(minX: bed.x - WorldLayout.bedSize.width / 2, minY: bed.y - WorldLayout.bedSize.height / 2,
-                 maxX: bed.x + WorldLayout.bedSize.width / 2, maxY: bed.y + WorldLayout.bedSize.height / 2)
-    }
+    /// Where you start on the farm: on the stone path below the cottage steps.
+    static let farmStart = Spot(x: 0.497, y: 0.40)
+
+    /// The farm (`world-meadow`), item by item from the picture. Bushes, flowers, grass and the
+    /// stone paths are walkable; trees block only at the trunk.
+    static let farmCollision = SceneCollision(
+        name: "Farm",
+        bounds: DeckRect(minX: 0.135, minY: 0.04, maxX: 0.95, maxY: 0.95),
+        blocks: [
+            BlockZone(label: "farm: cottage", rect: DeckRect(minX: 0.425, minY: 0, maxX: 0.575, maxY: 0.295)),
+            BlockZone(label: "farm: cottage window box", rect: DeckRect(minX: 0.52, minY: 0.27, maxX: 0.572, maxY: 0.322)),
+            BlockZone(label: "farm: shed door", rect: DeckRect(minX: 0.363, minY: 0.175, maxX: 0.395, maxY: 0.262)),
+            BlockZone(label: "farm: rock by the bush", rect: DeckRect(minX: 0.185, minY: 0.155, maxX: 0.215, maxY: 0.19)),
+            BlockZone(label: "farm: rock (north)", rect: DeckRect(minX: 0.722, minY: 0.115, maxX: 0.745, maxY: 0.15)),
+            BlockZone(label: "farm: rock (middle)", rect: DeckRect(minX: 0.7, minY: 0.185, maxX: 0.725, maxY: 0.22)),
+            BlockZone(label: "farm: rocks (top edge)", rect: DeckRect(minX: 0.79, minY: 0.02, maxX: 0.82, maxY: 0.06)),
+            BlockZone(label: "farm: pink tree trunk (northeast)", rect: DeckRect(minX: 0.885, minY: 0.205, maxX: 0.915, maxY: 0.25)),
+            BlockZone(label: "farm: pink tree trunk (east)", rect: DeckRect(minX: 0.745, minY: 0.4, maxX: 0.775, maxY: 0.445)),
+            BlockZone(label: "farm: pink tree trunk (southeast)", rect: DeckRect(minX: 0.825, minY: 0.645, maxX: 0.87, maxY: 0.7)),
+            BlockZone(label: "farm: pine trunk (south)", rect: DeckRect(minX: 0.845, minY: 0.86, maxX: 0.872, maxY: 0.9)),
+            BlockZone(label: "farm: pine trunk (far south)", rect: DeckRect(minX: 0.945, minY: 0.88, maxX: 0.975, maxY: 0.92)),
+            BlockZone(label: "farm: rocks (south)", rect: DeckRect(minX: 0.67, minY: 0.915, maxX: 0.75, maxY: 0.99)),
+            // The fenced beds on the left: you plant them over the fence.
+            BlockZone(label: "farm: bed fence (north)", rect: DeckRect(minX: 0.168, minY: 0.335, maxX: 0.368, maxY: 0.372)),
+            BlockZone(label: "farm: bed fence (south)", rect: DeckRect(minX: 0.168, minY: 0.715, maxX: 0.368, maxY: 0.76)),
+            BlockZone(label: "farm: bed fence (west)", rect: DeckRect(minX: 0.168, minY: 0.335, maxX: 0.18, maxY: 0.76)),
+            BlockZone(label: "farm: bed fence (east)", rect: DeckRect(minX: 0.356, minY: 0.335, maxX: 0.368, maxY: 0.76)),
+            BlockZone(label: "farm: bed 1", rect: DeckRect(minX: 0.19, minY: 0.395, maxX: 0.258, maxY: 0.525)),
+            BlockZone(label: "farm: bed 2", rect: DeckRect(minX: 0.277, minY: 0.395, maxX: 0.345, maxY: 0.525)),
+            BlockZone(label: "farm: bed 3", rect: DeckRect(minX: 0.19, minY: 0.572, maxX: 0.258, maxY: 0.702)),
+            BlockZone(label: "farm: bed 4", rect: DeckRect(minX: 0.277, minY: 0.572, maxX: 0.345, maxY: 0.702)),
+            // The big field on the right: worked over its fence too.
+            BlockZone(label: "farm: field fence (north)", rect: DeckRect(minX: 0.598, minY: 0.522, maxX: 0.838, maxY: 0.555)),
+            BlockZone(label: "farm: field fence (west)", rect: DeckRect(minX: 0.598, minY: 0.522, maxX: 0.615, maxY: 0.868)),
+            BlockZone(label: "farm: field fence (east)", rect: DeckRect(minX: 0.826, minY: 0.522, maxX: 0.838, maxY: 0.868)),
+            BlockZone(label: "farm: field fence (south)", rect: DeckRect(minX: 0.598, minY: 0.83, maxX: 0.838, maxY: 0.868)),
+            BlockZone(label: "farm: field plots", rect: DeckRect(minX: 0.615, minY: 0.555, maxX: 0.826, maxY: 0.83)),
+            // The round fence around the lure basket, in segments following the drawing.
+            BlockZone(label: "farm: lure fence 1", rect: DeckRect(minX: 0.554, minY: 0.753, maxX: 0.572, maxY: 0.82)),
+            BlockZone(label: "farm: lure fence 2", rect: DeckRect(minX: 0.539, minY: 0.796, maxX: 0.567, maxY: 0.856)),
+            BlockZone(label: "farm: lure fence 3", rect: DeckRect(minX: 0.517, minY: 0.832, maxX: 0.552, maxY: 0.88)),
+            BlockZone(label: "farm: lure fence 4", rect: DeckRect(minX: 0.491, minY: 0.856, maxX: 0.53, maxY: 0.889)),
+            BlockZone(label: "farm: lure fence 5", rect: DeckRect(minX: 0.465, minY: 0.856, maxX: 0.504, maxY: 0.889)),
+            BlockZone(label: "farm: lure fence 6", rect: DeckRect(minX: 0.443, minY: 0.832, maxX: 0.478, maxY: 0.88)),
+            BlockZone(label: "farm: lure fence 7", rect: DeckRect(minX: 0.428, minY: 0.796, maxX: 0.456, maxY: 0.856)),
+            BlockZone(label: "farm: lure fence 8", rect: DeckRect(minX: 0.423, minY: 0.753, maxX: 0.441, maxY: 0.82)),
+            BlockZone(label: "farm: lure fence 9", rect: DeckRect(minX: 0.423, minY: 0.71, maxX: 0.441, maxY: 0.777)),
+            BlockZone(label: "farm: lure fence 10", rect: DeckRect(minX: 0.428, minY: 0.674, maxX: 0.456, maxY: 0.734)),
+            BlockZone(label: "farm: lure fence 11", rect: DeckRect(minX: 0.443, minY: 0.65, maxX: 0.478, maxY: 0.698)),
+            BlockZone(label: "farm: lure fence 12", rect: DeckRect(minX: 0.465, minY: 0.641, maxX: 0.504, maxY: 0.674)),
+            BlockZone(label: "farm: lure fence 13", rect: DeckRect(minX: 0.491, minY: 0.641, maxX: 0.53, maxY: 0.674)),
+            BlockZone(label: "farm: lure fence 14", rect: DeckRect(minX: 0.517, minY: 0.65, maxX: 0.552, maxY: 0.698)),
+            BlockZone(label: "farm: lure fence 15", rect: DeckRect(minX: 0.539, minY: 0.674, maxX: 0.567, maxY: 0.734)),
+            BlockZone(label: "farm: lure fence 16", rect: DeckRect(minX: 0.554, minY: 0.71, maxX: 0.572, maxY: 0.777)),
+        ],
+        figure: 0.13, reach: 0.09)
+
     static let cottageDoorstep = Spot(x: 0.497, y: 0.33)
     private static let cottageDoorZone = DeckRect(minX: 0.465, minY: 0.22, maxX: 0.53, maxY: 0.30)
-    private static let lureBasketZone = DeckRect(minX: 0.465, minY: 0.725, maxX: 0.525, maxY: 0.80)
+    /// The inside of the round fence: you set the lure over the fence.
+    private static let lureBasketZone = DeckRect(minX: 0.44, minY: 0.67, maxX: 0.555, maxY: 0.86)
 
-    /// Inside the cottage (fractions of the room art): the floor, and the furniture on it.
-    static let homeBounds = DeckRect(minX: 0.12, minY: 0.48, maxX: 0.88, maxY: 0.93)
+    /// Inside your cottage (fractions of the room art).
     static let homeEntrance = Spot(x: 0.5, y: 0.86)
     private static let homeBed = DeckRect(minX: 0.10, minY: 0.30, maxX: 0.37, maxY: 0.63)
     private static let homeDesk = DeckRect(minX: 0.70, minY: 0.30, maxX: 0.88, maxY: 0.58)
     private static let homeChest = DeckRect(minX: 0.79, minY: 0.67, maxX: 0.90, maxY: 0.95)
     private static let homePetBed = DeckRect(minX: 0.10, minY: 0.77, maxX: 0.225, maxY: 0.95)
     private static let homeDoorZone = DeckRect(minX: 0.40, minY: 0.92, maxX: 0.60, maxY: 1.0)
-    static let homeBlocks = [homeBed, homeDesk, homeChest, homePetBed]
+    static let homeCollision = SceneCollision(
+        name: "Your cottage",
+        bounds: DeckRect(minX: 0.12, minY: 0.48, maxX: 0.88, maxY: 0.93),
+        blocks: [
+            BlockZone(label: "home: bed", rect: homeBed),
+            BlockZone(label: "home: desk and chair", rect: homeDesk),
+            BlockZone(label: "home: wardrobe", rect: homeChest),
+            BlockZone(label: "home: pet bed", rect: homePetBed),
+        ],
+        figure: 0.36, reach: 0.06)
 
-    /// The art's width over height where you're walking, so a step is the same length every way.
-    private var deckAspect: Double { isAtHome || town != nil ? 2096.0 / 1184.0 : worldAspect }
+    /// The walking rules for wherever you are right now.
+    var currentCollision: SceneCollision {
+        switch town {
+        case .hub?: return TownLayout.hubCollision
+        case .house(let id)?: return TownLayout.interiors[id]?.collision ?? TownLayout.hubCollision
+        case nil: return isAtHome ? Self.homeCollision : Self.farmCollision
+        }
+    }
+
+    /// Where your farmer's feet are in the scene you're in.
+    var walkerSpot: Spot {
+        get { town != nil ? townSpot : isAtHome ? homeSpot : farmerSpot }
+        set {
+            if town != nil { townSpot = newValue } else if isAtHome { homeSpot = newValue } else { farmerSpot = newValue }
+        }
+    }
+
+    private var deckAspect: Double { SceneCollision.aspect }
 
     var isDeckMoving: Bool { !deckDirection.isZero }
 
-    /// Holds a D-pad direction (or lets go, with zero). The first press on the farm takes
-    /// over from the stroll, right where your farmer is.
+    /// Holds a D-pad direction, or lets go with zero. Your farmer only ever moves while a
+    /// direction is held, and stops the moment it's let go.
     func holdDirection(_ direction: DeckVector) {
         guard !isSleeping else { return }
-        if !direction.isZero {
-            if isAtHome, isSitting {
-                // Stand up from the chair first, in front of it.
-                isSitting = false
-                homeSpot = Spot(x: 0.79, y: 0.66)
-            }
-            if !isAtHome, town == nil, !isDeckDriving {
-                isDeckDriving = true
-                farmerSpot = WorldLayout.farmerStep(at: Date().timeIntervalSinceReferenceDate, aspect: worldAspect).spot
-            }
+        if !direction.isZero, isAtHome, isSitting {
+            // Stand up from the chair first, in front of it.
+            isSitting = false
+            homeSpot = Spot(x: 0.79, y: 0.66)
         }
         deckDirection = direction
     }
 
-    /// One small step while a direction is held. Walls, furniture and plots stop you; you
-    /// slide along them rather than sticking.
+    /// Moves your farmer by however much time passed (called every screen frame while the
+    /// D-pad is held), at a constant pace. Anything solid stops her; she slides along it,
+    /// trying across and up-and-down separately so diagonals glide along walls.
     func deckStep(dt: Double) {
-        guard !deckDirection.isZero, !isPaused, !isAtMainMenu, !isSleeping else { return }
+        guard !deckDirection.isZero, !isPaused, !isAtMainMenu, !isSleeping, dt > 0 else { return }
+        let scene = currentCollision
         let d = deckDirection
         let length = (d.x * d.x + d.y * d.y).squareRoot()
-        let step = Self.walkSpeed * dt / max(length, 1)
-        let aspect = max(deckAspect, 0.5)
+        let step = scene.figure * Self.pace * min(dt, 0.05) / max(length, 1)
         deckFacing = d
-        if abs(d.x) > abs(d.y) * 1.2 {
-            farmerFacing = d.x > 0 ? .right : .left
-        } else {
-            farmerFacing = d.y < 0 ? .back : .front
+        // Keep facing the way she already faces if she's still going that way, so turning
+        // onto a diagonal doesn't snap her around; otherwise face across, then up or down.
+        let across: PersonArt.Facing? = d.x > 0 ? .right : d.x < 0 ? .left : nil
+        let upDown: PersonArt.Facing? = d.y > 0 ? .front : d.y < 0 ? .back : nil
+        if farmerFacing != across && farmerFacing != upDown {
+            farmerFacing = across ?? upDown ?? farmerFacing
         }
-        if let town {
-            switch town {
-            case .hub:
-                townSpot = walk(from: townSpot, by: d, step: step, aspect: aspect, bounds: TownLayout.hubBounds, blocks: TownLayout.hubBlocks)
-            case .house(let id):
-                if let room = TownLayout.interiors[id] {
-                    townSpot = walk(from: townSpot, by: d, step: step, aspect: aspect, bounds: room.bounds, blocks: room.blocks)
-                }
-            }
-        } else if isAtHome {
-            homeSpot = walk(from: homeSpot, by: d, step: step, aspect: aspect, bounds: Self.homeBounds, blocks: Self.homeBlocks)
-        } else if isDeckDriving, let spot = farmerSpot {
-            farmerSpot = walk(from: spot, by: d, step: step, aspect: aspect, bounds: Self.farmBounds, blocks: Self.farmBlocks)
-        }
+        let from = walkerSpot
+        var x = from.x, y = from.y
+        let nx = x + d.x * step / SceneCollision.aspect
+        if scene.isFree(Spot(x: nx, y: y)) { x = nx }
+        let ny = y + d.y * step
+        if scene.isFree(Spot(x: x, y: ny)) { y = ny }
+        let moved = (((x - from.x) * SceneCollision.aspect) * ((x - from.x) * SceneCollision.aspect) + (y - from.y) * (y - from.y)).squareRoot()
+        walkerSpot = Spot(x: x, y: y)
+        walkedFigures += moved / scene.figure
     }
 
-    private func walk(from spot: Spot, by d: DeckVector, step: Double, aspect: Double,
-                      bounds: DeckRect, blocks: [DeckRect]) -> Spot {
-        func free(_ x: Double, _ y: Double) -> Bool {
-            bounds.contains(x, y) && !blocks.contains { $0.contains(x, y) }
-        }
-        var x = spot.x, y = spot.y
-        let nx = x + d.x * step / aspect
-        if free(nx, y) { x = nx }
-        let ny = y + d.y * step
-        if free(x, ny) { y = ny }
-        return Spot(x: x, y: y)
-    }
+    /// The walk cycle's clock: one cycle per stride walked, so the steps match the ground.
+    var walkCycleTime: Double { walkedFigures / Self.stride }
 
     /// The point just in front of your farmer, where the faced thing is.
     private func facedPoint(from spot: Spot) -> Spot {
         let d = deckFacing
         let length = max((d.x * d.x + d.y * d.y).squareRoot(), 0.001)
-        return Spot(x: spot.x + d.x / length * Self.faceReach / max(deckAspect, 0.5),
-                    y: spot.y + d.y / length * Self.faceReach)
+        let reach = currentCollision.reach
+        return Spot(x: spot.x + d.x / length * reach / deckAspect,
+                    y: spot.y + d.y / length * reach)
     }
 
     /// Where each character walking the meadow is right now, matching the world's drawing.
@@ -202,7 +341,7 @@ extension Meadow {
         guard !isSleeping else { return nil }
         if town != nil { return townTarget() }
         if isAtHome { return homeTarget() }
-        guard isDeckDriving, let spot = farmerSpot else { return nil }
+        let spot = farmerSpot
         let faced = facedPoint(from: spot)
         let aspect = deckAspect
 
@@ -538,26 +677,27 @@ struct ControlDeck: View {
         GeometryReader { geo in
             let size = geo.size
             let tabHeight = min(max(size.height * 0.14, 40), 60)
-            VStack(spacing: max(size.height * 0.025, 6)) {
+            let controlsHeight = min(max(size.height * 0.36, 110), 230)
+            VStack(spacing: max(size.height * 0.02, 6)) {
                 tabBar(height: tabHeight, width: size.width)
-                if let panel = openPanel {
-                    panelView(panel)
-                        .frame(maxWidth: .infinity, maxHeight: .infinity)
+                // The middle shows the open tab's panel (or the lure basket, seed bag or storage
+                // chest). Nothing floats here otherwise.
+                ZStack {
+                    if let panel = openPanel {
+                        VStack(spacing: 6) {
+                            panelHeader(panel)
+                            panelView(panel)
+                                .frame(maxWidth: .infinity, maxHeight: .infinity)
+                        }
                         .padding(10)
                         .background(Palette.cream.opacity(0.55), in: .rect(cornerRadius: 20))
-                        .overlay(alignment: .bottomTrailing) {
-                            secondaryButton(size: min(max(size.height * 0.15, 44), 64))
-                                .padding(6)
-                        }
                         .transition(.panelSlide)
-                } else {
-                    // The chip sits just above the controls, both down at your thumbs.
-                    VStack(spacing: max(size.height * 0.03, 8)) {
-                        chip(height: max(min(size.height * 0.09, 34), 26))
-                        controls(size: CGSize(width: size.width, height: max(size.height - tabHeight - 70, 80)))
                     }
-                    .frame(maxHeight: .infinity, alignment: .bottom)
                 }
+                .frame(maxWidth: .infinity, maxHeight: .infinity)
+                // The controls stay along the bottom, usable whether or not a panel is open.
+                controls(size: CGSize(width: size.width, height: controlsHeight))
+                    .frame(height: controlsHeight)
             }
             .animation(.easeOut(duration: 0.25), value: meadow.panelTabID)
         }
@@ -565,14 +705,45 @@ struct ControlDeck: View {
         .fontDesign(.rounded)
         .disabled(meadow.isSleeping)
         .opacity(meadow.isSleeping ? 0.5 : 1)
-        .task {
-            // Walking: small even steps while a direction is held.
-            while !Task.isCancelled {
-                meadow.deckStep(dt: 1.0 / 30)
-                try? await Task.sleep(for: .milliseconds(33))
+        .background {
+            // Walking: one step per screen frame while the D-pad is held, by the time that
+            // actually passed, so she moves at a constant pace.
+            TimelineView(.animation(paused: !meadow.isDeckMoving)) { timeline in
+                Color.clear
+                    .onChange(of: timeline.date) { previous, now in
+                        meadow.deckStep(dt: now.timeIntervalSince(previous))
+                    }
             }
         }
         .onDisappear { meadow.deckDirection = .zero }
+    }
+
+    /// A panel's own header row: its name, and Close.
+    private func panelHeader(_ id: String) -> some View {
+        HStack {
+            Text(panelTitle(id)).font(.headline)
+            Spacer()
+            Button {
+                meadow.panelTabID = PanelTab.farm.rawValue
+            } label: {
+                Label("Close", systemImage: "xmark")
+                    .font(.caption.bold())
+                    .padding(.horizontal, 10)
+                    .padding(.vertical, 5)
+                    .pixelPanel(Palette.periwinkle, edge: Palette.periwinkleEdge, cornerRadius: 10)
+            }
+            .buttonStyle(SquishButtonStyle())
+        }
+    }
+
+    private func panelTitle(_ id: String) -> String {
+        switch id {
+        case "seeds": return "🌱 Seed bag"
+        case "storage": return "📦 Storage chest"
+        default:
+            guard let tab = PanelTab(rawValue: id) else { return "" }
+            return tab == .lures ? "🧺 Lure basket" : tab.title
+        }
     }
 
     // MARK: Tabs
@@ -654,34 +825,13 @@ struct ControlDeck: View {
         }
     }
 
-    // MARK: Context chip
-
-    private func chip(height: CGFloat) -> some View {
-        let target = meadow.deckTarget()
-        let text: String = {
-            if let target { return target.verb }
-            if !meadow.isAtHome && !meadow.isDeckDriving { return "Use the D-pad to walk" }
-            return " "
-        }()
-        return Text(text)
-            .font(.system(size: height * 0.5, weight: .bold, design: .rounded))
-            .lineLimit(1)
-            .minimumScaleFactor(0.6)
-            .padding(.horizontal, height * 0.6)
-            .frame(height: height)
-            .pixelPanel(Palette.pinkCard, edge: Palette.pinkEdge, cornerRadius: height / 2)
-            .opacity(target == nil ? 0.45 : (target?.canAct ?? false ? 1 : 0.75))
-            .animation(.easeOut(duration: 0.15), value: text)
-            .accessibilityLabel(target.map { "Action: \($0.verb)" } ?? "Nothing in reach")
-    }
-
     // MARK: Controls
 
     private func controls(size: CGSize) -> some View {
         let pad = min(size.height, size.width * 0.28)
-        let action = min(pad * 0.78, size.width * 0.2)
-        let secondary = action * 0.52
-        let barWidth = max(size.width - pad - action - secondary * 0.4 - 36, 120)
+        let action = max(min((size.height - 20) / 1.5, size.width * 0.18), 40)
+        let secondary = action * 0.5
+        let barWidth = max(size.width - pad - action - 36, 120)
         let slot = min((barWidth - 30) / 5, size.height * 0.48, 76)
 
         return HStack(alignment: .bottom, spacing: 12) {
@@ -690,13 +840,26 @@ struct ControlDeck: View {
             quickBar(slot: slot)
                 .padding(.bottom, max((pad - slot) / 2 - 6, 0))
             Spacer(minLength: 0)
-            ZStack(alignment: .topLeading) {
-                actionButton(size: action)
-                    .padding(.top, secondary * 0.8)
-                    .padding(.leading, secondary * 0.45)
+            // The smaller blue button above, then what the big button will do, right over it.
+            VStack(alignment: .trailing, spacing: 2) {
                 secondaryButton(size: secondary)
+                    .padding(.trailing, action * 0.55)
+                actionCaption(width: action * 1.4)
+                actionButton(size: action)
             }
         }
+    }
+
+    /// The action button's label, just above it: Shop, Enter, Talk to June…
+    private func actionCaption(width: CGFloat) -> some View {
+        let target = meadow.deckTarget()
+        return Text(target?.verb ?? " ")
+            .font(.caption.bold())
+            .lineLimit(1)
+            .minimumScaleFactor(0.6)
+            .frame(width: width, alignment: .trailing)
+            .opacity(target?.canAct ?? false ? 1 : 0.6)
+            .accessibilityHidden(true)
     }
 
     private func quickBar(slot: CGFloat) -> some View {
@@ -924,5 +1087,62 @@ struct DeckTargetMarker: View {
             .frame(width: unit * (0.1 + 0.01 * pulse), height: unit * (0.05 + 0.005 * pulse))
             .opacity(0.65 + 0.35 * pulse)
             .allowsHitTesting(false)
+    }
+}
+
+// MARK: - Collision overlay (hidden debug view)
+
+/// Draws every blocked zone of a scene as translucent red, labeled, with the walkable area's
+/// edge dashed and your farmer's foot box in yellow. Turned on by tapping the version in
+/// Settings five times, for lining the zones up with the artwork.
+struct CollisionOverlay: View {
+    let scene: SceneCollision
+    /// Where the scene's picture is drawn on screen.
+    let rect: CGRect
+    let feet: Spot
+
+    private func point(_ spot: Spot) -> CGPoint {
+        CGPoint(x: rect.minX + spot.x * rect.width, y: rect.minY + spot.y * rect.height)
+    }
+
+    private func outline(_ points: [Spot]) -> Path {
+        Path { path in
+            guard let first = points.first else { return }
+            path.move(to: point(first))
+            for spot in points.dropFirst() { path.addLine(to: point(spot)) }
+            path.closeSubpath()
+        }
+    }
+
+    private func corners(_ box: DeckRect) -> [Spot] {
+        [Spot(x: box.minX, y: box.minY), Spot(x: box.maxX, y: box.minY), Spot(x: box.maxX, y: box.maxY), Spot(x: box.minX, y: box.maxY)]
+    }
+
+    var body: some View {
+        ZStack(alignment: .topLeading) {
+            ForEach(Array(scene.blocks.enumerated()), id: \.offset) { _, zone in
+                outline(zone.points).fill(Color.red.opacity(0.28))
+                outline(zone.points).stroke(Color.red, lineWidth: 1)
+            }
+            outline(corners(scene.bounds)).stroke(Color.yellow, style: StrokeStyle(lineWidth: 1.5, dash: [6, 4]))
+            outline(corners(scene.footBox(at: feet))).fill(Color.yellow.opacity(0.8))
+            ForEach(Array(scene.blocks.enumerated()), id: \.offset) { _, zone in
+                Text(zone.label)
+                    .font(.system(size: 7, weight: .bold))
+                    .foregroundStyle(.white)
+                    .padding(.horizontal, 2)
+                    .background(Color.red.opacity(0.75))
+                    .fixedSize()
+                    .position(point(zone.bounds.center))
+            }
+            Text("Collision: \(scene.name) · \(scene.blocks.count) zones")
+                .font(.system(size: 9, weight: .heavy))
+                .padding(4)
+                .background(Color.yellow.opacity(0.85), in: .rect(cornerRadius: 4))
+                .foregroundStyle(.black)
+                .position(x: rect.minX + 90, y: max(rect.minY, 0) + 40)
+        }
+        .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .topLeading)
+        .allowsHitTesting(false)
     }
 }

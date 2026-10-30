@@ -283,6 +283,8 @@ struct PauseButton: View {
 private struct SettingsSheet: View {
     @AppStorage("laptopMode") private var isLaptopMode = false
     @AppStorage(MusicPlayer.volumeKey) private var musicVolume = MusicPlayer.defaultVolume
+    @AppStorage("debugCollision") private var showsCollision = false
+    @State private var versionTaps = 0
     @Environment(\.dismiss) private var dismiss
 
     var body: some View {
@@ -305,6 +307,20 @@ private struct SettingsSheet: View {
                 }
                 Section("Game") {
                     LabeledContent("Day length", value: "15 minutes")
+                    // Tap the version five times to show where your farmer can't walk.
+                    LabeledContent("Version", value: Bundle.main.infoDictionary?["CFBundleShortVersionString"] as? String ?? "2.0")
+                        .contentShape(.rect)
+                        .onTapGesture {
+                            versionTaps += 1
+                            if versionTaps >= 5 {
+                                versionTaps = 0
+                                showsCollision.toggle()
+                            }
+                        }
+                    if showsCollision {
+                        Text("Collision overlay is on: red is where your farmer can't walk. Tap the version 5 more times to hide it.")
+                            .font(.caption)
+                    }
                     Text("Animations follow your device's Reduce Motion setting.")
                         .font(.caption)
                 }

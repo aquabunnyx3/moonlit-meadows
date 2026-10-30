@@ -7,6 +7,7 @@ import UIKit
 /// and fades into morning.
 struct HomeScene: View {
     let meadow: Meadow
+    @AppStorage("debugCollision") private var showsCollision = false
     /// The sleeping bedroom (blanket breathing, Z's floating) is showing.
     @State private var showsSleepArt = false
     @State private var wantsToWake = false
@@ -61,7 +62,7 @@ struct HomeScene: View {
                     TimelineView(.animation(minimumInterval: 1 / 12, paused: meadow.isPaused)) { timeline in
                         PersonFigure(look: .farmer(wearing: Outfit.find(meadow.equippedOutfit) ?? Outfit.all[0]),
                                      artID: artID, size: art.height * (meadow.isSitting ? 0.28 : 0.36),
-                                     time: timeline.date.timeIntervalSinceReferenceDate,
+                                     time: meadow.isDeckMoving ? meadow.walkCycleTime : timeline.date.timeIntervalSinceReferenceDate,
                                      facing: meadow.isSitting ? .back : meadow.farmerFacing,
                                      isWalking: !meadow.isSitting && meadow.isDeckMoving)
                     }
@@ -75,6 +76,10 @@ struct HomeScene: View {
                         DeckTargetMarker(target: target, unit: art.height, t: timeline.date.timeIntervalSinceReferenceDate)
                     }
                     .position(point(CGPoint(x: target.spot.x, y: target.spot.y), art))
+                }
+
+                if showsCollision {
+                    CollisionOverlay(scene: Meadow.homeCollision, rect: art, feet: meadow.homeSpot)
                 }
 
                 HStack(spacing: 6) {

@@ -333,6 +333,10 @@ extension Meadow {
     /// Morning: a new day starts, and daily chats, gifts, and activities reset.
     func wakeUp() {
         isSleeping = false
+        // Up and out of bed, standing beside it.
+        homeSpot = Spot(x: 0.42, y: 0.68)
+        farmerFacing = .front
+        deckFacing = DeckVector(x: 0, y: 1)
         sleep()
     }
 
@@ -368,12 +372,10 @@ extension Meadow {
         isAtHome = false
         isSitting = false
         deckDirection = .zero
-        if isDeckDriving {
-            // Back out the front door, facing the farm.
-            farmerSpot = Self.cottageDoorstep
-            farmerFacing = .front
-            deckFacing = DeckVector(x: 0, y: 1)
-        }
+        // Back out the front door, facing the farm.
+        farmerSpot = Self.cottageDoorstep
+        farmerFacing = .front
+        deckFacing = DeckVector(x: 0, y: 1)
         panelTabID = tabID ?? PanelTab.farm.rawValue
     }
 

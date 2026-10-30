@@ -48,8 +48,9 @@ struct RoomThing {
 /// A house's room: where you can walk, what's in the way, and what you can look at, all
 /// as fractions of its picture (each is laid out differently on purpose).
 struct TownInterior {
+    let name: String
     let bounds: DeckRect
-    let blocks: [DeckRect]
+    let blocks: [BlockZone]
     /// Where you appear when you come in.
     let entrance: Spot
     /// Walk into this to go back outside.
@@ -57,12 +58,16 @@ struct TownInterior {
     /// Where the person who lives there stands when they're home.
     let resident: Spot
     let things: [RoomThing]
+
+    /// Walking rules for this room: your farmer is drawn big indoors.
+    var collision: SceneCollision {
+        SceneCollision(name: name, bounds: bounds, blocks: blocks, figure: 0.34, reach: 0.06)
+    }
 }
 
 enum TownLayout {
     // MARK: Village map (`city-hub-map`, 2096 × 1184)
 
-    static let hubBounds = DeckRect(minX: 0.03, minY: 0.02, maxX: 0.97, maxY: 0.975)
     /// Where you arrive from the farm, at the bottom path.
     static let arrival = Spot(x: 0.57, y: 0.94)
     /// Walk into this (the path off the bottom of the map) to go back to the farm.
@@ -77,71 +82,137 @@ enum TownLayout {
     static let houses: [TownHouse] = [
         TownHouse(id: "wes", name: "Wes's Cottage", doorstep: Spot(x: 0.125, y: 0.245)),
         TownHouse(id: "june", name: "June's Glasshouse", doorstep: Spot(x: 0.432, y: 0.215)),
-        TownHouse(id: "roz", name: "the Sweet Burrow", doorstep: Spot(x: 0.665, y: 0.245)),
-        TownHouse(id: "theo", name: "Theo's Observatory", doorstep: Spot(x: 0.89, y: 0.245)),
+        TownHouse(id: "roz", name: "the Sweet Burrow", doorstep: Spot(x: 0.668, y: 0.255)),
+        TownHouse(id: "theo", name: "Theo's Observatory", doorstep: Spot(x: 0.893, y: 0.245)),
         TownHouse(id: "library", name: "the Village Library", doorstep: Spot(x: 0.10, y: 0.6)),
-        TownHouse(id: "kai", name: "Kai's Woodshop", doorstep: Spot(x: 0.925, y: 0.63)),
+        TownHouse(id: "kai", name: "Kai's Woodshop", doorstep: Spot(x: 0.925, y: 0.6)),
         TownHouse(id: "bree", name: "Bree's Bramble Cottage", doorstep: Spot(x: 0.095, y: 0.95)),
         TownHouse(id: "vi", name: "Vi's Flower Cottage", doorstep: Spot(x: 0.265, y: 0.96)),
-        TownHouse(id: "silas", name: "Silas's Apiary Cottage", doorstep: Spot(x: 0.44, y: 0.955)),
+        TownHouse(id: "silas", name: "Silas's Apiary Cottage", doorstep: Spot(x: 0.442, y: 0.947)),
         TownHouse(id: "rowan", name: "Rowan's Forge", doorstep: Spot(x: 0.69, y: 0.95)),
-        TownHouse(id: "sol", name: "Sol's Patchwork Atelier", doorstep: Spot(x: 0.915, y: 0.95)),
+        TownHouse(id: "sol", name: "Sol's Patchwork Atelier", doorstep: Spot(x: 0.913, y: 0.95)),
     ]
     static let shopDoorstep = Spot(x: 0.74, y: 0.645)
     static var shopZone: DeckRect {
         DeckRect(minX: shopDoorstep.x - 0.04, minY: shopDoorstep.y - 0.07, maxX: shopDoorstep.x + 0.04, maxY: shopDoorstep.y + 0.01)
     }
 
-    /// The four market stalls: each sells seeds and buys your crops.
-    static let stalls = [DeckRect(minX: 0.31, minY: 0.31, maxX: 0.40, maxY: 0.47), DeckRect(minX: 0.505, minY: 0.31, maxX: 0.60, maxY: 0.47),
-                         DeckRect(minX: 0.31, minY: 0.50, maxX: 0.40, maxY: 0.66), DeckRect(minX: 0.505, minY: 0.50, maxX: 0.60, maxY: 0.66)]
+    /// The four market stalls (awning to counter): each sells seeds and buys your crops.
+    static let stalls = [DeckRect(minX: 0.307, minY: 0.311, maxX: 0.402, maxY: 0.471), DeckRect(minX: 0.505, minY: 0.307, maxX: 0.6, maxY: 0.471),
+                         DeckRect(minX: 0.307, minY: 0.5, maxX: 0.402, maxY: 0.66), DeckRect(minX: 0.5, minY: 0.5, maxX: 0.6, maxY: 0.66)]
 
-    /// Buildings, trees, fences and stalls (by your feet).
-    static let hubBlocks: [DeckRect] = [
-        // Houses along the top, the greenhouse gardens, and the big trees.
-        DeckRect(minX: 0.07, minY: 0, maxX: 0.19, maxY: 0.215),
-        DeckRect(minX: 0.19, minY: 0, maxX: 0.30, maxY: 0.17),
-        DeckRect(minX: 0.36, minY: 0, maxX: 0.535, maxY: 0.185),
-        DeckRect(minX: 0.33, minY: 0.09, maxX: 0.41, maxY: 0.265),
-        DeckRect(minX: 0.455, minY: 0.13, maxX: 0.535, maxY: 0.265),
-        DeckRect(minX: 0.60, minY: 0, maxX: 0.73, maxY: 0.215),
-        DeckRect(minX: 0.76, minY: 0, maxX: 0.83, maxY: 0.13),
-        DeckRect(minX: 0.84, minY: 0, maxX: 0.95, maxY: 0.215),
-        DeckRect(minX: 0.91, minY: 0.2, maxX: 1, maxY: 0.33),
-        // Houses down the sides and along the bottom.
-        DeckRect(minX: 0.03, minY: 0.34, maxX: 0.17, maxY: 0.575),
-        DeckRect(minX: 0.875, minY: 0.35, maxX: 1, maxY: 0.575),
-        DeckRect(minX: 0.875, minY: 0.585, maxX: 0.905, maxY: 0.635),
-        DeckRect(minX: 0.95, minY: 0.55, maxX: 1, maxY: 0.66),
-        DeckRect(minX: 0.03, minY: 0.68, maxX: 0.16, maxY: 0.925),
-        DeckRect(minX: 0.18, minY: 0.7, maxX: 0.34, maxY: 0.935),
-        DeckRect(minX: 0.38, minY: 0.71, maxX: 0.53, maxY: 0.93),
-        DeckRect(minX: 0.6, minY: 0.71, maxX: 0.78, maxY: 0.925),
-        DeckRect(minX: 0.79, minY: 0.82, maxX: 0.84, maxY: 0.97),
-        DeckRect(minX: 0.84, minY: 0.7, maxX: 0.97, maxY: 0.925),
-        // The plaza fence (with its gaps for the paths), the shop, the basket and the stalls.
-        DeckRect(minX: 0.245, minY: 0.28, maxX: 0.4, maxY: 0.305),
-        DeckRect(minX: 0.455, minY: 0.28, maxX: 0.645, maxY: 0.305),
-        DeckRect(minX: 0.7, minY: 0.28, maxX: 0.855, maxY: 0.305),
-        DeckRect(minX: 0.265, minY: 0.69, maxX: 0.43, maxY: 0.715),
-        DeckRect(minX: 0.47, minY: 0.69, maxX: 0.855, maxY: 0.715),
-        DeckRect(minX: 0.245, minY: 0.28, maxX: 0.26, maxY: 0.45),
-        DeckRect(minX: 0.245, minY: 0.55, maxX: 0.26, maxY: 0.715),
-        DeckRect(minX: 0.84, minY: 0.28, maxX: 0.855, maxY: 0.45),
-        DeckRect(minX: 0.84, minY: 0.55, maxX: 0.855, maxY: 0.715),
-        DeckRect(minX: 0.67, minY: 0.33, maxX: 0.81, maxY: 0.62),
-        DeckRect(minX: 0.415, minY: 0.45, maxX: 0.49, maxY: 0.54),
-    ] + stalls.map { DeckRect(minX: $0.minX, minY: $0.minY, maxX: $0.maxX, maxY: $0.maxY - 0.03) }
+    /// A gable house seen from the front: a roof rising to a peak, over straight walls.
+    private static func gable(_ label: String, left: Double, right: Double, peak: Spot, eaves: Double, bottom: Double) -> BlockZone {
+        BlockZone(label: label, outline: [Spot(x: left, y: eaves), peak, Spot(x: right, y: eaves),
+                                          Spot(x: right, y: bottom), Spot(x: left, y: bottom)])
+    }
+
+    /// The village (`city-hub-map`), item by item from the picture. Lanes, the plaza's cobbles,
+    /// flowers, bushes and grass are walkable; trees block only at the trunk. The plaza fence
+    /// has four gates (two at the top, one each side) and two gaps at the bottom.
+    static let hubCollision = SceneCollision(
+        name: "Village",
+        // The bottom edge is open ground: the path below the bottom row of houses.
+        bounds: DeckRect(minX: 0.03, minY: 0.02, maxX: 0.97, maxY: 0.997),
+        blocks: [
+            // Along the top.
+            BlockZone(label: "hub: Wes's cottage", rect: DeckRect(minX: 0.065, minY: 0, maxX: 0.18, maxY: 0.205)),
+            BlockZone(label: "hub: Wes's flower box (left)", rect: DeckRect(minX: 0.06, minY: 0.18, maxX: 0.105, maxY: 0.227)),
+            BlockZone(label: "hub: Wes's flower box (right)", rect: DeckRect(minX: 0.143, minY: 0.18, maxX: 0.18, maxY: 0.227)),
+            BlockZone(label: "hub: rock by Wes's", rect: DeckRect(minX: 0.063, minY: 0.249, maxX: 0.083, maxY: 0.276)),
+            BlockZone(label: "hub: pine trunk (northwest)", rect: DeckRect(minX: 0.018, minY: 0.116, maxX: 0.038, maxY: 0.142)),
+            BlockZone(label: "hub: pine trunk (west)", rect: DeckRect(minX: 0.02, minY: 0.343, maxX: 0.04, maxY: 0.369)),
+            BlockZone(label: "hub: pink tree trunk (north)", rect: DeckRect(minX: 0.24, minY: 0.165, maxX: 0.261, maxY: 0.2)),
+            BlockZone(label: "hub: June's house", rect: DeckRect(minX: 0.365, minY: 0, maxX: 0.455, maxY: 0.178)),
+            BlockZone(label: "hub: June's greenhouse", rect: DeckRect(minX: 0.455, minY: 0, maxX: 0.535, maxY: 0.15)),
+            BlockZone(label: "hub: June's herb garden (west)", rect: DeckRect(minX: 0.332, minY: 0.088, maxX: 0.415, maxY: 0.267)),
+            BlockZone(label: "hub: June's herb garden (east)", rect: DeckRect(minX: 0.455, minY: 0.15, maxX: 0.535, maxY: 0.265)),
+            BlockZone(label: "hub: pine trunk (north)", rect: DeckRect(minX: 0.55, minY: 0.067, maxX: 0.568, maxY: 0.093)),
+            BlockZone(label: "hub: Roz's bakery", rect: DeckRect(minX: 0.605, minY: 0.03, maxX: 0.73, maxY: 0.235)),
+            BlockZone(label: "hub: Roz's barrel", rect: DeckRect(minX: 0.725, minY: 0.19, maxX: 0.748, maxY: 0.24)),
+            BlockZone(label: "hub: rock by the bakery", rect: DeckRect(minX: 0.769, minY: 0.182, maxX: 0.789, maxY: 0.205)),
+            BlockZone(label: "hub: pink tree trunk (northeast)", rect: DeckRect(minX: 0.781, minY: 0.102, maxX: 0.807, maxY: 0.147)),
+            BlockZone(label: "hub: Theo's observatory", rect: DeckRect(minX: 0.84, minY: 0, maxX: 0.945, maxY: 0.218)),
+            BlockZone(label: "hub: Theo's pots (left)", rect: DeckRect(minX: 0.83, minY: 0.19, maxX: 0.86, maxY: 0.24)),
+            BlockZone(label: "hub: Theo's pots and barrel (right)", rect: DeckRect(minX: 0.905, minY: 0.2, maxX: 0.955, maxY: 0.24)),
+            BlockZone(label: "hub: pink tree trunk (east)", rect: DeckRect(minX: 0.945, minY: 0.315, maxX: 0.965, maxY: 0.36)),
+            // Lamp posts.
+            BlockZone(label: "hub: lamp post (top left)", rect: DeckRect(minX: 0.193, minY: 0.27, maxX: 0.206, maxY: 0.293)),
+            BlockZone(label: "hub: lamp post (top, by the fence)", rect: DeckRect(minX: 0.294, minY: 0.27, maxX: 0.307, maxY: 0.29)),
+            BlockZone(label: "hub: lamp post (top middle)", rect: DeckRect(minX: 0.58, minY: 0.27, maxX: 0.593, maxY: 0.29)),
+            BlockZone(label: "hub: lamp post (top right)", rect: DeckRect(minX: 0.812, minY: 0.27, maxX: 0.826, maxY: 0.29)),
+            BlockZone(label: "hub: lamp post (bottom left)", rect: DeckRect(minX: 0.193, minY: 0.675, maxX: 0.206, maxY: 0.696)),
+            BlockZone(label: "hub: lamp post (bottom right)", rect: DeckRect(minX: 0.817, minY: 0.675, maxX: 0.832, maxY: 0.696)),
+            // The plaza: fence with its gates, the stalls, barrels, the basket and the shop.
+            BlockZone(label: "hub: plaza fence (north, left)", rect: DeckRect(minX: 0.244, minY: 0.284, maxX: 0.413, maxY: 0.316)),
+            BlockZone(label: "hub: plaza fence (north, middle)", rect: DeckRect(minX: 0.455, minY: 0.284, maxX: 0.646, maxY: 0.316)),
+            BlockZone(label: "hub: plaza fence (north, right)", rect: DeckRect(minX: 0.698, minY: 0.284, maxX: 0.852, maxY: 0.316)),
+            BlockZone(label: "hub: plaza fence (west, upper)", rect: DeckRect(minX: 0.244, minY: 0.284, maxX: 0.256, maxY: 0.483)),
+            BlockZone(label: "hub: plaza fence (west, lower)", rect: DeckRect(minX: 0.244, minY: 0.535, maxX: 0.256, maxY: 0.72)),
+            BlockZone(label: "hub: plaza fence (east, upper)", rect: DeckRect(minX: 0.84, minY: 0.284, maxX: 0.852, maxY: 0.484)),
+            BlockZone(label: "hub: plaza fence (east, lower)", rect: DeckRect(minX: 0.84, minY: 0.535, maxX: 0.852, maxY: 0.72)),
+            BlockZone(label: "hub: plaza fence (south, left)", rect: DeckRect(minX: 0.256, minY: 0.694, maxX: 0.445, maxY: 0.72)),
+            BlockZone(label: "hub: plaza fence (south, middle)", rect: DeckRect(minX: 0.472, minY: 0.694, maxX: 0.684, maxY: 0.72)),
+            BlockZone(label: "hub: plaza fence (south, right)", rect: DeckRect(minX: 0.7495, minY: 0.694, maxX: 0.852, maxY: 0.72)),
+            BlockZone(label: "hub: market stall (northwest)", rect: stalls[0]),
+            BlockZone(label: "hub: market stall (northeast)", rect: stalls[1]),
+            BlockZone(label: "hub: market stall (southwest)", rect: stalls[2]),
+            BlockZone(label: "hub: market stall (southeast)", rect: stalls[3]),
+            BlockZone(label: "hub: barrel (northwest stall)", rect: DeckRect(minX: 0.286, minY: 0.418, maxX: 0.307, maxY: 0.47)),
+            BlockZone(label: "hub: barrel (northeast stall)", rect: DeckRect(minX: 0.485, minY: 0.418, maxX: 0.506, maxY: 0.47)),
+            BlockZone(label: "hub: barrel (southwest stall)", rect: DeckRect(minX: 0.286, minY: 0.607, maxX: 0.307, maxY: 0.656)),
+            BlockZone(label: "hub: barrel (southeast stall)", rect: DeckRect(minX: 0.485, minY: 0.607, maxX: 0.506, maxY: 0.656)),
+            BlockZone(label: "hub: lure basket fence", rect: DeckRect(minX: 0.42, minY: 0.445, maxX: 0.485, maxY: 0.535)),
+            BlockZone(label: "hub: shop", rect: DeckRect(minX: 0.676, minY: 0.334, maxX: 0.809, maxY: 0.6)),
+            BlockZone(label: "hub: barrel by the shop", rect: DeckRect(minX: 0.656, minY: 0.54, maxX: 0.676, maxY: 0.6)),
+            // Down the sides.
+            BlockZone(label: "hub: library", outline: [Spot(x: 0.035, y: 0.43), Spot(x: 0.105, y: 0.343), Spot(x: 0.175, y: 0.43),
+                                                       Spot(x: 0.175, y: 0.575), Spot(x: 0.035, y: 0.575)]),
+            BlockZone(label: "hub: Kai's cabin", rect: DeckRect(minX: 0.868, minY: 0.33, maxX: 0.98, maxY: 0.548)),
+            BlockZone(label: "hub: Kai's workbench", rect: DeckRect(minX: 0.868, minY: 0.548, maxX: 0.91, maxY: 0.63)),
+            BlockZone(label: "hub: Kai's log pile", rect: DeckRect(minX: 0.94, minY: 0.548, maxX: 1, maxY: 0.62)),
+            // Along the bottom: front gables, so the strip under the plaza fence stays open.
+            BlockZone(label: "hub: Bree's cottage", outline: [Spot(x: 0.035, y: 0.79), Spot(x: 0.07, y: 0.682), Spot(x: 0.13, y: 0.682),
+                                                              Spot(x: 0.155, y: 0.79), Spot(x: 0.17, y: 0.79), Spot(x: 0.17, y: 0.925),
+                                                              Spot(x: 0.03, y: 0.925)]),
+            gable("hub: Vi's cottage", left: 0.18, right: 0.352, peak: Spot(x: 0.266, y: 0.696), eaves: 0.77, bottom: 0.94),
+            BlockZone(label: "hub: rock by Vi's", rect: DeckRect(minX: 0.342, minY: 0.958, maxX: 0.362, maxY: 0.994)),
+            // The roof's tip sits just under the plaza's south gate; it's trimmed a hair so you
+            // can step through the gate and round the roof to the lane by the beehives.
+            BlockZone(label: "hub: Silas's cottage", outline: [Spot(x: 0.385, y: 0.786), Spot(x: 0.442, y: 0.73), Spot(x: 0.496, y: 0.78),
+                                                               Spot(x: 0.496, y: 0.928), Spot(x: 0.385, y: 0.928)]),
+            BlockZone(label: "hub: Silas's yard fence (west)", rect: DeckRect(minX: 0.379, minY: 0.84, maxX: 0.39, maxY: 0.98)),
+            BlockZone(label: "hub: Silas's yard fence (south, left)", rect: DeckRect(minX: 0.379, minY: 0.955, maxX: 0.418, maxY: 0.981)),
+            BlockZone(label: "hub: Silas's yard fence (south, right)", rect: DeckRect(minX: 0.468, minY: 0.955, maxX: 0.533, maxY: 0.981)),
+            BlockZone(label: "hub: Silas's beehives (stack)", rect: DeckRect(minX: 0.495, minY: 0.75, maxX: 0.527, maxY: 0.955)),
+            BlockZone(label: "hub: Silas's beehives (front)", rect: DeckRect(minX: 0.465, minY: 0.91, maxX: 0.494, maxY: 0.955)),
+            BlockZone(label: "hub: Silas's sunflowers", rect: DeckRect(minX: 0.505, minY: 0.76, maxX: 0.53, maxY: 0.86)),
+            gable("hub: Rowan's forge", left: 0.626, right: 0.76, peak: Spot(x: 0.691, y: 0.698), eaves: 0.794, bottom: 0.93),
+            BlockZone(label: "hub: forge chimney", rect: DeckRect(minX: 0.715, minY: 0.7, maxX: 0.739, maxY: 0.794)),
+            BlockZone(label: "hub: forge tool rack (left)", rect: DeckRect(minX: 0.598, minY: 0.835, maxX: 0.626, maxY: 0.925)),
+            BlockZone(label: "hub: forge tool rack (right)", rect: DeckRect(minX: 0.756, minY: 0.835, maxX: 0.785, maxY: 0.925)),
+            BlockZone(label: "hub: coal (left of the forge)", rect: DeckRect(minX: 0.606, minY: 0.897, maxX: 0.63, maxY: 0.936)),
+            BlockZone(label: "hub: anvil", rect: DeckRect(minX: 0.64, minY: 0.915, maxX: 0.66, maxY: 0.938)),
+            BlockZone(label: "hub: coal pile (right)", rect: DeckRect(minX: 0.705, minY: 0.918, maxX: 0.775, maxY: 0.965)),
+            BlockZone(label: "hub: rock below the forge", rect: DeckRect(minX: 0.628, minY: 0.956, maxX: 0.643, maxY: 0.978)),
+            BlockZone(label: "hub: pine trunk (south)", rect: DeckRect(minX: 0.8, minY: 0.95, maxX: 0.82, maxY: 0.985)),
+            BlockZone(label: "hub: rock by Sol's", rect: DeckRect(minX: 0.839, minY: 0.736, maxX: 0.854, maxY: 0.758)),
+            gable("hub: Sol's atelier", left: 0.855, right: 0.972, peak: Spot(x: 0.907, y: 0.682), eaves: 0.79, bottom: 0.93),
+            BlockZone(label: "hub: Sol's chimney", rect: DeckRect(minX: 0.932, minY: 0.69, maxX: 0.958, maxY: 0.76)),
+            BlockZone(label: "hub: Sol's fabric rolls", rect: DeckRect(minX: 0.846, minY: 0.84, maxX: 0.898, maxY: 0.925)),
+            BlockZone(label: "hub: Sol's spools and plants", rect: DeckRect(minX: 0.937, minY: 0.86, maxX: 0.985, maxY: 0.925)),
+        ],
+        figure: 0.12, reach: 0.06)
 
     /// Each villager's favorite spot in the village (by their feet).
     static let townSpots: [String: Spot] = [
         "june": Spot(x: 0.44, y: 0.275),
         "roz": Spot(x: 0.555, y: 0.49),
         "theo": Spot(x: 0.62, y: 0.5),
-        "kai": Spot(x: 0.865, y: 0.5),
+        "kai": Spot(x: 0.825, y: 0.45),
         "sol": Spot(x: 0.45, y: 0.6),
         "rowan": Spot(x: 0.57, y: 0.745),
-        "silas": Spot(x: 0.355, y: 0.48),
+        "silas": Spot(x: 0.355, y: 0.49),
         "bree": Spot(x: 0.17, y: 0.955),
         "vi": Spot(x: 0.355, y: 0.68),
     ]
@@ -174,9 +245,11 @@ enum TownLayout {
 
     // Each room on its own, so the compiler checks them one at a time.
     static let juneRoom = TownInterior(
+        name: "June's room",
         bounds: DeckRect(minX: 0.1, minY: 0.5, maxX: 0.72, maxY: 0.94),
-        blocks: [DeckRect(minX: 0.08, minY: 0.38, maxX: 0.24, maxY: 0.85), DeckRect(minX: 0.49, minY: 0.42, maxX: 0.7, maxY: 0.68),
-                 DeckRect(minX: 0.33, minY: 0.77, maxX: 0.56, maxY: 0.95)],
+        blocks: [BlockZone(label: "June's room: bed", rect: DeckRect(minX: 0.08, minY: 0.38, maxX: 0.24, maxY: 0.85)),
+                 BlockZone(label: "June's room: seedling rack", rect: DeckRect(minX: 0.49, minY: 0.42, maxX: 0.7, maxY: 0.68)),
+                 BlockZone(label: "June's room: worktable", rect: DeckRect(minX: 0.33, minY: 0.77, maxX: 0.56, maxY: 0.95))],
         entrance: Spot(x: 0.64, y: 0.78), exit: DeckRect(minX: 0.7, minY: 0.6, maxX: 0.8, maxY: 0.94),
         resident: Spot(x: 0.4, y: 0.62),
         things: [
@@ -188,10 +261,14 @@ enum TownLayout {
                       text: "A mortar and pestle, a jar of dried petals, and a fresh bundle of rosemary. It smells like tea."),
         ])
     static let rozRoom = TownInterior(
+        name: "Roz's bakery",
         bounds: DeckRect(minX: 0.1, minY: 0.58, maxX: 0.95, maxY: 0.94),
-        blocks: [DeckRect(minX: 0.0, minY: 0.3, maxX: 0.09, maxY: 1), DeckRect(minX: 0.53, minY: 0.5, maxX: 0.7, maxY: 0.65),
-                 DeckRect(minX: 0.56, minY: 0.66, maxX: 0.67, maxY: 0.74), DeckRect(minX: 0.71, minY: 0.45, maxX: 0.81, maxY: 0.62),
-                 DeckRect(minX: 0.82, minY: 0.4, maxX: 0.97, maxY: 0.95), DeckRect(minX: 0.49, minY: 0.56, maxX: 0.515, maxY: 0.62)],
+        blocks: [BlockZone(label: "Roz's bakery: jar shelves (left wall)", rect: DeckRect(minX: 0.0, minY: 0.3, maxX: 0.09, maxY: 1)),
+                 BlockZone(label: "Roz's bakery: sofa", rect: DeckRect(minX: 0.53, minY: 0.5, maxX: 0.7, maxY: 0.65)),
+                 BlockZone(label: "Roz's bakery: tea table", rect: DeckRect(minX: 0.56, minY: 0.66, maxX: 0.67, maxY: 0.74)),
+                 BlockZone(label: "Roz's bakery: bookshelf", rect: DeckRect(minX: 0.71, minY: 0.45, maxX: 0.81, maxY: 0.62)),
+                 BlockZone(label: "Roz's bakery: canopy bed", rect: DeckRect(minX: 0.82, minY: 0.4, maxX: 0.97, maxY: 0.95)),
+                 BlockZone(label: "Roz's bakery: divider post", rect: DeckRect(minX: 0.49, minY: 0.56, maxX: 0.515, maxY: 0.62))],
         entrance: Spot(x: 0.3, y: 0.88), exit: DeckRect(minX: 0.2, minY: 0.94, maxX: 0.45, maxY: 1),
         resident: Spot(x: 0.32, y: 0.64),
         things: [
@@ -205,10 +282,13 @@ enum TownLayout {
                       text: "Cookbooks, mostly. One is just called “Pies I Will Make Someday”."),
         ])
     static let theoRoom = TownInterior(
+        name: "Theo's observatory",
         bounds: DeckRect(minX: 0.1, minY: 0.6, maxX: 0.9, maxY: 0.95),
-        blocks: [DeckRect(minX: 0.28, minY: 0, maxX: 0.72, maxY: 0.68), DeckRect(minX: 0.1, minY: 0.58, maxX: 0.27, maxY: 0.88),
-                 DeckRect(minX: 0.06, minY: 0.84, maxX: 0.43, maxY: 1), DeckRect(minX: 0.77, minY: 0.27, maxX: 0.89, maxY: 0.82),
-                 DeckRect(minX: 0.77, minY: 0.8, maxX: 0.89, maxY: 0.96), DeckRect(minX: 0.3, minY: 0.72, maxX: 0.41, maxY: 0.86)],
+        blocks: [BlockZone(label: "Theo's observatory: telescope platform", rect: DeckRect(minX: 0.28, minY: 0, maxX: 0.72, maxY: 0.68)),
+                 BlockZone(label: "Theo's observatory: bed", rect: DeckRect(minX: 0.1, minY: 0.58, maxX: 0.27, maxY: 0.88)),
+                 BlockZone(label: "Theo's observatory: desk", rect: DeckRect(minX: 0.06, minY: 0.84, maxX: 0.43, maxY: 1)),
+                 BlockZone(label: "Theo's observatory: bookshelf", rect: DeckRect(minX: 0.77, minY: 0.27, maxX: 0.89, maxY: 0.82)),
+                 BlockZone(label: "Theo's observatory: armchair", rect: DeckRect(minX: 0.77, minY: 0.8, maxX: 0.89, maxY: 0.96))],
         entrance: Spot(x: 0.58, y: 0.9), exit: DeckRect(minX: 0.48, minY: 0.95, maxX: 0.72, maxY: 1),
         resident: Spot(x: 0.5, y: 0.76),
         things: [
@@ -222,10 +302,13 @@ enum TownLayout {
                       text: "Astronomy books, jars of something glittery, and a tiny spare telescope."),
         ])
     static let kaiRoom = TownInterior(
+        name: "Kai's woodshop",
         bounds: DeckRect(minX: 0.17, minY: 0.47, maxX: 0.93, maxY: 0.94),
-        blocks: [DeckRect(minX: 0.07, minY: 0.36, maxX: 0.33, maxY: 0.68), DeckRect(minX: 0, minY: 0.62, maxX: 0.17, maxY: 1),
-                 DeckRect(minX: 0.33, minY: 0.6, maxX: 0.39, maxY: 0.68), DeckRect(minX: 0.7, minY: 0.44, maxX: 0.91, maxY: 0.68),
-                 DeckRect(minX: 0.87, minY: 0.62, maxX: 0.96, maxY: 0.86)],
+        blocks: [BlockZone(label: "Kai's woodshop: workbench", rect: DeckRect(minX: 0.07, minY: 0.36, maxX: 0.33, maxY: 0.68)),
+                 BlockZone(label: "Kai's woodshop: lumber pile and sawhorse", rect: DeckRect(minX: 0, minY: 0.62, maxX: 0.17, maxY: 1)),
+                 BlockZone(label: "Kai's woodshop: stool", rect: DeckRect(minX: 0.33, minY: 0.6, maxX: 0.39, maxY: 0.68)),
+                 BlockZone(label: "Kai's woodshop: bed", rect: DeckRect(minX: 0.7, minY: 0.44, maxX: 0.91, maxY: 0.68)),
+                 BlockZone(label: "Kai's woodshop: wood stove", rect: DeckRect(minX: 0.87, minY: 0.62, maxX: 0.96, maxY: 0.86))],
         entrance: Spot(x: 0.5, y: 0.88), exit: DeckRect(minX: 0.4, minY: 0.94, maxX: 0.6, maxY: 1),
         resident: Spot(x: 0.44, y: 0.62),
         things: [
@@ -237,9 +320,12 @@ enum TownLayout {
                       text: "A little stove with a kettle on top, ticking as it warms."),
         ])
     static let solRoom = TownInterior(
+        name: "Sol's atelier",
         bounds: DeckRect(minX: 0.13, minY: 0.6, maxX: 0.95, maxY: 0.95),
-        blocks: [DeckRect(minX: 0.03, minY: 0.52, maxX: 0.12, maxY: 0.95), DeckRect(minX: 0.1, minY: 0.4, maxX: 0.24, maxY: 0.85),
-                 DeckRect(minX: 0.24, minY: 0.38, maxX: 0.55, maxY: 0.6), DeckRect(minX: 0.7, minY: 0.5, maxX: 0.98, maxY: 0.88)],
+        blocks: [BlockZone(label: "Sol's atelier: dress form", rect: DeckRect(minX: 0.03, minY: 0.52, maxX: 0.12, maxY: 0.95)),
+                 BlockZone(label: "Sol's atelier: sewing table and fabric bin", rect: DeckRect(minX: 0.1, minY: 0.4, maxX: 0.24, maxY: 0.85)),
+                 BlockZone(label: "Sol's atelier: bed", rect: DeckRect(minX: 0.24, minY: 0.38, maxX: 0.55, maxY: 0.6)),
+                 BlockZone(label: "Sol's atelier: music stage", rect: DeckRect(minX: 0.7, minY: 0.5, maxX: 0.98, maxY: 0.88))],
         entrance: Spot(x: 0.5, y: 0.9), exit: DeckRect(minX: 0.35, minY: 0.95, maxX: 0.65, maxY: 1),
         resident: Spot(x: 0.62, y: 0.64),
         things: [
@@ -251,10 +337,13 @@ enum TownLayout {
                       text: "A guitar, a music stand, cushions in a circle, and a tambourine waiting for a friend."),
         ])
     static let wesRoom = TownInterior(
+        name: "Wes's cottage",
         bounds: DeckRect(minX: 0.14, minY: 0.45, maxX: 0.88, maxY: 0.94),
-        blocks: [DeckRect(minX: 0.08, minY: 0.43, maxX: 0.15, maxY: 0.92), DeckRect(minX: 0.2, minY: 0.42, maxX: 0.35, maxY: 0.7),
-                 DeckRect(minX: 0.43, minY: 0.38, maxX: 0.57, maxY: 0.62), DeckRect(minX: 0.73, minY: 0.35, maxX: 0.87, maxY: 0.65),
-                 DeckRect(minX: 0.7, minY: 0.65, maxX: 0.9, maxY: 0.95)],
+        blocks: [BlockZone(label: "Wes's cottage: seed jar shelf", rect: DeckRect(minX: 0.08, minY: 0.43, maxX: 0.15, maxY: 0.92)),
+                 BlockZone(label: "Wes's cottage: rocking chair", rect: DeckRect(minX: 0.2, minY: 0.42, maxX: 0.35, maxY: 0.7)),
+                 BlockZone(label: "Wes's cottage: wood stove", rect: DeckRect(minX: 0.43, minY: 0.38, maxX: 0.57, maxY: 0.62)),
+                 BlockZone(label: "Wes's cottage: bed", rect: DeckRect(minX: 0.73, minY: 0.35, maxX: 0.87, maxY: 0.65)),
+                 BlockZone(label: "Wes's cottage: tea table and chairs", rect: DeckRect(minX: 0.7, minY: 0.65, maxX: 0.9, maxY: 0.95))],
         entrance: Spot(x: 0.5, y: 0.88), exit: DeckRect(minX: 0.3, minY: 0.94, maxX: 0.65, maxY: 1),
         resident: Spot(x: 0.38, y: 0.76),
         things: [
@@ -270,9 +359,12 @@ enum TownLayout {
                       text: "A blue teapot and two cups. He always sets out a second one, just in case."),
         ])
     static let breeRoom = TownInterior(
+        name: "Bree's cottage",
         bounds: DeckRect(minX: 0.35, minY: 0.5, maxX: 0.95, maxY: 0.95),
-        blocks: [DeckRect(minX: 0.03, minY: 0.4, maxX: 0.35, maxY: 0.95), DeckRect(minX: 0.53, minY: 0.4, maxX: 0.65, maxY: 0.67),
-                 DeckRect(minX: 0.72, minY: 0.4, maxX: 0.92, maxY: 0.68), DeckRect(minX: 0.78, minY: 0.62, maxX: 1, maxY: 1)],
+        blocks: [BlockZone(label: "Bree's cottage: bed and potted bushes", rect: DeckRect(minX: 0.03, minY: 0.4, maxX: 0.35, maxY: 0.95)),
+                 BlockZone(label: "Bree's cottage: wicker chair", rect: DeckRect(minX: 0.53, minY: 0.4, maxX: 0.65, maxY: 0.67)),
+                 BlockZone(label: "Bree's cottage: desk and berry crates", rect: DeckRect(minX: 0.72, minY: 0.4, maxX: 0.92, maxY: 0.68)),
+                 BlockZone(label: "Bree's cottage: potted bushes (right)", rect: DeckRect(minX: 0.78, minY: 0.62, maxX: 1, maxY: 1))],
         entrance: Spot(x: 0.5, y: 0.88), exit: DeckRect(minX: 0.42, minY: 0.94, maxX: 0.62, maxY: 1),
         resident: Spot(x: 0.68, y: 0.76),
         things: [
@@ -284,9 +376,12 @@ enum TownLayout {
                       text: "A sunny wicker chair with a blue cushion, right by the window."),
         ])
     static let viRoom = TownInterior(
+        name: "Vi's cottage",
         bounds: DeckRect(minX: 0.27, minY: 0.42, maxX: 0.72, maxY: 0.95),
-        blocks: [DeckRect(minX: 0.06, minY: 0.42, maxX: 0.27, maxY: 0.7), DeckRect(minX: 0.06, minY: 0.68, maxX: 0.43, maxY: 1),
-                 DeckRect(minX: 0.63, minY: 0.27, maxX: 0.93, maxY: 0.58), DeckRect(minX: 0.72, minY: 0.5, maxX: 0.95, maxY: 1)],
+        blocks: [BlockZone(label: "Vi's cottage: arranging table", rect: DeckRect(minX: 0.06, minY: 0.42, maxX: 0.27, maxY: 0.7)),
+                 BlockZone(label: "Vi's cottage: front counter", rect: DeckRect(minX: 0.06, minY: 0.68, maxX: 0.43, maxY: 1)),
+                 BlockZone(label: "Vi's cottage: bed", rect: DeckRect(minX: 0.63, minY: 0.27, maxX: 0.93, maxY: 0.58)),
+                 BlockZone(label: "Vi's cottage: flower buckets", rect: DeckRect(minX: 0.72, minY: 0.5, maxX: 0.95, maxY: 1))],
         entrance: Spot(x: 0.51, y: 0.58), exit: DeckRect(minX: 0.43, minY: 0.64, maxX: 0.59, maxY: 1),
         resident: Spot(x: 0.42, y: 0.5),
         things: [
@@ -300,10 +395,14 @@ enum TownLayout {
                       text: "A round mirror framed in roses, and a hairbrush with a flower stuck in it."),
         ])
     static let rowanRoom = TownInterior(
+        name: "Rowan's forge",
         bounds: DeckRect(minX: 0.1, minY: 0.58, maxX: 0.92, maxY: 0.94),
-        blocks: [DeckRect(minX: 0.1, minY: 0, maxX: 0.27, maxY: 0.57), DeckRect(minX: 0.29, minY: 0.38, maxX: 0.36, maxY: 0.6),
-                 DeckRect(minX: 0.38, minY: 0.38, maxX: 0.46, maxY: 0.59), DeckRect(minX: 0.57, minY: 0.35, maxX: 0.87, maxY: 0.58),
-                 DeckRect(minX: 0.66, minY: 0.57, maxX: 0.84, maxY: 0.86), DeckRect(minX: 0.83, minY: 0.55, maxX: 0.92, maxY: 0.95)],
+        blocks: [BlockZone(label: "Rowan's forge: forge", rect: DeckRect(minX: 0.1, minY: 0, maxX: 0.27, maxY: 0.57)),
+                 BlockZone(label: "Rowan's forge: anvil", rect: DeckRect(minX: 0.29, minY: 0.38, maxX: 0.36, maxY: 0.6)),
+                 BlockZone(label: "Rowan's forge: water barrel", rect: DeckRect(minX: 0.38, minY: 0.38, maxX: 0.46, maxY: 0.59)),
+                 BlockZone(label: "Rowan's forge: table and benches", rect: DeckRect(minX: 0.57, minY: 0.35, maxX: 0.87, maxY: 0.58)),
+                 BlockZone(label: "Rowan's forge: bed", rect: DeckRect(minX: 0.66, minY: 0.57, maxX: 0.84, maxY: 0.86)),
+                 BlockZone(label: "Rowan's forge: nightstand", rect: DeckRect(minX: 0.83, minY: 0.55, maxX: 0.92, maxY: 0.95))],
         entrance: Spot(x: 0.45, y: 0.88), exit: DeckRect(minX: 0.35, minY: 0.94, maxX: 0.6, maxY: 1),
         resident: Spot(x: 0.42, y: 0.68),
         things: [
@@ -317,11 +416,15 @@ enum TownLayout {
                       text: "A bowl of stew and a mug. One bench, but a second one pulled up, just in case."),
         ])
     static let silasRoom = TownInterior(
+        name: "Silas's cottage",
         bounds: DeckRect(minX: 0.05, minY: 0.6, maxX: 0.95, maxY: 0.95),
-        blocks: [DeckRect(minX: 0.03, minY: 0.4, maxX: 0.22, maxY: 0.7), DeckRect(minX: 0.23, minY: 0, maxX: 0.52, maxY: 0.58),
-                 DeckRect(minX: 0.3, minY: 0.48, maxX: 0.44, maxY: 0.7), DeckRect(minX: 0.5, minY: 0, maxX: 0.61, maxY: 0.85),
-                 DeckRect(minX: 0.71, minY: 0.38, maxX: 0.84, maxY: 0.66), DeckRect(minX: 0.84, minY: 0.4, maxX: 1, maxY: 1),
-                 DeckRect(minX: 0.61, minY: 0.38, maxX: 0.7, maxY: 0.52)],
+        blocks: [BlockZone(label: "Silas's cottage: bed", rect: DeckRect(minX: 0.03, minY: 0.4, maxX: 0.22, maxY: 0.7)),
+                 BlockZone(label: "Silas's cottage: honey shelves", rect: DeckRect(minX: 0.23, minY: 0, maxX: 0.52, maxY: 0.58)),
+                 BlockZone(label: "Silas's cottage: honey pot table", rect: DeckRect(minX: 0.3, minY: 0.48, maxX: 0.44, maxY: 0.7)),
+                 BlockZone(label: "Silas's cottage: porch wall and curtain", rect: DeckRect(minX: 0.5, minY: 0, maxX: 0.61, maxY: 0.85)),
+                 BlockZone(label: "Silas's cottage: beehives", rect: DeckRect(minX: 0.71, minY: 0.38, maxX: 0.84, maxY: 0.66)),
+                 BlockZone(label: "Silas's cottage: porch planters (right)", rect: DeckRect(minX: 0.84, minY: 0.4, maxX: 1, maxY: 1)),
+                 BlockZone(label: "Silas's cottage: porch planter (left)", rect: DeckRect(minX: 0.61, minY: 0.38, maxX: 0.7, maxY: 0.52))],
         entrance: Spot(x: 0.3, y: 0.88), exit: DeckRect(minX: 0.2, minY: 0.94, maxX: 0.45, maxY: 1),
         resident: Spot(x: 0.47, y: 0.76),
         things: [
@@ -354,7 +457,7 @@ enum TownLayout {
 extension Meadow {
     static let farmToTownZone = DeckRect(minX: 0.44, minY: 0.875, maxX: 0.56, maxY: 0.96)
     /// Where you come back onto the farm from the village.
-    static let farmFromTown = Spot(x: 0.5, y: 0.9)
+    static let farmFromTown = Spot(x: 0.5, y: 0.915)
     /// How long a villager takes to walk across the village when their plans change, in game hours.
     static let townWalkHours = 0.5
 
@@ -369,7 +472,6 @@ extension Meadow {
     func goToFarm() {
         town = nil
         heldHome = []
-        isDeckDriving = true
         farmerSpot = Self.farmFromTown
         faceUp()
     }
@@ -531,6 +633,7 @@ enum TownArt {
 struct TownScene: View {
     let meadow: Meadow
     let place: TownPlace
+    @AppStorage("debugCollision") private var showsCollision = false
 
     private var art: String {
         switch place {
@@ -568,6 +671,10 @@ struct TownScene: View {
                     ForEach(figures(t: t), id: \.id) { figure in
                         figureView(figure, size: size, t: t)
                             .position(map.point(figure.spot.x, figure.spot.y - Double(figureScale) / 2))
+                    }
+
+                    if showsCollision {
+                        CollisionOverlay(scene: meadow.currentCollision, rect: map.rect, feet: meadow.townSpot)
                     }
 
                     label
@@ -626,7 +733,8 @@ struct TownScene: View {
             .accessibilityLabel("\(person.name) is here")
         } else if let artID = meadow.farmerArtID() {
             PersonFigure(look: .farmer(wearing: Outfit.find(meadow.equippedOutfit) ?? Outfit.all[0]),
-                         artID: artID, size: size, time: t, facing: figure.facing, isWalking: figure.isWalking)
+                         artID: artID, size: size, time: figure.isWalking ? meadow.walkCycleTime : t,
+                         facing: figure.facing, isWalking: figure.isWalking)
                 .allowsHitTesting(false)
                 .accessibilityLabel("Your farmer")
         }

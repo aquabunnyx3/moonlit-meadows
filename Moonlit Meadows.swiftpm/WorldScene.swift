@@ -67,6 +67,7 @@ struct WorldMap {
 /// meadow, characters stroll by on their schedules, and decor appears as you earn it.
 struct WorldScene: View {
     let meadow: Meadow
+    @AppStorage("debugCollision") private var showsCollision = false
 
     var body: some View {
         // While the farmer creator is open, the top screen previews your farmer.
@@ -133,7 +134,7 @@ struct WorldScene: View {
                         .allowsHitTesting(false)
 
                     // What the deck's action button would work on, once you're walking.
-                    if meadow.isDeckDriving, let target = meadow.deckTarget() {
+                    if let target = meadow.deckTarget() {
                         DeckTargetMarker(target: target, unit: map.unit, t: t)
                             .position(map.point(target.spot))
                     }
@@ -155,6 +156,10 @@ struct WorldScene: View {
                     }
 
                     WeatherOverlay(weather: weather, t: t)
+
+                    if showsCollision {
+                        CollisionOverlay(scene: Meadow.farmCollision, rect: map.rect, feet: meadow.farmerSpot)
+                    }
 
                     WorldHUD(meadow: meadow, weather: weather, isNight: mood.isNight, date: timeline.date)
                         .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .top)
@@ -412,7 +417,7 @@ enum WalkFacing {
     }
 }
 
-/// Your farmer, strolling their loop around the farm.
+/// Your farmer, standing where you last walked her. She never moves on her own.
 private struct FarmerWalker: View {
     let meadow: Meadow
     let artID: String
@@ -421,24 +426,13 @@ private struct FarmerWalker: View {
 
     var body: some View {
         let size = map.unit * 0.13
-        // Walking with the D-pad: you stand where it put you, facing the way you last
-        // walked. Until the first press, the usual stroll.
-        if meadow.isDeckDriving, let spot = meadow.farmerSpot {
-            PersonFigure(look: .farmer(wearing: Outfit.find(meadow.equippedOutfit) ?? Outfit.all[0]),
-                         artID: artID, size: size, time: t, facing: meadow.farmerFacing,
-                         isWalking: meadow.isDeckMoving)
-                .position(map.point(spot.x, spot.y - 0.065))
-                .allowsHitTesting(false)
-                .accessibilityLabel("Your farmer")
-        } else {
-            let step = WorldLayout.farmerStep(at: t, aspect: map.aspect)
-            PersonFigure(look: .farmer(wearing: Outfit.find(meadow.equippedOutfit) ?? Outfit.all[0]),
-                         artID: artID, size: size, time: t, facing: WalkFacing.facing(for: step, id: artID),
-                         isWalking: step.isWalking)
-                .position(map.point(step.spot.x, step.spot.y - 0.065))
-                .allowsHitTesting(false)
-                .accessibilityLabel("Your farmer")
-        }
+        let spot = meadow.farmerSpot
+        PersonFigure(look: .farmer(wearing: Outfit.find(meadow.equippedOutfit) ?? Outfit.all[0]),
+                     artID: artID, size: size, time: meadow.isDeckMoving ? meadow.walkCycleTime : t,
+                     facing: meadow.farmerFacing, isWalking: meadow.isDeckMoving)
+            .position(map.point(spot.x, spot.y - 0.065))
+            .allowsHitTesting(false)
+            .accessibilityLabel("Your farmer")
     }
 }
 

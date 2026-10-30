@@ -424,13 +424,22 @@ enum SelfTests {
         meadow.isAtMainMenu = false
         meadow.setFarmer(FarmerLook(gender: .female))
         meadow.finishIntro()
-        c.expect(meadow.deckTarget() == nil, "Nothing to do until you walk")
+        // She only moves while the D-pad is held, and stops the moment it's let go.
+        let start = meadow.farmerSpot
+        meadow.deckStep(dt: 1)
+        c.expect(meadow.farmerSpot == start, "Your farmer never moves on her own")
         meadow.holdDirection(DeckVector(x: 0, y: 1))
-        c.expect(meadow.isDeckDriving && meadow.farmerSpot != nil, "The D-pad takes over from the stroll")
+        meadow.deckStep(dt: 0.2)
+        let walked = meadow.farmerSpot
+        c.expect(walked.y > start.y && meadow.isDeckMoving, "Holding the D-pad walks her")
         meadow.holdDirection(.zero)
+        meadow.deckStep(dt: 0.2)
+        c.expect(meadow.farmerSpot == walked && !meadow.isDeckMoving, "Letting go stops her right where she is")
+        c.expect(Meadow.farmCollision.isFree(Meadow.farmStart) && Meadow.farmCollision.isFree(Meadow.cottageDoorstep),
+                 "The farm's start spot and doorstep are walkable")
 
-        // Just left of the first bed, facing it.
-        meadow.farmerSpot = Spot(x: 0.165, y: 0.46)
+        // Just outside the bed fence, facing the first bed.
+        meadow.farmerSpot = Spot(x: 0.155, y: 0.46)
         meadow.deckFacing = DeckVector(x: 1, y: 0)
         meadow.quickSlot = .seeds
         let target = meadow.deckTarget()
@@ -443,11 +452,11 @@ enum SelfTests {
         for _ in 0..<60 { meadow.deckStep(dt: 1.0 / 30) }
         meadow.holdDirection(.zero)
         let bedLeft = WorldLayout.beds[0].x - WorldLayout.bedSize.width / 2
-        c.expect((meadow.farmerSpot?.x ?? 1) < bedLeft, "Beds block walking")
+        c.expect(meadow.farmerSpot.x < bedLeft, "The bed fence blocks walking")
         meadow.holdDirection(DeckVector(x: 1, y: 1))
         meadow.deckStep(dt: 0.1)
         meadow.holdDirection(.zero)
-        c.expect((meadow.farmerSpot?.y ?? 0) > 0.46, "Diagonals slide along what's in the way")
+        c.expect(meadow.farmerSpot.y > 0.46, "Diagonals slide along what's in the way")
 
         meadow.selectQuickSlot(.seeds)
         c.expect(meadow.panelTabID == "seeds", "Tapping the seeds in hand opens the seed bag")
@@ -455,8 +464,8 @@ enum SelfTests {
         meadow.deckSecondaryAction()
         c.expect(meadow.panelTabID == PanelTab.farm.rawValue, "Back closes the panel")
 
-        meadow.farmerSpot = Spot(x: 0.495, y: 0.70)
-        meadow.deckFacing = DeckVector(x: 0, y: 1)
+        meadow.farmerSpot = Spot(x: 0.585, y: 0.765)
+        meadow.deckFacing = DeckVector(x: -1, y: 0)
         c.expect(meadow.deckTarget()?.kind == .lureBasket, "The lure basket is in reach")
         meadow.deckAction()
         c.expect(meadow.panelTabID == PanelTab.lures.rawValue, "Set Lure opens the lures")
@@ -481,7 +490,7 @@ enum SelfTests {
         c.expect(meadow.deckSecondary == "Exit", "The blue button leaves the house")
         meadow.homeSpot = Spot(x: 0.5, y: 0.7)
         meadow.deckSecondaryAction()
-        c.expect(!meadow.isAtHome && meadow.farmerSpot?.y == Meadow.cottageDoorstep.y, "Leaving puts you on the doorstep")
+        c.expect(!meadow.isAtHome && meadow.farmerSpot.y == Meadow.cottageDoorstep.y, "Leaving puts you on the doorstep")
     }
 
     private static func village(_ c: Check) {
@@ -548,7 +557,7 @@ enum SelfTests {
         meadow.deckFacing = DeckVector(x: 0, y: 1)
         c.expect(meadow.deckTarget()?.kind == .goToFarm, "The bottom path leads home")
         meadow.deckAction()
-        c.expect(meadow.town == nil && meadow.isDeckDriving, "Back on the farm")
+        c.expect(meadow.town == nil, "Back on the farm")
         for person in Person.all {
             c.expect(!meadow.whereaboutsText(of: person).isEmpty, "\(person.name)'s whereabouts are written out")
         }
@@ -631,17 +640,6 @@ enum SelfTests {
         c.expect(meadow.showsFarmerCreator && meadow.farmerDraft == meadow.farmerLook, "Changing your look starts from your current look")
         c.expect(FarmerLook.hairColors.filter(\.isFantasy).count == 5 && FarmerLook.hairColors.count == 10, "5 natural and 5 fantasy hair colors")
         c.expect(FarmerLook.eyeColors.count == 5, "5 eye colors")
-
-        var lastSpot: Spot?
-        for second in stride(from: 0.0, to: 200, by: 0.5) {
-            let step = WorldLayout.farmerStep(at: second, aspect: 2096.0 / 1184.0)
-            c.expect((0...1).contains(step.spot.x) && (0...1).contains(step.spot.y), "Farmer stays on the map at t=\(second)")
-            if let lastSpot {
-                c.expect(abs(step.spot.x - lastSpot.x) < 0.05 && abs(step.spot.y - lastSpot.y) < 0.05,
-                         "Farmer never teleports (t=\(second))")
-            }
-            lastSpot = step.spot
-        }
 
         // Villager strolls: steady pace, real stops, and steps that keep up with the ground.
         let route = WorldLayout.strollRoute(lane: 1, visitsBunnies: true)

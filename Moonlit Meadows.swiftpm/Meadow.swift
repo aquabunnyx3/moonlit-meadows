@@ -113,12 +113,12 @@ final class Meadow {
     var isSitting = false
     /// Asleep in bed: the room is dark until morning comes.
     var isSleeping = false
-    /// Control deck: you're walking your farmer with the D-pad. Until the first press, they
-    /// stroll their usual loop around the farm. Not saved.
-    var isDeckDriving = false
-    /// Where your farmer's feet are while driving, in world coordinates.
-    var farmerSpot: Spot?
-    /// The way your farmer's sprite faces while driving (and at home).
+    /// Where your farmer's feet are on the farm, in world coordinates. She only ever moves
+    /// when you walk her with the D-pad. Not saved: a fresh launch starts by the cottage.
+    var farmerSpot = Meadow.farmStart
+    /// How far she's walked, in her own heights; it drives her walk cycle. Not saved.
+    var walkedFigures = 0.0
+    /// The way your farmer's sprite faces (on the farm, at home and in the village).
     var farmerFacing: PersonArt.Facing = .front
     /// The direction held on the D-pad right now (zero while standing still).
     var deckDirection = DeckVector.zero
@@ -343,6 +343,9 @@ final class Meadow {
         isAtHome = false
         town = nil
         heldHome = []
+        farmerSpot = Self.farmStart
+        farmerFacing = .front
+        deckDirection = .zero
         isSitting = false
         isSleeping = false
         isCustomizingFarmer = false

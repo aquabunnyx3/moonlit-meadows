@@ -485,25 +485,6 @@ enum WorldLayout {
     /// Characters stroll along this line, across the stone path below the cottage.
     static let walkY = 0.53
     static let walkX = (minX: 0.40, maxX: 0.58)
-    static let farmer = Spot(x: 0.395, y: 0.50)
-
-    /// Your farmer's loop, as feet positions: down beside the beds, over to the stone path,
-    /// up to the cottage door (with a pause), and back past the field. `pause` is in seconds.
-    static let farmerRoute: [(spot: Spot, pause: Double)] = [
-        (Spot(x: 0.395, y: 0.60), 2),
-        (Spot(x: 0.395, y: 0.42), 0),
-        (Spot(x: 0.497, y: 0.42), 0),
-        (Spot(x: 0.497, y: 0.33), 3),
-        (Spot(x: 0.497, y: 0.42), 0),
-        (Spot(x: 0.585, y: 0.45), 0),
-        (Spot(x: 0.585, y: 0.60), 2),
-    ]
-
-    /// Where the farmer is on their loop at time `t`, and which way they're heading.
-    /// `aspect` is the art's width over its height, so speeds match on both axes.
-    static func farmerStep(at t: Double, aspect: Double, speed: Double = 0.06) -> RouteStep {
-        routeStep(farmerRoute, at: t, aspect: aspect, speed: speed)
-    }
 
     /// A villager's stroll: back and forth along their lane of the stone path, stopping at
     /// each end, with a detour to coo at your bunnies if you own one of their favorites.
