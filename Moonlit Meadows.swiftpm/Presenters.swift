@@ -64,54 +64,52 @@ extension View {
 
 // MARK: - Farmer creator
 
-/// Top screen while the farmer creator is open: your farmer's big portrait and a little
-/// walking sprite that turns around, over the blurred meadow.
+/// Top screen while the farmer creator is open: your farmer's reflection in the tall
+/// mirror of her old city apartment bedroom — the room she's leaving for the farm.
+/// (Michelle's redesign, 2026-10-30: the mirror reflection only. No back view,
+/// no side view, no turning sprite.)
 struct FarmerPreviewScene: View {
     let meadow: Meadow
 
     var body: some View {
         let look = meadow.farmerDraft
-        let id = FarmerRenderer.artID(for: look)
 
         ZStack {
-            DialogBackdrop(isRomantic: false)
+            if let room = CreatorRoomArt.image {
+                Image(uiImage: room)
+                    .resizable()
+                    .interpolation(.none)
+                    .scaledToFill()
+            } else {
+                DialogBackdrop(isRomantic: false)
+            }
             GeometryReader { proxy in
-                HStack(alignment: .bottom, spacing: 12) {
-                    // The pixel front sprite, the same art as in the meadow, so it matches the
-                    // walking sprite beside it; the painted portrait only if it's missing.
-                    if let art = FarmerRenderer.image(.front, look: look) ?? PersonArt.image(for: id) {
+                VStack(spacing: 8) {
+                    Text(meadow.farmerGender == nil ? "Create your farmer" : "Change your look")
+                        .font(.title3.bold())
+                        .padding(.horizontal, 14)
+                        .padding(.vertical, 6)
+                        .pixelPanel(Palette.lilacCard, edge: Palette.lilacEdge, cornerRadius: 14)
+                    Spacer(minLength: 0)
+                    // Her reflection: the pixel front sprite, the same art as in the meadow.
+                    if let art = FarmerRenderer.image(.front, look: look) ?? PersonArt.image(for: FarmerRenderer.artID(for: look)) {
                         Image(uiImage: art)
                             .resizable()
                             .interpolation(.none)
                             .scaledToFit()
-                            .frame(height: proxy.size.height * 0.92)
+                            .frame(height: proxy.size.height * 0.70)
                             .accessibilityLabel("Your farmer")
                     }
-                    VStack(spacing: 10) {
-                        Text(meadow.farmerGender == nil ? "Create your farmer" : "Change your look")
-                            .font(.title3.bold())
-                            .padding(.horizontal, 14)
-                            .padding(.vertical, 6)
-                            .pixelPanel(Palette.lilacCard, edge: Palette.lilacEdge, cornerRadius: 14)
-                        Text(summary(look))
-                            .font(.caption.bold())
-                            .multilineTextAlignment(.center)
-                            .padding(.horizontal, 10)
-                            .padding(.vertical, 5)
-                            .pixelPanel(Palette.pinkCard, edge: Palette.pinkEdge, cornerRadius: 12)
-                        Spacer(minLength: 0)
-                        TimelineView(.periodic(from: .now, by: 0.9)) { timeline in
-                            let turns: [PersonArt.Facing] = [.front, .right, .back, .left]
-                            let facing = turns[Int(timeline.date.timeIntervalSinceReferenceDate / 0.9) % turns.count]
-                            PersonFigure(look: .farmer(wearing: Outfit.find(look.outfit) ?? Outfit.all[0]),
-                                         artID: id, size: proxy.size.height * 0.45, facing: facing)
-                        }
-                    }
-                    .frame(maxWidth: .infinity)
+                    Text(summary(look))
+                        .font(.caption.bold())
+                        .multilineTextAlignment(.center)
+                        .padding(.horizontal, 10)
+                        .padding(.vertical, 5)
+                        .pixelPanel(Palette.pinkCard, edge: Palette.pinkEdge, cornerRadius: 12)
                 }
-                .padding(.horizontal, 16)
                 .padding(.top, 12)
-                .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .bottom)
+                .padding(.bottom, 10)
+                .frame(maxWidth: .infinity, maxHeight: .infinity)
             }
         }
         .foregroundStyle(Palette.ink)
@@ -124,6 +122,11 @@ struct FarmerPreviewScene: View {
         let style = look.gender.hairStyles[safe: look.hairStyle] ?? ""
         return "\(style) · \(hair) hair · \(eyes) eyes"
     }
+}
+
+/// The creator's bedroom backdrop, shipped as a data asset like the movies and music.
+enum CreatorRoomArt {
+    static let image: UIImage? = NSDataAsset(name: "creator-bedroom").flatMap { UIImage(data: $0.data) }
 }
 
 /// Bottom screen while the farmer creator is open: tap a category, then tap a choice,
@@ -148,12 +151,12 @@ struct FarmerOptionsPanel: View {
             }
         }
 
-        /// Pixel icon from the Farmer Creator Tabs sheet.
+        /// Chunky pixel icon, drawn to match the game's tab icons (Michelle's style rule).
         var iconName: String {
             switch self {
-            case .hairStyle: return "creator-hair"
-            case .hairColor: return "creator-color"
-            default: return "creator-\(rawValue)"
+            case .hairStyle: return "creator-tab-hair"
+            case .hairColor: return "creator-tab-color"
+            default: return "creator-tab-\(rawValue)"
             }
         }
 
@@ -171,27 +174,24 @@ struct FarmerOptionsPanel: View {
 
     var body: some View {
         VStack(spacing: 10) {
-            ScrollView(.horizontal) {
-                HStack(spacing: 6) {
-                    ForEach(CreatorSection.allCases) { item in
-                        Button {
-                            withAnimation(.snappy) { section = item }
-                        } label: {
-                            VStack(spacing: 2) {
-                                ArtIcon(name: item.iconName, emoji: item.emoji, size: 26)
-                                Text(item.title).font(.caption.bold())
-                            }
-                            .frame(width: 66, height: 54)
-                            .pixelPanel(section == item ? Palette.pinkCard : Palette.lilacCard,
-                                        edge: section == item ? Palette.rose : Palette.lilacEdge, cornerRadius: 14)
+            HStack(spacing: 6) {
+                ForEach(CreatorSection.allCases) { item in
+                    Button {
+                        withAnimation(.snappy) { section = item }
+                    } label: {
+                        HStack(spacing: 4) {
+                            ArtIcon(name: item.iconName, emoji: item.emoji, size: 24)
+                            Text(item.title).font(.caption.bold()).lineLimit(1).minimumScaleFactor(0.8)
                         }
-                        .buttonStyle(SquishButtonStyle())
-                        .accessibilityAddTraits(section == item ? .isSelected : [])
+                        .frame(maxWidth: .infinity)
+                        .frame(height: 54)
+                        .pixelPanel(section == item ? Palette.pinkCard : Palette.lilacCard,
+                                    edge: section == item ? Palette.rose : Palette.lilacEdge, cornerRadius: 14)
                     }
+                    .buttonStyle(SquishButtonStyle())
+                    .accessibilityAddTraits(section == item ? .isSelected : [])
                 }
-                .padding(4)
             }
-            .scrollIndicators(.hidden)
 
             ScrollView {
                 options
@@ -216,7 +216,7 @@ struct FarmerOptionsPanel: View {
                 Button {
                     meadow.setFarmer(meadow.farmerDraft)
                 } label: {
-                    Text(meadow.farmerGender == nil ? "🌱 Start farming" : "💕 Save look")
+                    Text(meadow.farmerGender == nil ? "Start farming" : "Save look")
                         .font(.subheadline.bold())
                         .frame(maxWidth: .infinity)
                         .padding(.vertical, 10)
@@ -324,9 +324,9 @@ struct FarmerOptionsPanel: View {
                     Image(uiImage: face)
                         .resizable()
                         .scaledToFit()
-                        .frame(width: 68, height: 68)
+                        .frame(width: 76, height: 76)
                         .background(Palette.lilacCard)
-                        .clipShape(.circle)
+                        .clipShape(.rect(cornerRadius: 14))
                 }
                 Text(title).font(.caption.bold())
             }

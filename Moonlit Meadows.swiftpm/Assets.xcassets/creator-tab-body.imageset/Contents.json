@@ -1,0 +1,13 @@
+{
+  "info": {
+    "author": "xcode",
+    "version": 1
+  },
+  "images": [
+    {
+      "filename": "creator-tab-body.png",
+      "idiom": "universal",
+      "scale": "1x"
+    }
+  ]
+}

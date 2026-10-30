@@ -58,10 +58,12 @@ struct ControlPanel: View {
         Group {
             if meadow.showsFarmerCreator {
                 // The farmer creator takes over the deck: tap a category, then a choice.
+                // It sits on the control deck's own periwinkle, like the deck itself.
                 FarmerOptionsPanel(meadow: meadow)
                     .frame(maxWidth: .infinity, maxHeight: .infinity)
                     .padding(12)
-                    .background(hasPaper ? Palette.cream.opacity(0.35) : Palette.cream, in: .rect(cornerRadius: 26))
+                    .background(Palette.deck, in: .rect(cornerRadius: 26))
+                    .overlay(RoundedRectangle(cornerRadius: 26).strokeBorder(Palette.lilacEdge, lineWidth: 3))
                     .transition(.panelSlide)
             } else if meadow.shopCounterOpen {
                 // At the shop counter: buying, selling, or the chat's reply buttons.
