@@ -307,6 +307,52 @@ extension Meadow {
             }
         }
 
+        // Village tension (Michelle, 2026-10-30): exes and grudges. Get
+        // close to someone a villager has history with, and on some days
+        // they say the quiet part out loud. Lines only — no points move,
+        // nobody is ever blocked. (Bible §11.)
+        if today % 2 == 0, stage(of: personID) >= .friend {
+            // Kai & Sol are exes — a year together, ended "amicably".
+            if personID == "kai", relationship("sol").path == .romance, stage(of: "sol") >= .romanticInterest {
+                return TalkResult(line: "So… you and Sol. Official, huh? …I'm happy for you. I am. I built the stage they play on, did you know that? Every nail. If the atelier roof ever leaks I'll fix it — just don't tell them I said that.", points: earnedPoints, question: nil)
+            }
+            if personID == "kai", stage(of: "sol") >= .closeFriend {
+                return TalkResult(line: "You've been spending a lot of time at Sol's place lately. …Cool. That's cool. They make good tea. If they hum while they work, it means things are going well. Whatever 'things' are. Not my business.", points: earnedPoints, question: nil)
+            }
+            if personID == "sol", relationship("kai").path == .romance, stage(of: "kai") >= .romanticInterest {
+                return TalkResult(line: "Kai waved at me today. A year together, and I get a WAVE — like I'm the postman. …Sorry. That one isn't yours to carry. He hums off-key when he's happy, you know. I keep hearing it when he's near you.", points: earnedPoints, question: nil)
+            }
+            if personID == "sol", stage(of: "kai") >= .closeFriend {
+                return TalkResult(line: "You and Kai have been collaborating a lot. He laughs around you — the real one, not the market-day one. I used to— …never mind. Play something for me instead? Something that isn't a love song.", points: earnedPoints, question: nil)
+            }
+            // Roz & Rowan are exes — one summer, "ancient history". It isn't.
+            if personID == "roz", relationship("rowan").path == .romance, stage(of: "rowan") >= .romanticInterest {
+                return TalkResult(line: "You smell like forge smoke. …He's a good man, Rowan. Stubborn as a cold oven. He keeps every note anyone's ever written him, you know — if he ever shows you mine from when I was seventeen, I was DRAMATIC and it doesn't count.", points: earnedPoints, question: nil)
+            }
+            if personID == "roz", stage(of: "rowan") >= .closeFriend {
+                return TalkResult(line: "Rowan asked about you today. ROWAN. Asked. Out loud, in words. …Don't give me that look. It's ancient history. Practically archaeology. Pass the flour.", points: earnedPoints, question: nil)
+            }
+            if personID == "rowan", relationship("roz").path == .romance, stage(of: "roz") >= .romanticInterest {
+                return TalkResult(line: "Roz is good for you. She laughs enough for two people. …She got me to dance once, at the midsummer fair. Whole village saw. She wrote me a note after. I keep it in the box. Don't make it a thing.", points: earnedPoints, question: nil)
+            }
+            if personID == "rowan", stage(of: "roz") >= .closeFriend {
+                return TalkResult(line: "You were at the bakery a long while today. She gives you the good loaf. …She gives most people the good loaf. Most.", points: earnedPoints, question: nil)
+            }
+            // Theo & Kai just can't stand each other.
+            if personID == "theo", relationship("kai").path == .romance, stage(of: "kai") >= .romanticInterest {
+                return TalkResult(line: "You and Nakamura-Hale. Hm. He'll build you shelves and whistle while he works. For your sake I hope you like whistling. …That was nearly a blessing. Take it as one.", points: earnedPoints, question: nil)
+            }
+            if personID == "theo", stage(of: "kai") >= .closeFriend {
+                return TalkResult(line: "Nakamura-Hale was by the observatory earlier. He whistled. For twenty minutes. The stars have filed a complaint, but there is no form for whistling.", points: earnedPoints, question: nil)
+            }
+            if personID == "kai", relationship("theo").path == .romance, stage(of: "theo") >= .romanticInterest {
+                return TalkResult(line: "Wait. You and THEO? Huh. Didn't have that on my chart. Does he smile? Like, with his whole face? …Good for him. Seriously. Don't tell him I said that — he'll get strange about it.", points: earnedPoints, question: nil)
+            }
+            if personID == "kai", stage(of: "theo") >= .closeFriend {
+                return TalkResult(line: "You hang out with Theo a lot, huh? No judgment — somebody has to check he's alive. Guy talks to the moon more than to people. He's not bad. He's just… Theo-shaped.", points: earnedPoints, question: nil)
+            }
+        }
+
         let unanswered = person.questions.filter { relationship(personID).choices[$0.id] == nil }
         // The pacing ladder (story bible §5): strangers get small talk only —
         // personal questions start at Acquaintance.
