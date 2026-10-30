@@ -10,6 +10,9 @@ struct HomeScene: View {
     /// The sleeping bedroom (blanket breathing, Z's floating) is showing.
     @State private var showsSleepArt = false
     @State private var wantsToWake = false
+    /// The bedtime scene playing over the room (Merlin, 2026-10-29), and whether it has ended.
+    @State private var bedtimeVideo: String?
+    @State private var bedtimeEnded = false
 
     /// Spots in the room art (`home-day` / `home-night`, 2096 × 1184), as fractions.
     private enum Spot {
@@ -31,6 +34,12 @@ struct HomeScene: View {
 
                 if showsSleepArt {
                     SleepingRoom(art: art, isPaused: meadow.isPaused)
+                        .transition(.opacity)
+                }
+
+                // Your farmer's goodnight scene plays first, over the room (Merlin, 2026-10-29).
+                if meadow.isSleeping, let bedtimeVideo, !bedtimeEnded {
+                    BedtimeSceneView(meadow: meadow, video: bedtimeVideo) { bedtimeEnded = true }
                         .transition(.opacity)
                 }
 
@@ -77,14 +86,30 @@ struct HomeScene: View {
             if meadow.isSleeping { wantsToWake = true }
         }
         .task(id: meadow.isSleeping) {
-            // Sleep (blanket breathing, Z's floating), back to the quiet night room, then morning.
+            // Sleep: your goodnight scene first if it's in the app, then the blanket (breathing,
+            // Z's floating), back to the quiet night room, then morning. Without a scene video,
+            // sleep is exactly as it was before (Merlin, 2026-10-29).
             guard meadow.isSleeping else { return }
             wantsToWake = false
-            withAnimation(.easeInOut(duration: 1)) { showsSleepArt = true }
-            var slept = 0.0
-            while slept < 8 && !wantsToWake && !Task.isCancelled {
-                try? await Task.sleep(for: .milliseconds(250))
-                if !meadow.isPaused { slept += 0.25 }
+            bedtimeVideo = BedtimeScene.videoName(for: meadow)
+            bedtimeEnded = bedtimeVideo == nil
+            if bedtimeVideo != nil {
+                var waited = 0.0
+                while !bedtimeEnded && !wantsToWake && !Task.isCancelled && waited < 15 {
+                    try? await Task.sleep(for: .milliseconds(250))
+                    if !meadow.isPaused { waited += 0.25 }
+                }
+                withAnimation(.easeInOut(duration: 1)) { bedtimeEnded = true }
+            }
+            if !wantsToWake {
+                withAnimation(.easeInOut(duration: 1)) { showsSleepArt = true }
+                var slept = 0.0
+                // A short drift under the blanket after the scene; the full wait without one.
+                let target = bedtimeVideo == nil ? 8.0 : 3.0
+                while slept < target && !wantsToWake && !Task.isCancelled {
+                    try? await Task.sleep(for: .milliseconds(250))
+                    if !meadow.isPaused { slept += 0.25 }
+                }
             }
             withAnimation(.easeInOut(duration: 1)) { showsSleepArt = false }
             try? await Task.sleep(for: .seconds(1.3))
