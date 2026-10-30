@@ -77,9 +77,12 @@ struct FarmerPreviewScene: View {
             DialogBackdrop(isRomantic: false)
             GeometryReader { proxy in
                 HStack(alignment: .bottom, spacing: 12) {
-                    if let art = PersonArt.image(for: id) {
+                    // The pixel front sprite, the same art as in the meadow, so it matches the
+                    // walking sprite beside it; the painted portrait only if it's missing.
+                    if let art = FarmerRenderer.image(.front, look: look) ?? PersonArt.image(for: id) {
                         Image(uiImage: art)
                             .resizable()
+                            .interpolation(.none)
                             .scaledToFit()
                             .frame(height: proxy.size.height * 0.92)
                             .accessibilityLabel("Your farmer")

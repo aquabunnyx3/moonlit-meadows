@@ -421,14 +421,15 @@ private struct IntroFigure: View {
             .frame(height: height)
     }
 
-    /// Your farmer standing still once they've walked in, recolored for your look:
-    /// `intro-stand-<gender>-s<style>[-<cut>]`, or their own standing sprite from the meadow when a
-    /// look has no intro pose drawn yet.
+    /// Your farmer standing still once they've walked in, recolored for your look: the same
+    /// front sprite they have in the creator and the meadow, so the intro matches what you
+    /// picked (the older `intro-stand-…` poses drew Curly Buns as one puff). The old pose is
+    /// only used if a look has no front sprite.
     static func farmer(_ look: FarmerLook) -> UIImage? {
         let cut = Outfit.find(look.outfit)?.cut ?? .jacket
         let name = "intro-stand-\(look.gender.rawValue)-s\(look.hairStyle)\(cut.artSuffix)"
-        var art = FarmerRenderer.image(named: name, look: look)
-        if art == nil { art = FarmerRenderer.image(.front, look: look) }
+        var art = FarmerRenderer.image(.front, look: look)
+        if art == nil { art = FarmerRenderer.image(named: name, look: look) }
         if art == nil { artLog.notice("Missing intro art \(name, privacy: .public) and the farmer's front sprite") }
         return art.map { ArtTrim.trimmed($0, key: "\(FarmerRenderer.artID(for: look))|intro-stand") }
     }
