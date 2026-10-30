@@ -547,10 +547,13 @@ enum SelfTests {
         }
         meadow.townSpot = TownLayout.shopDoorstep
         meadow.deckFacing = DeckVector(x: 0, y: -1)
-        c.expect(meadow.deckTarget()?.kind == .shop && meadow.deckSecondary == "Sell", "The shop counter offers Shop and Sell")
-        meadow.deckSecondaryAction()
-        c.expect(meadow.panelTabID == PanelTab.pantry.rawValue, "Sell opens selling")
-        meadow.deckSecondaryAction()
+        c.expect(meadow.deckTarget()?.kind == .enterHouse("shop"), "The Village Shop's door says Enter")
+        meadow.enterHouse("shop")
+        c.expect(meadow.town == .house("shop"), "The shop has an inside you can walk into")
+        meadow.townSpot = Spot(x: 0.5, y: 0.72)
+        meadow.deckFacing = DeckVector(x: 0, y: -1)
+        c.expect(meadow.deckTarget()?.kind == .shopCounter, "The shop counter offers its chat screen")
+        meadow.leaveHouse()
         for stall in TownLayout.stalls {
             meadow.townSpot = Spot(x: stall.center.x, y: stall.maxY + 0.02)
             meadow.deckFacing = DeckVector(x: 0, y: -1)

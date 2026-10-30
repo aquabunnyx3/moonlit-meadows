@@ -124,6 +124,7 @@ enum TownLayout {
         TownHouse(id: "silas", name: "Silas's Apiary Cottage", doorstep: Spot(x: 0.442, y: 0.947)),
         TownHouse(id: "rowan", name: "Rowan's Forge", doorstep: Spot(x: 0.69, y: 0.95)),
         TownHouse(id: "sol", name: "Sol's Patchwork Atelier", doorstep: Spot(x: 0.913, y: 0.95)),
+        TownHouse(id: "shop", name: "the Village Shop", doorstep: Spot(x: 0.74, y: 0.645)),
     ]
     static let shopDoorstep = Spot(x: 0.74, y: 0.645)
     static var shopZone: DeckRect {
@@ -498,7 +499,24 @@ enum TownLayout {
                                       GlassDoor.Panel(art: "door-silas-right", rect: DeckRect(minX: 0.7653, minY: 0.2897, maxX: 0.9365, maxY: 0.9679),
                                                       slide: Spot(x: 0.172, y: 0))]))
 
+    /// The Village Shop (interior-shop-v2): shelves along the back wall, a long
+    /// counter across the middle, the door at the bottom center. Not a home —
+    /// nobody lives here, so there's no resident to visit; the counter is the point.
+    static let shopRoom = TownInterior(
+        name: "the Village Shop",
+        bounds: DeckRect(minX: 0.04, minY: 0.615, maxX: 0.96, maxY: 0.96),
+        blocks: [BlockZone(label: "Village Shop: counter", rect: DeckRect(minX: 0.01, minY: 0.50, maxX: 0.99, maxY: 0.665)),
+                 BlockZone(label: "Village Shop: lavender plant", rect: DeckRect(minX: 0.02, minY: 0.76, maxX: 0.115, maxY: 0.95)),
+                 BlockZone(label: "Village Shop: fern", rect: DeckRect(minX: 0.85, minY: 0.74, maxX: 0.975, maxY: 0.95))],
+        entrance: Spot(x: 0.505, y: 0.88), exit: DeckRect(minX: 0.40, minY: 0.92, maxX: 0.615, maxY: 1),
+        resident: Spot(x: 0.62, y: 0.56),
+        things: [
+            RoomThing(name: "Woven rug", zone: DeckRect(minX: 0.24, minY: 0.68, maxX: 0.76, maxY: 0.82),
+                      text: "A woven rug in pink and lavender diamonds, worn soft by village feet."),
+        ])
+
     static let interiors: [String: TownInterior] = [
+        "shop": shopRoom,
         "june": juneRoom,
         "roz": rozRoom,
         "theo": theoRoom,
@@ -558,10 +576,11 @@ extension Meadow {
         feedbackCount += 1
     }
 
-    /// Goes inside. If they're home, they stay home until you leave.
+    /// Goes inside. If they're home, they stay home until you leave. (The shop
+    /// and the library have no resident to hold.)
     func enterHouse(_ id: String) {
         guard let room = TownLayout.interiors[id] else { return }
-        heldHome = whereabouts(of: id) == .home && hubWalker(id) == nil ? [id] : []
+        heldHome = Person.find(id) != nil && whereabouts(of: id) == .home && hubWalker(id) == nil ? [id] : []
         town = .house(id)
         townSpot = room.entrance
         glassDoorOpen = false

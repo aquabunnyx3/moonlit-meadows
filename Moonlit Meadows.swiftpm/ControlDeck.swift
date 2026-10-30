@@ -35,7 +35,7 @@ struct DeckTarget: Equatable {
         case lureBasket
         case plot(Int)
         case bed, chair, chest, petBed, homeDoor
-        case goToTown, goToFarm, goToPond, leavePond, fish, moonBunny, digCapsule, enterHouse(String), leaveHouse, shop, stall
+        case goToTown, goToFarm, goToPond, leavePond, fish, moonBunny, digCapsule, enterHouse(String), leaveHouse, shop, stall, shopCounter
         /// Something to look at: the action button shows its line.
         case look(String)
     }
@@ -274,6 +274,7 @@ extension Meadow {
     /// trying across and up-and-down separately so diagonals glide along walls.
     func deckStep(dt: Double) {
         if fishing != nil { return }
+        if shopCounterOpen { deckDirection = .zero; return }
         guard !deckDirection.isZero, !isPaused, !isAtMainMenu, !isSleeping, dt > 0 else { return }
         let scene = currentCollision
         let d = deckDirection
@@ -440,14 +441,14 @@ extension Meadow {
             }
             let doors = TownLayout.houses.map { ($0, $0.doorZone) }
             if let house = closest(doors, from: spot, facing: faced) {
+                if house.id == "shop" {
+                    return DeckTarget(kind: .enterHouse("shop"), verb: "Enter", icon: .emoji("🚪"), spot: house.doorstep)
+                }
                 if house.ownerID != nil {
                     return DeckTarget(kind: .enterHouse(house.id), verb: "Enter", icon: .emoji("🚪"), spot: house.doorstep)
                 }
                 return DeckTarget(kind: .look("The Village Library is closed today. A note on the door says “Back after the harvest festival! — the librarian”."),
                                   verb: "Look at the Library", icon: .emoji("📚"), spot: house.doorstep)
-            }
-            if reaches(TownLayout.shopZone, from: spot, facing: faced) {
-                return DeckTarget(kind: .shop, verb: "Shop", icon: .asset("icon-shop"), spot: TownLayout.shopDoorstep, secondary: "Sell")
             }
             if reaches(TownLayout.farmExit, from: spot, facing: faced) {
                 return DeckTarget(kind: .goToFarm, verb: "Back to the Farm", icon: .emoji("🌾"), spot: Spot(x: 0.57, y: 0.97))
@@ -478,6 +479,9 @@ extension Meadow {
             return nil
         case .house(let id):
             guard let room = TownLayout.interiors[id] else { return nil }
+            if id == "shop", reaches(ShopLayout.counterZone, from: spot, facing: faced) {
+                return DeckTarget(kind: .shopCounter, verb: "Shop Counter", icon: .asset("icon-shop"), spot: ShopLayout.counterZone.center)
+            }
             if let resident = houseResident {
                 let box = DeckRect(minX: room.resident.x - 0.06, minY: room.resident.y - 0.16, maxX: room.resident.x + 0.06, maxY: room.resident.y + 0.03)
                 if reaches(box, from: spot, facing: faced) {
@@ -588,6 +592,7 @@ extension Meadow {
     /// The big pink button.
     func deckAction() {
         if fishing != nil { fishingTap(); return }
+        if shopCounterOpen { return }
         if tourBlocksAction() { return }
         guard let target = deckTarget(), target.canAct else { return }
         deckDirection = .zero
@@ -641,6 +646,9 @@ extension Meadow {
             digCapsule()
         case .enterHouse(let id):
             enterHouse(id)
+        case .shopCounter:
+            shopCounterOpen = true
+            shopMode = .options
         case .leaveHouse:
             leaveHouse()
         case .shop:

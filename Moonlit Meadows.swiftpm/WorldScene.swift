@@ -83,6 +83,10 @@ struct WorldScene: View {
             // A character's profile: their portrait and story up top, buttons on the deck below.
             PersonProfileScene(meadow: meadow, person: person)
                 .clipped()
+        } else if meadow.shopCounterOpen {
+            // At the Village Shop's counter: the Buy / Sell / Exit conversation.
+            ShopCounterScene(meadow: meadow)
+                .clipped()
         } else if let town = meadow.town {
             TownScene(meadow: meadow, place: town)
         } else if meadow.isAtHome {

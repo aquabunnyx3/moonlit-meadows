@@ -181,6 +181,10 @@ final class Meadow {
     var showsWelcome = false
     /// The fishing session in progress at the Pond, if any. Not saved.
     var fishing: FishingSession?
+    /// Standing at the Village Shop's counter, in its chat screen. Not saved.
+    var shopCounterOpen = false
+    /// What the shop counter is doing: choosing, buying, or selling. Not saved.
+    var shopMode: ShopMode = .options
     /// The panel open on the control deck, by `PanelTab` raw value, or `seeds` or `storage`.
     /// `farm` means none: the D-pad, quick inventory and action button show.
     var panelTabID = "farm"
