@@ -1,0 +1,70 @@
+VOICE SCRIPT: Imani (Imani Okafor-Bell)
+
+Please create voice lines for a cozy, pastel pixel-art farming game called Moonlit Meadows.
+
+CHARACTER: she/her, woman, about 27, the aquatics expert who keeps the village pond from her cabin on its shore. Silas the beekeeper's younger sister. Deep brown skin, long black box braids with teal and white beads, amber-brown eyes, seafoam-teal fishing vest, silver fish-hook pendant.
+VOICE: Warm contralto, quick and dry with a smile underneath — brisker than her brother, teasing, confident. Calm surface, strong current.
+
+RULES:
+- Read only the text in quotes. Do not read the ID or the note.
+- Make one separate audio clip per line, and name each file with its ID (for example IMANI-DAILY-EARLY-1.mp3).
+- Keep the same voice for every line. Cozy and natural, no background music or effects.
+- "…" means a soft pause.
+- Lines like ==== Everyday chat ==== are section titles. Do not read them.
+
+LINES:
+
+==== Everyday chat ====
+
+IMANI-DAILY-EARLY-1  (Daily (stranger / acquaintance))
+"Oh — a new face at my pond. I'm Imani. I keep the water, and everything in it."
+
+IMANI-DAILY-EARLY-2  (Daily (stranger / acquaintance))
+"Mind the dock boards. The third one sings when you step on it. The fish know all my visitors by their footsteps now."
+
+IMANI-DAILY-EARLY-3  (Daily (stranger / acquaintance))
+"My brother keeps bees, if you can believe that. Little stripey accountants. Fish are honest. Fish just look at you and leave."
+
+IMANI-DAILY-EARLY-4  (Daily (stranger / acquaintance))
+"If it has fins, I know its name, its mother, and its opinions. That's the job."
+
+IMANI-DAILY-EARLY-5  (Daily (stranger / acquaintance))
+"Silas says his bees tell him everything. Please. My fish saw you coming down the path before his bees even woke up."
+
+IMANI-DAILY-FRIEND-1  (Daily (friend))
+"You walk quieter now. The pond likes you. So do I, but don't let it go to your head."
+
+IMANI-DAILY-FRIEND-2  (Daily (friend))
+"One of Silas's bees followed you here again. The lavender-stripe one. I feed her sugar water now. We're… colleagues. Don't tell my brother."
+
+IMANI-DAILY-FRIEND-3  (Daily (friend))
+"Caught anything strange lately? Bring me the odd ones. The pond's been keeping secrets this season."
+
+IMANI-DAILY-FRIEND-4  (Daily (friend))
+"People think still water is empty water. Wrong. It's just water that hasn't decided to show off yet."
+
+IMANI-DAILY-FRIEND-5  (Daily (friend))
+"If Silas asks, I was NOT humming at the hives. A keeper can appreciate a tune without joining the other side."
+
+IMANI-DAILY-ROMANCE-1  (Daily (romance))
+"I know every mood of this pond. Lately it goes quiet and golden when you arrive. It's showing off. …So am I."
+
+IMANI-DAILY-ROMANCE-2  (Daily (romance))
+"Stay till the light goes? The fish rise at dusk, and I save you the good spot on the dock. Saved it all along, if I'm honest."
+
+IMANI-DAILY-ROMANCE-3  (Daily (romance))
+"My brother walks his bees home at night. I walk the shore. Lately I keep hoping our paths cross at the lane. They do. I make sure of it."
+
+IMANI-DAILY-BESTIE-1  (Daily (best friend))
+"You're pond family now. That means I tell you where the big ones sleep, and you never repeat it. Deal?"
+
+IMANI-DAILY-BESTIE-2  (Daily (best friend))
+"Silas has his bees, I have my fish, and now we both have you. The valley's in trouble."
+
+IMANI-DAILY-BESTIE-3  (Daily (best friend))
+"Whatever the day did to you, the water will take it. Sit. I'll put the kettle on at the cabin."
+
+==== Still to record (later batch) ====
+
+Her questions, quests, story chapters and the Something Fishy lines, in this
+same numbering style (IMANI-Q*, IMANI-QUEST*, IMANI-1-L*, IMANI-FISHY-*).

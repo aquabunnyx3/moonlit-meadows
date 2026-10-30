@@ -53,7 +53,7 @@ struct StoryEvent: Identifiable {
         all.filter { $0.personID == personID }
     }
 
-    static let all: [StoryEvent] = juneEvents + rozEvents + theoEvents + kaiEvents + solEvents + rowanEvents + silasEvents + villagerEvents
+    static let all: [StoryEvent] = juneEvents + rozEvents + theoEvents + kaiEvents + solEvents + rowanEvents + silasEvents + imaniEvents + villagerEvents
 }
 
 private func n(_ text: String) -> StoryLine { StoryLine(speaker: .narrator, text: text) }
@@ -593,4 +593,84 @@ private let silasEvents: [StoryEvent] = [
         StoryOption(text: "“I'll remember. Always.”", response: "Silas squeezes your hand. “I know. That's why I chose you.”", points: 20),
         StoryOption(text: "Hug him tight.", response: "Silas hugs like he does everything: slowly, warmly, and completely.", points: 20),
     ]), rewards: [.keepsake("beeCharm"), .gems(10)], isFinale: true),
+]
+
+
+// MARK: - Imani's chapters (added by Merlin, 2026-10-30)
+
+private let imaniEvents: [StoryEvent] = [
+    StoryEvent(id: "imani-1", personID: "imani", title: "The Pond Keeper", stage: .acquaintance, path: .any, lines: [
+        n("At the pond, a woman in waders is standing very still in the shallows, notebook in hand, counting something only she can see."),
+        p("Fourteen… fifteen… Don't move. You'll scare the census."),
+        n("She finishes, climbs out, and offers you a dry towel and a firm handshake. Imani Okafor-Bell, keeper of the pond."),
+        p("Every fish here has a name and a file. Stick around and you'll get one too. A name, I mean. The file depends on behavior."),
+    ], choice: StoryChoice(prompt: "A fish rises and takes a fly, neat as a stitch.", options: [
+        StoryOption(text: "\u201cYou really know every fish?\u201d", response: "“Every one,” Imani says. “That was Gerald. He's showing off for you.”", points: 10),
+        StoryOption(text: "Ask about the cabin.", response: "“Grandfather left it to me, and the hives to my brother. One of us got the better deal. We argue about which.”", points: 10),
+    ]), rewards: [.coins(100)]),
+    StoryEvent(id: "imani-2", personID: "imani", title: "Stripey Accountants", stage: .friend, path: .any, lines: [
+        n("You find Imani at the shore, watching a bee drink from the water's edge with deep suspicion."),
+        p("Look at it. Little stripey accountant, doing its rounds. My brother's staff, spying on my pond."),
+        p("Bees. Honestly. A whole hobby of being stung by your own livestock, and he calls MY fish stupid."),
+        n("She says it with the comfortable outrage of a speech she has given four hundred times, and clearly intends to give four hundred more."),
+        p("He's a good brother. Don't tell him that either. It goes in the file."),
+    ], choice: StoryChoice(prompt: "The bee circles Imani once, unbothered, and heads home.", options: [
+        StoryOption(text: "\u201cYou two actually get along fine, don't you?\u201d", response: "Imani snorts. “Course we do. Arguing IS how we get along. You should hear us at holidays.”", points: 10),
+        StoryOption(text: "\u201cFish ARE better, though.\u201d", response: "“Finally, a person of sense.” She writes something in the notebook. “That's going in your file. The good column.”", points: 10),
+    ]), rewards: [.hint("oceanBunny")]),
+    StoryEvent(id: "imani-3", personID: "imani", title: "What the Fish Saw", stage: .closeFriend, path: .any, lines: [
+        n("Imani is waiting on the dock, staring at the far shore where something pale moved in the moonlight."),
+        p("The fish go quiet when it comes. All of them, all at once, like the whole pond is holding its breath. Fish don't do that for weather."),
+        p("And there's a bee that follows it. One bee, lavender stripe. My brother's little spy, moonlighting."),
+        n("She looks at you for a long moment, deciding something."),
+        p("Whatever that bunny is, keeper to keeper — it's yours, isn't it? …All right. The pond keeps your secrets. So do I."),
+    ], choice: StoryChoice(prompt: "The water settles back into ordinary ripples.", options: [
+        StoryOption(text: "\u201cThank you for not asking more.\u201d", response: "“Asking's easy. Waiting's the skill.” She bumps your shoulder with hers. “I can wait.”", points: 10),
+        StoryOption(text: "\u201cThe fish really go quiet?\u201d", response: "“Every time. Animals know things first. My brother's bees know it too — ask his spy.”", points: 10),
+    ]), rewards: [.coins(150)]),
+    StoryEvent(id: "imani-r4", personID: "imani", title: "Dock Light", stage: .romanticInterest, path: .romance, lines: [
+        n("Imani has strung the dock with lanterns — for the fish census, she claims, at an hour when fish cannot be counted."),
+        p("Sit. The good spot. I keep saving it and pretending I don't."),
+        n("The lanterns double themselves in the black water. Her hand finds yours like it was always on the way there."),
+        p("I know this pond in the dark by heart. Lately I know where YOU are in it the same way. That's new. That's… you."),
+    ], choice: StoryChoice(prompt: "A fish rises under the lantern light.", options: [
+        StoryOption(text: "\u201cStay out here with me a while?\u201d", response: "“Hours,” Imani says at once. “The census can wait. It can't, but it will.”", points: 10),
+        StoryOption(text: "Just sit with her, quiet.", response: "She leans her head on your shoulder. “You're learning,” she murmurs. “Quiet suits you.”", points: 10),
+    ]), rewards: [.coins(150)]),
+    StoryEvent(id: "imani-r5", personID: "imani", title: "Night Water", stage: .dating, path: .romance, lines: [
+        n("Night fishing, her note said. Bring nothing. Tell no one. Especially not the beekeeper."),
+        p("He'd only send a bee to chaperone. She's on the payroll now, but still."),
+        n("You catch nothing. She catches nothing. The lantern burns down to a coin of light and neither of you reaches to end the evening."),
+        p("People fish for fish. Keepers fish for this. The waiting, with the right person in it."),
+    ], choice: StoryChoice(prompt: "Imani reels in, finally — empty hook, enormous smile.", options: [
+        StoryOption(text: "\u201cBest catch of the season, this.\u201d", response: "She laughs, startled and pleased. “Careful. Lines like that go in the file. The permanent file.”", points: 10),
+        StoryOption(text: "\u201cSame time tomorrow?\u201d", response: "“Every tomorrow,” she says, like a promise the pond should witness. “Bring nothing. Tell no one.”", points: 10),
+    ]), rewards: [.hint("auroraBunny")]),
+    StoryEvent(id: "imani-r6", personID: "imani", title: "The Deep End", stage: .committed, path: .romance, lines: [
+        n("Imani takes you to the deep water at dawn, where the pond is black and still and older than the village."),
+        p("Everything I keep ends up back in this water eventually. Every census, every season, every secret."),
+        p("I'm not releasing you, farmer. You're in the permanent file now. Front page."),
+        n("On the far shore, unhurried, a golden bee with one lavender stripe inspects a flower and files a report of her own."),
+        p("Let her tell him. He'll pretend to be surprised. He knew before the fish did."),
+    ], choice: StoryChoice(prompt: "Dawn comes up over the pond you share.", options: [
+        StoryOption(text: "\u201cFront page. I like it there.\u201d", response: "“Good.” She takes your hand for the walk home. “Because I'm not done writing it.”", points: 10),
+        StoryOption(text: "\u201cDoes Silas really know?\u201d", response: "“Silas knows everything by breakfast. It's the family curse. Ours too, now.”", points: 10),
+    ]), rewards: [.coins(300)]),
+    StoryEvent(id: "imani-f4", personID: "imani", title: "Pond Family", stage: .romanticInterest, path: .friendship, lines: [
+        n("Imani has made a second keeper's log and written your name on the cover in her careful hand."),
+        p("Pond family isn't blood. It's who shows up at dawn when the net's torn. You show up."),
+        p("My brother says the bees choose their family. The pond's choosier. It chose you anyway."),
+    ], choice: StoryChoice(prompt: "She hands you the log. The first page is Gerald's file.", options: [
+        StoryOption(text: "\u201cI'm honored. Truly.\u201d", response: "“Don't be honored. Be punctual. Dawn, tomorrow, bring the good thermos.” But she's smiling into her collar.", points: 10),
+        StoryOption(text: "\u201cGerald has a FILE?\u201d", response: "“Gerald has a file, a file annex, and a warning. Gerald is a menace. You'll meet him.”", points: 10),
+    ]), rewards: [.hint("crystalBunny")]),
+    StoryEvent(id: "imani-f6", personID: "imani", title: "Keeper and Beekeeper", stage: .committed, path: .friendship, lines: [
+        n("A jar of honey sits on Imani's cabin table with a note: FOR THE POND KEEPER. A year travelling, finally delivered."),
+        p("He put a ribbon on it. A ribbon. He's impossible."),
+        n("That evening she walks a jar of pond-pear preserves up to the apiary herself, and stays for tea, and the arguing is the fondest sound in the valley."),
+        p("Fish and bees. Water and flowers. Grandfather knew what he was doing, splitting it between us. …Family's the whole pond, in the end. You're in it. Front page."),
+    ], choice: StoryChoice(prompt: "Two keepers, one valley, no score kept anymore.", options: [
+        StoryOption(text: "\u201cTook you both long enough.\u201d", response: "“A year for a jar of honey is FAST, for us.” She grins. “The next one only took a day. Progress.”", points: 10),
+        StoryOption(text: "\u201cFront page. I know.\u201d", response: "“You do know.” She bumps your shoulder. “Pond family.”", points: 10),
+    ]), rewards: [.coins(300)]),
 ]

@@ -580,6 +580,7 @@ struct PersonActionsPanel: View {
                     case .town: CozyTag(text: "In the village")
                     case .home: CozyTag(text: "At home")
                     case .work: CozyTag(text: "At work")
+                    case .pond: CozyTag(text: "At the pond")
                     case .errand: EmptyView()
                     }
                 }

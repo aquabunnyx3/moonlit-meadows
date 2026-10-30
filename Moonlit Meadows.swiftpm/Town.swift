@@ -23,6 +23,8 @@ enum Whereabouts: Equatable {
     /// At work in the Workshops: June at the glasshouse, Rowan at the forge,
     /// Silas at the apiary (in the daytime).
     case work
+    /// At the Pond: Imani, always — she lives there.
+    case pond
     /// Somewhere off the map (the creek, the clock tower…). They're still in the Friends tab.
     case errand
 }
@@ -96,7 +98,7 @@ struct GlassDoor {
 
 /// Which picture each house's room uses: June's and Silas's have their glass doors.
 enum InteriorArt {
-    static let names: [String: String] = ["june": "interior-june-v3", "silas": "interior-silas-v7"]
+    static let names: [String: String] = ["june": "interior-june-v3", "silas": "interior-silas-v7", "imani": "interior-imani"]
     static func name(_ id: String) -> String { names[id] ?? "interior-\(id)-v2" }
 }
 
@@ -296,6 +298,28 @@ enum TownLayout {
     // MARK: Rooms (`interior-<id>-v2`, 2096 × 1184)
 
     // Each room on its own, so the compiler checks them one at a time.
+    /// Imani's pond cabin: a keeper's room — fish tanks, a rod rack, the pond
+    /// ledger, and a kettle that's always on (she got that from her brother).
+    static let imaniRoom = TownInterior(
+        name: "Imani's cabin",
+        bounds: DeckRect(minX: 0.08, minY: 0.4, maxX: 0.97, maxY: 0.995),
+        blocks: [BlockZone(label: "Imani's cabin: back wall", rect: DeckRect(minX: 0.06, minY: 0, maxX: 0.97, maxY: 0.48)),
+                 BlockZone(label: "Imani's cabin: fish tanks", rect: DeckRect(minX: 0.1, minY: 0.42, maxX: 0.38, maxY: 0.66)),
+                 BlockZone(label: "Imani's cabin: bed", rect: DeckRect(minX: 0.72, minY: 0.4, maxX: 0.96, maxY: 0.8)),
+                 BlockZone(label: "Imani's cabin: worktable", rect: DeckRect(minX: 0.42, minY: 0.74, maxX: 0.66, maxY: 0.94))],
+        entrance: Spot(x: 0.52, y: 0.91), exit: DeckRect(minX: 0.4, minY: 0.955, maxX: 0.64, maxY: 1),
+        resident: Spot(x: 0.52, y: 0.62),
+        things: [
+            RoomThing(name: "Fish tanks", zone: DeckRect(minX: 0.1, minY: 0.42, maxX: 0.38, maxY: 0.66),
+                      text: "Two glass tanks of pond fry, each labeled in Imani's careful hand: name, mother, opinions."),
+            RoomThing(name: "Rod rack", zone: DeckRect(minX: 0.42, minY: 0.74, maxX: 0.66, maxY: 0.94),
+                      text: "Rods racked like library books. One, much mended, is labeled 'GERALD' in pencil, then crossed out, then written again."),
+            RoomThing(name: "The pond ledger", zone: DeckRect(minX: 0.42, minY: 0.74, maxX: 0.66, maxY: 0.94),
+                      text: "The pond ledger, open at this season's census. A new page near the back has your name on it. Front page, she said."),
+            RoomThing(name: "Kettle", zone: DeckRect(minX: 0.72, minY: 0.4, maxX: 0.96, maxY: 0.8),
+                      text: "A kettle, warm. Some things run in the family, whatever either of them says."),
+        ])
+
     static let juneRoom = TownInterior(
         name: "June's room",
         bounds: DeckRect(minX: 0.08, minY: 0.4, maxX: 0.99, maxY: 0.995),
@@ -549,6 +573,7 @@ enum TownLayout {
         "vi": viRoom,
         "rowan": rowanRoom,
         "silas": silasRoom,
+        "imani": imaniRoom,
     ]
 }
 
@@ -639,6 +664,17 @@ extension Meadow {
         guard case .house(let id) = town else { return }
         heldHome = []
         glassDoorOpen = false
+        // Imani's cabin stands at the Pond, not in the village: leaving it
+        // puts you back on her doorstep by the water.
+        if id == "imani" {
+            town = .pond
+            townSpot = Spot(x: 0.655, y: 0.43)
+            farmerFacing = .front
+            deckFacing = DeckVector(x: 0, y: 1)
+            deckDirection = .zero
+            feedbackCount += 1
+            return
+        }
         town = .hub
         townSpot = TownLayout.house(id)?.doorstep ?? TownLayout.arrival
         farmerFacing = .front
@@ -659,6 +695,7 @@ extension Meadow {
     func whereabouts(of personID: String, at time: TimeOfDay? = nil) -> Whereabouts {
         let time = time ?? timeOfDay
         guard let person = Person.find(personID) else { return .home }
+        if personID == "imani" { return .pond }
         if (TownLayout.workTimes[personID]?.contains(time) ?? false) { return .work }
         if person.slot(at: time).inMeadow { return .farm }
         if (TownLayout.townTimes[personID]?.contains(time) ?? false) && TownLayout.isOutDay(personID, day: today) { return .town }
@@ -677,6 +714,7 @@ extension Meadow {
         case .town: return "\(person.name) is in the hub · \(slot.place)"
         case .errand: return "\(person.name) is away for a bit · \(slot.place)"
         case .work: return "\(person.name) is at \(TownLayout.workNames[person.id] ?? "work")"
+        case .pond: return "\(person.name) is at the Pond"
         case .home: return "\(person.name) is at home"
         }
     }
@@ -693,6 +731,7 @@ extension Meadow {
             case .home: return house.doorstep
             case .town: return TownLayout.townSpots[personID]
             case .work: return Spot(x: 0.97, y: 0.65)
+            case .pond: return Spot(x: (TownLayout.farmExit.minX + TownLayout.farmExit.maxX) / 2, y: 0.97)
             case .farm, .errand: return Spot(x: (TownLayout.farmExit.minX + TownLayout.farmExit.maxX) / 2, y: 0.97)
             }
         }
@@ -753,7 +792,7 @@ extension Meadow {
 
     /// Everyone out in the village right now.
     var townWalkers: [(person: Person, step: RouteStep)] {
-        Person.all.compactMap { person in hubWalker(person.id).map { (person: person, step: $0) } }
+        Person.all.filter { whereabouts(of: $0.id) != .pond }.compactMap { person in hubWalker(person.id).map { (person: person, step: $0) } }
     }
 
     /// Everyone at work in the Workshops right now, standing at their places.
@@ -943,6 +982,10 @@ struct TownScene: View {
                 list.append(Figure(id: resident.id, person: resident, spot: room.resident, facing: .front, isWalking: false))
             }
         case .pond:
+            // Imani, the pond keeper, is by the stone jetty near her cabin.
+            if let imani = Person.find("imani") {
+                list.append(Figure(id: "imani", person: imani, spot: PondLayout.imaniSpot, facing: .front, isWalking: false))
+            }
             // On the story's biggest nights, Theo waits at the shore.
             if meadow.storyTheoAtPond, let theo = Person.find("theo") {
                 list.append(Figure(id: "theo", person: theo, spot: Spot(x: 0.60, y: 0.86), facing: .front, isWalking: false))

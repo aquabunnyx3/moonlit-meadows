@@ -111,7 +111,17 @@ extension Meadow {
         var state = relationship(personID)
         // Villagers top out at Close Friend, so their meter fills there and stops.
         let cap = person.isVillager ? RelationshipStage.romanticInterest.threshold : RelationshipStage.committed.maxPoints
-        state.points = min(state.points + gained, cap)
+        // Sibling rule (Michelle, 2026-10-30): while one Okafor-Bell sibling
+        // is being romanced, the other stalls below the crossroads — you
+        // can't quietly romance them both.
+        var effectiveCap = cap
+        if personID == "imani" || personID == "silas" {
+            let siblingID = personID == "imani" ? "silas" : "imani"
+            if relationship(siblingID).path == .romance, stage(of: siblingID) >= .romanticInterest {
+                effectiveCap = min(effectiveCap, RelationshipStage.romanticInterest.threshold - 1)
+            }
+        }
+        state.points = min(state.points + gained, effectiveCap)
         relationships[personID] = state
         let after = stage(of: personID)
         if after > before {
@@ -264,24 +274,36 @@ extension Meadow {
         addPoints(10, to: personID)
         feedbackCount += 1
 
-        // "Something Fishy" (story bible): Theo's first real conversation sets
-        // the quest; bringing him a pond fish completes it.
+        // "Something Fishy": Imani's first real conversation sets the quest;
+        // bringing her a pond fish completes it. All fish quests are hers
+        // (Michelle, 2026-10-30) — they used to be Theo's.
         let earnedPoints = personID == "theo" && !revealDone ? 6 : 10
-        if personID == "theo" {
+        if personID == "imani" {
             if fishyPending, let fishID = carriedStacks.first(where: { $0.id.hasPrefix("fish-") })?.id {
                 removeItems(fishID, 1)
                 fishyPending = false
                 fishyDone = true
                 addPoints(10, to: personID)
                 save()
-                moment("somethingFishy", "🎣 Something Fishy — complete! Theo stared at that fish a long moment, like it reminded him of something.")
-                return TalkResult(line: "…You actually caught one. Huh. …Thanks. The pond at night — it's different. You'll see.", points: earnedPoints, question: nil)
+                moment("somethingFishy", "🎣 Something Fishy — complete! Imani weighed the fish, nodded once, and wrote your name in the pond ledger.")
+                return TalkResult(line: "…Clean catch. Quick, too. The pond approves of you. So do I — and I don't say that about visitors.", points: earnedPoints, question: nil)
             }
             if !fishyPending && !fishyDone {
                 fishyPending = true
                 save()
-                moment("somethingFishy", "🎣 New quest — Something Fishy: catch any fish at the Pond and bring it to Theo.")
-                return TalkResult(line: line + "\n\n…One thing. The pond, through the trees — the fish there bite different. Bring me one sometime. If you want.", points: earnedPoints, question: nil)
+                moment("somethingFishy", "🎣 New quest — Something Fishy: catch any fish at the Pond and bring it to Imani.")
+                return TalkResult(line: line + "\n\n…One thing, since you'll be back — and you will be back. Bring me the first fish you catch here. A keeper likes to know who's fishing her water.", points: earnedPoints, question: nil)
+            }
+        }
+
+        // Sibling drama (Michelle, 2026-10-30): romancing one Okafor-Bell
+        // sibling makes talking to the other one pointed, some days.
+        if today % 2 == 0, stage(of: personID) >= .friend {
+            if personID == "imani", relationship("silas").path == .romance, stage(of: "silas") >= .romanticInterest {
+                return TalkResult(line: "…You've got honey on your sleeve. HIS honey. …Forget it. It's not my business who you fall for. Even when it is my brother. Especially then.", points: earnedPoints, question: nil)
+            }
+            if personID == "silas", relationship("imani").path == .romance, stage(of: "imani") >= .romanticInterest {
+                return TalkResult(line: "One of my bees came home smelling of pond water, love. …Imani's a better catch than anything in that pond. Mind you treat her right. And don't tell her I said 'better catch.' She'd frame it.", points: earnedPoints, question: nil)
             }
         }
 

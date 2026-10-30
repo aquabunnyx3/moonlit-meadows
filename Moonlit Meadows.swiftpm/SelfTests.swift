@@ -134,11 +134,11 @@ enum SelfTests {
     }
 
     private static func catalogPeople(_ c: Check) {
-        c.expect(Person.main.count == 7, "Expected seven main characters")
+        c.expect(Person.main.count == 8, "Expected eight main characters")
         c.expect(Person.villagers.count == 3 && Person.villagers.allSatisfy(\.isVillager), "Expected three villagers")
         c.expect(Set(Person.all.map(\.id)).count == Person.all.count, "Character IDs must be unique")
         let genders = Person.main.map(\.gender)
-        c.expect(genders.filter { $0 == "Woman" }.count == 2, "Expected two women")
+        c.expect(genders.filter { $0 == "Woman" }.count == 3, "Expected three women")
         c.expect(genders.filter { $0 == "Man" }.count == 4, "Expected four men")
         c.expect(genders.filter { $0 == "Gender-fluid" }.count == 1, "Expected one gender-fluid character")
         if let sol = Person.find("sol") {
@@ -334,7 +334,9 @@ enum SelfTests {
         let meadow = freshMeadow()
         let expected = meadow.weather == .rainy ? 0 : 6
         c.expect(meadow.talk(to: "theo")?.points == expected, "Theo's talks gain at 60% before the Reveal (and not at all in the rain)")
-        c.expect(meadow.fishyPending || meadow.weather == .rainy, "His first dry-day talk sets Something Fishy")
+        c.expect(!meadow.fishyPending, "Theo no longer sets Something Fishy — fish quests are Imani's")
+        _ = meadow.talk(to: "imani")
+        c.expect(meadow.fishyPending, "Imani's first talk sets Something Fishy")
         let theo = Person.find("theo")!
         c.expect(meadow.reaction(to: "lettuce", from: theo) == .neutral, "Theo's gift reactions are flat before the Reveal")
         c.expect(meadow.reaction(to: "moonflower", from: theo) == .loved, "Moon-things crack Theo from day one")

@@ -471,6 +471,16 @@ extension Meadow {
             }
             return nil
         case .pond:
+            if let imani = Person.find("imani") {
+                let herZone = DeckRect(minX: PondLayout.imaniSpot.x - 0.03, minY: PondLayout.imaniSpot.y - 0.09,
+                                       maxX: PondLayout.imaniSpot.x + 0.03, maxY: PondLayout.imaniSpot.y + 0.02)
+                if reaches(herZone, from: spot, facing: faced) {
+                    return personTarget(imani, at: PondLayout.imaniSpot)
+                }
+            }
+            if reaches(PondLayout.cabinDoorZone, from: spot, facing: faced) {
+                return DeckTarget(kind: .enterHouse("imani"), verb: "Visit Imani's Cabin", icon: .emoji("🛖"), spot: PondLayout.cabinDoorSpot)
+            }
             if let bunnySpot = moonBunnyPondSpot {
                 let zone = DeckRect(minX: bunnySpot.x - 0.08, minY: bunnySpot.y - 0.08, maxX: bunnySpot.x + 0.08, maxY: bunnySpot.y + 0.05)
                 if PondLayout.dockZone.contains(spot.x, spot.y) || reaches(zone, from: spot, facing: faced) {

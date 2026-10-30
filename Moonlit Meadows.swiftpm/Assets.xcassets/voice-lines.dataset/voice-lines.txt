@@ -854,3 +854,19 @@ roz	ROZ-CROSSROADS-PROMPT	How do you feel?
 theo	THEO-CROSSROADS-PROMPT	How do you feel?
 kai	KAI-CROSSROADS-PROMPT	How do you feel?
 sol	SOL-CROSSROADS-PROMPT	How do you feel?
+imani	IMANI-DAILY-EARLY-1	Oh — a new face at my pond. I'm Imani. I keep the water, and everything in it.
+imani	IMANI-DAILY-EARLY-2	Mind the dock boards. The third one sings when you step on it. The fish know all my visitors by their footsteps now.
+imani	IMANI-DAILY-EARLY-3	My brother keeps bees, if you can believe that. Little stripey accountants. Fish are honest. Fish just look at you and leave.
+imani	IMANI-DAILY-EARLY-4	If it has fins, I know its name, its mother, and its opinions. That's the job.
+imani	IMANI-DAILY-EARLY-5	Silas says his bees tell him everything. Please. My fish saw you coming down the path before his bees even woke up.
+imani	IMANI-DAILY-FRIEND-1	You walk quieter now. The pond likes you. So do I, but don't let it go to your head.
+imani	IMANI-DAILY-FRIEND-2	One of Silas's bees followed you here again. The lavender-stripe one. I feed her sugar water now. We're… colleagues. Don't tell my brother.
+imani	IMANI-DAILY-FRIEND-3	Caught anything strange lately? Bring me the odd ones. The pond's been keeping secrets this season.
+imani	IMANI-DAILY-FRIEND-4	People think still water is empty water. Wrong. It's just water that hasn't decided to show off yet.
+imani	IMANI-DAILY-FRIEND-5	If Silas asks, I was NOT humming at the hives. A keeper can appreciate a tune without joining the other side.
+imani	IMANI-DAILY-ROMANCE-1	I know every mood of this pond. Lately it goes quiet and golden when you arrive. It's showing off. …So am I.
+imani	IMANI-DAILY-ROMANCE-2	Stay till the light goes? The fish rise at dusk, and I save you the good spot on the dock. Saved it all along, if I'm honest.
+imani	IMANI-DAILY-ROMANCE-3	My brother walks his bees home at night. I walk the shore. Lately I keep hoping our paths cross at the lane. They do. I make sure of it.
+imani	IMANI-DAILY-BESTIE-1	You're pond family now. That means I tell you where the big ones sleep, and you never repeat it. Deal?
+imani	IMANI-DAILY-BESTIE-2	Silas has his bees, I have my fish, and now we both have you. The valley's in trouble.
+imani	IMANI-DAILY-BESTIE-3	Whatever the day did to you, the water will take it. Sit. I'll put the kettle on at the cabin.

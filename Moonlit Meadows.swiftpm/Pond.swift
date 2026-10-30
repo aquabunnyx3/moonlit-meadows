@@ -18,6 +18,13 @@ enum PondLayout {
     static let dockSpot = Spot(x: 0.5, y: 0.72)
     /// The shore stones east of the dock, where something was buried long ago.
     static let capsuleZone = DeckRect(minX: 0.58, minY: 0.79, maxX: 0.68, maxY: 0.88)
+    /// Imani's cabin on the north-east shore (added with her, 2026-10-30).
+    static let cabinZone = DeckRect(minX: 0.615, minY: 0.14, maxX: 0.775, maxY: 0.36)
+    /// The cabin's doorstep: stand here and the action button offers a visit.
+    static let cabinDoorZone = DeckRect(minX: 0.615, minY: 0.35, maxX: 0.70, maxY: 0.41)
+    static let cabinDoorSpot = Spot(x: 0.655, y: 0.385)
+    /// Where Imani stands, on the shore by the stone jetty below her cabin.
+    static let imaniSpot = Spot(x: 0.60, y: 0.475)
 
     static let collision = SceneCollision(
         name: "The Pond",
@@ -25,7 +32,8 @@ enum PondLayout {
         blocks: [
             // The water, shaped around the dock (west / east / north of it).
             BlockZone(label: "pond: water (west)", rect: DeckRect(minX: 0.27, minY: 0.42, maxX: 0.44, maxY: 0.79)),
-            BlockZone(label: "pond: water (east)", rect: DeckRect(minX: 0.565, minY: 0.42, maxX: 0.79, maxY: 0.79)),
+            BlockZone(label: "pond: water (east)", rect: DeckRect(minX: 0.63, minY: 0.44, maxX: 0.79, maxY: 0.79)),
+            BlockZone(label: "pond: Imani's cabin", rect: DeckRect(minX: 0.61, minY: 0.13, maxX: 0.78, maxY: 0.36)),
             BlockZone(label: "pond: water (north of the dock)", rect: DeckRect(minX: 0.44, minY: 0.40, maxX: 0.565, maxY: 0.66)),
             BlockZone(label: "pond: water (north lobe)", rect: DeckRect(minX: 0.60, minY: 0.385, maxX: 0.72, maxY: 0.44)),
             // The willow on the west shore: trunk and the ground its fronds guard.

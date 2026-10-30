@@ -194,7 +194,7 @@ struct Person: Identifiable {
     }
 
     /// The seven romanceable main characters.
-    static let main: [Person] = [june, roz, theo, kai, sol, rowan, silas]
+    static let main: [Person] = [june, roz, theo, kai, sol, rowan, silas, imani]
     static let all: [Person] = main + villagers
 }
 
@@ -833,6 +833,7 @@ private let silas = Person(
             "Smells like rain by evening. The bees are coming home early.",
             "One of my girls followed you in just now. She'll report back at the hive — my bees tell me everything. Family doesn't keep secrets.",
             "Mind how you go at the pond after dark. Not a warning, love. Just… my girls see a lot from that shore, and they do gossip on the way home.",
+            "My sister keeps the pond. Imani. She'll tell you fish are cleverer than bees. She's wrong, but she's family, so I let her be wrong loudly.",
         ],
         friend: [
             "You've been carrying a lot lately. You can set some of it down here.",
@@ -840,6 +841,7 @@ private let silas = Person(
             "Saved you a jar of the good honey. Don't tell the others.",
             "You were out late again last night. No, nobody told me. One of my bees did.",
             "There's one of my girls — lavender stripe, you can't miss her — who's taken to following you. She's spying, love. In this family, that's the same as caring.",
+            "Imani sent that honey jar back again. A YEAR that jar's been travelling. …She keeps the pond beautifully, my sister. Don't tell her I said beautifully.",
         ],
         romance: [
             "My grandfather said you know it's love when the bees settle around someone. They settle around you.",
@@ -888,4 +890,108 @@ private let silas = Person(
     likedGiftReaction: "“How lovely. Thank you. The bees will be jealous.”",
     neutralGiftReaction: "“That's kind of you. Thank you.”",
     dislikedGiftReaction: "“Ah, that's a bit too smoky for me. The bees don't care for it either. But I appreciate the thought, really.”"
+)
+
+// MARK: - Imani (added by Merlin, 2026-10-30, at Michelle's word)
+
+/// Silas's younger sister: the pond's aquatics expert. She lives at the pond
+/// cabin and nowhere else — every fish quest in the valley is hers.
+private let imani = Person(
+    id: "imani",
+    name: "Imani",
+    fullName: "Imani Okafor-Bell",
+    pronouns: "she/her",
+    gender: "Woman",
+    role: "Aquatics expert at the pond cabin",
+    personality: "Quick, dry, and warm underneath, Imani talks like the water she keeps: calm on top, strong current below. She's fiercely competent, teases everyone she likes, and maintains — loudly — that beekeeping is a silly hobby for a grown man. He says the same about fish. They adore each other.",
+    backstory: "Imani is Silas's younger sister. Their grandfather left Silas the apiary and Imani the pond cabin, and each is certain the other got the better inheritance. She studied aquatics in the city, cataloguing rivers, until the valley called her home to keep its pond: stocking, studying and defending every fish in it. She can name every fish in the pond, and most of their relatives.",
+    interests: "Aquatics, the fish census, night fishing, pond ecology, teasing her brother",
+    looks: [
+        PersonLook(skin: RGB(0x5A3A28), hair: RGB(0x1C1614), hairStyle: .long, eyes: RGB(0xA8702F),
+                   outfit: RGB(0x62A89E), outfitAccent: RGB(0xF2E7CF),
+                   styleNote: "A seafoam-teal fishing vest over a cream shirt, navy waders and teal boots, a silver fish-hook pendant, and long black box braids threaded with teal and white beads"),
+    ],
+    favoriteBreeds: ["oceanBunny", "auroraBunny", "crystalBunny"],
+    lovedGifts: ["fish-pond-minnow", "fish-baby-koi", "moonflower"],
+    likedGifts: ["lavender", "daffodil", "clover", "blueberry", "melon"],
+    dislikedGifts: ["honeyCake", "campfireStew", "chili"],
+    schedule: [
+        ScheduleSlot(time: .dawn, place: "Checking the pond nets at first light", emoji: "🐟", inMeadow: false),
+        ScheduleSlot(time: .day, place: "At the pond, studying the fish", emoji: "🎣", inMeadow: false),
+        ScheduleSlot(time: .dusk, place: "Feeding the pond fish", emoji: "🌅", inMeadow: false),
+        ScheduleSlot(time: .night, place: "Pond cabin, lamp in the window", emoji: "🛖", inMeadow: false),
+    ],
+    activities: [
+        SharedActivity(name: "Pond Survey", emoji: "🐟",
+                       friendLine: "You wade the shallows with Imani, counting fry and moving one very lost tadpole. She takes notes. The pond approves.",
+                       dateLine: "Imani names a fish after you. “He's dramatic and always hungry,” she says, and won't stop smiling."),
+        SharedActivity(name: "Night Fishing", emoji: "🎣",
+                       friendLine: "You fish by lantern light, catching nothing and minding not at all. Imani tells the story of the Old Dockmaster twice.",
+                       dateLine: "On the dock at night, Imani's shoulder finds yours. “Quiet,” she whispers. “Something's biting.” Nothing is. She doesn't move away."),
+        SharedActivity(name: "Release Day", emoji: "🌊",
+                       friendLine: "You help Imani carry the season's tagged fish back to the deep water, one bucket at a time. She salutes each one.",
+                       dateLine: "Imani lets the last fish go, then keeps hold of your hand instead. “Some things you don't release,” she says."),
+    ],
+    lines: DailyLines(
+        early: [
+            "Oh — a new face at my pond. I'm Imani. I keep the water, and everything in it.",
+            "Mind the dock boards. The third one sings when you step on it. The fish know all my visitors by their footsteps now.",
+            "My brother keeps bees, if you can believe that. Little stripey accountants. Fish are honest. Fish just look at you and leave.",
+            "If it has fins, I know its name, its mother, and its opinions. That's the job.",
+            "Silas says his bees tell him everything. Please. My fish saw you coming down the path before his bees even woke up.",
+        ],
+        friend: [
+            "You walk quieter now. The pond likes you. So do I, but don't let it go to your head.",
+            "One of Silas's bees followed you here again. The lavender-stripe one. I feed her sugar water now. We're… colleagues. Don't tell my brother.",
+            "Caught anything strange lately? Bring me the odd ones. The pond's been keeping secrets this season.",
+            "People think still water is empty water. Wrong. It's just water that hasn't decided to show off yet.",
+            "If Silas asks, I was NOT humming at the hives. A keeper can appreciate a tune without joining the other side.",
+        ],
+        romance: [
+            "I know every mood of this pond. Lately it goes quiet and golden when you arrive. It's showing off. …So am I.",
+            "Stay till the light goes? The fish rise at dusk, and I save you the good spot on the dock. Saved it all along, if I'm honest.",
+            "My brother walks his bees home at night. I walk the shore. Lately I keep hoping our paths cross at the lane. They do. I make sure of it.",
+        ],
+        bestie: [
+            "You're pond family now. That means I tell you where the big ones sleep, and you never repeat it. Deal?",
+            "Silas has his bees, I have my fish, and now we both have you. The valley's in trouble.",
+            "Whatever the day did to you, the water will take it. Sit. I'll put the kettle on at the cabin.",
+        ]
+    ),
+    questions: [
+        Question(id: "imani-q1", prompt: "“What's the secret to a good day?”", answers: [
+            Answer(text: "A quiet hour by the water.", response: "Imani nods like you passed a test. “Correct. Sit anywhere. The dock's best at dawn.”", points: 15),
+            Answer(text: "Getting everything done.", response: "“Mm. The pond disagrees, but go on, be impressive.”", points: 10),
+            Answer(text: "Other people's gossip.", response: "“Then you'll love it here. The fish see everything and tell ME.”", points: 5),
+            Answer(text: "Who cares? Days are all the same.", response: "Her smile goes flat as a millpond. “All the same. Right.”", points: 0, isRude: true),
+        ]),
+        Question(id: "imani-q2", prompt: "“If you were a fish, which would you be?”", answers: [
+            Answer(text: "A koi. Calm, and prettier than I look.", response: "“Ha! Honest and vain. You'd do well in this pond.”", points: 15),
+            Answer(text: "A minnow. Small but quick.", response: "“Nothing wrong with minnows. They run the place, whatever the koi think.”", points: 10),
+            Answer(text: "Something with very big teeth.", response: "“We have one of those. The Old Dockmaster. Even I leave him alone.”", points: 5),
+            Answer(text: "Fish are stupid.", response: "“And yet they outsmart you every day, don't they?” Imani says sweetly.", points: 0, isRude: true),
+        ]),
+    ],
+    quests: [
+        Quest(id: "imani-1", personID: "imani", title: "The Keeper's Count",
+              description: "Imani is counting this season's minnows for her pond census. Bring her three pond minnows — gently.", requiredStage: .acquaintance,
+              items: [ItemCount(itemID: "fish-pond-minnow", count: 3)], points: 30, rewards: [.coins(60)]),
+        Quest(id: "imani-2", personID: "imani", title: "Bluegill Weather",
+              description: "Imani swears the bluegill only bite for people the pond trusts. Prove it. She also mentions a bunny the color of deep water, seen where the stream comes in.",
+              requiredStage: .friend,
+              items: [ItemCount(itemID: "fish-bluegill", count: 2)], points: 40,
+              rewards: [.gems(2), .hint("oceanBunny")]),
+        Quest(id: "imani-3", personID: "imani", title: "Sibling Truce",
+              description: "Imani has a jar of her brother's honey she's been meaning to return for a year, and she wants lavender for the cabin table. Help her almost apologize.",
+              requiredStage: .closeFriend,
+              items: [ItemCount(itemID: "honey", count: 1), ItemCount(itemID: "lavender", count: 3)], points: 50,
+              rewards: [.gems(3), .hint("auroraBunny")]),
+    ],
+    favoriteBunnyReaction: "Imani crouches right down, slow and delighted. “Oh, a {breed}.” {bunny} noses her boot, fearless. “Pond-approved,” she says. “That makes you family twice over. Thank you.”",
+    bunnyReaction: "Imani holds a hand out low and still. “Easy, little one. The pond looks after its own, and so do I.”",
+    showFavoriteReaction: "Imani goes very quiet. “A {breed}. My favorite. You remembered.”",
+    lovedGiftReaction: "“Oh, now THAT is a keeper. Pun fully intended. Thank you.”",
+    likedGiftReaction: "“Lovely. The cabin could use more lovely.”",
+    neutralGiftReaction: "“Kind of you. Thank you.”",
+    dislikedGiftReaction: "“Ah — no. That's my brother's whole personality in a cake. But the thought's sweet. Sweeter than the cake.”"
 )
