@@ -113,15 +113,25 @@ final class Meadow {
     var isSitting = false
     /// Asleep in bed: the room is dark until morning comes.
     var isSleeping = false
-    /// Control deck (Merlin, 2026-10-29): you're driving your farmer with the D-pad instead
-    /// of watching them stroll their loop. Not saved — a fresh launch starts with the stroll.
+    /// Control deck: you're walking your farmer with the D-pad. Until the first press, they
+    /// stroll their usual loop around the farm. Not saved.
     var isDeckDriving = false
-    /// Where your farmer stands while driving, in world coordinates.
+    /// Where your farmer's feet are while driving, in world coordinates.
     var farmerSpot: Spot?
-    /// The way your farmer faces while driving.
+    /// The way your farmer's sprite faces while driving (and at home).
     var farmerFacing: PersonArt.Facing = .front
-    /// The direction held on the D-pad right now ((0, 0) means standing still).
-    var deckDirection: (x: Double, y: Double) = (0, 0)
+    /// The direction held on the D-pad right now (zero while standing still).
+    var deckDirection = DeckVector.zero
+    /// The last direction walked: the spot just in front of it is what the action button works.
+    var deckFacing = DeckVector(x: 0, y: 1)
+    /// Where your farmer's feet are inside the cottage, as fractions of the room art.
+    var homeSpot = Spot(x: 0.5, y: 0.84)
+    /// The quick inventory slot in hand (see `QuickSlot`).
+    var quickSlot = QuickSlot.seeds
+    /// Seeds picked lately, newest first, for the quick inventory's spare slots.
+    var recentSeeds: [String] = []
+    /// The deck's action button opened someone's profile with Gift: start on their gifts.
+    var profileOpensGifts = false
     /// The meadow art's aspect on screen, kept by the world scene so deck movement is even.
     var worldAspect: Double = 2096.0 / 1184.0
     /// The start screen shows when the app opens. Not saved.
@@ -132,7 +142,8 @@ final class Meadow {
     var showsStartSparkle = false
     /// The opening story plays once, right after you make your farmer. Not saved.
     var showsIntro = false
-    /// The control deck's open tab, by `PanelTab` raw value.
+    /// The panel open on the control deck, by `PanelTab` raw value, or `seeds` or `storage`.
+    /// `farm` means none: the D-pad, quick inventory and action button show.
     var panelTabID = "farm"
 
     // MARK: Moment-to-moment state (not saved)

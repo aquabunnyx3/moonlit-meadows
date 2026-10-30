@@ -304,6 +304,13 @@ struct PersonActionsPanel: View {
         }
         .foregroundStyle(Palette.ink)
         .fontDesign(.rounded)
+        .onAppear {
+            // Opened with the deck's Gift button: start on the gifts.
+            if meadow.profileOpensGifts {
+                section = .gifts
+                meadow.profileOpensGifts = false
+            }
+        }
         .confirmationDialog(
             "Give \(confirming?.name ?? "this bunny") to \(person.name)?",
             isPresented: Binding(get: { confirming != nil }, set: { if !$0 { confirming = nil } }),

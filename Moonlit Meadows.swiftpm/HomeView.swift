@@ -56,15 +56,25 @@ struct HomeScene: View {
                 if meadow.isSleeping {
                     EmptyView()
                 } else if let artID = meadow.farmerArtID() {
-                    let spot = meadow.isSitting ? Spot.chair : Spot.floor
+                    // Your farmer stands where the D-pad walked them, or sits at the desk.
+                    let spot = meadow.isSitting ? Spot.chair : CGPoint(x: meadow.homeSpot.x, y: meadow.homeSpot.y)
                     TimelineView(.animation(minimumInterval: 1 / 12, paused: meadow.isPaused)) { timeline in
                         PersonFigure(look: .farmer(wearing: Outfit.find(meadow.equippedOutfit) ?? Outfit.all[0]),
                                      artID: artID, size: art.height * (meadow.isSitting ? 0.28 : 0.36),
                                      time: timeline.date.timeIntervalSinceReferenceDate,
-                                     facing: meadow.isSitting ? .back : .front)
+                                     facing: meadow.isSitting ? .back : meadow.farmerFacing,
+                                     isWalking: !meadow.isSitting && meadow.isDeckMoving)
                     }
                     .position(point(CGPoint(x: spot.x, y: spot.y - (meadow.isSitting ? 0.14 : 0.18)), art))
                     .animation(.easeInOut(duration: 0.5), value: meadow.isSitting)
+                }
+
+                // What the action button would work on.
+                if !meadow.isSleeping, !meadow.isSitting, let target = meadow.deckTarget() {
+                    TimelineView(.animation(minimumInterval: 1 / 12, paused: meadow.isPaused)) { timeline in
+                        DeckTargetMarker(target: target, unit: art.height, t: timeline.date.timeIntervalSinceReferenceDate)
+                    }
+                    .position(point(CGPoint(x: target.spot.x, y: target.spot.y), art))
                 }
 
                 HStack(spacing: 6) {
@@ -199,75 +209,18 @@ private struct SleepingRoom: View {
     }
 }
 
-// MARK: - House (bottom screen)
+// MARK: - Storage chest (bottom screen)
 
-/// The deck at home: shortcuts to the other tabs, your backpack, and Rest, Storage, Sit and Exit.
+/// The storage chest at home, opened from the chest with the deck's action button: tap
+/// something in the chest to take it out, or in your backpack to put it away.
 struct HomePanel: View {
     let meadow: Meadow
-    @State private var showsStorage = false
-    /// A tab opened from inside the house. It shows here instead of the backpack, so you
-    /// stay indoors until you tap Exit.
-    @State private var openTab: PanelTab?
-
-    private let shortcuts: [PanelTab] = [.pantry, .bunnies, .friends, .journal, .shop]
+    @State private var showsStorage = true
 
     var body: some View {
-        VStack(spacing: 10) {
-            HStack(spacing: 6) {
-                ForEach(shortcuts) { tab in
-                    Button {
-                        withAnimation(.snappy) {
-                            openTab = openTab == tab ? nil : tab
-                            showsStorage = false
-                        }
-                    } label: {
-                        VStack(spacing: 2) {
-                            if let icon = tab.icon {
-                                Image(uiImage: icon).resizable().interpolation(.none).scaledToFit().frame(height: 22)
-                            } else {
-                                Text(tab.emoji).font(.title3)
-                            }
-                            Text(tab.title).font(.caption2.bold()).lineLimit(1).minimumScaleFactor(0.7)
-                        }
-                        .frame(maxWidth: .infinity)
-                        .frame(height: 50)
-                        .pixelPanel(openTab == tab ? Palette.pinkCard : Palette.lilacCard,
-                                    edge: openTab == tab ? Palette.rose : Palette.lilacEdge, cornerRadius: 14)
-                    }
-                    .buttonStyle(SquishButtonStyle())
-                    .disabled(meadow.isSleeping)
-                }
-            }
-
-            if let openTab {
-                tabContent(openTab)
-                    .frame(maxWidth: .infinity, maxHeight: .infinity)
-            } else {
-                backpackArea
-            }
-
-            HStack(spacing: 8) {
-                action("Rest", icon: "home-rest", fill: Palette.lilacCard, edge: Palette.lilacEdge) {
-                    meadow.restForTheNight()
-                }
-                action(showsStorage ? "Close" : "Storage", icon: "home-storage", fill: Palette.periwinkle, edge: Palette.periwinkleEdge) {
-                    withAnimation(.snappy) {
-                        showsStorage.toggle()
-                        openTab = nil
-                    }
-                }
-                action(meadow.isSitting ? "Stand" : "Sit", icon: "home-sit", fill: Palette.periwinkle, edge: Palette.periwinkleEdge) {
-                    meadow.toggleSitting()
-                }
-                action("Exit", icon: "home-exit", fill: Palette.pinkCard, edge: Palette.pinkEdge) {
-                    withAnimation(.easeInOut(duration: 0.4)) { meadow.leaveHome() }
-                }
-            }
-            .disabled(meadow.isSleeping)
-            .opacity(meadow.isSleeping ? 0.5 : 1)
-        }
-        .foregroundStyle(Palette.ink)
-        .fontDesign(.rounded)
+        backpackArea
+            .foregroundStyle(Palette.ink)
+            .fontDesign(.rounded)
     }
 
     private var backpackArea: some View {
@@ -288,19 +241,6 @@ struct HomePanel: View {
                 }
             }
             .scrollIndicators(.hidden)
-    }
-
-    @ViewBuilder
-    private func tabContent(_ tab: PanelTab) -> some View {
-        switch tab {
-        case .pantry: PantryTab(meadow: meadow)
-        case .bunnies: CollectionTab(meadow: meadow)
-        case .friends: FriendsTab(meadow: meadow)
-        case .journal: JournalTab(meadow: meadow)
-        case .shop: ShopTab(meadow: meadow)
-        case .farm: FarmTab(meadow: meadow)
-        case .lures: LureTab(meadow: meadow)
-        }
     }
 
     private var backpack: [String] {

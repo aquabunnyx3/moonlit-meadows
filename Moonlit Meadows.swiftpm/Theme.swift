@@ -29,6 +29,8 @@ enum Palette {
     /// Dark navy text, like the lettering in the pixel mockups.
     static let ink = Color(red: 0.243, green: 0.247, blue: 0.471)
     static let periwinkle = Color(red: 0.80, green: 0.82, blue: 0.98)
+    /// The control deck behind the D-pad and buttons: pale lavender-blue, like the Duo mockup.
+    static let deck = Color(red: 0.78, green: 0.79, blue: 0.95)
     static let periwinkleEdge = Color(red: 0.50, green: 0.54, blue: 0.84)
     static let lilacCard = Color(red: 0.93, green: 0.85, blue: 0.97)
     static let lilacEdge = Color(red: 0.64, green: 0.53, blue: 0.83)

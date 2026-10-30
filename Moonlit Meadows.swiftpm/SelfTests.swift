@@ -53,6 +53,7 @@ enum SelfTests {
         ("Chat faces: expressions for each line", chatMoods),
         ("Hearts: dislikes, rude answers, and making up", warmthRules),
         ("Date scenes: videos play on dates and stay in the Journal", dateScenes),
+        ("Control deck: D-pad walking, walls, and the action button", controlDeck),
     ]
 
     static func runAll() -> [TestResult] {
@@ -416,6 +417,71 @@ enum SelfTests {
     }
 
     // MARK: Saving
+
+    private static func controlDeck(_ c: Check) {
+        let meadow = freshMeadow()
+        meadow.isAtMainMenu = false
+        meadow.setFarmer(FarmerLook(gender: .female))
+        meadow.finishIntro()
+        c.expect(meadow.deckTarget() == nil, "Nothing to do until you walk")
+        meadow.holdDirection(DeckVector(x: 0, y: 1))
+        c.expect(meadow.isDeckDriving && meadow.farmerSpot != nil, "The D-pad takes over from the stroll")
+        meadow.holdDirection(.zero)
+
+        // Just left of the first bed, facing it.
+        meadow.farmerSpot = Spot(x: 0.165, y: 0.46)
+        meadow.deckFacing = DeckVector(x: 1, y: 0)
+        meadow.quickSlot = .seeds
+        let target = meadow.deckTarget()
+        c.expect(target?.kind == .plot(0), "Facing a bed works its plot, got \(String(describing: target?.kind))")
+        c.expect(target?.verb.hasPrefix("Plant") ?? false, "An empty plot says Plant")
+        let coins = meadow.coins
+        meadow.deckAction()
+        c.expect(meadow.plots[0].cropID == meadow.selectedSeed && meadow.coins < coins, "The action button plants the seed in hand")
+        meadow.holdDirection(DeckVector(x: 1, y: 0))
+        for _ in 0..<60 { meadow.deckStep(dt: 1.0 / 30) }
+        meadow.holdDirection(.zero)
+        let bedLeft = WorldLayout.beds[0].x - WorldLayout.bedSize.width / 2
+        c.expect((meadow.farmerSpot?.x ?? 1) < bedLeft, "Beds block walking")
+        meadow.holdDirection(DeckVector(x: 1, y: 1))
+        meadow.deckStep(dt: 0.1)
+        meadow.holdDirection(.zero)
+        c.expect((meadow.farmerSpot?.y ?? 0) > 0.46, "Diagonals slide along what's in the way")
+
+        meadow.selectQuickSlot(.seeds)
+        c.expect(meadow.panelTabID == "seeds", "Tapping the seeds in hand opens the seed bag")
+        c.expect(meadow.deckSecondary == "Back", "The blue button is Back on a panel")
+        meadow.deckSecondaryAction()
+        c.expect(meadow.panelTabID == PanelTab.farm.rawValue, "Back closes the panel")
+
+        meadow.farmerSpot = Spot(x: 0.495, y: 0.70)
+        meadow.deckFacing = DeckVector(x: 0, y: 1)
+        c.expect(meadow.deckTarget()?.kind == .lureBasket, "The lure basket is in reach")
+        meadow.deckAction()
+        c.expect(meadow.panelTabID == PanelTab.lures.rawValue, "Set Lure opens the lures")
+        meadow.deckSecondaryAction()
+
+        meadow.farmerSpot = Meadow.cottageDoorstep
+        meadow.deckFacing = DeckVector(x: 0, y: -1)
+        c.expect(meadow.deckTarget()?.kind == .cottageDoor, "The cottage door says Enter")
+        meadow.deckAction()
+        c.expect(meadow.isAtHome, "Enter goes inside")
+        meadow.homeSpot = Spot(x: 0.40, y: 0.55)
+        meadow.deckFacing = DeckVector(x: -1, y: 0)
+        c.expect(meadow.deckTarget()?.verb == "Sleep", "The bed says Sleep")
+        meadow.homeSpot = Spot(x: 0.80, y: 0.64)
+        meadow.deckFacing = DeckVector(x: 0, y: -1)
+        c.expect(meadow.deckTarget()?.kind == .chair, "The desk chair says Sit")
+        meadow.deckAction()
+        c.expect(meadow.isSitting, "Sit sits down")
+        meadow.holdDirection(DeckVector(x: 0, y: 1))
+        meadow.holdDirection(.zero)
+        c.expect(!meadow.isSitting, "Walking stands you up")
+        c.expect(meadow.deckSecondary == "Exit", "The blue button leaves the house")
+        meadow.homeSpot = Spot(x: 0.5, y: 0.7)
+        meadow.deckSecondaryAction()
+        c.expect(!meadow.isAtHome && meadow.farmerSpot?.y == Meadow.cottageDoorstep.y, "Leaving puts you on the doorstep")
+    }
 
     private static func dateScenes(_ c: Check) {
         let scenes = Person.main.flatMap { $0.activities.compactMap(\.dateScene) }

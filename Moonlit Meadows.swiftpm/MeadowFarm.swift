@@ -354,13 +354,25 @@ extension Meadow {
         closeProfile()
         isAtHome = true
         isSitting = false
+        panelTabID = PanelTab.farm.rawValue
+        homeSpot = Self.homeEntrance
+        farmerFacing = .back
+        deckFacing = DeckVector(x: 0, y: -1)
+        deckDirection = .zero
     }
 
     func leaveHome(toTab tabID: String? = nil) {
         guard !isSleeping else { return }
         isAtHome = false
         isSitting = false
-        if let tabID { panelTabID = tabID }
+        deckDirection = .zero
+        if isDeckDriving {
+            // Back out the front door, facing the farm.
+            farmerSpot = Self.cottageDoorstep
+            farmerFacing = .front
+            deckFacing = DeckVector(x: 0, y: 1)
+        }
+        panelTabID = tabID ?? PanelTab.farm.rawValue
     }
 
     func toggleSitting() {

@@ -116,6 +116,12 @@ struct WorldScene: View {
 
                     LureGarden(meadow: meadow, map: map, t: t)
 
+                    // What the deck's action button would work on, once you're walking.
+                    if meadow.isDeckDriving, let target = meadow.deckTarget() {
+                        DeckTargetMarker(target: target, unit: map.unit, t: t)
+                            .position(map.point(target.spot))
+                    }
+
                     // The meadow gets a soft moonlit tint after dark, and a warm one at dawn and dusk.
                     timeTint(mood: mood, date: timeline.date)
                         .allowsHitTesting(false)
@@ -399,8 +405,8 @@ private struct FarmerWalker: View {
 
     var body: some View {
         let size = map.unit * 0.13
-        // Driving with the control deck (Merlin, 2026-10-29): you stand where the D-pad
-        // put you, facing the way you last walked. Otherwise, the usual stroll.
+        // Walking with the D-pad: you stand where it put you, facing the way you last
+        // walked. Until the first press, the usual stroll.
         if meadow.isDeckDriving, let spot = meadow.farmerSpot {
             PersonFigure(look: .farmer(wearing: Outfit.find(meadow.equippedOutfit) ?? Outfit.all[0]),
                          artID: artID, size: size, time: t, facing: meadow.farmerFacing,

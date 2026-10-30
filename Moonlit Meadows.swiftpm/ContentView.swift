@@ -92,7 +92,7 @@ struct ContentView: View {
         HStack(spacing: 12) {
             world
                 .frame(width: size.width * 0.55)
-            ControlPanel(meadow: meadow, railAxis: .horizontal)
+            ControlPanel(meadow: meadow)
         }
         .padding(12)
         .transition(.blurReplace)
@@ -102,7 +102,7 @@ struct ContentView: View {
         VStack(spacing: 12) {
             world
                 .frame(height: size.height * 0.42)
-            ControlPanel(meadow: meadow, railAxis: .horizontal)
+            ControlPanel(meadow: meadow)
         }
         .padding(12)
         .transition(.blurReplace)
