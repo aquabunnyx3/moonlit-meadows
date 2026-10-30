@@ -544,7 +544,7 @@ private struct BitView: View {
     var body: some View {
         coinText(bit.text)
             .font(.headline.bold())
-            .foregroundStyle(bit.kind == .heart ? Palette.rose : Palette.cocoa)
+            .foregroundStyle(bit.kind == .crack ? Color(red: 0.85, green: 0.18, blue: 0.22) : bit.kind == .heart ? Palette.rose : Palette.cocoa)
             .padding(.horizontal, 10)
             .padding(.vertical, 4)
             .background(Palette.cream.opacity(0.92), in: .capsule)

@@ -99,6 +99,8 @@ struct Answer {
     let text: String
     let response: String
     let points: Int
+    /// A deliberately rude answer: shown with a thorny broken heart, and it costs a heart.
+    var isRude = false
 }
 
 struct Question {
@@ -252,11 +254,13 @@ private let june = Person(
             Answer(text: "A sunflower, always facing the light.", response: "“That's lovely. Sunflowers follow the sun… I think I'd follow you around too. As a friend! Mostly.”", points: 15),
             Answer(text: "A cactus. Prickly, but low-maintenance.", response: "“Ha! Cacti bloom the brightest flowers, you know. I'll wait.”", points: 10),
             Answer(text: "Whatever grows fastest.", response: "“Clover, then. Humble and lucky.”", points: 5),
+            Answer(text: "Something that isn't so jumpy.", response: "June's smile slips. “Oh. Right. Sorry.” She goes back to her ferns.", points: 0, isRude: true),
         ]),
         Question(id: "june-q2", prompt: "“Do you ever feel like you're not where you're supposed to be?”", answers: [
             Answer(text: "Sometimes. But here feels right.", response: "“Me too. Here feels right. Especially lately.”", points: 15),
             Answer(text: "Everyone's figuring it out as they go.", response: "“That's… really comforting, actually. Thank you.”", points: 10),
             Answer(text: "Not really, no.", response: "“I envy that. Maybe you can teach me.”", points: 5),
+            Answer(text: "Maybe you just don't fit anywhere.", response: "June goes very quiet. “…Maybe.” She doesn't look at you for the rest of the day.", points: 0, isRude: true),
         ]),
     ],
     quests: [
@@ -346,11 +350,13 @@ private let roz = Person(
             Answer(text: "Pie. Obviously.", response: "“YES. Finally, someone with taste!”", points: 15),
             Answer(text: "Cake, for birthdays.", response: "“Okay, okay. Respectable. Wrong, but respectable.”", points: 10),
             Answer(text: "I don't really like sweets.", response: "“…I'm going to pretend I didn't hear that.”", points: 5),
+            Answer(text: "Neither. Your baking's too sweet.", response: "Roz's spatula freezes mid-air. “Huh. Okay.” For once, she has nothing to say.", points: 0, isRude: true),
         ]),
         Question(id: "roz-q2", prompt: "“Do you ever take a day off? Like, really off?”", answers: [
             Answer(text: "We should take one together.", response: "“A day off… with you? I could be talked into that.”", points: 15),
             Answer(text: "Rest is important, Roz.", response: "“Ugh, you sound like my mom. She's right too.”", points: 10),
             Answer(text: "Never. Grind forever!", response: "“Ha! A kindred spirit. Though… maybe neither of us should.”", points: 5),
+            Answer(text: "You'd be less exhausting if you did.", response: "Roz laughs, but it comes out thin. “Noted.”", points: 0, isRude: true),
         ]),
     ],
     quests: [
@@ -440,11 +446,13 @@ private let theo = Person(
             Answer(text: "They're stories we tell each other.", response: "“…Nonno said exactly that. Huh.”", points: 15),
             Answer(text: "Far away fire. But beautiful fire.", response: "“Practical and romantic. A rare combination.”", points: 10),
             Answer(text: "I've never thought about it.", response: "“Then I'll have to show you. Tonight. If you're free.”", points: 5),
+            Answer(text: "Just fire. Stargazing is a waste of time.", response: "Theo closes his notebook. “I see.” He turns back to the telescope without another word.", points: 0, isRude: true),
         ]),
         Question(id: "theo-q2", prompt: "“What's something you miss?”", answers: [
             Answer(text: "Someone I lost. Like you miss Nonno.", response: "Theo is quiet a long time. “Then you understand. Thank you for telling me.”", points: 15),
             Answer(text: "Being a kid and not worrying.", response: "“Ah. The golden age of no taxes.”", points: 10),
             Answer(text: "Nothing. I live in the present.", response: "“Teach me that trick sometime.”", points: 5),
+            Answer(text: "Nothing. Missing things is pointless.", response: "Theo's jaw tightens. “Right. Never mind.”", points: 0, isRude: true),
         ]),
     ],
     quests: [
@@ -535,11 +543,13 @@ private let kai = Person(
             Answer(text: "The people in it.", response: "Kai's smile wobbles a bit. “Yeah. Yeah, me too.”", points: 15),
             Answer(text: "A comfy bed and good snacks.", response: "“Ha! Simple. Solid. I respect that.”", points: 10),
             Answer(text: "I don't need a home.", response: "“I used to say that too. I'm not sure I meant it.”", points: 5),
+            Answer(text: "Somewhere you're not, honestly.", response: "Kai's grin falters. “Ha. Good one.” He finds a reason to leave early.", points: 0, isRude: true),
         ]),
         Question(id: "kai-q2", prompt: "“Be honest — are my puns funny?”", answers: [
             Answer(text: "They're terrible. I love them.", response: "“That's the nicest thing anyone's ever said to me.”", points: 15),
             Answer(text: "Some of them!", response: "“I'll take some!”", points: 10),
             Answer(text: "Please stop.", response: "“Never. But I respect the honesty.”", points: 5),
+            Answer(text: "No. They're painful. Please stop talking.", response: "Kai blinks. “Oh. Sure. Sorry.” He's quiet the rest of the visit.", points: 0, isRude: true),
         ]),
     ],
     quests: [
@@ -631,11 +641,13 @@ private let sol = Person(
             Answer(text: "Something you'd write.", response: "Sol grins and grabs their notebook. “Challenge accepted.”", points: 15),
             Answer(text: "A cozy acoustic ballad.", response: "“Mm, I can hear it. Lots of warm strings.”", points: 10),
             Answer(text: "Elevator music.", response: "“Ha! Underrated genre. Very soothing.”", points: 5),
+            Answer(text: "Something quieter than you.", response: "Sol's hands go still on the strings. “…Wow. Okay.”", points: 0, isRude: true),
         ]),
         Question(id: "sol-q2", prompt: "“What do you think makes someone stay somewhere?”", answers: [
             Answer(text: "Finding people who make them feel seen.", response: "Sol's voice goes soft. “Yeah. That's exactly it.”", points: 15),
             Answer(text: "A place that feels like it fits.", response: "“Like a good jacket. I like that.”", points: 10),
             Answer(text: "Running out of gas money.", response: "“Ha! That's how I got here, honestly.”", points: 5),
+            Answer(text: "Nothing. People always leave.", response: "Sol looks away. “That's a sad way to see it.” The song they were humming stops.", points: 0, isRude: true),
         ]),
     ],
     quests: [
@@ -726,11 +738,13 @@ private let rowan = Person(
             Answer(text: "This meadow, just like it is.", response: "Rowan nods slowly. “Then we'll look after it. Both of us.”", points: 15),
             Answer(text: "A really good pair of boots.", response: "A short laugh, surprised out of him. “Practical. I can make those.”", points: 10),
             Answer(text: "Nothing lasts forever.", response: "“No. But some things last long enough.”", points: 5),
+            Answer(text: "Nothing you make, that's for sure.", response: "Rowan sets down his hammer. He says nothing at all, which is worse.", points: 0, isRude: true),
         ]),
         Question(id: "rowan-q2", prompt: "“Do you talk to the things you fix? …Never mind.”", answers: [
             Answer(text: "Always. They listen better.", response: "Rowan goes a little pink. “…They do, don't they.”", points: 15),
             Answer(text: "Only when they won't work.", response: "“Fair.”", points: 10),
             Answer(text: "That's a little odd.", response: "“Hm. Probably.”", points: 5),
+            Answer(text: "That's weird. Don't be weird.", response: "Rowan's ears go red. “Forget I asked.” He turns back to the forge.", points: 0, isRude: true),
         ]),
     ],
     quests: [
@@ -822,11 +836,13 @@ private let silas = Person(
             Answer(text: "A friend who just listens.", response: "Silas smiles, slow and warm. “Then I'll keep listening.”", points: 15),
             Answer(text: "A hot drink and a blanket.", response: "“Ah. A person of good sense.”", points: 10),
             Answer(text: "I just keep working.", response: "“Hm. Even bees rest in winter, you know.”", points: 5),
+            Answer(text: "Not you lecturing me about it.", response: "Silas nods slowly. “All right.” Even the bees go quiet.", points: 0, isRude: true),
         ]),
         Question(id: "silas-q2", prompt: "“If you were a flower, which would you be?”", answers: [
             Answer(text: "Lavender. Calm, and a little wild.", response: "“The bees' favorite,” Silas says, pleased. “Good choice.”", points: 15),
             Answer(text: "A dandelion. I grow anywhere.", response: "“Ha. Tough and cheerful. I can see it.”", points: 10),
             Answer(text: "I'd rather be a bee.", response: "Silas laughs. “Busy, buzzy, and a little bit stingy? Sure.”", points: 5),
+            Answer(text: "Who cares? Flowers are boring.", response: "Silas's smile fades. “The bees would disagree. So do I.”", points: 0, isRude: true),
         ]),
     ],
     quests: [

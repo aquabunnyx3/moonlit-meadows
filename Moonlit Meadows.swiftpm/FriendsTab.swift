@@ -159,6 +159,7 @@ struct PersonProfileScene: View {
                 Text("Stage \(meadow.stage(of: person.id).rawValue)/\(person.maxStage.rawValue)").font(.caption).opacity(0.7)
             }
             ProgressView(value: meadow.stageProgress(of: person.id)).tint(Palette.rose)
+            WarmthHearts(meadow: meadow, personID: person.id)
             if meadow.isAwaitingCrossroads(person.id) {
                 Text("💌 Your relationship is at a crossroads. Read their next chapter to choose your path.")
                     .font(.caption)
@@ -360,11 +361,16 @@ struct PersonActionsPanel: View {
         if let question = meadow.profileTalk?.question, meadow.profileAnswer == nil {
             Text(question.prompt).font(.subheadline.bold())
             ForEach(Array(question.answers.enumerated()), id: \.offset) { index, answer in
-                bigButton(answer.text, pink: false) {
+                let pick = {
                     // You say your answer, then they reply.
                     MusicPlayer.shared.voiceLeadIn = VoiceLines.clips(owner: "farmer", text: answer.text,
                                                                       farmer: meadow.farmerGender)
                     meadow.profileAnswer = meadow.answer(question.id, option: index, for: person.id)?.response
+                }
+                if answer.isRude {
+                    RudeAnswerButton(text: answer.text, action: pick)
+                } else {
+                    bigButton(answer.text, pink: false, action: pick)
                 }
             }
         } else if meadow.profileTalk != nil {
@@ -374,6 +380,12 @@ struct PersonActionsPanel: View {
             }
         } else {
             Text("Chat once a day to grow closer. What they say shows up top.").font(.caption).opacity(0.7)
+        }
+        if meadow.warmth(of: person.id) < Meadow.maxWarmth {
+            let can = meadow.canApologize(to: person.id)
+            bigButton(can ? "🫶 Apologize (+1 heart)" : "🫶 You've apologized today ✓", isEnabled: can) {
+                meadow.apologize(to: person.id)
+            }
         }
     }
 
@@ -630,5 +642,104 @@ struct QuestRow: View {
                 Text("💗 +\(quest.points) relationship").font(.caption2).opacity(0.7)
             }
         }
+    }
+}
+
+/// A rude answer, picked on purpose: a thorny broken heart and a red border, apart from the kind ones.
+private struct RudeAnswerButton: View {
+    let text: String
+    let action: () -> Void
+
+    var body: some View {
+        Button(action: action) {
+            HStack(spacing: 8) {
+                Text("🥀💔").font(.subheadline)
+                VStack(alignment: .leading, spacing: 2) {
+                    Text("Rude").font(.caption2.bold()).foregroundStyle(Color(red: 0.75, green: 0.15, blue: 0.2))
+                    Text(text).font(.subheadline.bold()).multilineTextAlignment(.leading)
+                }
+                Spacer(minLength: 0)
+                Text("−1 ❤️").font(.caption.bold()).foregroundStyle(Color(red: 0.75, green: 0.15, blue: 0.2))
+            }
+            .padding(.vertical, 10)
+            .padding(.horizontal, 12)
+            .frame(maxWidth: .infinity)
+            .pixelPanel(Color(red: 0.98, green: 0.88, blue: 0.88), edge: Color(red: 0.75, green: 0.25, blue: 0.3), cornerRadius: 16)
+        }
+        .buttonStyle(SquishButtonStyle())
+        .padding(.top, 6)
+        .accessibilityLabel("Rude answer: \(text). Costs a heart.")
+    }
+}
+
+/// Ten hearts for how they feel about you right now, with Strained / Distant when they're low.
+/// A lost heart cracks with a red −1.
+struct WarmthHearts: View {
+    let meadow: Meadow
+    let personID: String
+    @State private var crack: HeartChange?
+    @State private var shown = false
+
+    var body: some View {
+        let hearts = meadow.warmth(of: personID)
+        let level = meadow.warmthLevel(of: personID)
+        HStack(spacing: 2) {
+            ForEach(0..<Meadow.maxWarmth, id: \.self) { index in
+                Text(index < hearts ? "❤️" : "🤍").font(.system(size: 11))
+            }
+            if level != .warm {
+                Text(level.title)
+                    .font(.caption2.bold())
+                    .padding(.horizontal, 6).padding(.vertical, 1)
+                    .background(level == .distant ? Color(red: 0.85, green: 0.3, blue: 0.35).opacity(0.25) : Palette.butter, in: .capsule)
+            }
+            Spacer(minLength: 0)
+        }
+        .overlay(alignment: .trailing) {
+            if let crack, crack.personID == personID {
+                HeartPop(amount: crack.amount, shown: shown)
+            }
+        }
+        .onChange(of: meadow.heartChange) { _, change in
+            guard let change, change.personID == personID else { return }
+            crack = change
+            shown = false
+            withAnimation(.easeOut(duration: 1.2)) { shown = true }
+            Task {
+                try? await Task.sleep(for: .seconds(1.3))
+                if crack == change { crack = nil }
+            }
+        }
+        .accessibilityLabel("\(hearts) of \(Meadow.maxWarmth) hearts\(level == .warm ? "" : ", \(level.title)")")
+    }
+}
+
+/// A heart that cracks in two (lost) or swells (gained), with the number rising off it.
+struct HeartPop: View {
+    let amount: Int
+    let shown: Bool
+
+    var body: some View {
+        let lost = amount < 0
+        ZStack {
+            if lost {
+                HStack(spacing: shown ? 6 : 0) {
+                    Text("❤️").mask(Rectangle().offset(x: -6)).rotationEffect(.degrees(shown ? -18 : 0))
+                    Text("❤️").mask(Rectangle().offset(x: 6)).rotationEffect(.degrees(shown ? 18 : 0))
+                }
+                .font(.system(size: 22))
+                .overlay { Text("💔").font(.system(size: 22)).opacity(shown ? 0 : 1) }
+            } else {
+                Text("💖").font(.system(size: 22)).scaleEffect(shown ? 1.3 : 0.8)
+            }
+            Text(lost ? "\(amount)" : "+\(amount)")
+                .font(.headline.weight(.heavy))
+                .foregroundStyle(lost ? Color(red: 0.85, green: 0.15, blue: 0.2) : Palette.rose)
+                .shadow(color: .white, radius: 0, x: 1, y: 1)
+                .offset(x: 22, y: shown ? -22 : 0)
+        }
+        .opacity(shown ? 0 : 1)
+        .animation(.easeOut(duration: 1.2), value: shown)
+        .allowsHitTesting(false)
     }
 }

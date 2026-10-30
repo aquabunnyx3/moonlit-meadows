@@ -51,6 +51,7 @@ enum SelfTests {
         ("Farmer looks: bald and the new outfits", baldAndOutfits),
         ("Voices: every line has its recording", voices),
         ("Chat faces: expressions for each line", chatMoods),
+        ("Hearts: dislikes, rude answers, and making up", warmthRules),
     ]
 
     static func runAll() -> [TestResult] {
@@ -326,7 +327,7 @@ enum SelfTests {
     private static func itemGifts(_ c: Check) {
         let meadow = freshMeadow()
         meadow.grant(.items("lettuce", 2))
-        c.expect(meadow.giveItem("lettuce", to: "theo") == .given(.disliked, points: 2), "Disliked gift gives 2 points")
+        c.expect(meadow.giveItem("lettuce", to: "theo") == .given(.disliked, points: 0), "Disliked gift gives no points")
         c.expect(meadow.giveItem("lettuce", to: "theo") == .alreadyGiftedToday, "One item gift per day")
         c.expect(meadow.count(of: "lettuce") == 1, "Only the given item is used up")
         c.expect(meadow.giveItem("pumpkin", to: "theo") == .notAvailable, "Can't give what you don't have")
@@ -681,7 +682,7 @@ enum SelfTests {
         let all = VoiceLines.allClipIDs
         c.expect(Set(all).count == all.count, "Every voice clip is listed once")
         // Rowan and Silas talk in blips until their recordings arrive.
-        let missing = all.filter { id in NSDataAsset(name: id) == nil && !VoiceLines.notRecordedYet.contains { id.hasPrefix($0) } }
+        let missing = all.filter { id in NSDataAsset(name: id) == nil && !VoiceLines.notRecordedYet.contains { id.contains($0) } }
         c.expect(missing.isEmpty, "Every voice clip is in the assets, missing \(missing.prefix(5))")
 
         // Every line the game can show finds its own clips.
@@ -775,6 +776,38 @@ enum SelfTests {
         }
         for mood in ["happy", "sad", "surprised"] {
             c.expect(UIImage(named: "person-theo-\(mood)") != nil, "Theo's \(mood) portrait is in the assets")
+        }
+    }
+
+    private static func warmthRules(_ c: Check) {
+        let meadow = freshMeadow()
+        meadow.isAtMainMenu = false
+        meadow.setFarmer(FarmerLook(gender: .female))
+        meadow.finishIntro()
+        let id = "kai"
+        c.expect(meadow.warmth(of: id) == Meadow.startingWarmth && meadow.warmthLevel(of: id) == .warm, "Everyone starts warm")
+        meadow.changeWarmth(-2, for: id)
+        c.expect(meadow.warmthLevel(of: id) == .strained, "Two hearts lost is Strained")
+        meadow.changeWarmth(-2, for: id)
+        c.expect(meadow.warmthLevel(of: id) == .distant, "Two more is Distant")
+        if let kai = Person.find(id) {
+            c.expect(kai.lines.early.contains(meadow.dailyLine(for: kai)), "Distant villagers talk like strangers")
+        }
+        meadow.addPoints(RelationshipStage.friend.threshold, to: id)
+        c.expect(!meadow.canDoActivity(with: id), "Activities pause while Distant")
+        c.expect(!meadow.availableQuests.contains { $0.personID == id }, "Requests pause while Distant")
+        c.expect(meadow.stage(of: id) >= .friend, "The friendship stage itself is kept")
+        meadow.apologize(to: id)
+        c.expect(meadow.warmth(of: id) == 3 && !meadow.canApologize(to: id), "Apologizing gives a heart, once a day")
+        meadow.changeWarmth(20, for: id)
+        c.expect(meadow.warmth(of: id) == Meadow.maxWarmth, "Hearts top out at ten")
+        meadow.changeWarmth(-20, for: id)
+        c.expect(meadow.warmth(of: id) == 0, "Hearts never go below zero")
+        for person in Person.all {
+            for question in person.questions {
+                c.expect(question.answers.filter(\.isRude).count == 1, "\(question.id) has one rude answer")
+                c.expect(question.answers.last?.isRude == true, "\(question.id): the rude answer comes last")
+            }
         }
     }
 

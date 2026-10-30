@@ -29,6 +29,27 @@ enum GiftResult: Equatable {
     case notAvailable
 }
 
+/// Someone's hearts went up or down, for the on-screen pop.
+struct HeartChange: Identifiable, Equatable {
+    let id = UUID()
+    let personID: String
+    let amount: Int
+}
+
+/// How someone feels about you right now. Strained and Distant sit below Friend on the meter:
+/// at Distant they talk like strangers and pause activities and requests, but nothing is lost.
+enum Warmth: Equatable {
+    case warm, strained, distant
+
+    var title: String {
+        switch self {
+        case .warm: return ""
+        case .strained: return "Strained"
+        case .distant: return "Distant"
+        }
+    }
+}
+
 struct TalkResult {
     let line: String
     let points: Int
@@ -97,6 +118,59 @@ extension Meadow {
         }
     }
 
+    // MARK: Hearts (warmth)
+
+    static let startingWarmth = 6
+    static let maxWarmth = 10
+
+    func warmth(of personID: String) -> Int {
+        relationship(personID).warmth ?? Self.startingWarmth
+    }
+
+    func warmthLevel(of personID: String) -> Warmth {
+        switch warmth(of: personID) {
+        case ...2: return .distant
+        case 3...4: return .strained
+        default: return .warm
+        }
+    }
+
+    func isDistant(_ personID: String) -> Bool { warmthLevel(of: personID) == .distant }
+
+    /// Moves their hearts up or down, with the heart pop.
+    func changeWarmth(_ amount: Int, for personID: String) {
+        guard amount != 0, let person = Person.find(personID) else { return }
+        var state = relationship(personID)
+        let before = state.warmth ?? Self.startingWarmth
+        let after = min(max(before + amount, 0), Self.maxWarmth)
+        guard after != before else { return }
+        state.warmth = after
+        relationships[personID] = state
+        heartChange = HeartChange(personID: personID, amount: after - before)
+        if amount < 0 {
+            spawn(.crack, "💔 \(after - before)", at: Spot(x: 0.5, y: 0.5))
+            let level = warmthLevel(of: personID)
+            if level != .warm { showToast("\(person.name) feels \(level.title.lowercased()). An apology or a gift they like will help.") }
+        } else {
+            spawn(.heart, "❤️ +\(after - before)", at: Spot(x: 0.5, y: 0.5))
+        }
+    }
+
+    func canApologize(to personID: String) -> Bool {
+        warmth(of: personID) < Self.maxWarmth && relationship(personID).lastApologyDay != today
+    }
+
+    /// Once a day at their home: say sorry for a heart back.
+    func apologize(to personID: String) {
+        guard canApologize(to: personID) else { return }
+        var state = relationship(personID)
+        state.lastApologyDay = today
+        relationships[personID] = state
+        changeWarmth(1, for: personID)
+        feedbackCount += 1
+        save()
+    }
+
     // MARK: Favorite breeds
 
     /// Favorite breeds are revealed one at a time as you get closer (or by showing them one).
@@ -147,6 +221,10 @@ extension Meadow {
     func dailyLine(for person: Person) -> String {
         let state = relationship(person.id)
         let lines: [String]
+        // Distant: they talk to you like a stranger again, until things are mended.
+        if isDistant(person.id) {
+            return person.lines.early[((today % person.lines.early.count) + person.lines.early.count) % person.lines.early.count]
+        }
         switch stage(of: person.id) {
         case .stranger, .acquaintance: lines = person.lines.early
         case .friend, .closeFriend: lines = person.lines.friend
@@ -186,6 +264,12 @@ extension Meadow {
         relationships[personID] = state
         let answer = question.answers[option]
         addPoints(answer.points, to: personID)
+        // The kindest answer warms them; a rude one costs a heart.
+        if answer.isRude {
+            changeWarmth(-1, for: personID)
+        } else if answer.points >= (question.answers.filter { !$0.isRude }.map(\.points).max() ?? 0) {
+            changeWarmth(1, for: personID)
+        }
         save()
         return answer
     }
@@ -203,7 +287,7 @@ extension Meadow {
         relationship(personID).lastGiftDay != today
     }
 
-    /// One item gift per person per day. Disliked gifts give a tiny bit, never a penalty.
+    /// One item gift per person per day. Liked and loved gifts warm them; a disliked one costs a heart.
     @discardableResult
     func giveItem(_ itemID: String, to personID: String) -> GiftResult {
         guard let person = Person.find(personID), ItemInfo.exists(itemID), count(of: itemID) > 0 else { return .notAvailable }
@@ -224,7 +308,7 @@ extension Meadow {
             points = 8
             message = person.neutralGiftReaction
         case .disliked:
-            points = 2
+            points = 0
             message = person.dislikedGiftReaction
         }
         var state = relationship(personID)
@@ -238,7 +322,13 @@ extension Meadow {
         }
         showToast("\(person.name): \(message)")
         voiceCue = VoiceCue(owner: personID, text: message)
-        spawn(.heart, mood == .loved ? "💖 +\(points)" : "💗 +\(points)", at: Spot(x: 0.5, y: 0.55))
+        if points > 0 { spawn(.heart, mood == .loved ? "💖 +\(points)" : "💗 +\(points)", at: Spot(x: 0.5, y: 0.55)) }
+        switch mood {
+        case .loved, .favorite: changeWarmth(2, for: personID)
+        case .liked: changeWarmth(1, for: personID)
+        case .disliked: changeWarmth(-1, for: personID)
+        case .neutral: break
+        }
         feedbackCount += 1
         save()
         return .given(mood, points: points)
@@ -330,7 +420,7 @@ extension Meadow {
     }
 
     func canDoActivity(with personID: String) -> Bool {
-        stage(of: personID) >= .friend && relationship(personID).lastActivityDay != today
+        stage(of: personID) >= .friend && relationship(personID).lastActivityDay != today && !isDistant(personID)
     }
 
     /// Spend time together once a day, from Friend onward. When dating, activities become dates.
@@ -441,6 +531,7 @@ extension Meadow {
     var availableQuests: [Quest] {
         var quests = Person.all.flatMap(\.quests).filter {
             !completedQuests.contains($0.id) && stage(of: $0.personID ?? "") >= $0.requiredStage
+                && !isDistant($0.personID ?? "")
         }
         let festival = Festival.current(at: now)
         if !festivalCycles.contains(Season.cycleID(now)) {

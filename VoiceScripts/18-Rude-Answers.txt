@@ -1,0 +1,199 @@
+VOICE SCRIPT: Rude answers and replies (new)
+
+Please create voice lines for a cozy, pastel pixel-art farming game called Moonlit Meadows.
+
+These are the new RUDE answer choices and how each character reacts. Use each character's SAME voice as their main script file. The farmer says the rude line flatly or a little dismissively; the characters react hurt, quiet, or awkward. Still gentle, never angry.
+
+RULES:
+- Read only the text in quotes. Do not read the ID or the note.
+- Make one separate audio clip per line, named with its ID (for example JUNE-Q1-REPLY4.mp3).
+- Farmer lines: record twice, female (-F) and male (-M), for example JUNE-Q1-ANSWER4-F.mp3.
+- Lines like ==== June ==== are section titles. Do not read them.
+
+LINES:
+
+
+==== Farmer (record twice: -F female and -M male) ====
+
+JUNE-Q1-ANSWER4  (Your answer to June)
+"Something that isn't so jumpy."
+
+JUNE-Q2-ANSWER4  (Your answer to June)
+"Maybe you just don't fit anywhere."
+
+ROZ-Q1-ANSWER4  (Your answer to Roz)
+"Neither. Your baking's too sweet."
+
+ROZ-Q2-ANSWER4  (Your answer to Roz)
+"You'd be less exhausting if you did."
+
+THEO-Q1-ANSWER4  (Your answer to Theo)
+"Just fire. Stargazing is a waste of time."
+
+THEO-Q2-ANSWER4  (Your answer to Theo)
+"Nothing. Missing things is pointless."
+
+KAI-Q1-ANSWER4  (Your answer to Kai)
+"Somewhere you're not, honestly."
+
+KAI-Q2-ANSWER4  (Your answer to Kai)
+"No. They're painful. Please stop talking."
+
+SOL-Q1-ANSWER4  (Your answer to Sol)
+"Something quieter than you."
+
+SOL-Q2-ANSWER4  (Your answer to Sol)
+"Nothing. People always leave."
+
+ROWAN-Q1-ANSWER4  (Your answer to Rowan)
+"Nothing you make, that's for sure."
+
+ROWAN-Q2-ANSWER4  (Your answer to Rowan)
+"That's weird. Don't be weird."
+
+SILAS-Q1-ANSWER4  (Your answer to Silas)
+"Not you lecturing me about it."
+
+SILAS-Q2-ANSWER4  (Your answer to Silas)
+"Who cares? Flowers are boring."
+
+WES-Q1-ANSWER4  (Your answer to Wes)
+"Nothing. It's dirt and chores."
+
+BREE-Q1-ANSWER4  (Your answer to Bree)
+"Who cares about berries?"
+
+VI-Q1-ANSWER4  (Your answer to Vi)
+"Flowers don't mean anything. That's silly."
+
+
+==== June ====
+
+JUNE-Q1-REPLY4  (Reply to your answer)
+"Oh. Right. Sorry."
+
+JUNE-Q2-REPLY4  (Reply to your answer)
+"…Maybe."
+
+
+==== Roz ====
+
+ROZ-Q1-REPLY4  (Reply to your answer)
+"Huh. Okay."
+
+ROZ-Q2-REPLY4  (Reply to your answer)
+"Noted."
+
+
+==== Theo ====
+
+THEO-Q1-REPLY4  (Reply to your answer)
+"I see."
+
+THEO-Q2-REPLY4  (Reply to your answer)
+"Right. Never mind."
+
+
+==== Kai ====
+
+KAI-Q1-REPLY4  (Reply to your answer)
+"Ha. Good one."
+
+KAI-Q2-REPLY4  (Reply to your answer)
+"Oh. Sure. Sorry."
+
+
+==== Sol ====
+
+SOL-Q1-REPLY4  (Reply to your answer)
+"…Wow. Okay."
+
+SOL-Q2-REPLY4  (Reply to your answer)
+"That's a sad way to see it."
+
+
+==== Rowan ====
+
+ROWAN-Q2-REPLY4  (Reply to your answer)
+"Forget I asked."
+
+
+==== Silas ====
+
+SILAS-Q1-REPLY4  (Reply to your answer)
+"All right."
+
+SILAS-Q2-REPLY4  (Reply to your answer)
+"The bees would disagree. So do I."
+
+
+==== Wes ====
+
+WES-Q1-REPLY4  (Reply to your answer)
+"Suit yourself."
+
+
+==== Bree ====
+
+BREE-Q1-REPLY4  (Reply to your answer)
+"Oh. I… care. A lot, actually."
+
+
+==== Vi ====
+
+VI-Q1-REPLY4  (Reply to your answer)
+"I suppose that's one way to see it."
+
+
+==== Narrator ====
+
+JUNE-Q1-REPLY4-N  (June reacts)
+"June's smile slips. … She goes back to her ferns."
+
+JUNE-Q2-REPLY4-N  (June reacts)
+"June goes very quiet. … She doesn't look at you for the rest of the day."
+
+ROZ-Q1-REPLY4-N  (Roz reacts)
+"Roz's spatula freezes mid-air. … For once, she has nothing to say."
+
+ROZ-Q2-REPLY4-N  (Roz reacts)
+"Roz laughs, but it comes out thin."
+
+THEO-Q1-REPLY4-N  (Theo reacts)
+"Theo closes his notebook. … He turns back to the telescope without another word."
+
+THEO-Q2-REPLY4-N  (Theo reacts)
+"Theo's jaw tightens."
+
+KAI-Q1-REPLY4-N  (Kai reacts)
+"Kai's grin falters. … He finds a reason to leave early."
+
+KAI-Q2-REPLY4-N  (Kai reacts)
+"Kai blinks. … He's quiet the rest of the visit."
+
+SOL-Q1-REPLY4-N  (Sol reacts)
+"Sol's hands go still on the strings."
+
+SOL-Q2-REPLY4-N  (Sol reacts)
+"Sol looks away. … The song they were humming stops."
+
+ROWAN-Q1-REPLY4-N  (Rowan reacts)
+"Rowan sets down his hammer. He says nothing at all, which is worse."
+
+ROWAN-Q2-REPLY4-N  (Rowan reacts)
+"Rowan's ears go red. … He turns back to the forge."
+
+SILAS-Q1-REPLY4-N  (Silas reacts)
+"Silas nods slowly. … Even the bees go quiet."
+
+SILAS-Q2-REPLY4-N  (Silas reacts)
+"Silas's smile fades."
+
+WES-Q1-REPLY4-N  (Wes reacts)
+"Wes grunts and tips his cap down."
+
+BREE-Q1-REPLY4-N  (Bree reacts)
+"Bree's face falls."
+
+VI-Q1-REPLY4-N  (Vi reacts)
+"Vi's hands still on her bouquet."

@@ -69,6 +69,10 @@ struct RelationshipState: Codable, Equatable {
     var revealedFavorites: [String] = []
     var memories: [Memory] = []
     var hasHadFirstDate = false
+    /// How they feel about you right now, in hearts (0–10). `nil` is the starting warmth.
+    /// Only disliked gifts and rude answers lower it, and it never decays on its own.
+    var warmth: Int?
+    var lastApologyDay: Int?
 }
 
 // MARK: - Save file

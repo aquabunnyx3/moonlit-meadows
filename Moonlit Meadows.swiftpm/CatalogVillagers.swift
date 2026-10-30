@@ -70,6 +70,7 @@ extension Person {
                 Answer(text: "Watching something grow from nothing.", response: "Wes nods slowly. “That's it. That's the whole of it.”", points: 15),
                 Answer(text: "Harvest day.", response: "“Can't argue. Nothing like a full basket.”", points: 10),
                 Answer(text: "The bunnies, honestly.", response: "He chuckles. “Can't argue with that either.”", points: 10),
+                Answer(text: "Nothing. It's dirt and chores.", response: "Wes grunts and tips his cap down. “Suit yourself.”", points: 0, isRude: true),
             ]),
         ],
         quests: [
@@ -158,6 +159,7 @@ extension Person {
                 Answer(text: "Tart. They have personality.", response: "“YES. Finally, someone who gets it!”", points: 15),
                 Answer(text: "Sweet, always.", response: "“Valid. I'll pick you the ripe ones.”", points: 10),
                 Answer(text: "Whatever's in jam.", response: "“Ha! Jam is the great equalizer.”", points: 10),
+                Answer(text: "Who cares about berries?", response: "Bree's face falls. “Oh. I… care. A lot, actually.”", points: 0, isRude: true),
             ]),
         ],
         quests: [
@@ -247,6 +249,7 @@ extension Person {
                 Answer(text: "Kindness.", response: "Vi smiles. “Pink camellia, then. It suits you.”", points: 15),
                 Answer(text: "Adventure.", response: "“Hmm. Snapdragon. A little bold. I like it.”", points: 10),
                 Answer(text: "Snacks.", response: "Vi laughs. “I'll invent a flower for that.”", points: 10),
+                Answer(text: "Flowers don't mean anything. That's silly.", response: "Vi's hands still on her bouquet. “I suppose that's one way to see it.”", points: 0, isRude: true),
             ]),
         ],
         quests: [

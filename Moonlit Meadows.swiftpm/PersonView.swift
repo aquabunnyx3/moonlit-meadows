@@ -374,16 +374,43 @@ enum FarmerRenderer {
 
     /// Maps the labels' shade value (128 = the part's typical brightness, ±64 per doubling)
     /// to a color: darker than typical scales the color down, brighter blends toward white.
+    /// The shades of one color for every shading level. Hue and saturation come from the chosen
+    /// color; lightness follows the art's own shading (labels' green channel), so a color looks
+    /// the same on the big portrait and the small sprite instead of a multiply tint washing out.
     private static func ramp(_ color: RGB, contrast k: Double) -> [(UInt8, UInt8, UInt8)] {
-        let mid = [color.r, color.g, color.b]
+        let (h, s, l) = hsl(color.r, color.g, color.b)
         return (0..<256).map { index in
-            let v = pow(pow(2, (Double(index) - 128) / 64), k)
-            let channel: (Double) -> UInt8 = { m in
-                let value = v <= 1 ? m * v : m + (1 - m) * min(v - 1, 1) * 0.8
-                return UInt8(max(0, min(255, value * 255)))
-            }
-            return (channel(mid[0]), channel(mid[1]), channel(mid[2]))
+            let f = pow(pow(2, (Double(index) - 128) / 64), k)
+            let lightness = f <= 1 ? l * f : l + (1 - l) * min(f - 1, 1) * 0.75
+            let (r, g, b) = rgb(h, s, max(0, min(1, lightness)))
+            return (UInt8(max(0, min(255, r * 255))), UInt8(max(0, min(255, g * 255))), UInt8(max(0, min(255, b * 255))))
         }
+    }
+
+    private static func hsl(_ r: Double, _ g: Double, _ b: Double) -> (Double, Double, Double) {
+        let mx = max(r, g, b), mn = min(r, g, b), l = (mx + mn) / 2
+        guard mx > mn else { return (0, 0, l) }
+        let d = mx - mn
+        let s = l > 0.5 ? d / (2 - mx - mn) : d / (mx + mn)
+        var h: Double
+        if mx == r { h = (g - b) / d + (g < b ? 6 : 0) } else if mx == g { h = (b - r) / d + 2 } else { h = (r - g) / d + 4 }
+        h /= 6
+        return (h, s, l)
+    }
+
+    private static func rgb(_ h: Double, _ s: Double, _ l: Double) -> (Double, Double, Double) {
+        guard s > 0 else { return (l, l, l) }
+        let q = l < 0.5 ? l * (1 + s) : l + s - l * s, p = 2 * l - q
+        func channel(_ t0: Double) -> Double {
+            var t = t0
+            if t < 0 { t += 1 }
+            if t > 1 { t -= 1 }
+            if t < 1 / 6 { return p + (q - p) * 6 * t }
+            if t < 1 / 2 { return q }
+            if t < 2 / 3 { return p + (q - p) * (2 / 3 - t) * 6 }
+            return p
+        }
+        return (channel(h + 1 / 3), channel(h), channel(h - 1 / 3))
     }
 
     private static func pixels(of image: UIImage, width: Int, height: Int) -> [UInt8]? {

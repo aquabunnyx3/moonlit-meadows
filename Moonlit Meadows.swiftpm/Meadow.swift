@@ -7,6 +7,8 @@ struct FloatingBit: Identifiable {
         case text
         case sparkle
         case heart
+        /// A heart lost: a cracked heart and a red number.
+        case crack
     }
 
     let id = UUID()
@@ -129,6 +131,8 @@ final class Meadow {
     var feedbackCount = 0
     var selectedSeed = "carrot"
     var awayReport: AwayReport?
+    /// The last change to someone's hearts, for the cracked-heart (or growing-heart) pop.
+    var heartChange: HeartChange?
     /// A line to say aloud outside the chat screen (a gift reaction in a toast, say).
     var voiceCue: VoiceCue?
     /// A bunny that just visited, shown with the discovery animation.

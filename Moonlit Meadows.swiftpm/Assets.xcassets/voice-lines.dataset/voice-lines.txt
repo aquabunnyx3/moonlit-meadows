@@ -17,6 +17,8 @@ farmer	JUNE-Q1-ANSWER2	A cactus. Prickly, but low-maintenance.
 june	JUNE-Q1-REPLY2	“Ha! Cacti bloom the brightest flowers, you know. I'll wait.”
 farmer	JUNE-Q1-ANSWER3	Whatever grows fastest.
 june	JUNE-Q1-REPLY3	“Clover, then. Humble and lucky.”
+farmer	JUNE-Q1-ANSWER4	Something that isn't so jumpy.
+june	JUNE-Q1-REPLY4-N,JUNE-Q1-REPLY4	June's smile slips. “Oh. Right. Sorry.” She goes back to her ferns.
 june	JUNE-Q2	“Do you ever feel like you're not where you're supposed to be?”
 farmer	JUNE-Q2-ANSWER1	Sometimes. But here feels right.
 june	JUNE-Q2-REPLY1	“Me too. Here feels right. Especially lately.”
@@ -24,6 +26,8 @@ farmer	JUNE-Q2-ANSWER2	Everyone's figuring it out as they go.
 june	JUNE-Q2-REPLY2	“That's… really comforting, actually. Thank you.”
 farmer	JUNE-Q2-ANSWER3	Not really, no.
 june	JUNE-Q2-REPLY3	“I envy that. Maybe you can teach me.”
+farmer	JUNE-Q2-ANSWER4	Maybe you just don't fit anywhere.
+june	JUNE-Q2-REPLY4-N,JUNE-Q2-REPLY4	June goes very quiet. “…Maybe.” She doesn't look at you for the rest of the day.
 june	JUNE-ACT1-FRIEND-N,JUNE-ACT1-FRIEND	June points out every herb on the path. “That one's lemon balm. It's good for… um, calm. Ironically I'm not.”
 june	JUNE-ACT1-DATE-N	June hooks her pinky around yours halfway through the herb walk and doesn't let go.
 june	JUNE-ACT2-FRIEND-N	You press violets between pages of an old encyclopedia. June labels each one in tiny handwriting.
@@ -56,6 +60,8 @@ farmer	ROZ-Q1-ANSWER2	Cake, for birthdays.
 roz	ROZ-Q1-REPLY2	“Okay, okay. Respectable. Wrong, but respectable.”
 farmer	ROZ-Q1-ANSWER3	I don't really like sweets.
 roz	ROZ-Q1-REPLY3	“…I'm going to pretend I didn't hear that.”
+farmer	ROZ-Q1-ANSWER4	Neither. Your baking's too sweet.
+roz	ROZ-Q1-REPLY4-N,ROZ-Q1-REPLY4	Roz's spatula freezes mid-air. “Huh. Okay.” For once, she has nothing to say.
 roz	ROZ-Q2	“Do you ever take a day off? Like, really off?”
 farmer	ROZ-Q2-ANSWER1	We should take one together.
 roz	ROZ-Q2-REPLY1	“A day off… with you? I could be talked into that.”
@@ -63,6 +69,8 @@ farmer	ROZ-Q2-ANSWER2	Rest is important, Roz.
 roz	ROZ-Q2-REPLY2	“Ugh, you sound like my mom. She's right too.”
 farmer	ROZ-Q2-ANSWER3	Never. Grind forever!
 roz	ROZ-Q2-REPLY3	“Ha! A kindred spirit. Though… maybe neither of us should.”
+farmer	ROZ-Q2-ANSWER4	You'd be less exhausting if you did.
+roz	ROZ-Q2-REPLY4-N,ROZ-Q2-REPLY4	Roz laughs, but it comes out thin. “Noted.”
 roz	ROZ-ACT1-FRIEND-N	Roz challenges you to a cupcake bake-off. She wins. She also eats your cupcake and declares it the real winner.
 roz	ROZ-ACT1-DATE-N	Flour everywhere. Roz wipes a smudge off your nose and leaves her hand on your cheek a second too long.
 roz	ROZ-ACT2-FRIEND-N,ROZ-ACT2-FRIEND	Roz haggles for peaches like it's a sport. You leave with three crates and a new nickname: “Sweet Pea.”
@@ -95,6 +103,8 @@ farmer	THEO-Q1-ANSWER2	Far away fire. But beautiful fire.
 theo	THEO-Q1-REPLY2	“Practical and romantic. A rare combination.”
 farmer	THEO-Q1-ANSWER3	I've never thought about it.
 theo	THEO-Q1-REPLY3	“Then I'll have to show you. Tonight. If you're free.”
+farmer	THEO-Q1-ANSWER4	Just fire. Stargazing is a waste of time.
+theo	THEO-Q1-REPLY4-N,THEO-Q1-REPLY4	Theo closes his notebook. “I see.” He turns back to the telescope without another word.
 theo	THEO-Q2	“What's something you miss?”
 farmer	THEO-Q2-ANSWER1	Someone I lost. Like you miss Nonno.
 theo	THEO-Q2-REPLY1-N,THEO-Q2-REPLY1	Theo is quiet a long time. “Then you understand. Thank you for telling me.”
@@ -102,6 +112,8 @@ farmer	THEO-Q2-ANSWER2	Being a kid and not worrying.
 theo	THEO-Q2-REPLY2	“Ah. The golden age of no taxes.”
 farmer	THEO-Q2-ANSWER3	Nothing. I live in the present.
 theo	THEO-Q2-REPLY3	“Teach me that trick sometime.”
+farmer	THEO-Q2-ANSWER4	Nothing. Missing things is pointless.
+theo	THEO-Q2-REPLY4-N,THEO-Q2-REPLY4	Theo's jaw tightens. “Right. Never mind.”
 theo	THEO-ACT1-FRIEND-N,THEO-ACT1-FRIEND	Theo shows you Cassiopeia. “Vain queen. Nonno's favorite. He said she reminded him of Nonna.”
 theo	THEO-ACT1-DATE-N	Theo adjusts the telescope for you, then forgets to step back. Neither of you mentions it.
 theo	THEO-ACT2-FRIEND-N	No comet tonight. Theo says that's statistically likely. You both stay out anyway.
@@ -134,6 +146,8 @@ farmer	KAI-Q1-ANSWER2	A comfy bed and good snacks.
 kai	KAI-Q1-REPLY2	“Ha! Simple. Solid. I respect that.”
 farmer	KAI-Q1-ANSWER3	I don't need a home.
 kai	KAI-Q1-REPLY3	“I used to say that too. I'm not sure I meant it.”
+farmer	KAI-Q1-ANSWER4	Somewhere you're not, honestly.
+kai	KAI-Q1-REPLY4-N,KAI-Q1-REPLY4	Kai's grin falters. “Ha. Good one.” He finds a reason to leave early.
 kai	KAI-Q2	“Be honest — are my puns funny?”
 farmer	KAI-Q2-ANSWER1	They're terrible. I love them.
 kai	KAI-Q2-REPLY1	“That's the nicest thing anyone's ever said to me.”
@@ -141,6 +155,8 @@ farmer	KAI-Q2-ANSWER2	Some of them!
 kai	KAI-Q2-REPLY2	“I'll take some!”
 farmer	KAI-Q2-ANSWER3	Please stop.
 kai	KAI-Q2-REPLY3	“Never. But I respect the honesty.”
+farmer	KAI-Q2-ANSWER4	No. They're painful. Please stop talking.
+kai	KAI-Q2-REPLY4-N,KAI-Q2-REPLY4	Kai blinks. “Oh. Sure. Sorry.” He's quiet the rest of the visit.
 kai	KAI-ACT1-FRIEND-N,KAI-ACT1-FRIEND	Kai hits his thumb twice. The birdhouse is crooked. He declares it “rustic.” You agree.
 kai	KAI-ACT1-DATE-N,KAI-ACT1-DATE	Kai carves your initials and his into the birdhouse roof. “So the birds know who built it.”
 kai	KAI-ACT2-FRIEND-N	Kai jogs backwards so he can talk to you. He trips over a bunny. Both are fine.
@@ -173,6 +189,8 @@ farmer	SOL-Q1-ANSWER2	A cozy acoustic ballad.
 sol	SOL-Q1-REPLY2	“Mm, I can hear it. Lots of warm strings.”
 farmer	SOL-Q1-ANSWER3	Elevator music.
 sol	SOL-Q1-REPLY3	“Ha! Underrated genre. Very soothing.”
+farmer	SOL-Q1-ANSWER4	Something quieter than you.
+sol	SOL-Q1-REPLY4-N,SOL-Q1-REPLY4	Sol's hands go still on the strings. “…Wow. Okay.”
 sol	SOL-Q2	“What do you think makes someone stay somewhere?”
 farmer	SOL-Q2-ANSWER1	Finding people who make them feel seen.
 sol	SOL-Q2-REPLY1-N,SOL-Q2-REPLY1	Sol's voice goes soft. “Yeah. That's exactly it.”
@@ -180,6 +198,8 @@ farmer	SOL-Q2-ANSWER2	A place that feels like it fits.
 sol	SOL-Q2-REPLY2	“Like a good jacket. I like that.”
 farmer	SOL-Q2-ANSWER3	Running out of gas money.
 sol	SOL-Q2-REPLY3	“Ha! That's how I got here, honestly.”
+farmer	SOL-Q2-ANSWER4	Nothing. People always leave.
+sol	SOL-Q2-REPLY4-N,SOL-Q2-REPLY4	Sol looks away. “That's a sad way to see it.” The song they were humming stops.
 sol	SOL-ACT1-FRIEND-N,SOL-ACT1-FRIEND	Sol hands you a tambourine. You are terrible. Sol says you have “raw, untamed rhythm.” You both cry laughing.
 sol	SOL-ACT1-DATE-N	Sol sings the chorus of their meadow song and changes one word in it — to your name.
 sol	SOL-ACT2-FRIEND-N	Sol teaches you a blanket stitch. You sew your sleeve to the pillow. Sol frames it.
@@ -212,6 +232,8 @@ farmer	ROWAN-Q1-ANSWER2	A really good pair of boots.
 rowan	ROWAN-Q1-REPLY2-N,ROWAN-Q1-REPLY2	A short laugh, surprised out of him. “Practical. I can make those.”
 farmer	ROWAN-Q1-ANSWER3	Nothing lasts forever.
 rowan	ROWAN-Q1-REPLY3	“No. But some things last long enough.”
+farmer	ROWAN-Q1-ANSWER4	Nothing you make, that's for sure.
+rowan	ROWAN-Q1-REPLY4-N	Rowan sets down his hammer. He says nothing at all, which is worse.
 rowan	ROWAN-Q2	“Do you talk to the things you fix? …Never mind.”
 farmer	ROWAN-Q2-ANSWER1	Always. They listen better.
 rowan	ROWAN-Q2-REPLY1-N,ROWAN-Q2-REPLY1	Rowan goes a little pink. “…They do, don't they.”
@@ -219,6 +241,8 @@ farmer	ROWAN-Q2-ANSWER2	Only when they won't work.
 rowan	ROWAN-Q2-REPLY2	“Fair.”
 farmer	ROWAN-Q2-ANSWER3	That's a little odd.
 rowan	ROWAN-Q2-REPLY3	“Hm. Probably.”
+farmer	ROWAN-Q2-ANSWER4	That's weird. Don't be weird.
+rowan	ROWAN-Q2-REPLY4-N,ROWAN-Q2-REPLY4	Rowan's ears go red. “Forget I asked.” He turns back to the forge.
 rowan	ROWAN-ACT1-FRIEND-N,ROWAN-ACT1-FRIEND	Rowan lets you work the bellows. Your star comes out lopsided. He hangs it over the forge door anyway. “It stays.”
 rowan	ROWAN-ACT1-DATE-N	Rowan guides your hands on the hammer, his arms around yours. The star you make together is perfect. He keeps the one you botched, too.
 rowan	ROWAN-ACT2-FRIEND-N	You bring him a broken watering can. He fixes it in silence, then shows you how. Twice. He doesn't mind the second time.
@@ -251,6 +275,8 @@ farmer	SILAS-Q1-ANSWER2	A hot drink and a blanket.
 silas	SILAS-Q1-REPLY2	“Ah. A person of good sense.”
 farmer	SILAS-Q1-ANSWER3	I just keep working.
 silas	SILAS-Q1-REPLY3	“Hm. Even bees rest in winter, you know.”
+farmer	SILAS-Q1-ANSWER4	Not you lecturing me about it.
+silas	SILAS-Q1-REPLY4-N,SILAS-Q1-REPLY4	Silas nods slowly. “All right.” Even the bees go quiet.
 silas	SILAS-Q2	“If you were a flower, which would you be?”
 farmer	SILAS-Q2-ANSWER1	Lavender. Calm, and a little wild.
 silas	SILAS-Q2-REPLY1,SILAS-Q2-REPLY1-N	“The bees' favorite,” Silas says, pleased. “Good choice.”
@@ -258,6 +284,8 @@ farmer	SILAS-Q2-ANSWER2	A dandelion. I grow anywhere.
 silas	SILAS-Q2-REPLY2	“Ha. Tough and cheerful. I can see it.”
 farmer	SILAS-Q2-ANSWER3	I'd rather be a bee.
 silas	SILAS-Q2-REPLY3-N,SILAS-Q2-REPLY3	Silas laughs. “Busy, buzzy, and a little bit stingy? Sure.”
+farmer	SILAS-Q2-ANSWER4	Who cares? Flowers are boring.
+silas	SILAS-Q2-REPLY4-N,SILAS-Q2-REPLY4	Silas's smile fades. “The bees would disagree. So do I.”
 silas	SILAS-ACT1-FRIEND-N	Silas sets out six little jars. Clover, lavender, sunflower… He tells you a story about each one. You like the sunflower best. So does he.
 silas	SILAS-ACT1-DATE-N,SILAS-ACT1-DATE	Silas feeds you a spoonful from the last jar. “Moonflower honey. I only ever made one batch.” He saved it for you.
 silas	SILAS-ACT2-FRIEND-N,SILAS-ACT2-FRIEND	You help Silas check the hives in borrowed gloves. A bee lands on your nose. “She likes you,” he says. “Good sign.”
@@ -287,6 +315,8 @@ farmer	WES-Q1-ANSWER2	Harvest day.
 wes	WES-Q1-REPLY2	“Can't argue. Nothing like a full basket.”
 farmer	WES-Q1-ANSWER3	The bunnies, honestly.
 wes	WES-Q1-REPLY3-N,WES-Q1-REPLY3	He chuckles. “Can't argue with that either.”
+farmer	WES-Q1-ANSWER4	Nothing. It's dirt and chores.
+wes	WES-Q1-REPLY4-N,WES-Q1-REPLY4	Wes grunts and tips his cap down. “Suit yourself.”
 wes	WES-ACT1-FRIEND-N	Wes shows you how to sort bean seeds by color. He hums an old tune the whole time and denies humming.
 wes	WES-ACT1-DATE-N,WES-ACT1-DATE	Wes labels a new seed envelope with your farm's name. “Heirloom,” he says. “Means it's worth keeping.”
 wes	WES-ACT2-FRIEND-N,WES-ACT2-FRIEND	Wes squints at the clouds. “Rain by supper.” It rains at supper. He looks unbearably smug.
@@ -316,6 +346,8 @@ farmer	BREE-Q1-ANSWER2	Sweet, always.
 bree	BREE-Q1-REPLY2	“Valid. I'll pick you the ripe ones.”
 farmer	BREE-Q1-ANSWER3	Whatever's in jam.
 bree	BREE-Q1-REPLY3	“Ha! Jam is the great equalizer.”
+farmer	BREE-Q1-ANSWER4	Who cares about berries?
+bree	BREE-Q1-REPLY4-N,BREE-Q1-REPLY4	Bree's face falls. “Oh. I… care. A lot, actually.”
 bree	BREE-ACT1-FRIEND-N	You and Bree pick berries. Your basket fills up. Hers somehow stays half-empty, and her mouth is very blue.
 bree	BREE-ACT1-DATE-N,BREE-ACT1-DATE	Bree saves you the plumpest berry of the season. “The good ones are for good people.”
 bree	BREE-ACT2-FRIEND-N	Bree introduces you to Admiral Puddles, the creek's largest frog. He is unimpressed with you.
@@ -345,6 +377,8 @@ farmer	VI-Q1-ANSWER2	Adventure.
 vi	VI-Q1-REPLY2	“Hmm. Snapdragon. A little bold. I like it.”
 farmer	VI-Q1-ANSWER3	Snacks.
 vi	VI-Q1-REPLY3-N,VI-Q1-REPLY3	Vi laughs. “I'll invent a flower for that.”
+farmer	VI-Q1-ANSWER4	Flowers don't mean anything. That's silly.
+vi	VI-Q1-REPLY4-N,VI-Q1-REPLY4	Vi's hands still on her bouquet. “I suppose that's one way to see it.”
 vi	VI-ACT1-FRIEND-N,VI-ACT1-FRIEND	Vi tells you what each flower in her cart means. Apparently you've been gifting people “jealousy” for weeks.
 vi	VI-ACT1-DATE-N,VI-ACT1-DATE	Vi tucks a sprig of lilac into your pocket. “It means first friendship,” she says. “Keep it.”
 vi	VI-ACT2-FRIEND-N	You walk the meadow path at sunset. Vi stops every few steps to say hello to a flower.
