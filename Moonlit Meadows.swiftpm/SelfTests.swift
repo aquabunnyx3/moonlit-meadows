@@ -458,6 +458,14 @@ enum SelfTests {
         meadow.holdDirection(.zero)
         c.expect(meadow.farmerSpot.y > 0.46, "Diagonals slide along what's in the way")
 
+        // The main grid and the quick bar share one selection.
+        meadow.grant(.items("strawberry", 2))
+        c.expect(meadow.carriedStacks.contains { $0.id == "strawberry" && $0.count >= 2 }, "The main grid shows what you carry")
+        meadow.selectQuickSlot(.item("strawberry"))
+        c.expect(meadow.quickSlot == .item("strawberry"), "Tapping a grid square puts it in your hands")
+        meadow.selectQuickSlot(.harvest)
+        c.expect(meadow.quickSlot == .harvest, "Picking in the quick bar replaces the grid's pick")
+        meadow.quickSlot = .seeds
         meadow.selectQuickSlot(.seeds)
         c.expect(meadow.panelTabID == "seeds", "Tapping the seeds in hand opens the seed bag")
         c.expect(meadow.deckSecondary == "Back", "The blue button is Back on a panel")

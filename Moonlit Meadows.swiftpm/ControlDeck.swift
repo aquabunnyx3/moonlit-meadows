@@ -22,6 +22,9 @@ enum QuickSlot: Equatable {
     case water
     /// A seed picked lately, one tap away. Picking it puts it in the seeds slot.
     case spareSeed(String)
+    /// Something from your carried inventory, picked in the main grid. A crop in hand plants
+    /// that crop; anything else works plots like the seed in hand.
+    case item(String)
 }
 
 /// What the action button would do right now, and where.
@@ -493,7 +496,7 @@ extension Meadow {
             let growing = plots.contains { $0.cropID != nil && !$0.isReady }
             return DeckTarget(kind: .plot(index), verb: "Water All · \(Self.growAllGemCost)💎", icon: .asset("icon-watering-can"),
                               canAct: growing && gems >= Self.growAllGemCost, spot: spot)
-        case .seeds, .spareSeed:
+        case .seeds, .spareSeed, .item:
             if plot.isReady, let id = plot.cropID {
                 return DeckTarget(kind: .plot(index), verb: "Harvest \(Crop.find(id)?.name ?? "Crop")", icon: .item(id), spot: spot)
             }
@@ -578,7 +581,7 @@ extension Meadow {
             switch quickSlot {
             case .harvest: harvestAndReplantAll()
             case .water: growAllWithGems()
-            case .seeds, .spareSeed: tapPlot(index)
+            case .seeds, .spareSeed, .item: tapPlot(index)
             }
         case .bed:
             restForTheNight()
@@ -645,10 +648,21 @@ extension Meadow {
             pickSeed(id)
         case .seeds where quickSlot == .seeds:
             panelTabID = "seeds"
+        case .item(let id):
+            quickSlot = slot
+            if let crop = Crop.find(id), isUnlocked(crop) { selectedSeed = id }
         default:
             quickSlot = slot
         }
         feedbackCount += 1
+    }
+
+    /// Everything you're carrying, as (item, count) stacks in the order the pantry lists them.
+    var carriedStacks: [(id: String, count: Int)] {
+        ItemInfo.allIDs.compactMap { id in
+            let count = count(of: id)
+            return count > 0 ? (id: id, count: count) : nil
+        }
     }
 
     /// Puts a seed in your hands.
@@ -684,15 +698,50 @@ struct ControlDeck: View {
         meadow.panelTabID == PanelTab.farm.rawValue ? nil : meadow.panelTabID
     }
 
+    /// Sizes for one deck, worked out together so nothing overlaps: the tab bar on top, the
+    /// control row along the bottom, and the main grid in the open middle. The main grid's
+    /// squares and the quick bar's squares are the same size.
+    private struct Layout {
+        let tabHeight: CGFloat
+        let controlsHeight: CGFloat
+        let pad: CGFloat
+        let action: CGFloat
+        let secondary: CGFloat
+        let slot: CGFloat
+        let gap: CGFloat
+        let spacing: CGFloat
+
+        static let frame: CGFloat = 8
+
+        init(_ size: CGSize) {
+            spacing = max(size.height * 0.025, 6)
+            gap = 6
+            tabHeight = min(max(size.height * 0.12, 36), 56)
+            pad = min(max(size.height * 0.26, 70), size.width * 0.24, 170)
+            action = min(max(pad * 0.62, 44), size.width * 0.15)
+            secondary = action * 0.5
+            let caption: CGFloat = 16
+            // The quick bar fits between the D-pad and the buttons, with room to spare.
+            let rightColumnWidth = max(action * 1.5, secondary + action * 0.55)
+            let barRoom = size.width - pad - rightColumnWidth - 2 * 16 - 4
+            let fromWidth = (barRoom - 4 * gap - 2 * Self.frame) / 5
+            let rightColumn = action + secondary + caption + 4
+            let controls = max(pad, rightColumn)
+            // The main grid gets the middle, with clear space above and below.
+            let middle = size.height - tabHeight - controls - 4 * spacing
+            let fromHeight = (middle - 2 * gap - 2 * 10) / 3
+            slot = max(min(fromWidth, fromHeight, controls - 2 * Self.frame, 76), 24)
+            controlsHeight = max(controls, slot + 2 * Self.frame)
+        }
+    }
+
     var body: some View {
         GeometryReader { geo in
-            let size = geo.size
-            let tabHeight = min(max(size.height * 0.14, 40), 60)
-            let controlsHeight = min(max(size.height * 0.36, 110), 230)
-            VStack(spacing: max(size.height * 0.02, 6)) {
-                tabBar(height: tabHeight, width: size.width)
-                // The middle shows the open tab's panel (or the lure basket, seed bag or storage
-                // chest). Nothing floats here otherwise.
+            let layout = Layout(geo.size)
+            VStack(spacing: layout.spacing) {
+                tabBar(height: layout.tabHeight, width: geo.size.width)
+                // The middle shows your carried inventory, or the open tab's panel (or the lure
+                // basket, seed bag or storage chest) in its place.
                 ZStack {
                     if let panel = openPanel {
                         VStack(spacing: 6) {
@@ -703,12 +752,15 @@ struct ControlDeck: View {
                         .padding(10)
                         .background(Palette.cream.opacity(0.55), in: .rect(cornerRadius: 20))
                         .transition(.panelSlide)
+                    } else {
+                        mainGrid(layout)
+                            .transition(.opacity)
                     }
                 }
                 .frame(maxWidth: .infinity, maxHeight: .infinity)
                 // The controls stay along the bottom, usable whether or not a panel is open.
-                controls(size: CGSize(width: size.width, height: controlsHeight))
-                    .frame(height: controlsHeight)
+                controls(layout)
+                    .frame(height: layout.controlsHeight)
             }
             .animation(.easeOut(duration: 0.25), value: meadow.panelTabID)
         }
@@ -727,6 +779,31 @@ struct ControlDeck: View {
             }
         }
         .onDisappear { meadow.deckDirection = .zero }
+    }
+
+    /// Your carried inventory: 5 squares across and 3 down, filled from the first square.
+    /// More than 15 stacks scroll inside the grid.
+    private func mainGrid(_ layout: Layout) -> some View {
+        let stacks = meadow.carriedStacks
+        let rows = max(3, (stacks.count + 4) / 5)
+        let side = layout.slot
+        let height = 3 * side + 2 * layout.gap
+        return ScrollView(.vertical) {
+            VStack(spacing: layout.gap) {
+                ForEach(0..<rows, id: \.self) { row in
+                    HStack(spacing: layout.gap) {
+                        ForEach(0..<5, id: \.self) { column in
+                            let index = row * 5 + column
+                            InventorySlotView(meadow: meadow, stack: index < stacks.count ? stacks[index] : nil, size: side)
+                        }
+                    }
+                }
+            }
+        }
+        .scrollDisabled(stacks.count <= 15)
+        .scrollIndicators(.hidden)
+        .frame(width: 5 * side + 4 * layout.gap, height: height)
+        .frame(maxWidth: .infinity, maxHeight: .infinity)
     }
 
     /// A panel's own header row: its name, and Close.
@@ -838,25 +915,19 @@ struct ControlDeck: View {
 
     // MARK: Controls
 
-    private func controls(size: CGSize) -> some View {
-        let pad = min(size.height, size.width * 0.28)
-        let action = max(min((size.height - 20) / 1.5, size.width * 0.18), 40)
-        let secondary = action * 0.5
-        let barWidth = max(size.width - pad - action - 36, 120)
-        let slot = min((barWidth - 30) / 5, size.height * 0.48, 76)
-
-        return HStack(alignment: .bottom, spacing: 12) {
-            DeckPad(meadow: meadow, size: pad)
-            Spacer(minLength: 0)
-            quickBar(slot: slot)
-                .padding(.bottom, max((pad - slot) / 2 - 6, 0))
-            Spacer(minLength: 0)
+    private func controls(_ layout: Layout) -> some View {
+        HStack(alignment: .bottom, spacing: 0) {
+            DeckPad(meadow: meadow, size: layout.pad)
+            Spacer(minLength: 16)
+            quickBar(layout)
+                .padding(.bottom, max((layout.pad - layout.slot - 2 * Layout.frame) / 2, 0))
+            Spacer(minLength: 16)
             // The smaller blue button above, then what the big button will do, right over it.
             VStack(alignment: .trailing, spacing: 2) {
-                secondaryButton(size: secondary)
-                    .padding(.trailing, action * 0.55)
-                actionCaption(width: action * 1.4)
-                actionButton(size: action)
+                secondaryButton(size: layout.secondary)
+                    .padding(.trailing, layout.action * 0.55)
+                actionCaption(width: layout.action * 1.5)
+                actionButton(size: layout.action)
             }
         }
     }
@@ -873,20 +944,38 @@ struct ControlDeck: View {
             .accessibilityHidden(true)
     }
 
-    private func quickBar(slot: CGFloat) -> some View {
+    /// The quick inventory: five squares the same size as the main grid's, inside their own
+    /// pink pixel frame.
+    private func quickBar(_ layout: Layout) -> some View {
         let spares = meadow.spareSeeds
         var slots: [QuickSlot?] = [QuickSlot.harvest, QuickSlot.seeds, QuickSlot.water]
         for index in 0..<2 {
             slots.append(index < spares.count ? QuickSlot.spareSeed(spares[index]) : nil)
         }
 
-        return HStack(spacing: 6) {
+        return HStack(spacing: layout.gap) {
             ForEach(Array(slots.enumerated()), id: \.offset) { _, item in
-                QuickSlotView(meadow: meadow, slot: item, size: slot)
+                QuickSlotView(meadow: meadow, slot: item, size: layout.slot)
             }
         }
-        .padding(6)
-        .pixelPanel(Palette.lilacCard.opacity(0.7), edge: Palette.lilacEdge, cornerRadius: 14)
+        .padding(Layout.frame)
+        .background(Palette.pinkCard, in: .rect(cornerRadius: 4))
+        .overlay {
+            Rectangle().strokeBorder(Palette.ink, lineWidth: 3)
+            Rectangle().inset(by: 3).strokeBorder(Palette.rose, lineWidth: 3)
+        }
+        .overlay {
+            // Little pixel studs on the corners, like the mockup's frame.
+            GeometryReader { frame in
+                ForEach(0..<4, id: \.self) { corner in
+                    Rectangle()
+                        .fill(Palette.pinkCard)
+                        .overlay(Rectangle().strokeBorder(Palette.ink, lineWidth: 2))
+                        .frame(width: 11, height: 11)
+                        .position(x: corner % 2 == 0 ? 0 : frame.size.width, y: corner < 2 ? 0 : frame.size.height)
+                }
+            }
+        }
     }
 
     private func actionButton(size: CGFloat) -> some View {
@@ -936,6 +1025,50 @@ struct ControlDeck: View {
         .buttonStyle(SquishButtonStyle())
         .disabled(label == nil)
         .accessibilityLabel(label ?? "Nothing to go back to")
+    }
+}
+
+/// One square of the main inventory grid: an item and how many you carry, or empty. Tapping
+/// it puts that item in your hands (the same selection as the quick bar).
+private struct InventorySlotView: View {
+    let meadow: Meadow
+    let stack: (id: String, count: Int)?
+    let size: CGFloat
+
+    var body: some View {
+        let isSelected = stack.map { meadow.quickSlot == .item($0.id) } ?? false
+        Button {
+            if let stack { meadow.selectQuickSlot(.item(stack.id)) }
+        } label: {
+            ZStack(alignment: .bottomTrailing) {
+                RoundedRectangle(cornerRadius: size * 0.2)
+                    .fill(Palette.lilacCard.opacity(0.55))
+                    .overlay(RoundedRectangle(cornerRadius: size * 0.2).inset(by: 3).strokeBorder(.white.opacity(0.7), lineWidth: 1.5))
+                    .overlay(RoundedRectangle(cornerRadius: size * 0.2).strokeBorder(Palette.lilacEdge, lineWidth: 3))
+                if let stack {
+                    ItemIcon(itemID: stack.id, size: size * 0.58)
+                        .frame(maxWidth: .infinity, maxHeight: .infinity)
+                    Text("\(stack.count)")
+                        .font(.system(size: max(size * 0.18, 9), weight: .heavy, design: .rounded))
+                        .monospacedDigit()
+                        .padding(.horizontal, 3)
+                        .background(Palette.cream.opacity(0.9), in: .capsule)
+                        .padding(size * 0.07)
+                }
+            }
+            .frame(width: size, height: size)
+            .overlay {
+                if isSelected {
+                    RoundedRectangle(cornerRadius: size * 0.2)
+                        .strokeBorder(Palette.rose, lineWidth: 3)
+                        .padding(-2)
+                }
+            }
+        }
+        .buttonStyle(SquishButtonStyle())
+        .disabled(stack == nil)
+        .accessibilityLabel(stack.map { "\(ItemInfo.name($0.id)), \($0.count)" } ?? "Empty slot")
+        .accessibilityAddTraits(isSelected ? .isSelected : [])
     }
 }
 
@@ -1020,7 +1153,7 @@ private struct QuickSlotView: View {
         case .water?:
             DeckArt(name: "icon-watering-can", fallback: .clear).padding(size * 0.14)
                 .overlay(alignment: .bottomTrailing) { badge("\(Meadow.growAllGemCost)💎") }
-        case .spareSeed(let id)?:
+        case .spareSeed(let id)?, .item(let id)?:
             ItemIcon(itemID: id, size: size * 0.55)
         case nil:
             EmptyView()
@@ -1045,6 +1178,7 @@ private struct QuickSlotView: View {
         case .seeds?: return "\(Crop.find(meadow.selectedSeed)?.name ?? "Seed") seeds. Tap again to pick another seed"
         case .water?: return "Watering can: grow everything for \(Meadow.growAllGemCost) gems"
         case .spareSeed(let id)?: return "\(Crop.find(id)?.name ?? "Seed") seeds"
+        case .item(let id)?: return ItemInfo.name(id)
         case nil: return "Empty slot"
         }
     }
