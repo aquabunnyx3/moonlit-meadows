@@ -115,12 +115,15 @@ struct PersonProfileScene: View {
                                 .font(.callout)
                                 .lineLimit(3)
                                 .minimumScaleFactor(0.8)
-                            Text("Now: \(meadow.whereaboutsText(of: person))")
-                                .font(.caption.bold())
-                                .opacity(0.8)
+                            HStack(spacing: 4) {
+                                Image(systemName: "mappin.and.ellipse")
+                                    .foregroundStyle(Palette.rose)
+                                Text("Now: \(meadow.whereaboutsText(of: person))")
+                            }
+                            .font(.caption.bold())
+                            .opacity(0.8)
                         }
                         favorites
-                        header(state: state)
                     }
                     .padding(.vertical, 10)
                     .frame(maxHeight: .infinity, alignment: .top)
@@ -139,30 +142,6 @@ struct PersonProfileScene: View {
             .padding(12)
             .frame(maxWidth: .infinity, alignment: .leading)
             .pixelPanel(fill, edge: edge, cornerRadius: 16)
-    }
-
-    private func header(state: RelationshipState) -> some View {
-        card(Palette.lilacCard, edge: Palette.lilacEdge) {
-            HStack(alignment: .firstTextBaseline) {
-                Text(person.fullName).font(.title3.bold())
-                if state.path == .romance { Text("💕") }
-                if state.path == .friendship { Text("🤝") }
-                Spacer()
-                if person.isVillager { CozyTag(text: "Villager", color: Palette.periwinkle) }
-            }
-            Text("\(person.gender) · \(person.pronouns) · \(person.role)").font(.caption).opacity(0.8)
-            HStack {
-                Text(meadow.stageTitle(of: person.id)).font(.subheadline.bold())
-                Spacer()
-                Text("Stage \(meadow.stage(of: person.id).rawValue)/\(person.maxStage.rawValue)").font(.caption).opacity(0.7)
-            }
-            ProgressView(value: meadow.stageProgress(of: person.id)).tint(Palette.rose)
-            WarmthHearts(meadow: meadow, personID: person.id)
-            if meadow.isAwaitingCrossroads(person.id) {
-                Text("💌 Your relationship is at a crossroads. Read their next chapter to choose your path.")
-                    .font(.caption)
-            }
-        }
     }
 
     private var favorites: some View {
@@ -196,7 +175,54 @@ struct PersonProfileScene: View {
     }
 }
 
-// MARK: - Profile (bottom screen)
+// MARK: - Profile info (bottom screen)
+
+/// The bottom screen while a profile is open shows ONLY their info card —
+/// name, role, stage and hearts. No buttons: chatting, gifts and everything
+/// else happen out in the world (Michelle's Friends = info-only rule).
+struct PersonInfoCard: View {
+    let meadow: Meadow
+    let person: Person
+
+    var body: some View {
+        let state = meadow.relationship(person.id)
+        VStack(alignment: .leading, spacing: 6) {
+            HStack(alignment: .firstTextBaseline) {
+                Text(person.fullName).font(.title3.bold())
+                if state.path == .romance {
+                    Image(systemName: "heart.fill").foregroundStyle(Palette.rose)
+                }
+                if state.path == .friendship {
+                    Image(systemName: "person.2.fill").foregroundStyle(Palette.periwinkle)
+                }
+                Spacer()
+                if person.isVillager { CozyTag(text: "Villager", color: Palette.periwinkle) }
+            }
+            Text("\(person.gender) · \(person.pronouns) · \(person.role)").font(.caption).opacity(0.8)
+            HStack {
+                Text(meadow.stageTitle(of: person.id)).font(.subheadline.bold())
+                Spacer()
+                Text("Stage \(meadow.stage(of: person.id).rawValue)/\(person.maxStage.rawValue)").font(.caption).opacity(0.7)
+            }
+            ProgressView(value: meadow.stageProgress(of: person.id)).tint(Palette.rose)
+            WarmthHearts(meadow: meadow, personID: person.id)
+            if meadow.isAwaitingCrossroads(person.id) {
+                HStack(spacing: 4) {
+                    Image(systemName: "envelope.fill").foregroundStyle(Palette.rose)
+                    Text("Your relationship is at a crossroads. Read their next chapter to choose your path.")
+                }
+                .font(.caption)
+            }
+        }
+        .padding(12)
+        .frame(maxWidth: .infinity, alignment: .leading)
+        .pixelPanel(Palette.lilacCard, edge: Palette.lilacEdge, cornerRadius: 16)
+        .foregroundStyle(Palette.ink)
+        .fontDesign(.rounded)
+    }
+}
+
+// MARK: - Profile actions (retired from the profile; kept for reference)
 
 /// Bottom screen while a profile is open: every button, sorted into tappable sections,
 /// like the farm deck.
@@ -656,7 +682,9 @@ struct WarmthHearts: View {
         let level = meadow.warmthLevel(of: personID)
         HStack(spacing: 2) {
             ForEach(0..<Meadow.maxWarmth, id: \.self) { index in
-                Text(index < hearts ? "❤️" : "🤍").font(.system(size: 11))
+                Image(systemName: index < hearts ? "heart.fill" : "heart")
+                    .font(.system(size: 11))
+                    .foregroundStyle(index < hearts ? Palette.rose : Color.gray.opacity(0.45))
             }
             if level != .warm {
                 Text(level.title)

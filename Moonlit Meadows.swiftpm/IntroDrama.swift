@@ -65,12 +65,14 @@ struct IntroDramaView: View {
     /// Shown on tall screens before the movie: turn the device for the full picture.
     private var rotateCard: some View {
         VStack(spacing: 16) {
-            Text("🎬").font(.system(size: 52))
+            Image(systemName: "play.rectangle.fill")
+                .font(.system(size: 52))
+                .foregroundStyle(Palette.rose)
             Text("The intro is a little movie")
                 .font(.title3.bold())
                 .foregroundStyle(Palette.cream)
                 .multilineTextAlignment(.center)
-            Text("Turn your device sideways so it fills the screen — then tap Play.")
+            Text("Please turn your device to landscape so it fills the screen — then tap Play.")
                 .font(.callout)
                 .foregroundStyle(Palette.cream.opacity(0.85))
                 .multilineTextAlignment(.center)

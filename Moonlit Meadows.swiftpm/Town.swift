@@ -602,13 +602,13 @@ extension Meadow {
     func whereaboutsText(of person: Person) -> String {
         let slot = person.slot(at: timeOfDay)
         if let step = hubWalker(person.id), step.isWalking {
-            return "🚶 \(person.name) is walking through the hub"
+            return "\(person.name) is walking through the hub"
         }
         switch whereabouts(of: person.id) {
-        case .farm: return "🌾 \(person.name) is on your farm · \(slot.place)"
-        case .town: return "🏘️ \(person.name) is in the hub · \(slot.place)"
-        case .errand: return "🧭 \(person.name) is away for a bit · \(slot.place)"
-        case .home: return "🏠 \(person.name) is at home"
+        case .farm: return "\(person.name) is on your farm · \(slot.place)"
+        case .town: return "\(person.name) is in the hub · \(slot.place)"
+        case .errand: return "\(person.name) is away for a bit · \(slot.place)"
+        case .home: return "\(person.name) is at home"
         }
     }
 

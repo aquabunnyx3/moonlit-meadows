@@ -1,12 +1,13 @@
 import SwiftUI
 
-/// The basket (sell what you've grown) and the kitchen (bake treats).
+/// The pantry: the dishes you've cooked or baked, and the kitchen that makes
+/// them. (The full inventory lives on the deck — the pantry is food only.)
 struct PantryTab: View {
     let meadow: Meadow
-    @State private var section = PantrySection.basket
+    @State private var section = PantrySection.dishes
 
     enum PantrySection: String, CaseIterable {
-        case basket = "Basket"
+        case dishes = "Dishes"
         case kitchen = "Kitchen"
     }
 
@@ -20,19 +21,19 @@ struct PantryTab: View {
             .pickerStyle(.segmented)
 
             switch section {
-            case .basket: basket
+            case .dishes: dishes
             case .kitchen: kitchen
             }
         }
     }
 
-    // MARK: Basket
+    // MARK: Dishes
 
     @ViewBuilder
-    private var basket: some View {
-        let items = ItemInfo.allIDs.filter { meadow.count(of: $0) > 0 }
+    private var dishes: some View {
+        let items = Recipe.all.map(\.id).filter { meadow.count(of: $0) > 0 }
         if meadow.coziness > 0 {
-            Text("Coziness bonus: everything sells for +\(meadow.coziness)% 🌷")
+            Text("Coziness bonus: everything sells for +\(meadow.coziness)%")
                 .font(.caption.bold())
                 .padding(.horizontal, 10)
                 .padding(.vertical, 4)
@@ -40,9 +41,9 @@ struct PantryTab: View {
         }
         if items.isEmpty {
             ContentUnavailableView {
-                Label("Your basket is empty", systemImage: "basket")
+                Label("No dishes yet", systemImage: "fork.knife")
             } description: {
-                Text("Harvest some crops on the farm 🥕")
+                Text("Bake something in the Kitchen and it will wait for you here.")
             }
         } else {
             ScrollView {
@@ -115,7 +116,7 @@ struct PantryTab: View {
                     if isUnlocked {
                         ItemIcon(itemID: recipe.id, size: 28)
                     } else {
-                        Text("🔒").font(.title)
+                        Image(systemName: "lock.fill").foregroundStyle(Palette.ink.opacity(0.5))
                     }
                 }
                 .frame(width: 46, height: 46)
