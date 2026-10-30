@@ -105,11 +105,13 @@ extension Meadow {
 
     func addPoints(_ amount: Int, to personID: String) {
         guard amount > 0, let person = Person.find(personID) else { return }
+        // Theo, before the Reveal: guilt slows his friendship gains to 60% (story bible §5).
+        let gained = personID == "theo" && !revealDone ? max(1, Int((Double(amount) * 0.6).rounded())) : amount
         let before = stage(of: personID)
         var state = relationship(personID)
         // Villagers top out at Close Friend, so their meter fills there and stops.
         let cap = person.isVillager ? RelationshipStage.romanticInterest.threshold : RelationshipStage.committed.maxPoints
-        state.points = min(state.points + amount, cap)
+        state.points = min(state.points + gained, cap)
         relationships[personID] = state
         let after = stage(of: personID)
         if after > before {
@@ -118,6 +120,7 @@ extension Meadow {
             spawn(.heart, "💗 \(person.name): \(title)!", at: Spot(x: 0.5, y: 0.45))
             showToast("You and \(person.name) are now \(title). A new chapter may be waiting 💌")
         }
+        if personID == "theo" { storyNoteTheoStage() }
     }
 
     // MARK: Hearts (warmth)
@@ -216,11 +219,23 @@ extension Meadow {
     // MARK: Talking
 
     func canTalk(to personID: String) -> Bool {
-        relationship(personID).lastTalkDay != today
+        // Theo won't talk on stormy days before the Reveal (story bible §5).
+        if personID == "theo", !revealDone, weather == .rainy { return false }
+        return relationship(personID).lastTalkDay != today
     }
 
     /// Today's line for the stage and path you're on.
     func dailyLine(for person: Person) -> String {
+        // Theo and storms: closed off before the Reveal; some of his warmest
+        // lines after it (story bible §5).
+        if person.id == "theo", weather == .rainy {
+            let lines = revealDone
+                ? ["Rain on the observatory roof. It used to mean that night. Now it just means tea — if you're staying.",
+                   "Storm's coming in. I'll walk you home after. Old habit. A good one, though."]
+                : ["…Not today.",
+                   "Stay off the dock when it storms. …Just do it."]
+            return lines[((today % lines.count) + lines.count) % lines.count]
+        }
         let state = relationship(person.id)
         let lines: [String]
         // Distant: they talk to you like a stranger again, until things are mended.
@@ -249,10 +264,33 @@ extension Meadow {
         addPoints(10, to: personID)
         feedbackCount += 1
 
+        // "Something Fishy" (story bible): Theo's first real conversation sets
+        // the quest; bringing him a pond fish completes it.
+        let earnedPoints = personID == "theo" && !revealDone ? 6 : 10
+        if personID == "theo" {
+            if fishyPending, let fishID = carriedStacks.first(where: { $0.itemID.hasPrefix("fish-") })?.itemID {
+                removeItems(fishID, 1)
+                fishyPending = false
+                fishyDone = true
+                addPoints(10, to: personID)
+                save()
+                moment("somethingFishy", "🎣 Something Fishy — complete! Theo stared at that fish a long moment, like it reminded him of something.")
+                return TalkResult(line: "…You actually caught one. Huh. …Thanks. The pond at night — it's different. You'll see.", points: earnedPoints, question: nil)
+            }
+            if !fishyPending && !fishyDone {
+                fishyPending = true
+                save()
+                moment("somethingFishy", "🎣 New quest — Something Fishy: catch any fish at the Pond and bring it to Theo.")
+                return TalkResult(line: line + "\n\n…One thing. The pond, through the trees — the fish there bite different. Bring me one sometime. If you want.", points: earnedPoints, question: nil)
+            }
+        }
+
         let unanswered = person.questions.filter { relationship(personID).choices[$0.id] == nil }
-        let question = today % 2 == 0 ? unanswered.first : nil
+        // The pacing ladder (story bible §5): strangers get small talk only —
+        // personal questions start at Acquaintance.
+        let question = today % 2 == 0 && stage(of: personID) >= .acquaintance ? unanswered.first : nil
         moment("firstChat", "💬 That's chatting! The Friends tab keeps track of everyone's hearts and favorites.")
-        return TalkResult(line: line, points: 10, question: question)
+        return TalkResult(line: line, points: earnedPoints, question: question)
     }
 
     /// Every answer is kind; some just land a little better. Each question is answered once.
@@ -280,6 +318,11 @@ extension Meadow {
     // MARK: Item gifts
 
     func reaction(to itemID: String, from person: Person) -> GiftRecord.Reaction {
+        // Theo, before the Reveal: every gift lands flat — except bunny- and
+        // moon-things, which crack him from day one (story bible §3/§5).
+        if person.id == "theo", !revealDone {
+            return itemID.contains("moon") || itemID.contains("bunny") ? .loved : .neutral
+        }
         if person.lovedGifts.contains(itemID) { return .loved }
         if person.likedGifts.contains(itemID) { return .liked }
         if person.dislikedGifts.contains(itemID) { return .disliked }
@@ -481,6 +524,9 @@ extension Meadow {
     func isUnlocked(_ event: StoryEvent) -> Bool {
         let state = relationship(event.personID)
         guard stage(of: event.personID) >= event.stage else { return false }
+        // Theo's crossroads chapter stays hidden until the Reveal (story bible
+        // §4): his path can't be chosen — either way — until the truth is out.
+        if event.personID == "theo", event.isCrossroads, !revealDone { return false }
         switch event.path {
         case .any: return true
         case .romance: return state.path == .romance

@@ -16,6 +16,8 @@ enum PondLayout {
     static let dockZone = DeckRect(minX: 0.435, minY: 0.65, maxX: 0.57, maxY: 0.85)
     /// Mid-dock, where the Fish target marker sits.
     static let dockSpot = Spot(x: 0.5, y: 0.72)
+    /// The shore stones east of the dock, where something was buried long ago.
+    static let capsuleZone = DeckRect(minX: 0.58, minY: 0.79, maxX: 0.68, maxY: 0.88)
 
     static let collision = SceneCollision(
         name: "The Pond",

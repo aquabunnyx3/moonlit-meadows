@@ -35,6 +35,7 @@ enum SelfTests {
         ("Favorite bunny gift gives a big boost and a scene", favoriteBunnyGift),
         ("Talking is once a day and never punishes", dailyTalk),
         ("Item gifts: daily limit, no negative points", itemGifts),
+        ("Theo's slow, guarded track before the Reveal", theoTrack),
         ("Stages, crossroads, and both paths", relationshipStages),
         ("Story chapters reward only once", eventsOnce),
         ("Quests unlock by stage and complete once", questsOnce),
@@ -319,18 +320,30 @@ enum SelfTests {
 
     private static func dailyTalk(_ c: Check) {
         let meadow = freshMeadow()
-        c.expect(meadow.talk(to: "theo")?.points == 10, "First talk gives 10")
-        c.expect(meadow.talk(to: "theo")?.points == 0, "Second talk the same day gives 0")
-        c.expect(meadow.relationship("theo").points == 10, "Points should be 10")
+        c.expect(meadow.talk(to: "june")?.points == 10, "First talk gives 10")
+        c.expect(meadow.talk(to: "june")?.points == 0, "Second talk the same day gives 0")
+        c.expect(meadow.relationship("june").points == 10, "Points should be 10")
         for _ in 0..<5 { meadow.sleep() }
-        c.expect(meadow.talk(to: "theo")?.points == 10, "Talking after missed days works normally")
-        c.expect(meadow.relationship("theo").points == 20, "Missed days must not reduce points")
+        c.expect(meadow.talk(to: "june")?.points == 10, "Talking after missed days works normally")
+        c.expect(meadow.relationship("june").points == 20, "Missed days must not reduce points")
+    }
+
+    /// The story bible's special track: before the Reveal, Theo gains at 60%,
+    /// won't talk in the rain, reacts flatly to gifts — except moon-things.
+    private static func theoTrack(_ c: Check) {
+        let meadow = freshMeadow()
+        let expected = meadow.weather == .rainy ? 0 : 6
+        c.expect(meadow.talk(to: "theo")?.points == expected, "Theo's talks gain at 60% before the Reveal (and not at all in the rain)")
+        c.expect(meadow.fishyPending || meadow.weather == .rainy, "His first dry-day talk sets Something Fishy")
+        let theo = Person.find("theo")!
+        c.expect(meadow.reaction(to: "lettuce", from: theo) == .neutral, "Theo's gift reactions are flat before the Reveal")
+        c.expect(meadow.reaction(to: "moonflower", from: theo) == .loved, "Moon-things crack Theo from day one")
     }
 
     private static func itemGifts(_ c: Check) {
         let meadow = freshMeadow()
         meadow.grant(.items("lettuce", 2))
-        c.expect(meadow.giveItem("lettuce", to: "theo") == .given(.disliked, points: 0), "Disliked gift gives no points")
+        c.expect(meadow.giveItem("lettuce", to: "theo") == .given(.neutral, points: 8), "Theo takes any gift flatly before the Reveal")
         c.expect(meadow.giveItem("lettuce", to: "theo") == .alreadyGiftedToday, "One item gift per day")
         c.expect(meadow.count(of: "lettuce") == 1, "Only the given item is used up")
         c.expect(meadow.giveItem("pumpkin", to: "theo") == .notAvailable, "Can't give what you don't have")

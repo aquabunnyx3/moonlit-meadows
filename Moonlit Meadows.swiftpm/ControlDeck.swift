@@ -35,7 +35,7 @@ struct DeckTarget: Equatable {
         case lureBasket
         case plot(Int)
         case bed, chair, chest, petBed, homeDoor
-        case goToTown, goToFarm, goToPond, leavePond, fish, enterHouse(String), leaveHouse, shop, stall
+        case goToTown, goToFarm, goToPond, leavePond, fish, moonBunny, digCapsule, enterHouse(String), leaveHouse, shop, stall
         /// Something to look at: the action button shows its line.
         case look(String)
     }
@@ -395,6 +395,12 @@ extension Meadow {
             return DeckTarget(kind: .person(walker.person.id), verb: canTalk(to: walker.person.id) ? "Talk to \(walker.person.name)" : "Visit \(walker.person.name)",
                               icon: .emoji("💬"), spot: walker.spot, secondary: "Gift")
         }
+        if let bunnySpot = moonBunnyFarmSpot {
+            let zone = DeckRect(minX: bunnySpot.x - 0.07, minY: bunnySpot.y - 0.07, maxX: bunnySpot.x + 0.07, maxY: bunnySpot.y + 0.04)
+            if reaches(zone) {
+                return DeckTarget(kind: .moonBunny, verb: "A white bunny…", icon: .emoji("🐰"), spot: bunnySpot)
+            }
+        }
         if reaches(Self.cottageDoorZone) {
             return DeckTarget(kind: .cottageDoor, verb: "Enter", icon: .emoji("🚪"), spot: Spot(x: 0.497, y: 0.27))
         }
@@ -470,6 +476,16 @@ extension Meadow {
             }
             return nil
         case .pond:
+            if let bunnySpot = moonBunnyPondSpot {
+                let zone = DeckRect(minX: bunnySpot.x - 0.08, minY: bunnySpot.y - 0.08, maxX: bunnySpot.x + 0.08, maxY: bunnySpot.y + 0.05)
+                if PondLayout.dockZone.contains(spot.x, spot.y) || reaches(zone, from: spot, facing: faced) {
+                    return DeckTarget(kind: .moonBunny, verb: revealReady || finaleReady ? "The white bunny is waiting…" : "A white bunny…",
+                                      icon: .emoji("🐰"), spot: bunnySpot)
+                }
+            }
+            if capsuleAvailable, reaches(PondLayout.capsuleZone, from: spot, facing: faced) {
+                return DeckTarget(kind: .digCapsule, verb: "Something glints in the shore stones…", icon: .emoji("✨"), spot: PondLayout.capsuleZone.center)
+            }
             if PondLayout.dockZone.contains(spot.x, spot.y) {
                 return DeckTarget(kind: .fish, verb: "Fish", icon: .emoji("🎣"), spot: PondLayout.dockSpot)
             }
@@ -636,6 +652,10 @@ extension Meadow {
             goToFarmFromPond()
         case .fish:
             beginFishing()
+        case .moonBunny:
+            interactMoonBunny()
+        case .digCapsule:
+            digCapsule()
         case .enterHouse(let id):
             enterHouse(id)
         case .leaveHouse:
@@ -841,6 +861,7 @@ struct ControlDeck: View {
             }
         }
         .onChange(of: meadow.dayNumber) { _, _ in meadow.checkAmbientMoments() }
+        .onChange(of: meadow.presentedScene?.id) { _, _ in meadow.presentPendingFragment() }
         .onChange(of: meadow.timeOfDay) { _, _ in meadow.checkAmbientMoments() }
         .onAppear { meadow.checkAmbientMoments() }
         .background {

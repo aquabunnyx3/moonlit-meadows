@@ -83,6 +83,26 @@ struct CollectionTab: View {
             ProgressView(value: Double(meadow.discoveredCount), total: Double(Breed.all.count))
                 .tint(Palette.rose)
 
+            // The Moon Bunny's page: a mystery until the finale resolves it.
+            if meadow.metMoonBunny {
+                HStack(spacing: 10) {
+                    Text("🐰").font(.system(size: 30))
+                    VStack(alignment: .leading, spacing: 2) {
+                        Text(meadow.finaleDone ? "Mochi — the Moon Bunny" : "???")
+                            .font(.subheadline.bold())
+                        Text(meadow.finaleDone
+                             ? "She came back because you did. The pair of carved moons is whole again."
+                             : "A bunny that only comes out under the moon. Seen \(meadow.moonBunnySightings) time\(meadow.moonBunnySightings == 1 ? "" : "s").")
+                            .font(.caption)
+                            .opacity(0.8)
+                    }
+                    Spacer()
+                }
+                .padding(10)
+                .frame(maxWidth: .infinity, alignment: .leading)
+                .background(Palette.blush.opacity(0.45), in: .rect(cornerRadius: 16))
+            }
+
             ScrollView {
                 LazyVGrid(columns: [GridItem(.adaptive(minimum: 92), spacing: 8)], spacing: 8) {
                     ForEach(shown) { breed in

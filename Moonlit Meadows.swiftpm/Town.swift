@@ -789,6 +789,13 @@ struct TownScene: View {
                             .position(map.point(figure.spot.x, figure.spot.y - Double(figureScale) / 2))
                     }
 
+                    // The Moon Bunny, on her nights at the Pond.
+                    if place == .pond, let bunnySpot = meadow.moonBunnyPondSpot, let snow = Breed.find("snowflakeBunny") {
+                        BreedBunnyView(breed: snow, size: map.unit * 0.085, time: t)
+                            .position(map.point(bunnySpot.x, bunnySpot.y - 0.035))
+                            .allowsHitTesting(false)
+                    }
+
                     if showsCollision {
                         CollisionOverlay(scene: meadow.currentCollision, rect: map.rect, feet: meadow.townSpot)
                     }
@@ -829,7 +836,10 @@ struct TownScene: View {
                 list.append(Figure(id: resident.id, person: resident, spot: room.resident, facing: .front, isWalking: false))
             }
         case .pond:
-            break // The pond is a quiet place: just you (and, some nights, a white shape).
+            // On the story's biggest nights, Theo waits at the shore.
+            if meadow.storyTheoAtPond, let theo = Person.find("theo") {
+                list.append(Figure(id: "theo", person: theo, spot: Spot(x: 0.60, y: 0.86), facing: .front, isWalking: false))
+            }
         }
         list.append(Figure(id: "farmer", person: nil, spot: meadow.townSpot, facing: meadow.farmerFacing, isWalking: meadow.isDeckMoving))
         return list.sorted { $0.spot.y < $1.spot.y }

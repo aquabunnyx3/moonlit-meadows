@@ -98,6 +98,15 @@ struct SaveData: Codable, Equatable {
     var discovered: [String: Date] = [:]
     /// Fish species ID → when it was first caught. Never shrinks.
     var fishBook: [String: Date] = [:]
+    // MARK: Moon Bunny story state (all default-safe for old saves)
+    var metMoonBunny = false
+    var moonBunnySightings = 0
+    var memoryFragments = 0
+    var capsuleOpened = false
+    var revealDone = false
+    var finaleDone = false
+    var fishyPending = false
+    var fishyDone = false
     var bunnies: [BunnyInstance] = []
     var habitatCapacity = 6
     var habitatUpgradesBought = 0
@@ -147,6 +156,7 @@ struct SaveData: Codable, Equatable {
     private enum CodingKeys: String, CodingKey {
         case version, coins, gems, level, xp, inventory, plots, decor, canLevel, lastSeen
         case lureSlots, lureLevel, lureSlotsBought, discovered, fishBook, bunnies, habitatCapacity, habitatUpgradesBought
+        case metMoonBunny, moonBunnySightings, memoryFragments, capsuleOpened, revealDone, finaleDone, fishyPending, fishyDone
         case relationships, gifts
         case learnedRecipes, outfits, equippedOutfit, farmerGender, skinTone, hairStyle, hairColor, eyeColor, accessories, equippedAccessory, keepsakes, dateScenesSeen, hints
         case claimedMilestones, claimedAchievements, completedQuests, festivalCycles, cropsHarvested
@@ -172,6 +182,14 @@ struct SaveData: Codable, Equatable {
         lureSlotsBought = try c.decodeIfPresent(Int.self, forKey: .lureSlotsBought) ?? d.lureSlotsBought
         discovered = try c.decodeIfPresent([String: Date].self, forKey: .discovered) ?? d.discovered
         fishBook = try c.decodeIfPresent([String: Date].self, forKey: .fishBook) ?? d.fishBook
+        metMoonBunny = try c.decodeIfPresent(Bool.self, forKey: .metMoonBunny) ?? d.metMoonBunny
+        moonBunnySightings = try c.decodeIfPresent(Int.self, forKey: .moonBunnySightings) ?? d.moonBunnySightings
+        memoryFragments = try c.decodeIfPresent(Int.self, forKey: .memoryFragments) ?? d.memoryFragments
+        capsuleOpened = try c.decodeIfPresent(Bool.self, forKey: .capsuleOpened) ?? d.capsuleOpened
+        revealDone = try c.decodeIfPresent(Bool.self, forKey: .revealDone) ?? d.revealDone
+        finaleDone = try c.decodeIfPresent(Bool.self, forKey: .finaleDone) ?? d.finaleDone
+        fishyPending = try c.decodeIfPresent(Bool.self, forKey: .fishyPending) ?? d.fishyPending
+        fishyDone = try c.decodeIfPresent(Bool.self, forKey: .fishyDone) ?? d.fishyDone
         bunnies = try c.decodeIfPresent([BunnyInstance].self, forKey: .bunnies) ?? d.bunnies
         habitatCapacity = try c.decodeIfPresent(Int.self, forKey: .habitatCapacity) ?? d.habitatCapacity
         habitatUpgradesBought = try c.decodeIfPresent(Int.self, forKey: .habitatUpgradesBought) ?? d.habitatUpgradesBought

@@ -345,6 +345,13 @@ struct Keepsake: Identifiable {
         Keepsake(id: "honeyDipper", name: "Golden Honey Dipper", emoji: "🍯", description: "Silas's grandfather's honey dipper, on a chain. Given the morning he asked you to share forty hives."),
         Keepsake(id: "beeCharm", name: "Honeybee Charm", emoji: "🐝", description: "A single honeybee wing sealed in gold glass. “Bees remember the people who are kind to them. So do I.”"),
         Keepsake(id: "moonlitCrown", name: "Moonlit Crown", emoji: "👑", description: "Woven by every bunny in the meadow for the one who found them all."),
+        Keepsake(id: "kidRibbon", name: "A Faded Ribbon", emoji: "🎀", description: "Small, sun-faded, tied a hundred times by small hands. It was left for you under the moon."),
+        Keepsake(id: "smoothStone", name: "A Smooth Stone", emoji: "🪨", description: "Pond-smooth and warm from a pocket. Somebody carried this a long time, waiting."),
+        Keepsake(id: "pressedFlower", name: "A Pressed Flower", emoji: "🌸", description: "A moonflower, pressed flat years ago and still faintly glowing at the edges."),
+        Keepsake(id: "theoCharmHalf", name: "Half a Carved Moon — His", emoji: "🌙", description: "Half of a pair of wooden moon charms, whittled by a boy one long-ago summer. The other half was lost the night of the storm."),
+        Keepsake(id: "mochiCharmHalf", name: "Half a Carved Moon — Hers", emoji: "🌙", description: "Your half of the carved moon charms, lost in the pond the night of the storm — and kept safe ever since by a bunny. The pair is whole again."),
+        Keepsake(id: "capsulePhoto", name: "A Blurred Photo", emoji: "🖼️", description: "Two children and a white bunny, faces softened by time and water. You know them. You almost know them."),
+        Keepsake(id: "capsulePhotoClear", name: "The Photo, Clear", emoji: "🖼️", description: "Two children and a white bunny, laughing in the sun: Theo, and you, and Mochi. Framed for the farmhouse wall, where it always belonged."),
     ]
 }
 

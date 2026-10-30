@@ -60,6 +60,19 @@ final class Meadow {
     var discovered: [String: Date] = [:]
     /// Fish species ID → first catch. The Fish collection book.
     var fishBook: [String: Date] = [:]
+    // Moon Bunny story state, mirroring SaveData (see Story.swift).
+    var metMoonBunny = false
+    var moonBunnySightings = 0
+    var memoryFragments = 0
+    var capsuleOpened = false
+    var revealDone = false
+    var finaleDone = false
+    var fishyPending = false
+    var fishyDone = false
+    /// A memory fragment waiting for a quiet moment to surface. Not saved.
+    var pendingFragment: Int?
+    /// The night (dayNumber) the Moon Bunny was last met. Not saved.
+    var moonBunnyGoneNight = -1
     var bunnies: [BunnyInstance] = []
     var habitatCapacity = 6
     var habitatUpgradesBought = 0
@@ -295,6 +308,14 @@ final class Meadow {
         data.lureSlotsBought = lureSlotsBought
         data.discovered = discovered
         data.fishBook = fishBook
+        data.metMoonBunny = metMoonBunny
+        data.moonBunnySightings = moonBunnySightings
+        data.memoryFragments = memoryFragments
+        data.capsuleOpened = capsuleOpened
+        data.revealDone = revealDone
+        data.finaleDone = finaleDone
+        data.fishyPending = fishyPending
+        data.fishyDone = fishyDone
         data.bunnies = bunnies
         data.habitatCapacity = habitatCapacity
         data.habitatUpgradesBought = habitatUpgradesBought
@@ -398,6 +419,14 @@ final class Meadow {
         lureSlotsBought = data.lureSlotsBought
         discovered = data.discovered.filter { Breed.find($0.key) != nil }
         fishBook = data.fishBook.filter { Fish.find($0.key) != nil }
+        metMoonBunny = data.metMoonBunny
+        moonBunnySightings = data.moonBunnySightings
+        memoryFragments = data.memoryFragments
+        capsuleOpened = data.capsuleOpened
+        revealDone = data.revealDone
+        finaleDone = data.finaleDone
+        fishyPending = data.fishyPending
+        fishyDone = data.fishyDone
         bunnies = data.bunnies.filter { Breed.find($0.breedID) != nil }
         habitatCapacity = data.habitatCapacity
         habitatUpgradesBought = data.habitatUpgradesBought

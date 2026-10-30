@@ -127,6 +127,13 @@ struct WorldScene: View {
 
                     HabitatBunnies(meadow: meadow, map: map, t: t)
 
+                    // The Moon Bunny, on her nights at the farm.
+                    if let bunnySpot = meadow.moonBunnyFarmSpot, let snow = Breed.find("snowflakeBunny") {
+                        BreedBunnyView(breed: snow, size: map.unit * 0.075, time: t)
+                            .position(map.point(bunnySpot.x, bunnySpot.y - 0.03))
+                            .allowsHitTesting(false)
+                    }
+
                     LureGarden(meadow: meadow, map: map, t: t)
 
                     // The path to the village, at the bottom of the farm.
