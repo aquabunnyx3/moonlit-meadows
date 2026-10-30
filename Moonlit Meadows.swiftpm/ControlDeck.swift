@@ -311,6 +311,7 @@ extension Meadow {
         let moved = (((x - from.x) * SceneCollision.aspect) * ((x - from.x) * SceneCollision.aspect) + (y - from.y) * (y - from.y)).squareRoot()
         walkerSpot = Spot(x: x, y: y)
         walkedFigures += moved / scene.figure
+        tourNoteMovement(from: from)
         // Glass doors slide open while you're by them, and shut when you walk away.
         if case .house(let id)? = town, let door = TownLayout.interiors[id]?.glassDoor {
             let near = door.approach.contains(x, y)
@@ -565,6 +566,7 @@ extension Meadow {
 
     /// The big pink button.
     func deckAction() {
+        if tourBlocksAction() { return }
         guard let target = deckTarget(), target.canAct else { return }
         deckDirection = .zero
         switch target.kind {
@@ -740,10 +742,38 @@ struct ControlDeck: View {
         }
     }
 
+    /// The Tour's banner: the current step's hint, or the wrong-tap nudge, with a
+    /// way out — Skip while touring, a dismiss for the send-off line.
+    private var tourBanner: some View {
+        HStack(spacing: 8) {
+            Text(meadow.tourToast ?? meadow.tourStep.hint)
+                .font(.caption.bold())
+                .multilineTextAlignment(.leading)
+                .frame(maxWidth: .infinity, alignment: .leading)
+            if meadow.tourStep.isActive {
+                Button("Skip tour") { meadow.tourSkip() }
+                    .font(.caption2.bold())
+                    .buttonStyle(SquishButtonStyle())
+                    .opacity(0.75)
+            } else {
+                Button("✕") { meadow.tourToast = nil }
+                    .font(.caption.bold())
+                    .buttonStyle(SquishButtonStyle())
+                    .accessibilityLabel("Dismiss")
+            }
+        }
+        .padding(.horizontal, 12)
+        .padding(.vertical, 8)
+        .pixelPanel(Palette.lilacCard, edge: Palette.lilacEdge, cornerRadius: 12)
+    }
+
     var body: some View {
         GeometryReader { geo in
             let layout = Layout(geo.size)
             VStack(spacing: layout.spacing) {
+                if meadow.tourStep.isActive || meadow.tourToast != nil {
+                    tourBanner
+                }
                 tabBar(height: layout.tabHeight, width: geo.size.width)
                 // The middle shows your carried inventory, or the open tab's panel (or the lure
                 // basket, seed bag or storage chest) in its place.
@@ -773,6 +803,14 @@ struct ControlDeck: View {
         .fontDesign(.rounded)
         .disabled(meadow.isSleeping)
         .opacity(meadow.isSleeping ? 0.5 : 1)
+        .onChange(of: meadow.quickSlot) { _, slot in
+            if slot == .water { meadow.tourNoteWaterCan() }
+        }
+        .onChange(of: meadow.plots) { _, plots in
+            if meadow.tourStep == .plant, plots.contains(where: { $0.cropID != nil }) {
+                meadow.tourAdvance()
+            }
+        }
         .background {
             // Walking: one step per screen frame while the D-pad is held, by the time that
             // actually passed, so she moves at a constant pace.
@@ -846,7 +884,9 @@ struct ControlDeck: View {
             ForEach(Self.tabs) { tab in
                 let isOpen = meadow.panelTabID == tab.rawValue
                 Button {
-                    meadow.panelTabID = isOpen ? PanelTab.farm.rawValue : tab.rawValue
+                    if !meadow.tourTapTab(tab, isOpen: isOpen) {
+                        meadow.panelTabID = isOpen ? PanelTab.farm.rawValue : tab.rawValue
+                    }
                 } label: {
                     HStack(spacing: 4) {
                         if let icon = UIImage(named: "icon-\(tab.rawValue)") ?? tab.icon {
@@ -872,6 +912,11 @@ struct ControlDeck: View {
                     .overlay(alignment: .topTrailing) {
                         if hasBadge(tab) {
                             Circle().fill(Palette.rose).frame(width: 10, height: 10).padding(4)
+                        }
+                    }
+                    .overlay {
+                        if meadow.tourStep.targetTab == tab {
+                            TourRing(cornerRadius: height / 2)
                         }
                     }
                 }
@@ -923,6 +968,9 @@ struct ControlDeck: View {
     private func controls(_ layout: Layout) -> some View {
         HStack(alignment: .bottom, spacing: 0) {
             DeckPad(meadow: meadow, size: layout.pad)
+                .overlay {
+                    if meadow.tourStep == .move { TourRing(cornerRadius: 20) }
+                }
             Spacer(minLength: 16)
             quickBar(layout)
                 .padding(.bottom, max((layout.pad - layout.slot - 2 * Layout.frame) / 2, 0))
@@ -933,6 +981,9 @@ struct ControlDeck: View {
                     .padding(.trailing, layout.action * 0.55)
                 actionCaption(width: layout.action * 1.5)
                 actionButton(size: layout.action)
+                    .overlay {
+                        if meadow.tourStep == .plant { TourRing(cornerRadius: layout.action * 0.3) }
+                    }
             }
         }
     }
@@ -1143,6 +1194,11 @@ private struct QuickSlotView: View {
         }
         .buttonStyle(SquishButtonStyle())
         .disabled(slot == nil)
+        .overlay {
+            if slot == .water && meadow.tourStep == .water {
+                TourRing(cornerRadius: 12)
+            }
+        }
         .accessibilityLabel(label)
         .accessibilityAddTraits(isSelected ? .isSelected : [])
     }

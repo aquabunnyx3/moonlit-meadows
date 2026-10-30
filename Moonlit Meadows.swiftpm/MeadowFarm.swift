@@ -467,6 +467,8 @@ extension Meadow {
         showsWelcome = false
         introWelcomeSeen = true
         save()
+        // The welcome hands straight into the Tour on a new save.
+        startTour()
     }
 
     func equipOutfit(_ id: String) {

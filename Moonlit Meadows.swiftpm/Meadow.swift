@@ -91,6 +91,13 @@ final class Meadow {
     var dateScenesSeen: Set<String> = []
     var hints: Set<String> = []
     var introWelcomeSeen = false
+    /// Where the new-farmer Tour stands. Older saves stay `notStarted` and simply
+    /// never tour (the Tour only starts from the welcome card).
+    var tourStep: TourStep = .notStarted
+    /// The spot the Tour's move step measures from. Not saved.
+    var tourAnchor: Spot?
+    /// The Tour's current banner override (a wrong-tap nudge, or the send-off). Not saved.
+    var tourToast: String?
 
     var claimedMilestones: Set<Int> = []
     var claimedAchievements: Set<String> = []
@@ -298,6 +305,7 @@ final class Meadow {
         data.dateScenesSeen = dateScenesSeen.sorted()
         data.hints = hints.sorted()
         data.introWelcomeSeen = introWelcomeSeen
+        data.tourStep = tourStep.rawValue
         data.claimedMilestones = claimedMilestones.sorted()
         data.claimedAchievements = claimedAchievements.sorted()
         data.completedQuests = completedQuests.sorted()
@@ -402,6 +410,7 @@ final class Meadow {
         dateScenesSeen = Set(data.dateScenesSeen)
         hints = Set(data.hints)
         introWelcomeSeen = data.introWelcomeSeen
+        tourStep = TourStep(rawValue: data.tourStep) ?? .notStarted
         claimedMilestones = Set(data.claimedMilestones)
         claimedAchievements = Set(data.claimedAchievements)
         completedQuests = Set(data.completedQuests)

@@ -133,6 +133,8 @@ struct SaveData: Codable, Equatable {
     var storage: [String: Int] = [:]
     /// Whether the post-intro "Let's get started" card has been dismissed.
     var introWelcomeSeen = false
+    /// Where the new-farmer Tour stands (a `TourStep` raw value).
+    var tourStep = "notStarted"
 
     init() {}
 
@@ -142,7 +144,7 @@ struct SaveData: Codable, Equatable {
         case relationships, gifts
         case learnedRecipes, outfits, equippedOutfit, farmerGender, skinTone, hairStyle, hairColor, eyeColor, accessories, equippedAccessory, keepsakes, dateScenesSeen, hints
         case claimedMilestones, claimedAchievements, completedQuests, festivalCycles, cropsHarvested
-        case favoriteBunnyGifts, completionSceneSeen, dayNumber, firstDay, dayElapsed, storage, introWelcomeSeen
+        case favoriteBunnyGifts, completionSceneSeen, dayNumber, firstDay, dayElapsed, storage, introWelcomeSeen, tourStep
     }
 
     init(from decoder: Decoder) throws {
@@ -196,6 +198,7 @@ struct SaveData: Codable, Equatable {
         dayElapsed = try c.decodeIfPresent(Double.self, forKey: .dayElapsed) ?? d.dayElapsed
         storage = try c.decodeIfPresent([String: Int].self, forKey: .storage) ?? d.storage
         introWelcomeSeen = try c.decodeIfPresent(Bool.self, forKey: .introWelcomeSeen) ?? d.introWelcomeSeen
+        tourStep = try c.decodeIfPresent(String.self, forKey: .tourStep) ?? d.tourStep
     }
 }
 
