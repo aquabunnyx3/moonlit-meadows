@@ -71,11 +71,21 @@ struct ControlPanel: View {
                     .background(hasPaper ? Palette.cream.opacity(0.35) : Palette.cream, in: .rect(cornerRadius: 26))
                     .transition(.panelSlide)
             } else if let person = meadow.focusedPersonID.flatMap(Person.find) {
-                PersonInfoCard(meadow: meadow, person: person)
-                    .frame(maxWidth: .infinity, maxHeight: .infinity)
-                    .padding(12)
-                    .background(hasPaper ? Palette.cream.opacity(0.35) : Palette.cream, in: .rect(cornerRadius: 26))
-                    .transition(.panelSlide)
+                if let talk = meadow.profileTalk, let question = talk.question, meadow.profileAnswer == nil {
+                    // They asked you something: the answer buttons live here,
+                    // under their chat scene, until you pick one.
+                    ProfileAnswerPanel(meadow: meadow, person: person, question: question)
+                        .frame(maxWidth: .infinity, maxHeight: .infinity)
+                        .padding(12)
+                        .background(hasPaper ? Palette.cream.opacity(0.35) : Palette.cream, in: .rect(cornerRadius: 26))
+                        .transition(.panelSlide)
+                } else {
+                    PersonInfoCard(meadow: meadow, person: person)
+                        .frame(maxWidth: .infinity, maxHeight: .infinity)
+                        .padding(12)
+                        .background(hasPaper ? Palette.cream.opacity(0.35) : Palette.cream, in: .rect(cornerRadius: 26))
+                        .transition(.panelSlide)
+                }
             } else {
                 ControlDeck(meadow: meadow)
                     .padding(12)

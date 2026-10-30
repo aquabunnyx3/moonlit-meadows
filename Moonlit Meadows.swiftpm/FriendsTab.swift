@@ -222,6 +222,34 @@ struct PersonInfoCard: View {
     }
 }
 
+// MARK: - Profile answers (bottom screen, while they wait for your reply)
+
+/// When a chat asks you a question, the answers are buttons down here — the
+/// same arrangement as Bree's counter. Picking one shows her/his reply in the
+/// chat scene above and brings the info card back.
+struct ProfileAnswerPanel: View {
+    let meadow: Meadow
+    let person: Person
+    let question: Question
+
+    var body: some View {
+        VStack(spacing: 10) {
+            Text("\(person.name) asked you something — your answer:")
+                .font(.caption.bold())
+                .opacity(0.7)
+            ForEach(Array(question.answers.enumerated()), id: \.offset) { index, option in
+                DialogButton(label: option.text, pink: !option.isRude) {
+                    if let answer = meadow.answer(question.id, option: index, for: person.id) {
+                        meadow.profileAnswer = answer.response
+                    }
+                }
+            }
+        }
+        .foregroundStyle(Palette.ink)
+        .fontDesign(.rounded)
+    }
+}
+
 // MARK: - Profile actions (retired from the profile; kept for reference)
 
 /// Bottom screen while a profile is open: every button, sorted into tappable sections,
