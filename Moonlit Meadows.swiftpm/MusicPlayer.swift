@@ -11,6 +11,7 @@ extension Meadow {
     /// The background music for what's on screen right now (a `music-…` file in the assets).
     var musicTrack: String {
         if isAtMainMenu { return "music-menu" }
+        if showsFarmerCreator { return "music-creator" }
         if showsIntro { return "music-story" }
         if isSleeping { return "music-sleep" }
         if let scene = presentedScene {
@@ -224,6 +225,18 @@ final class MusicPlayer {
         currentTrack = nil
     }
 
+    /// Silences ALL music at once, both crossfade players and the fader itself.
+    /// For screens that carry their own soundtrack (the intro movie): without this,
+    /// the game song that was fading out keeps playing under the new screen's music,
+    /// because pauseMusic only ever pauses the one active player.
+    func silenceMusic() {
+        guard isSetUp else { return }
+        fader?.cancel()
+        fader = nil
+        players.forEach { $0.stop() }
+        currentTrack = nil
+    }
+
     /// A soft talk blip, at a pitch for whoever's talking. Quieter than the other sounds.
     func playBlip(pitch: Float) {
         setUpIfNeeded()
@@ -355,6 +368,10 @@ final class MusicPlayer {
                     } else if player.volume > goal {
                         player.volume = max(goal, player.volume - step)
                         if index != self.activeIndex && player.volume == 0 { player.stop() }
+                    } else if index != self.activeIndex && player.isPlaying {
+                        // An old song already at zero (a fade interrupted at the very
+                        // start) would otherwise loop silently forever underneath.
+                        player.stop()
                     }
                 }
                 try? await Task.sleep(for: .milliseconds(50))

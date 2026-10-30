@@ -19,6 +19,10 @@ struct IntroDramaView: View {
     @State private var started = false
     @State private var paused = false
     @State private var muted = false
+    /// The fade-from-black beat between "Start farming" and the movie: the screen
+    /// arrives black, holds a moment, then lifts into the rotate card or the film.
+    @State private var curtainLifted = false
+    @State private var startWhenLifted = false
 
     private var videoName: String {
         meadow.farmerGender == .male ? "intro-drama-male" : "intro-drama-female"
@@ -45,11 +49,27 @@ struct IntroDramaView: View {
                     }
                     .padding(16)
                 }
+                if !curtainLifted {
+                    Color.black
+                        .ignoresSafeArea()
+                }
             }
             .ignoresSafeArea()
-            .onAppear { if !portrait { start() } }
+            .onAppear {
+                // The movie carries its own music and narration, so the game's
+                // song stops outright (both crossfade players, not just the
+                // active one) instead of playing on underneath it.
+                MusicPlayer.shared.silenceMusic()
+                Task { @MainActor in
+                    try? await Task.sleep(for: .milliseconds(700))
+                    withAnimation(.easeInOut(duration: 0.9)) { curtainLifted = true }
+                    if !portrait || startWhenLifted { start() }
+                }
+            }
             .onChange(of: portrait) { _, isPortrait in
-                if !isPortrait && !started { start() }
+                if !isPortrait && !started {
+                    if curtainLifted { start() } else { startWhenLifted = true }
+                }
             }
             .onReceive(NotificationCenter.default.publisher(for: .AVPlayerItemDidPlayToEndTime)) { note in
                 guard let item = note.object as? AVPlayerItem, item === player?.currentItem else { return }
