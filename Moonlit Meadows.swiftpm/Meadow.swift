@@ -113,6 +113,17 @@ final class Meadow {
     var isSitting = false
     /// Asleep in bed: the room is dark until morning comes.
     var isSleeping = false
+    /// Control deck (Merlin, 2026-10-29): you're driving your farmer with the D-pad instead
+    /// of watching them stroll their loop. Not saved — a fresh launch starts with the stroll.
+    var isDeckDriving = false
+    /// Where your farmer stands while driving, in world coordinates.
+    var farmerSpot: Spot?
+    /// The way your farmer faces while driving.
+    var farmerFacing: PersonArt.Facing = .front
+    /// The direction held on the D-pad right now ((0, 0) means standing still).
+    var deckDirection: (x: Double, y: Double) = (0, 0)
+    /// The meadow art's aspect on screen, kept by the world scene so deck movement is even.
+    var worldAspect: Double = 2096.0 / 1184.0
     /// The start screen shows when the app opens. Not saved.
     var isAtMainMenu = true
     /// The pause menu is open: the clock, crops, and every animation stop. Not saved.

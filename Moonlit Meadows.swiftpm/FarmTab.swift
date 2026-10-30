@@ -6,6 +6,8 @@ struct FarmTab: View {
 
     var body: some View {
         VStack(spacing: 10) {
+            ControlDeckStrip(meadow: meadow)
+
             seedPicker
 
             ScrollView {

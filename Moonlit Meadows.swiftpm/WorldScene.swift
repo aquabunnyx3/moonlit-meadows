@@ -143,6 +143,8 @@ struct WorldScene: View {
                             .position(map.point(bit.spot))
                     }
                 }
+                .onAppear { meadow.worldAspect = map.aspect }
+                .onChange(of: map.aspect) { _, aspect in meadow.worldAspect = aspect }
             }
         }
         .clipped()
@@ -396,15 +398,25 @@ private struct FarmerWalker: View {
     let t: Double
 
     var body: some View {
-        let step = WorldLayout.farmerStep(at: t, aspect: map.aspect)
         let size = map.unit * 0.13
-
-        PersonFigure(look: .farmer(wearing: Outfit.find(meadow.equippedOutfit) ?? Outfit.all[0]),
-                     artID: artID, size: size, time: t, facing: WalkFacing.facing(for: step, id: artID),
-                     isWalking: step.isWalking)
-            .position(map.point(step.spot.x, step.spot.y - 0.065))
-            .allowsHitTesting(false)
-            .accessibilityLabel("Your farmer")
+        // Driving with the control deck (Merlin, 2026-10-29): you stand where the D-pad
+        // put you, facing the way you last walked. Otherwise, the usual stroll.
+        if meadow.isDeckDriving, let spot = meadow.farmerSpot {
+            PersonFigure(look: .farmer(wearing: Outfit.find(meadow.equippedOutfit) ?? Outfit.all[0]),
+                         artID: artID, size: size, time: t, facing: meadow.farmerFacing,
+                         isWalking: meadow.isDeckMoving)
+                .position(map.point(spot.x, spot.y - 0.065))
+                .allowsHitTesting(false)
+                .accessibilityLabel("Your farmer")
+        } else {
+            let step = WorldLayout.farmerStep(at: t, aspect: map.aspect)
+            PersonFigure(look: .farmer(wearing: Outfit.find(meadow.equippedOutfit) ?? Outfit.all[0]),
+                         artID: artID, size: size, time: t, facing: WalkFacing.facing(for: step, id: artID),
+                         isWalking: step.isWalking)
+                .position(map.point(step.spot.x, step.spot.y - 0.065))
+                .allowsHitTesting(false)
+                .accessibilityLabel("Your farmer")
+        }
     }
 }
 
