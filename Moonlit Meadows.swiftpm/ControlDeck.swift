@@ -209,30 +209,13 @@ extension Meadow {
             BlockZone(label: "farm: field fence (east)", rect: DeckRect(minX: 0.826, minY: 0.522, maxX: 0.838, maxY: 0.868)),
             BlockZone(label: "farm: field fence (south)", rect: DeckRect(minX: 0.598, minY: 0.83, maxX: 0.838, maxY: 0.868)),
             BlockZone(label: "farm: field plots", rect: DeckRect(minX: 0.615, minY: 0.555, maxX: 0.826, maxY: 0.83)),
-            // The round fence around the lure basket, in segments following the drawing.
-            BlockZone(label: "farm: lure fence 1", rect: DeckRect(minX: 0.554, minY: 0.753, maxX: 0.572, maxY: 0.82)),
-            BlockZone(label: "farm: lure fence 2", rect: DeckRect(minX: 0.539, minY: 0.796, maxX: 0.567, maxY: 0.856)),
-            BlockZone(label: "farm: lure fence 3", rect: DeckRect(minX: 0.517, minY: 0.832, maxX: 0.552, maxY: 0.88)),
-            BlockZone(label: "farm: lure fence 4", rect: DeckRect(minX: 0.491, minY: 0.856, maxX: 0.53, maxY: 0.889)),
-            BlockZone(label: "farm: lure fence 5", rect: DeckRect(minX: 0.465, minY: 0.856, maxX: 0.504, maxY: 0.889)),
-            BlockZone(label: "farm: lure fence 6", rect: DeckRect(minX: 0.443, minY: 0.832, maxX: 0.478, maxY: 0.88)),
-            BlockZone(label: "farm: lure fence 7", rect: DeckRect(minX: 0.428, minY: 0.796, maxX: 0.456, maxY: 0.856)),
-            BlockZone(label: "farm: lure fence 8", rect: DeckRect(minX: 0.423, minY: 0.753, maxX: 0.441, maxY: 0.82)),
-            BlockZone(label: "farm: lure fence 9", rect: DeckRect(minX: 0.423, minY: 0.71, maxX: 0.441, maxY: 0.777)),
-            BlockZone(label: "farm: lure fence 10", rect: DeckRect(minX: 0.428, minY: 0.674, maxX: 0.456, maxY: 0.734)),
-            BlockZone(label: "farm: lure fence 11", rect: DeckRect(minX: 0.443, minY: 0.65, maxX: 0.478, maxY: 0.698)),
-            BlockZone(label: "farm: lure fence 12", rect: DeckRect(minX: 0.465, minY: 0.641, maxX: 0.504, maxY: 0.674)),
-            BlockZone(label: "farm: lure fence 13", rect: DeckRect(minX: 0.491, minY: 0.641, maxX: 0.53, maxY: 0.674)),
-            BlockZone(label: "farm: lure fence 14", rect: DeckRect(minX: 0.517, minY: 0.65, maxX: 0.552, maxY: 0.698)),
-            BlockZone(label: "farm: lure fence 15", rect: DeckRect(minX: 0.539, minY: 0.674, maxX: 0.567, maxY: 0.734)),
-            BlockZone(label: "farm: lure fence 16", rect: DeckRect(minX: 0.554, minY: 0.71, maxX: 0.572, maxY: 0.777)),
         ],
         figure: 0.13, reach: 0.09)
 
     static let cottageDoorstep = Spot(x: 0.497, y: 0.33)
     private static let cottageDoorZone = DeckRect(minX: 0.465, minY: 0.22, maxX: 0.53, maxY: 0.30)
-    /// The inside of the round fence: you set the lure over the fence.
-    private static let lureBasketZone = DeckRect(minX: 0.44, minY: 0.67, maxX: 0.555, maxY: 0.86)
+    /// The lure basket's patch below the crop beds — no fence anymore, walk right up.
+    private static let lureBasketZone = DeckRect(minX: 0.235, minY: 0.78, maxX: 0.355, maxY: 0.89)
 
     /// Inside your cottage (fractions of the room art).
     static let homeEntrance = Spot(x: 0.5, y: 0.86)

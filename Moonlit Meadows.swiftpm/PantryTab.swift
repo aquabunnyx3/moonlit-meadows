@@ -1,20 +1,20 @@
 import SwiftUI
 
-/// The pantry: the dishes you've cooked or baked, and the kitchen that makes
-/// them. (The full inventory lives on the deck — the pantry is food only.)
+/// The pantry: one tab, two shelves — the Dishes you've cooked or baked, and
+/// the Recipes that make them. (The full inventory lives on the deck.)
 struct PantryTab: View {
     let meadow: Meadow
-    @State private var section = PantrySection.dishes
+    @State private var section = DishSection.dishes
 
-    enum PantrySection: String, CaseIterable {
+    enum DishSection: String, CaseIterable {
         case dishes = "Dishes"
-        case kitchen = "Kitchen"
+        case recipes = "Recipes"
     }
 
     var body: some View {
         VStack(spacing: 10) {
             Picker("Pantry", selection: $section) {
-                ForEach(PantrySection.allCases, id: \.self) { section in
+                ForEach(DishSection.allCases, id: \.self) { section in
                     Text(section.rawValue)
                 }
             }
@@ -22,7 +22,7 @@ struct PantryTab: View {
 
             switch section {
             case .dishes: dishes
-            case .kitchen: kitchen
+            case .recipes: recipes
             }
         }
     }
@@ -43,7 +43,7 @@ struct PantryTab: View {
             ContentUnavailableView {
                 Label("No dishes yet", systemImage: "fork.knife")
             } description: {
-                Text("Bake something in the Kitchen and it will wait for you here.")
+                Text("Bake something from Recipes and it will wait for you here.")
             }
         } else {
             ScrollView {
@@ -87,9 +87,9 @@ struct PantryTab: View {
         }
     }
 
-    // MARK: Kitchen
+    // MARK: Recipes
 
-    private var kitchen: some View {
+    private var recipes: some View {
         ScrollView {
             LazyVStack(spacing: 8) {
                 ForEach(Recipe.all) { recipe in

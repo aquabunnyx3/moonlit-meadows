@@ -484,8 +484,8 @@ enum WorldLayout {
     static let bedSize = (width: 0.068, height: 0.13)
     /// The big fenced field on the right: plots 5–12, in a 4×2 grid, bought with the "+" tile.
     static let field = (minX: 0.622, minY: 0.565, maxX: 0.813, maxY: 0.818)
-    static let lureBasket = Spot(x: 0.495, y: 0.763)
-    static let lureGarden = (minX: 0.43, minY: 0.646, maxX: 0.567, maxY: 0.885)
+    static let lureBasket = Spot(x: 0.295, y: 0.835)
+    static let lureGarden = (minX: 0.23, minY: 0.775, maxX: 0.36, maxY: 0.895)
     /// The open grass beside the cottage, where your bunnies play.
     static let habitat = (minX: 0.60, minY: 0.14, maxX: 0.73, maxY: 0.42)
     static let cottageDoor = Spot(x: 0.497, y: 0.26)
