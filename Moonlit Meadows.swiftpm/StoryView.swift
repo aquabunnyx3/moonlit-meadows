@@ -169,6 +169,8 @@ struct ChatLayout {
         "farmer-female": ChatLayout(tag: rect(0.065, 0.7676, 0.2325, 0.8231), box: rect(0.0095, 0.8477, 0.99, 0.9824), tagIsLight: false),
         "kai": ChatLayout(tag: rect(0.155, 0.7262, 0.27, 0.7702), box: rect(0.1195, 0.7984, 0.877, 0.956), tagIsLight: true),
         "sol": ChatLayout(tag: rect(0.0675, 0.6761, 0.21, 0.7421), box: rect(0.047, 0.7667, 0.952, 0.9489), tagIsLight: false),
+        "sol-pinafore": ChatLayout(tag: rect(0.105, 0.785, 0.35, 0.84), box: rect(0.11, 0.845, 0.9, 0.985), tagIsLight: true),
+        "sol-overalls": ChatLayout(tag: rect(0.05, 0.79, 0.33, 0.855), box: rect(0.068, 0.865, 0.94, 0.985), tagIsLight: true),
         "june": ChatLayout(tag: rect(0.1525, 0.7042, 0.2975, 0.7526), box: rect(0.114, 0.7817, 0.888, 0.956), tagIsLight: true),
         "wes": ChatLayout(tag: rect(0.1525, 0.713, 0.29, 0.757), box: rect(0.12, 0.787, 0.8725, 0.9498), tagIsLight: true),
         "vi": ChatLayout(tag: rect(0.15, 0.6954, 0.29, 0.7526), box: rect(0.1135, 0.7773, 0.888, 0.9489), tagIsLight: true),
@@ -363,7 +365,9 @@ struct ChatScene: View {
         }
         switch speaker {
         case .person(let person):
-            return own(person.id) ?? shared(portrait(person.id))
+            // Today's outfit has its own chat scene for some people (Sol); otherwise their usual one.
+            let outfit = person.spriteID(onDay: meadow.today)
+            return (outfit == person.id ? nil : own(outfit)) ?? own(person.id) ?? shared(portrait(person.id))
         case .narrator(let person):
             guard let person else { return shared(nil) }
             return own(person.id) ?? shared(PersonArt.image(for: person.id))

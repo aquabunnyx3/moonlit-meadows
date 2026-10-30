@@ -144,7 +144,10 @@ enum PersonArt {
     /// or `walk-june-right-00`), played at the video's 24 frames a second.
     static let cycleFPS = 24.0
     /// Short drawn walk cycles play slower, so a full stride takes about as long as a filmed one.
-    static let cycleRates: [String: Double] = ["walk-sol-pinafore-left": 4.6]
+    static let cycleRates: [String: Double] = [
+        "walk-sol-pinafore-left": 4.6, "walk-sol-pinafore-right": 4.6,
+        "walk-sol-overalls-left": 4.6, "walk-sol-overalls-right": 4.6,
+    ]
     private static var cycleLengths: [String: Int] = [:]
 
     private static func cycleLength(_ name: String) -> Int {

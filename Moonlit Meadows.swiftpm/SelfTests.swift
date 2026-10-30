@@ -965,8 +965,12 @@ enum SelfTests {
         if let sol = Person.find("sol") {
             for day in 0..<sol.looks.count {
                 let sprite = sol.spriteID(onDay: day)
-                c.expect(PersonArt.hasFrontSprite(sprite) && PersonArt.hasWalkCycle(for: sprite, facing: .right),
-                         "Sol's outfit on day \(day) has its front sprite and walk")
+                c.expect(PersonArt.hasFrontSprite(sprite) && PersonArt.hasWalkCycle(for: sprite, facing: .right)
+                         && PersonArt.hasWalkCycle(for: sprite, facing: .left),
+                         "Sol's outfit on day \(day) has its front sprite and walks both ways")
+                if sprite != sol.id {
+                    c.expect(UIImage(named: "chat-\(sprite)") != nil && ChatLayout.all[sprite] != nil, "Sol's \(sprite) chat scene is in")
+                }
             }
         }
         for weather in Weather.allCases {
