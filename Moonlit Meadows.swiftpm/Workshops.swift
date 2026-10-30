@@ -49,8 +49,8 @@ enum WorkshopsLayout {
         bounds: DeckRect(minX: 0.02, minY: 0.03, maxX: 0.98, maxY: 0.97),
         blocks: [
             BlockZone(label: "workshops: glasshouse", rect: DeckRect(minX: 0.125, minY: 0.055, maxX: 0.415, maxY: 0.295)),
-            BlockZone(label: "workshops: herb beds (west)", rect: DeckRect(minX: 0.125, minY: 0.31, maxX: 0.26, maxY: 0.44)),
-            BlockZone(label: "workshops: herb beds (east)", rect: DeckRect(minX: 0.285, minY: 0.31, maxX: 0.415, maxY: 0.44)),
+            BlockZone(label: "workshops: herb beds (west)", rect: DeckRect(minX: 0.125, minY: 0.31, maxX: 0.245, maxY: 0.44)),
+            BlockZone(label: "workshops: herb beds (east)", rect: DeckRect(minX: 0.30, minY: 0.31, maxX: 0.415, maxY: 0.44)),
             BlockZone(label: "workshops: well", rect: DeckRect(minX: 0.46, minY: 0.45, maxX: 0.55, maxY: 0.56)),
             BlockZone(label: "workshops: forge building", rect: DeckRect(minX: 0.715, minY: 0.01, maxX: 0.89, maxY: 0.30)),
             BlockZone(label: "workshops: forge fence (west)", rect: DeckRect(minX: 0.572, minY: 0.125, maxX: 0.585, maxY: 0.45)),

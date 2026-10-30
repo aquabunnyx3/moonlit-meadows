@@ -303,21 +303,22 @@ enum TownLayout {
     /// ledger, and a kettle that's always on (she got that from her brother).
     static let imaniRoom = TownInterior(
         name: "Imani's cabin",
-        bounds: DeckRect(minX: 0.08, minY: 0.4, maxX: 0.97, maxY: 0.995),
-        blocks: [BlockZone(label: "Imani's cabin: back wall", rect: DeckRect(minX: 0.06, minY: 0, maxX: 0.97, maxY: 0.48)),
-                 BlockZone(label: "Imani's cabin: fish tanks", rect: DeckRect(minX: 0.1, minY: 0.42, maxX: 0.38, maxY: 0.66)),
-                 BlockZone(label: "Imani's cabin: bed", rect: DeckRect(minX: 0.72, minY: 0.4, maxX: 0.96, maxY: 0.8)),
-                 BlockZone(label: "Imani's cabin: worktable", rect: DeckRect(minX: 0.42, minY: 0.74, maxX: 0.66, maxY: 0.94))],
-        entrance: Spot(x: 0.52, y: 0.91), exit: DeckRect(minX: 0.4, minY: 0.955, maxX: 0.64, maxY: 1),
-        resident: Spot(x: 0.52, y: 0.62),
+        bounds: DeckRect(minX: 0.05, minY: 0.38, maxX: 0.99, maxY: 0.995),
+        blocks: [BlockZone(label: "Imani's cabin: back wall", rect: DeckRect(minX: 0, minY: 0, maxX: 1, maxY: 0.40)),
+                 BlockZone(label: "Imani's cabin: fish tanks", rect: DeckRect(minX: 0.125, minY: 0.36, maxX: 0.46, maxY: 0.63)),
+                 BlockZone(label: "Imani's cabin: bed", rect: DeckRect(minX: 0.65, minY: 0.36, maxX: 0.86, maxY: 0.62)),
+                 BlockZone(label: "Imani's cabin: east shelves", rect: DeckRect(minX: 0.86, minY: 0.36, maxX: 1, maxY: 0.93)),
+                 BlockZone(label: "Imani's cabin: worktable", rect: DeckRect(minX: 0.07, minY: 0.62, maxX: 0.28, maxY: 0.93))],
+        entrance: Spot(x: 0.51, y: 0.90), exit: DeckRect(minX: 0.42, minY: 0.94, maxX: 0.60, maxY: 1),
+        resident: Spot(x: 0.51, y: 0.58),
         things: [
-            RoomThing(name: "Fish tanks", zone: DeckRect(minX: 0.1, minY: 0.42, maxX: 0.38, maxY: 0.66),
+            RoomThing(name: "Fish tanks", zone: DeckRect(minX: 0.125, minY: 0.36, maxX: 0.46, maxY: 0.63),
                       text: "Two glass tanks of pond fry, each labeled in Imani's careful hand: name, mother, opinions."),
-            RoomThing(name: "Rod rack", zone: DeckRect(minX: 0.42, minY: 0.74, maxX: 0.66, maxY: 0.94),
+            RoomThing(name: "Rod rack", zone: DeckRect(minX: 0.07, minY: 0.62, maxX: 0.28, maxY: 0.93),
                       text: "Rods racked like library books. One, much mended, is labeled 'GERALD' in pencil, then crossed out, then written again."),
-            RoomThing(name: "The pond ledger", zone: DeckRect(minX: 0.42, minY: 0.74, maxX: 0.66, maxY: 0.94),
+            RoomThing(name: "The pond ledger", zone: DeckRect(minX: 0.07, minY: 0.62, maxX: 0.28, maxY: 0.93),
                       text: "The pond ledger, open at this season's census. A new page near the back has your name on it. Front page, she said."),
-            RoomThing(name: "Kettle", zone: DeckRect(minX: 0.72, minY: 0.4, maxX: 0.96, maxY: 0.8),
+            RoomThing(name: "Kettle", zone: DeckRect(minX: 0.475, minY: 0.20, maxX: 0.63, maxY: 0.40),
                       text: "A kettle, warm. Some things run in the family, whatever either of them says."),
         ])
 
@@ -669,7 +670,7 @@ extension Meadow {
         // puts you back on her doorstep by the water.
         if id == "imani" {
             town = .pond
-            townSpot = Spot(x: 0.655, y: 0.43)
+            townSpot = Spot(x: 0.70, y: 0.85)
             farmerFacing = .front
             deckFacing = DeckVector(x: 0, y: 1)
             deckDirection = .zero
@@ -1033,7 +1034,7 @@ struct TownScene: View {
         let name: String = {
             switch place {
             case .hub: return "🏘️ Moonlit Village"
-            case .house(let id): return "🏡 \(TownLayout.house(id)?.name.capitalizedFirst ?? "A house")"
+            case .house(let id): return "🏡 \((TownLayout.house(id)?.name ?? TownLayout.interiors[id]?.name)?.capitalizedFirst ?? "A house")"
             case .pond: return "🎣 The Pond"
             case .workshops: return "🛠️ The Workshops"
             }

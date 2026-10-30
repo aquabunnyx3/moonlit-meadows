@@ -18,26 +18,27 @@ enum PondLayout {
     static let dockSpot = Spot(x: 0.5, y: 0.72)
     /// The shore stones east of the dock, where something was buried long ago.
     static let capsuleZone = DeckRect(minX: 0.58, minY: 0.79, maxX: 0.68, maxY: 0.88)
-    /// Imani's cabin on the north-east shore (added with her, 2026-10-30).
-    static let cabinZone = DeckRect(minX: 0.615, minY: 0.14, maxX: 0.775, maxY: 0.36)
+    /// Imani's cabin at the pond's south-east corner (moved there 2026-10-30,
+    /// clear of the fishing water; its door faces west, onto the shore path).
+    static let cabinZone = DeckRect(minX: 0.70, minY: 0.63, maxX: 0.90, maxY: 0.88)
     /// The cabin's doorstep: stand here and the action button offers a visit.
-    static let cabinDoorZone = DeckRect(minX: 0.615, minY: 0.35, maxX: 0.70, maxY: 0.41)
-    static let cabinDoorSpot = Spot(x: 0.655, y: 0.385)
-    /// Where Imani stands, on the shore by the stone jetty below her cabin.
-    static let imaniSpot = Spot(x: 0.60, y: 0.475)
+    static let cabinDoorZone = DeckRect(minX: 0.665, minY: 0.74, maxX: 0.745, maxY: 0.88)
+    static let cabinDoorSpot = Spot(x: 0.71, y: 0.81)
+    /// Where Imani stands: the south-east shore by her cabin, off the dock.
+    static let imaniSpot = Spot(x: 0.665, y: 0.775)
 
     static let collision = SceneCollision(
         name: "The Pond",
-        bounds: DeckRect(minX: 0.05, minY: 0.30, maxX: 0.95, maxY: 0.97),
+        bounds: DeckRect(minX: 0.03, minY: 0.26, maxX: 0.97, maxY: 0.985),
         blocks: [
-            // The water, shaped around the dock (west / east / north of it).
-            BlockZone(label: "pond: water (west)", rect: DeckRect(minX: 0.27, minY: 0.42, maxX: 0.44, maxY: 0.79)),
-            BlockZone(label: "pond: water (east)", rect: DeckRect(minX: 0.63, minY: 0.44, maxX: 0.79, maxY: 0.79)),
-            BlockZone(label: "pond: Imani's cabin", rect: DeckRect(minX: 0.61, minY: 0.13, maxX: 0.78, maxY: 0.36)),
-            BlockZone(label: "pond: water (north of the dock)", rect: DeckRect(minX: 0.44, minY: 0.40, maxX: 0.565, maxY: 0.66)),
-            BlockZone(label: "pond: water (north lobe)", rect: DeckRect(minX: 0.60, minY: 0.385, maxX: 0.72, maxY: 0.44)),
+            // The water is one closed shape now (no gaps to wade through),
+            // wrapped around the dock, which juts in from the south shore.
+            BlockZone(label: "pond: water (west)", rect: DeckRect(minX: 0.265, minY: 0.42, maxX: 0.44, maxY: 0.775)),
+            BlockZone(label: "pond: water (north)", rect: DeckRect(minX: 0.44, minY: 0.405, maxX: 0.795, maxY: 0.65)),
+            BlockZone(label: "pond: water (east)", rect: DeckRect(minX: 0.565, minY: 0.65, maxX: 0.795, maxY: 0.79)),
+            BlockZone(label: "pond: Imani's cabin", rect: DeckRect(minX: 0.745, minY: 0.655, maxX: 0.90, maxY: 0.88)),
             // The willow on the west shore: trunk and the ground its fronds guard.
-            BlockZone(label: "pond: willow", rect: DeckRect(minX: 0.225, minY: 0.50, maxX: 0.29, maxY: 0.66)),
+            BlockZone(label: "pond: willow", rect: DeckRect(minX: 0.21, minY: 0.44, maxX: 0.30, maxY: 0.66)),
             // Tree trunks.
             BlockZone(label: "pond: pine trunk (west)", rect: DeckRect(minX: 0.15, minY: 0.58, maxX: 0.19, maxY: 0.73)),
             BlockZone(label: "pond: round tree trunk (northwest)", rect: DeckRect(minX: 0.355, minY: 0.29, maxX: 0.39, maxY: 0.37)),
@@ -47,8 +48,6 @@ enum PondLayout {
             BlockZone(label: "pond: pine trunk (southeast)", rect: DeckRect(minX: 0.94, minY: 0.86, maxX: 0.99, maxY: 0.99)),
             // The big fern clumps on the south and east shores.
             BlockZone(label: "pond: fern (dock west)", rect: DeckRect(minX: 0.345, minY: 0.765, maxX: 0.45, maxY: 0.865)),
-            BlockZone(label: "pond: fern (east shore)", rect: DeckRect(minX: 0.78, minY: 0.62, maxX: 0.87, maxY: 0.735)),
-            BlockZone(label: "pond: fern (southeast)", rect: DeckRect(minX: 0.735, minY: 0.735, maxX: 0.855, maxY: 0.815)),
             BlockZone(label: "pond: fern (southwest)", rect: DeckRect(minX: 0.13, minY: 0.845, maxX: 0.26, maxY: 0.97)),
         ],
         figure: 0.13, reach: 0.07)
