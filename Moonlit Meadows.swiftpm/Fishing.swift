@@ -70,7 +70,7 @@ extension Meadow {
         fishing = FishingSession(fishID: fish.id,
                                  biteDelay: .random(in: 2...6),
                                  size: .random(in: fish.sizeCM.min...fish.sizeCM.max))
-        MusicPlayer.shared.playEffect(.fishCast)
+
         feedbackCount += 1
     }
 
@@ -82,15 +82,15 @@ extension Meadow {
         case .casting where session.elapsed >= 1.4:
             session.phase = .waiting
             session.elapsed = 0
-            MusicPlayer.shared.playEffect(.fishBobber)
+
         case .waiting where session.elapsed >= session.biteDelay:
             session.phase = .bite
             session.elapsed = 0
-            MusicPlayer.shared.playEffect(.fishBite)
+
         case .bite where session.elapsed >= 0.9:
             session.phase = .meter
             session.elapsed = 0
-            MusicPlayer.shared.playEffect(.fishReel)
+
         case .meter:
             guard let fish = session.fish else { return }
             let cycle = (session.elapsed * FishingMeter.speed(for: fish.rarity)).truncatingRemainder(dividingBy: 2)
@@ -116,7 +116,7 @@ extension Meadow {
             landCatch(&session, fish: fish, perfect: false)
         } else {
             session.phase = .escaped
-            MusicPlayer.shared.playEffect(.fishEscape)
+
         }
         session.elapsed = 0
         fishing = session
@@ -131,9 +131,9 @@ extension Meadow {
         if perfect {
             // A Perfect catch pays half again, right there at the pond.
             coins += fish.value / 2
-            MusicPlayer.shared.playEffect(.fishPerfect)
+
         } else {
-            MusicPlayer.shared.playEffect(.fishCatch)
+
         }
         moment("firstFish", "🎣 First catch! Fish wait in your Pantry — sell them at the Shop, and every species fills a page in your Fish book.")
         save()

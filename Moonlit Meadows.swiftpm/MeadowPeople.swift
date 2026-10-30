@@ -268,7 +268,7 @@ extension Meadow {
         // the quest; bringing him a pond fish completes it.
         let earnedPoints = personID == "theo" && !revealDone ? 6 : 10
         if personID == "theo" {
-            if fishyPending, let fishID = carriedStacks.first(where: { $0.itemID.hasPrefix("fish-") })?.itemID {
+            if fishyPending, let fishID = carriedStacks.first(where: { $0.id.hasPrefix("fish-") })?.id {
                 removeItems(fishID, 1)
                 fishyPending = false
                 fishyDone = true

@@ -41,7 +41,19 @@ struct FishingView: View {
                 tick(date)
             }
             .onChange(of: meadow.fishing?.phase) { _, phase in
-                if phase == .caught { startCatchVideo() } else { catchPlayer = nil }
+                // Sounds live in the view layer (MusicPlayer is main-actor
+                // isolated; the model never touches it).
+                switch phase {
+                case .casting: MusicPlayer.shared.playEffect(.fishCast)
+                case .waiting: MusicPlayer.shared.playEffect(.fishBobber)
+                case .bite: MusicPlayer.shared.playEffect(.fishBite)
+                case .meter: MusicPlayer.shared.playEffect(.fishReel)
+                case .caught:
+                    MusicPlayer.shared.playEffect(meadow.fishing?.perfect == true ? .fishPerfect : .fishCatch)
+                    startCatchVideo()
+                case .escaped: MusicPlayer.shared.playEffect(.fishEscape)
+                case nil: catchPlayer = nil
+                }
             }
         }
         .fontDesign(.rounded)
