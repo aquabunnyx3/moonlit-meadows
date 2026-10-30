@@ -110,8 +110,6 @@ struct PersonProfileScene: View {
                     // Everything up here fits without scrolling; the long reads live in the
                     // About tab on the bottom screen.
                     VStack(spacing: 8) {
-                        header(state: state)
-                        favorites
                         card {
                             Text(person.personality)
                                 .font(.callout)
@@ -121,6 +119,8 @@ struct PersonProfileScene: View {
                                 .font(.caption.bold())
                                 .opacity(0.8)
                         }
+                        favorites
+                        header(state: state)
                     }
                     .padding(.vertical, 10)
                     .frame(maxHeight: .infinity, alignment: .top)
@@ -203,18 +203,17 @@ struct PersonProfileScene: View {
 struct PersonActionsPanel: View {
     let meadow: Meadow
     let person: Person
-    @State private var section = ProfileSection.talk
+    @State private var section = ProfileSection.gifts
     @State private var giftKind = GiftKind.items
     @State private var confirming: BunnyInstance?
 
     enum ProfileSection: String, CaseIterable, Identifiable {
-        case talk, gifts, together, story, requests, about
+        case gifts, together, story, requests, about
 
         var id: String { rawValue }
 
         var title: String {
             switch self {
-            case .talk: return "Talk"
             case .gifts: return "Gifts"
             case .together: return "Together"
             case .story: return "Story"
@@ -225,7 +224,6 @@ struct PersonActionsPanel: View {
 
         var emoji: String {
             switch self {
-            case .talk: return "💬"
             case .gifts: return "🎁"
             case .together: return "🌼"
             case .story: return "💌"
@@ -285,7 +283,6 @@ struct PersonActionsPanel: View {
             ScrollView {
                 VStack(alignment: .leading, spacing: 10) {
                     switch section {
-                    case .talk: talk
                     case .gifts: gifts
                     case .together: together
                     case .story: story
@@ -330,7 +327,6 @@ struct PersonActionsPanel: View {
 
     private func hasBadge(_ item: ProfileSection) -> Bool {
         switch item {
-        case .talk: return meadow.canTalk(to: person.id)
         case .story: return !meadow.unseenEvents(for: person.id).isEmpty
         case .requests: return meadow.availableQuests.contains { $0.personID == person.id && meadow.canComplete($0) }
         default: return false
@@ -352,46 +348,6 @@ struct PersonActionsPanel: View {
         .buttonStyle(SquishButtonStyle())
         .disabled(!isEnabled)
         .opacity(isEnabled ? 1 : 0.5)
-    }
-
-    // MARK: Talk
-
-    @ViewBuilder
-    private var talk: some View {
-        let canTalk = meadow.canTalk(to: person.id)
-        bigButton(canTalk ? "💬 Chat with \(person.name) (+10)" : "💬 You've chatted today ✓", isEnabled: canTalk) {
-            meadow.profileTalk = meadow.talk(to: person.id)
-            meadow.profileAnswer = nil
-        }
-        if let question = meadow.profileTalk?.question, meadow.profileAnswer == nil {
-            Text(question.prompt).font(.subheadline.bold())
-            ForEach(Array(question.answers.enumerated()), id: \.offset) { index, answer in
-                let pick = {
-                    // You say your answer, then they reply.
-                    MusicPlayer.shared.voiceLeadIn = VoiceLines.clips(owner: "farmer", text: answer.text,
-                                                                      farmer: meadow.farmerGender)
-                    meadow.profileAnswer = meadow.answer(question.id, option: index, for: person.id)?.response
-                }
-                if answer.isRude {
-                    RudeAnswerButton(text: answer.text, action: pick)
-                } else {
-                    bigButton(answer.text, pink: false, action: pick)
-                }
-            }
-        } else if meadow.profileTalk != nil {
-            bigButton("✓ Done chatting", pink: false) {
-                meadow.profileTalk = nil
-                meadow.profileAnswer = nil
-            }
-        } else {
-            Text("Chat once a day to grow closer. What they say shows up top.").font(.caption).opacity(0.7)
-        }
-        if meadow.warmth(of: person.id) < Meadow.maxWarmth {
-            let can = meadow.canApologize(to: person.id)
-            bigButton(can ? "🫶 Apologize (+1 heart)" : "🫶 You've apologized today ✓", isEnabled: can) {
-                meadow.apologize(to: person.id)
-            }
-        }
     }
 
     // MARK: Gifts

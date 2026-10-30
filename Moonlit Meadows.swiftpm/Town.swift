@@ -139,9 +139,9 @@ enum TownLayout {
                                           Spot(x: right, y: bottom), Spot(x: left, y: bottom)])
     }
 
-    /// The village (`city-hub-map`), item by item from the picture. Lanes, the plaza's cobbles,
-    /// flowers, bushes and grass are walkable; trees block only at the trunk. The plaza fence
-    /// has four gates (two at the top, one each side) and two gaps at the bottom.
+    /// The village (`city-hub-map` v2), item by item from the picture. Lanes, the plaza's
+    /// cobbles, flowers, bushes and grass are walkable; trees block only at the trunk. The
+    /// v2 plaza has NO fence — the whole plaza is open on all four sides.
     static let hubCollision = SceneCollision(
         name: "Village",
         // The bottom edge is open ground: the path below the bottom row of houses.
@@ -170,22 +170,13 @@ enum TownLayout {
             BlockZone(label: "hub: pink tree trunk (east)", rect: DeckRect(minX: 0.945, minY: 0.315, maxX: 0.965, maxY: 0.36)),
             // Lamp posts.
             BlockZone(label: "hub: lamp post (top left)", rect: DeckRect(minX: 0.193, minY: 0.27, maxX: 0.206, maxY: 0.293)),
-            BlockZone(label: "hub: lamp post (top, by the fence)", rect: DeckRect(minX: 0.294, minY: 0.27, maxX: 0.307, maxY: 0.29)),
+            BlockZone(label: "hub: lamp post (top middle, left)", rect: DeckRect(minX: 0.294, minY: 0.27, maxX: 0.307, maxY: 0.29)),
             BlockZone(label: "hub: lamp post (top middle)", rect: DeckRect(minX: 0.58, minY: 0.27, maxX: 0.593, maxY: 0.29)),
             BlockZone(label: "hub: lamp post (top right)", rect: DeckRect(minX: 0.812, minY: 0.27, maxX: 0.826, maxY: 0.29)),
             BlockZone(label: "hub: lamp post (bottom left)", rect: DeckRect(minX: 0.193, minY: 0.675, maxX: 0.206, maxY: 0.696)),
             BlockZone(label: "hub: lamp post (bottom right)", rect: DeckRect(minX: 0.817, minY: 0.675, maxX: 0.832, maxY: 0.696)),
-            // The plaza: fence with its gates, the stalls, barrels, the basket and the shop.
-            BlockZone(label: "hub: plaza fence (north, left)", rect: DeckRect(minX: 0.244, minY: 0.284, maxX: 0.413, maxY: 0.316)),
-            BlockZone(label: "hub: plaza fence (north, middle)", rect: DeckRect(minX: 0.455, minY: 0.284, maxX: 0.646, maxY: 0.316)),
-            BlockZone(label: "hub: plaza fence (north, right)", rect: DeckRect(minX: 0.698, minY: 0.284, maxX: 0.852, maxY: 0.316)),
-            BlockZone(label: "hub: plaza fence (west, upper)", rect: DeckRect(minX: 0.244, minY: 0.284, maxX: 0.256, maxY: 0.483)),
-            BlockZone(label: "hub: plaza fence (west, lower)", rect: DeckRect(minX: 0.244, minY: 0.535, maxX: 0.256, maxY: 0.72)),
-            BlockZone(label: "hub: plaza fence (east, upper)", rect: DeckRect(minX: 0.84, minY: 0.284, maxX: 0.852, maxY: 0.484)),
-            BlockZone(label: "hub: plaza fence (east, lower)", rect: DeckRect(minX: 0.84, minY: 0.535, maxX: 0.852, maxY: 0.72)),
-            BlockZone(label: "hub: plaza fence (south, left)", rect: DeckRect(minX: 0.256, minY: 0.694, maxX: 0.445, maxY: 0.72)),
-            BlockZone(label: "hub: plaza fence (south, middle)", rect: DeckRect(minX: 0.472, minY: 0.694, maxX: 0.684, maxY: 0.72)),
-            BlockZone(label: "hub: plaza fence (south, right)", rect: DeckRect(minX: 0.7495, minY: 0.694, maxX: 0.852, maxY: 0.72)),
+            // The plaza: open on all sides in v2 (no fence) — just the stalls, barrels,
+            // the basket and the shop.
             BlockZone(label: "hub: market stall (northwest)", rect: stalls[0]),
             BlockZone(label: "hub: market stall (northeast)", rect: stalls[1]),
             BlockZone(label: "hub: market stall (southwest)", rect: stalls[2]),
@@ -194,7 +185,7 @@ enum TownLayout {
             BlockZone(label: "hub: barrel (northeast stall)", rect: DeckRect(minX: 0.485, minY: 0.418, maxX: 0.506, maxY: 0.47)),
             BlockZone(label: "hub: barrel (southwest stall)", rect: DeckRect(minX: 0.286, minY: 0.607, maxX: 0.307, maxY: 0.656)),
             BlockZone(label: "hub: barrel (southeast stall)", rect: DeckRect(minX: 0.485, minY: 0.607, maxX: 0.506, maxY: 0.656)),
-            BlockZone(label: "hub: lure basket fence", rect: DeckRect(minX: 0.42, minY: 0.445, maxX: 0.485, maxY: 0.535)),
+            BlockZone(label: "hub: lure basket", rect: DeckRect(minX: 0.435, minY: 0.462, maxX: 0.478, maxY: 0.518)),
             BlockZone(label: "hub: shop", rect: DeckRect(minX: 0.676, minY: 0.334, maxX: 0.809, maxY: 0.6)),
             BlockZone(label: "hub: barrel by the shop", rect: DeckRect(minX: 0.656, minY: 0.54, maxX: 0.676, maxY: 0.6)),
             // Down the sides.
@@ -203,19 +194,16 @@ enum TownLayout {
             BlockZone(label: "hub: Kai's cabin", rect: DeckRect(minX: 0.868, minY: 0.33, maxX: 0.98, maxY: 0.548)),
             BlockZone(label: "hub: Kai's workbench", rect: DeckRect(minX: 0.868, minY: 0.548, maxX: 0.91, maxY: 0.63)),
             BlockZone(label: "hub: Kai's log pile", rect: DeckRect(minX: 0.94, minY: 0.548, maxX: 1, maxY: 0.62)),
-            // Along the bottom: front gables, so the strip under the plaza fence stays open.
+            // Along the bottom: front gables, so the strip under the plaza stays open.
             BlockZone(label: "hub: Bree's cottage", outline: [Spot(x: 0.035, y: 0.79), Spot(x: 0.07, y: 0.682), Spot(x: 0.13, y: 0.682),
                                                               Spot(x: 0.155, y: 0.79), Spot(x: 0.17, y: 0.79), Spot(x: 0.17, y: 0.925),
                                                               Spot(x: 0.03, y: 0.925)]),
             gable("hub: Vi's cottage", left: 0.18, right: 0.352, peak: Spot(x: 0.266, y: 0.696), eaves: 0.77, bottom: 0.94),
             BlockZone(label: "hub: rock by Vi's", rect: DeckRect(minX: 0.342, minY: 0.958, maxX: 0.362, maxY: 0.994)),
-            // The roof's tip sits just under the plaza's south gate; it's trimmed a hair so you
-            // can step through the gate and round the roof to the lane by the beehives.
+            // The roof's tip sits just under the plaza's south edge; it's trimmed a hair so
+            // you can step off the plaza and round the roof to the lane by the beehives.
             BlockZone(label: "hub: Silas's cottage", outline: [Spot(x: 0.385, y: 0.786), Spot(x: 0.442, y: 0.73), Spot(x: 0.496, y: 0.78),
                                                                Spot(x: 0.496, y: 0.928), Spot(x: 0.385, y: 0.928)]),
-            BlockZone(label: "hub: Silas's yard fence (west)", rect: DeckRect(minX: 0.379, minY: 0.84, maxX: 0.39, maxY: 0.98)),
-            BlockZone(label: "hub: Silas's yard fence (south, left)", rect: DeckRect(minX: 0.379, minY: 0.955, maxX: 0.418, maxY: 0.981)),
-            BlockZone(label: "hub: Silas's yard fence (south, right)", rect: DeckRect(minX: 0.468, minY: 0.955, maxX: 0.533, maxY: 0.981)),
             BlockZone(label: "hub: Silas's beehives (stack)", rect: DeckRect(minX: 0.495, minY: 0.75, maxX: 0.527, maxY: 0.955)),
             BlockZone(label: "hub: Silas's beehives (front)", rect: DeckRect(minX: 0.465, minY: 0.91, maxX: 0.494, maxY: 0.955)),
             BlockZone(label: "hub: Silas's sunflowers", rect: DeckRect(minX: 0.505, minY: 0.76, maxX: 0.53, maxY: 0.86)),
@@ -268,6 +256,14 @@ enum TownLayout {
         "bree": [.dusk],
         "vi": [.dawn],
     ]
+
+    /// Michelle's rotation (2026-10-30): villagers take alternate DAYS out in the village
+    /// so the hub never holds everyone at once. Group A is out on odd days, group B on
+    /// even days; on their day off they stay home (errands and farm visits are unchanged).
+    static let outGroupA: Set<String> = ["june", "roz", "kai", "silas", "vi"]
+    static func isOutDay(_ personID: String, day: Int) -> Bool {
+        outGroupA.contains(personID) == (day % 2 == 1)
+    }
 
     static func house(_ id: String) -> TownHouse? {
         houses.first { $0.id == id }
@@ -574,7 +570,7 @@ extension Meadow {
         let time = time ?? timeOfDay
         guard let person = Person.find(personID) else { return .home }
         if person.slot(at: time).inMeadow { return .farm }
-        if TownLayout.townTimes[personID]?.contains(time) ?? false { return .town }
+        if (TownLayout.townTimes[personID]?.contains(time) ?? false) && TownLayout.isOutDay(personID, day: today) { return .town }
         if TownLayout.errands[personID]?.contains(time) ?? false { return .errand }
         return .home
     }
