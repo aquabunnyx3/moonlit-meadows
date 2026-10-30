@@ -35,7 +35,7 @@ enum Reward {
 }
 
 /// A point in the world, in unit coordinates (`0...1` on both axes).
-struct Spot {
+struct Spot: Equatable {
     let x: Double
     let y: Double
 }
