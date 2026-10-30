@@ -166,6 +166,8 @@ final class Meadow {
     var showsIntro = false
     /// The "Let's get started" card waiting over the farm after the intro movie. Not saved.
     var showsWelcome = false
+    /// The fishing session in progress at the Pond, if any. Not saved.
+    var fishing: FishingSession?
     /// The panel open on the control deck, by `PanelTab` raw value, or `seeds` or `storage`.
     /// `farm` means none: the D-pad, quick inventory and action button show.
     var panelTabID = "farm"

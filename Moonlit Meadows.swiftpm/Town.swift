@@ -8,6 +8,7 @@ import UIKit
 enum TownPlace: Equatable {
     case hub
     case house(String)
+    case pond
 }
 
 /// Where someone is right now, from their schedule.
@@ -536,6 +537,27 @@ extension Meadow {
         faceUp()
     }
 
+    /// Down the forest footpath to the Pond.
+    func goToPond() {
+        closeProfile()
+        town = .pond
+        townSpot = PondLayout.arrival
+        heldHome = []
+        faceUp()
+    }
+
+    /// Back up the footpath from the Pond to the farm's north edge.
+    func goToFarmFromPond() {
+        town = nil
+        heldHome = []
+        farmerSpot = Spot(x: 0.30, y: 0.10)
+        farmerFacing = .front
+        deckFacing = DeckVector(x: 0, y: 1)
+        deckDirection = .zero
+        panelTabID = PanelTab.farm.rawValue
+        feedbackCount += 1
+    }
+
     /// Goes inside. If they're home, they stay home until you leave.
     func enterHouse(_ id: String) {
         guard let room = TownLayout.interiors[id] else { return }
@@ -703,21 +725,36 @@ struct TownScene: View {
         switch place {
         case .hub: return "city-hub-map"
         case .house(let id): return InteriorArt.name(id)
+        case .pond: return "pond-scene"
         }
     }
 
     /// The farmer's (and everyone's) height, in art heights: smaller out in the village.
-    private var figureScale: CGFloat { place == .hub ? 0.12 : 0.34 }
+    private var figureScale: CGFloat {
+        switch place {
+        case .hub: return 0.12
+        case .pond: return 0.15
+        case .house: return 0.34
+        }
+    }
+
+    private var sceneBackground: Color {
+        switch place {
+        case .hub: return Palette.ground
+        case .pond: return Color(red: 0.09, green: 0.14, blue: 0.11)
+        case .house: return Color(red: 0.07, green: 0.07, blue: 0.2)
+        }
+    }
 
     var body: some View {
         TimelineView(.animation(minimumInterval: 1 / 24, paused: meadow.isPaused || meadow.isAtMainMenu)) { timeline in
             let t = timeline.date.timeIntervalSinceReferenceDate
             GeometryReader { proxy in
-                let map = place == .hub ? WorldMap(size: proxy.size) : Self.room(in: proxy.size)
+                let map = place == .hub ? WorldMap(size: proxy.size) : Self.room(in: proxy.size, aspect: place == .pond ? 1920 / 1280 : 2096 / 1184)
                 let size = map.unit * figureScale
 
                 ZStack(alignment: .topLeading) {
-                    if place == .hub { Palette.ground } else { Color(red: 0.07, green: 0.07, blue: 0.2) }
+                    sceneBackground
                     if let image = TownArt.image(art) {
                         Image(uiImage: image)
                             .resizable()
@@ -731,13 +768,13 @@ struct TownScene: View {
                     }
 
                     // The way home, at the bottom path.
-                    if place == .hub {
+                    if place == .hub || place == .pond {
                         Text("🌾 Farm ↓")
                             .font(.system(size: max(map.unit * 0.022, 9), weight: .bold, design: .rounded))
                             .padding(.horizontal, 6)
                             .padding(.vertical, 2)
                             .background(Palette.cream.opacity(0.9), in: .capsule)
-                            .position(map.point(0.62, 0.965))
+                            .position(map.point(place == .pond ? 0.5 : 0.62, 0.965))
                             .allowsHitTesting(false)
                     }
 
@@ -765,8 +802,7 @@ struct TownScene: View {
     }
 
     /// A room is shown whole, as big as fits, like your own house: never cropped or stretched.
-    private static func room(in size: CGSize) -> WorldMap {
-        let aspect: CGFloat = 2096 / 1184
+    private static func room(in size: CGSize, aspect: CGFloat = 2096 / 1184) -> WorldMap {
         let width = min(size.width, size.height * aspect)
         let height = width / aspect
         return WorldMap(rect: CGRect(x: (size.width - width) / 2, y: (size.height - height) / 2, width: width, height: height))
@@ -792,6 +828,8 @@ struct TownScene: View {
             if let resident = meadow.houseResident, let room = TownLayout.interiors[resident.id] {
                 list.append(Figure(id: resident.id, person: resident, spot: room.resident, facing: .front, isWalking: false))
             }
+        case .pond:
+            break // The pond is a quiet place: just you (and, some nights, a white shape).
         }
         list.append(Figure(id: "farmer", person: nil, spot: meadow.townSpot, facing: meadow.farmerFacing, isWalking: meadow.isDeckMoving))
         return list.sorted { $0.spot.y < $1.spot.y }
@@ -824,6 +862,7 @@ struct TownScene: View {
             switch place {
             case .hub: return "🏘️ Moonlit Village"
             case .house(let id): return "🏡 \(TownLayout.house(id)?.name.capitalizedFirst ?? "A house")"
+            case .pond: return "🎣 The Pond"
             }
         }()
         return HStack(spacing: 6) {

@@ -35,7 +35,7 @@ struct DeckTarget: Equatable {
         case lureBasket
         case plot(Int)
         case bed, chair, chest, petBed, homeDoor
-        case goToTown, goToFarm, enterHouse(String), leaveHouse, shop, stall
+        case goToTown, goToFarm, goToPond, leavePond, fish, enterHouse(String), leaveHouse, shop, stall
         /// Something to look at: the action button shows its line.
         case look(String)
     }
@@ -257,6 +257,7 @@ extension Meadow {
         switch town {
         case .hub?: return TownLayout.hubCollision
         case .house(let id)?: return TownLayout.interiors[id]?.collision ?? TownLayout.hubCollision
+        case .pond?: return PondLayout.collision
         case nil: return isAtHome ? Self.homeCollision : Self.farmCollision
         }
     }
@@ -289,6 +290,7 @@ extension Meadow {
     /// D-pad is held), at a constant pace. Anything solid stops her; she slides along it,
     /// trying across and up-and-down separately so diagonals glide along walls.
     func deckStep(dt: Double) {
+        if fishing != nil { return }
         guard !deckDirection.isZero, !isPaused, !isAtMainMenu, !isSleeping, dt > 0 else { return }
         let scene = currentCollision
         let d = deckDirection
@@ -323,12 +325,21 @@ extension Meadow {
                 goToFarm()
             } else if town == nil, !isAtHome, Self.villagePath.contains(x, y) {
                 goToTown()
+            } else if town == .pond, PondLayout.exitZone.contains(x, y) {
+                goToFarmFromPond()
             }
+        }
+        // Walking up the footpath off the farm's north edge takes you to the Pond.
+        if d.y < 0, town == nil, !isAtHome, Self.farmPondZone.contains(x, y) {
+            goToPond()
         }
     }
 
     /// The very end of the farm's bottom path: walking into it goes to the village.
     static let villagePath = DeckRect(minX: 0.44, minY: 0.94, maxX: 0.56, maxY: 1)
+
+    /// The footpath off the farm's north edge: walking up into it goes to the Pond.
+    static let farmPondZone = DeckRect(minX: 0.26, minY: 0.0, maxX: 0.34, maxY: 0.075)
 
     /// The walk cycle's clock: one cycle per stride walked, so the steps match the ground.
     var walkCycleTime: Double { walkedFigures / Self.stride }
@@ -389,6 +400,9 @@ extension Meadow {
         }
         if reaches(Self.farmToTownZone) {
             return DeckTarget(kind: .goToTown, verb: "Go to the Village", icon: .emoji("🏘️"), spot: Spot(x: 0.5, y: 0.93))
+        }
+        if reaches(Self.farmPondZone) {
+            return DeckTarget(kind: .goToPond, verb: "Go to the Pond", icon: .emoji("🎣"), spot: Spot(x: 0.30, y: 0.06))
         }
         if reaches(Self.lureBasketZone) {
             let arrived = lureSlots.contains(where: \.hasArrived)
@@ -453,6 +467,14 @@ extension Meadow {
             if let stall = closest(TownLayout.stalls.map { ($0, $0) }, from: spot, facing: faced) {
                 return DeckTarget(kind: .stall, verb: "Shop", icon: .asset("icon-seed-packet"),
                                   spot: Spot(x: stall.center.x, y: stall.maxY), secondary: "Sell")
+            }
+            return nil
+        case .pond:
+            if PondLayout.dockZone.contains(spot.x, spot.y) {
+                return DeckTarget(kind: .fish, verb: "Fish", icon: .emoji("🎣"), spot: PondLayout.dockSpot)
+            }
+            if reaches(PondLayout.exitZone, from: spot, facing: faced) {
+                return DeckTarget(kind: .leavePond, verb: "Back to the Farm", icon: .emoji("🌾"), spot: Spot(x: 0.5, y: 0.97))
             }
             return nil
         case .house(let id):
@@ -566,6 +588,7 @@ extension Meadow {
 
     /// The big pink button.
     func deckAction() {
+        if fishing != nil { fishingTap(); return }
         if tourBlocksAction() { return }
         guard let target = deckTarget(), target.canAct else { return }
         deckDirection = .zero
@@ -607,6 +630,12 @@ extension Meadow {
             goToTown()
         case .goToFarm:
             goToFarm()
+        case .goToPond:
+            goToPond()
+        case .leavePond:
+            goToFarmFromPond()
+        case .fish:
+            beginFishing()
         case .enterHouse(let id):
             enterHouse(id)
         case .leaveHouse:

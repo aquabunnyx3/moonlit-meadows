@@ -72,8 +72,11 @@ struct WorldScene: View {
     private var showsCollision: Bool { developerMode && collisionOn }
 
     var body: some View {
-        // While the farmer creator is open, the top screen previews your farmer.
-        if meadow.showsFarmerCreator {
+        // Fishing takes over the top screen: first-person, from the dock.
+        if meadow.fishing != nil {
+            FishingView(meadow: meadow)
+                .clipped()
+        } else if meadow.showsFarmerCreator {
             FarmerPreviewScene(meadow: meadow)
                 .clipped()
         } else if let person = meadow.focusedPersonID.flatMap(Person.find) {
@@ -133,6 +136,15 @@ struct WorldScene: View {
                         .padding(.vertical, 2)
                         .background(Palette.cream.opacity(0.9), in: .capsule)
                         .position(map.point(0.5, 0.955))
+                        .allowsHitTesting(false)
+
+                    // The footpath to the Pond, off the farm's north edge.
+                    Text("🎣 Pond ↑")
+                        .font(.system(size: max(map.unit * 0.022, 9), weight: .bold, design: .rounded))
+                        .padding(.horizontal, 6)
+                        .padding(.vertical, 2)
+                        .background(Palette.cream.opacity(0.9), in: .capsule)
+                        .position(map.point(0.30, 0.045))
                         .allowsHitTesting(false)
 
                     // What the deck's action button would work on, once you're walking.
