@@ -17,6 +17,10 @@ struct HomeScene: View {
     @State private var bedtimeVideo: String?
     @State private var bedtimeEnded = false
 
+    /// Male farmers get the same room in blue/grey/white (`home-*-male` art, Merlin,
+    /// 2026-10-30); the base art is the fallback if a male set is ever missing.
+    private var isMaleFarmer: Bool { meadow.farmerLook?.gender == .male }
+
     /// Spots in the room art (`home-day` / `home-night`, 2096 × 1184), as fractions.
     private enum Spot {
         static let floor = CGPoint(x: 0.5, y: 0.78)
@@ -36,7 +40,7 @@ struct HomeScene: View {
                 room(night: true).opacity(night ? 1 : 0)
 
                 if showsSleepArt {
-                    SleepingRoom(art: art, isPaused: meadow.isPaused)
+                    SleepingRoom(art: art, isPaused: meadow.isPaused, male: isMaleFarmer)
                         .transition(.opacity)
                 }
 
@@ -136,7 +140,8 @@ struct HomeScene: View {
 
     private func room(night: Bool) -> some View {
         GeometryReader { geo in
-            if let image = UIImage(named: night ? "home-night" : "home-day") {
+            let base = night ? "home-night" : "home-day"
+            if let image = (isMaleFarmer ? UIImage(named: base + "-male") : nil) ?? UIImage(named: base) {
                 let art = fit(geo.size)
                 Image(uiImage: image)
                     .resizable()
@@ -167,6 +172,7 @@ struct HomeScene: View {
 private struct SleepingRoom: View {
     let art: CGRect
     let isPaused: Bool
+    let male: Bool
 
     /// Where the blanket layer (`home-sleep-blanket`) sits in the room art, as fractions.
     private static let blanket = CGRect(x: 0.1551, y: 0.2914, width: 0.1813, height: 0.2914)
@@ -183,14 +189,14 @@ private struct SleepingRoom: View {
                                width: Self.blanket.width * art.width, height: Self.blanket.height * art.height)
 
             ZStack(alignment: .topLeading) {
-                if let room = UIImage(named: "home-sleep") {
+                if let room = UIImage(named: male ? "home-sleep-male" : "home-sleep") ?? UIImage(named: "home-sleep") {
                     Image(uiImage: room)
                         .resizable()
                         .interpolation(.none)
                         .frame(width: art.width, height: art.height)
                         .offset(x: art.minX, y: art.minY)
                 }
-                if let blanket = UIImage(named: "home-sleep-blanket") {
+                if let blanket = UIImage(named: male ? "home-sleep-blanket-male" : "home-sleep-blanket") ?? UIImage(named: "home-sleep-blanket") {
                     // Rises about 2.5 points at the top of each breath.
                     Image(uiImage: blanket)
                         .resizable()
