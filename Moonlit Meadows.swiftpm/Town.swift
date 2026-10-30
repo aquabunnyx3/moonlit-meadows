@@ -9,6 +9,7 @@ enum TownPlace: Equatable {
     case hub
     case house(String)
     case pond
+    case workshops
 }
 
 /// Where someone is right now, from their schedule.
@@ -19,6 +20,9 @@ enum Whereabouts: Equatable {
     case home
     /// Out in the village, at their favorite spot.
     case town
+    /// At work in the Workshops: June at the glasshouse, Rowan at the forge,
+    /// Silas at the apiary (in the daytime).
+    case work
     /// Somewhere off the map (the creek, the clock tower…). They're still in the Friends tab.
     case errand
 }
@@ -105,6 +109,9 @@ enum TownLayout {
     /// the Farm" near it, and walking down into its very end takes you home.
     static let farmExit = DeckRect(minX: 0.535, minY: 0.955, maxX: 0.61, maxY: 1.0)
     static let farmExitPath = DeckRect(minX: 0.535, minY: 0.985, maxX: 0.61, maxY: 1.0)
+    /// The east lane's end, past Kai's cabin and above Sol's roof: walking right
+    /// into it takes you to the Workshops, and the action button offers it nearby.
+    static let workshopsPath = DeckRect(minX: 0.96, minY: 0.625, maxX: 1.0, maxY: 0.675)
     /// The two lanes between the houses and the plaza, and the side lanes joining them,
     /// which villagers follow when they walk around.
     static let topLane = 0.265
@@ -257,6 +264,21 @@ enum TownLayout {
         "wes": [.day],
         "bree": [.dusk],
         "vi": [.dawn],
+    ]
+
+    /// Who works in the Workshops, and when (Merlin, 2026-10-30): in the daytime,
+    /// June is at the glasshouse, Rowan at the forge and Silas at the apiary.
+    /// Their own places come before farm visits, the village and errands.
+    static let workTimes: [String: Set<TimeOfDay>] = [
+        "june": [.day],
+        "rowan": [.day],
+        "silas": [.day],
+    ]
+    /// Their workplaces, for the Friends tab's plain words.
+    static let workNames: [String: String] = [
+        "june": "the Glasshouse",
+        "rowan": "the forge workshop",
+        "silas": "the apiary",
     ]
 
     /// Michelle's rotation (2026-10-30): villagers take alternate DAYS out in the village
@@ -576,6 +598,32 @@ extension Meadow {
         feedbackCount += 1
     }
 
+    /// East out of the village, to the Workshops.
+    func goToWorkshops() {
+        closeProfile()
+        town = .workshops
+        townSpot = WorkshopsLayout.arrival
+        heldHome = []
+        farmerFacing = .right
+        deckFacing = DeckVector(x: 1, y: 0)
+        deckDirection = .zero
+        panelTabID = PanelTab.farm.rawValue
+        feedbackCount += 1
+        moment("firstWorkshops", "🛠️ The Workshops! June tends the glasshouse, Rowan works the forge, and Silas keeps the bees — look for them here in the daytime.")
+    }
+
+    /// Back west into the village from the Workshops.
+    func goToHubFromWorkshops() {
+        closeProfile()
+        town = .hub
+        townSpot = Spot(x: 0.93, y: 0.65)
+        heldHome = []
+        farmerFacing = .left
+        deckFacing = DeckVector(x: -1, y: 0)
+        deckDirection = .zero
+        feedbackCount += 1
+    }
+
     /// Goes inside. If they're home, they stay home until you leave. (The shop
     /// and the library have no resident to hold.)
     func enterHouse(_ id: String) {
@@ -611,6 +659,7 @@ extension Meadow {
     func whereabouts(of personID: String, at time: TimeOfDay? = nil) -> Whereabouts {
         let time = time ?? timeOfDay
         guard let person = Person.find(personID) else { return .home }
+        if (TownLayout.workTimes[personID]?.contains(time) ?? false) { return .work }
         if person.slot(at: time).inMeadow { return .farm }
         if (TownLayout.townTimes[personID]?.contains(time) ?? false) && TownLayout.isOutDay(personID, day: today) { return .town }
         if TownLayout.errands[personID]?.contains(time) ?? false { return .errand }
@@ -627,6 +676,7 @@ extension Meadow {
         case .farm: return "\(person.name) is on your farm · \(slot.place)"
         case .town: return "\(person.name) is in the hub · \(slot.place)"
         case .errand: return "\(person.name) is away for a bit · \(slot.place)"
+        case .work: return "\(person.name) is at \(TownLayout.workNames[person.id] ?? "work")"
         case .home: return "\(person.name) is at home"
         }
     }
@@ -642,6 +692,7 @@ extension Meadow {
             switch place {
             case .home: return house.doorstep
             case .town: return TownLayout.townSpots[personID]
+            case .work: return Spot(x: 0.97, y: 0.65)
             case .farm, .errand: return Spot(x: (TownLayout.farmExit.minX + TownLayout.farmExit.maxX) / 2, y: 0.97)
             }
         }
@@ -650,7 +701,7 @@ extension Meadow {
         let walked = hour - max(start, Self.dayStartHour)
         if walked < Self.townWalkHours {
             let previous = whereabouts(of: personID, at: TimeOfDay.at(hour: (Int(start) + 23) % 24))
-            if previous != current, previous == .home || previous == .town || current == .home || current == .town,
+            if previous != current, previous == .home || previous == .town || previous == .work || current == .home || current == .town || current == .work,
                let from = point(previous), let to = point(current) {
                 return Self.walk(from: from, to: to, progress: walked / Self.townWalkHours)
             }
@@ -705,6 +756,14 @@ extension Meadow {
         Person.all.compactMap { person in hubWalker(person.id).map { (person: person, step: $0) } }
     }
 
+    /// Everyone at work in the Workshops right now, standing at their places.
+    var workWalkers: [(person: Person, step: RouteStep)] {
+        Person.all.compactMap { person in
+            guard whereabouts(of: person.id) == .work, let spot = WorkshopsLayout.spots[person.id] else { return nil }
+            return (person: person, step: RouteStep(spot: spot, dx: 0, dy: 1, isWalking: false))
+        }
+    }
+
     /// Who's home in the house you're visiting.
     var houseResident: Person? {
         guard case .house(let id) = town, heldHome.contains(id) else { return nil }
@@ -745,6 +804,7 @@ struct TownScene: View {
         case .hub: return "city-hub-map"
         case .house(let id): return InteriorArt.name(id)
         case .pond: return "pond-scene"
+        case .workshops: return "workshops-map"
         }
     }
 
@@ -753,6 +813,7 @@ struct TownScene: View {
         switch place {
         case .hub: return 0.12
         case .pond: return 0.15
+        case .workshops: return 0.12
         case .house: return 0.34
         }
     }
@@ -761,6 +822,7 @@ struct TownScene: View {
         switch place {
         case .hub: return Palette.ground
         case .pond: return Color(red: 0.09, green: 0.14, blue: 0.11)
+        case .workshops: return Palette.ground
         case .house: return Color(red: 0.07, green: 0.07, blue: 0.2)
         }
     }
@@ -769,7 +831,7 @@ struct TownScene: View {
         TimelineView(.animation(minimumInterval: 1 / 24, paused: meadow.isPaused || meadow.isAtMainMenu)) { timeline in
             let t = timeline.date.timeIntervalSinceReferenceDate
             GeometryReader { proxy in
-                let map = place == .hub ? WorldMap(size: proxy.size) : Self.room(in: proxy.size, aspect: place == .pond ? 1920 / 1280 : 2096 / 1184)
+                let map = place == .hub || place == .workshops ? WorldMap(size: proxy.size) : Self.room(in: proxy.size, aspect: place == .pond ? 1920 / 1280 : 2096 / 1184)
                 let size = map.unit * figureScale
 
                 ZStack(alignment: .topLeading) {
@@ -784,6 +846,28 @@ struct TownScene: View {
 
                     if case .house(let id) = place, let door = TownLayout.interiors[id]?.glassDoor {
                         GlassDoorView(door: door, rect: map.rect, isOpen: meadow.glassDoorOpen)
+                    }
+
+                    // To the Workshops, at the village's east lane.
+                    if place == .hub {
+                        Text("🛠️ Workshops →")
+                            .font(.system(size: max(map.unit * 0.022, 9), weight: .bold, design: .rounded))
+                            .padding(.horizontal, 6)
+                            .padding(.vertical, 2)
+                            .background(Palette.cream.opacity(0.9), in: .capsule)
+                            .position(map.point(0.945, 0.65))
+                            .allowsHitTesting(false)
+                    }
+
+                    // Back to the village, at the west road.
+                    if place == .workshops {
+                        Text("← 🏘️ Village")
+                            .font(.system(size: max(map.unit * 0.022, 9), weight: .bold, design: .rounded))
+                            .padding(.horizontal, 6)
+                            .padding(.vertical, 2)
+                            .background(Palette.cream.opacity(0.9), in: .capsule)
+                            .position(map.point(0.075, 0.515))
+                            .allowsHitTesting(false)
                     }
 
                     // The way home, at the bottom path.
@@ -859,6 +943,11 @@ struct TownScene: View {
             if meadow.storyTheoAtPond, let theo = Person.find("theo") {
                 list.append(Figure(id: "theo", person: theo, spot: Spot(x: 0.60, y: 0.86), facing: .front, isWalking: false))
             }
+        case .workshops:
+            for walker in meadow.workWalkers {
+                list.append(Figure(id: walker.person.id, person: walker.person, spot: walker.step.spot,
+                                   facing: WalkFacing.facing(for: walker.step, id: walker.person.spriteID(onDay: meadow.today)), isWalking: walker.step.isWalking))
+            }
         }
         list.append(Figure(id: "farmer", person: nil, spot: meadow.townSpot, facing: meadow.farmerFacing, isWalking: meadow.isDeckMoving))
         return list.sorted { $0.spot.y < $1.spot.y }
@@ -892,6 +981,7 @@ struct TownScene: View {
             case .hub: return "🏘️ Moonlit Village"
             case .house(let id): return "🏡 \(TownLayout.house(id)?.name.capitalizedFirst ?? "A house")"
             case .pond: return "🎣 The Pond"
+            case .workshops: return "🛠️ The Workshops"
             }
         }()
         return HStack(spacing: 6) {

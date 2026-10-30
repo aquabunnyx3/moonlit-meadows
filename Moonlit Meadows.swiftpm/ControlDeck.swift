@@ -35,7 +35,7 @@ struct DeckTarget: Equatable {
         case lureBasket
         case plot(Int)
         case bed, chair, chest, petBed, homeDoor
-        case goToTown, goToFarm, goToPond, leavePond, fish, moonBunny, digCapsule, enterHouse(String), leaveHouse, shop, stall, shopCounter
+        case goToTown, goToFarm, goToPond, leavePond, fish, moonBunny, digCapsule, enterHouse(String), leaveHouse, shop, stall, shopCounter, goToWorkshops, leaveWorkshops
         /// Something to look at: the action button shows its line.
         case look(String)
     }
@@ -241,6 +241,7 @@ extension Meadow {
         case .hub?: return TownLayout.hubCollision
         case .house(let id)?: return TownLayout.interiors[id]?.collision ?? TownLayout.hubCollision
         case .pond?: return PondLayout.collision
+        case .workshops?: return WorkshopsLayout.collision
         case nil: return isAtHome ? Self.homeCollision : Self.farmCollision
         }
     }
@@ -316,6 +317,13 @@ extension Meadow {
         // Walking up the footpath off the farm's north edge takes you to the Pond.
         if d.y < 0, town == nil, !isAtHome, Self.farmPondZone.contains(x, y) {
             goToPond()
+        }
+        // The village's east lane runs to the Workshops; their west road runs back.
+        if d.x > 0, town == .hub, TownLayout.workshopsPath.contains(x, y) {
+            goToWorkshops()
+        }
+        if d.x < 0, town == .workshops, WorkshopsLayout.exitZone.contains(x, y) {
+            goToHubFromWorkshops()
         }
     }
 
@@ -453,6 +461,9 @@ extension Meadow {
             if reaches(TownLayout.farmExit, from: spot, facing: faced) {
                 return DeckTarget(kind: .goToFarm, verb: "Back to the Farm", icon: .emoji("🌾"), spot: Spot(x: 0.57, y: 0.97))
             }
+            if reaches(TownLayout.workshopsPath, from: spot, facing: faced) {
+                return DeckTarget(kind: .goToWorkshops, verb: "Go to the Workshops", icon: .emoji("🛠️"), spot: Spot(x: 0.975, y: 0.65))
+            }
             // Every market stall sells seeds (Shop) and buys your crops (Sell, on the blue button).
             if let stall = closest(TownLayout.stalls.map { ($0, $0) }, from: spot, facing: faced) {
                 return DeckTarget(kind: .stall, verb: "Shop", icon: .asset("icon-seed-packet"),
@@ -475,6 +486,21 @@ extension Meadow {
             }
             if reaches(PondLayout.exitZone, from: spot, facing: faced) {
                 return DeckTarget(kind: .leavePond, verb: "Back to the Farm", icon: .emoji("🌾"), spot: Spot(x: 0.5, y: 0.97))
+            }
+            return nil
+        case .workshops:
+            let people = workWalkers.map { walker in
+                (walker, DeckRect(minX: walker.step.spot.x - 0.03, minY: walker.step.spot.y - 0.09,
+                                  maxX: walker.step.spot.x + 0.03, maxY: walker.step.spot.y + 0.02))
+            }
+            if let walker = closest(people, from: spot, facing: faced) {
+                return personTarget(walker.person, at: walker.step.spot)
+            }
+            if reaches(WorkshopsLayout.exitZone, from: spot, facing: faced) {
+                return DeckTarget(kind: .leaveWorkshops, verb: "Back to the Village", icon: .emoji("🏘️"), spot: Spot(x: 0.03, y: 0.515))
+            }
+            if let thing = closest(WorkshopsLayout.things.map { ($0, $0.zone) }, from: spot, facing: faced) {
+                return DeckTarget(kind: .look(thing.text), verb: "Look at \(thing.name)", icon: .emoji("👀"), spot: thing.zone.center)
             }
             return nil
         case .house(let id):
@@ -638,6 +664,10 @@ extension Meadow {
             goToPond()
         case .leavePond:
             goToFarmFromPond()
+        case .goToWorkshops:
+            goToWorkshops()
+        case .leaveWorkshops:
+            goToHubFromWorkshops()
         case .fish:
             beginFishing()
         case .moonBunny:
