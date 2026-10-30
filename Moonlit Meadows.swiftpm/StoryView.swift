@@ -215,6 +215,8 @@ struct ChatLayout {
         "vi": ChatLayout(tag: rect(0.15, 0.6954, 0.29, 0.7526), box: rect(0.1135, 0.7773, 0.888, 0.9489), tagIsLight: true),
         "roz": ChatLayout(tag: rect(0.0645, 0.6771, 0.2183, 0.7465), box: rect(0.0347, 0.7535, 0.9673, 0.9809), tagIsLight: false),
         "bree": ChatLayout(tag: rect(0.1575, 0.7086, 0.29, 0.757), box: rect(0.1225, 0.7852, 0.8775, 0.9498), tagIsLight: false),
+        "imani": ChatLayout(tag: rect(0.018, 0.733, 0.153, 0.787), box: rect(0.008, 0.758, 0.992, 0.968), tagIsLight: true),
+        "shop": ChatLayout(tag: rect(0.105, 0.685, 0.295, 0.745), box: rect(0.105, 0.735, 0.895, 0.955), tagIsLight: true),
         "theo": ChatLayout(tag: rect(0.0911, 0.7641, 0.2552, 0.8109), box: rect(0.0781, 0.8125, 0.9245, 0.9648), tagIsLight: false),
         "farmer-female-s1-sundress": ChatLayout(tag: rect(0.0546, 0.7535, 0.2381, 0.8203), box: rect(0.0248, 0.8247, 0.9722, 0.9766), tagIsLight: false),
         "farmer-female-s2": ChatLayout(tag: rect(0.0546, 0.7535, 0.2381, 0.8203), box: rect(0.0248, 0.8247, 0.9722, 0.9766), tagIsLight: false),
@@ -330,6 +332,8 @@ struct ChatScene: View {
     var voiceHint: String?
     /// More clips to say after this line, like the question that follows it.
     var voiceAfter: [String] = []
+    /// Show a different chat image than the speaker's own (the shop counter's market scene).
+    var artOverrideID: String? = nil
     /// False to type the line out with no voice or blips (a date scene says it over its video).
     var speaksAloud = true
     /// The portrait slides in a little from the left when the window opens.
@@ -402,6 +406,7 @@ struct ChatScene: View {
             guard let image = UIImage(named: "chat-generic"), let layout = ChatLayout.all["generic"] else { return nil }
             return Art(background: image, layout: layout, bust: bust)
         }
+        if let artOverrideID, let override = own(artOverrideID) { return override }
         switch speaker {
         case .person(let person):
             // Today's outfit has its own chat scene for some people (Sol); otherwise their usual one.
@@ -569,36 +574,73 @@ struct ChatScene: View {
 
     /// Blinking (every few seconds, on each character's own rhythm) and the mouth opening and
     /// closing while they talk, then resting closed. Stops while the game is paused.
+    /// A blink or a moving mouth, crossfaded so faces glide instead of popping
+    /// between frames (Michelle, 2026-10-30: the old swaps looked choppy).
     private func faceMotion(id: String, parts: ChatFaceParts, look: FarmerLook?, w: CGFloat, h: CGFloat) -> some View {
         let seed = Double(id.unicodeScalars.reduce(0) { ($0 * 31 + Int($1.value)) % 997 })
         let period = 3.4 + seed.truncatingRemainder(dividingBy: 13) / 10
-        return TimelineView(.animation(minimumInterval: 1 / 24, paused: meadow.isPaused)) { timeline in
+        return TimelineView(.animation(minimumInterval: 1 / 30, paused: meadow.isPaused)) { timeline in
             let t = timeline.date.timeIntervalSinceReferenceDate
+            // The blink as one smooth eyelid sweep: the half-closed frame fades in,
+            // the closed frame peaks at the bottom of the sweep, then both fade out.
             let phase = (t + seed).truncatingRemainder(dividingBy: period)
-            let blink: String? = !parts.blinks.contains(mood) || phase > 0.2 ? nil
-                : (phase < 0.06 || phase > 0.14 ? "blink1" : "blink2")
+            let blinkAmount: Double = if !parts.blinks.contains(mood) || phase > 0.24 {
+                0
+            } else {
+                sin(.pi * phase / 0.24)
+            }
+            let halfLid = min(blinkAmount * 1.7, 1) * (1 - smoothstep(0.55, 0.85, blinkAmount))
+            let fullLid = smoothstep(0.55, 0.85, blinkAmount)
+            // Talking is a smooth open-close wave that rests between phrases;
+            // the mouth frame crossfades with it, so it never snaps.
             let talking = !chatPaused && talkTimes.contains { $0.contains(timeline.date) }
-            let mouthOpen = talking ? Int(t * 8) % 2 == 0 : false
-            let mouth: String? = mouthOpen ? (parts.openMouth.contains(mood) ? nil : "mouthopen")
-                : (parts.openMouth.contains(mood) ? "mouthclosed" : nil)
+            let phrase = smoothstep(0.25, 0.75, 0.5 + 0.5 * sin(t * 2 * .pi * 0.45 + seed * 2))
+            let syllable = 0.5 + 0.5 * sin(t * 2 * .pi * 3.1 + seed)
+            let openness = talking ? phrase * (0.25 + 0.75 * syllable) : 0.0
             ZStack(alignment: .topLeading) {
-                if let blink, let eyes = ChatFaceParts.frame("chat-\(id)-\(mood.rawValue)-\(blink)", look: look) {
-                    Image(uiImage: eyes)
-                        .resizable()
-                        .frame(width: parts.eyes.width * w, height: parts.eyes.height * h)
-                        .offset(x: parts.eyes.minX * w, y: parts.eyes.minY * h)
+                if blinkAmount > 0.01, parts.blinks.contains(mood) {
+                    if halfLid > 0.01, let eyes = ChatFaceParts.frame("chat-\(id)-\(mood.rawValue)-blink1", look: look) {
+                        Image(uiImage: eyes)
+                            .resizable()
+                            .frame(width: parts.eyes.width * w, height: parts.eyes.height * h)
+                            .offset(x: parts.eyes.minX * w, y: parts.eyes.minY * h)
+                            .opacity(halfLid)
+                    }
+                    if fullLid > 0.01, let eyes = ChatFaceParts.frame("chat-\(id)-\(mood.rawValue)-blink2", look: look) {
+                        Image(uiImage: eyes)
+                            .resizable()
+                            .frame(width: parts.eyes.width * w, height: parts.eyes.height * h)
+                            .offset(x: parts.eyes.minX * w, y: parts.eyes.minY * h)
+                            .opacity(fullLid)
+                    }
                 }
-                if let mouth, let image = ChatFaceParts.frame("chat-\(id)-\(mouth)", look: look) {
+                // Whichever mouth frame differs from the face's own mouth
+                // crossfades in and out with `openness`.
+                if parts.openMouth.contains(mood) {
+                    if openness < 0.99, let image = ChatFaceParts.frame("chat-\(id)-mouthclosed", look: look) {
+                        Image(uiImage: image)
+                            .resizable()
+                            .frame(width: parts.mouth.width * w, height: parts.mouth.height * h)
+                            .offset(x: parts.mouth.minX * w, y: parts.mouth.minY * h)
+                            .opacity(1 - openness)
+                    }
+                } else if openness > 0.01, let image = ChatFaceParts.frame("chat-\(id)-mouthopen", look: look) {
                     Image(uiImage: image)
                         .resizable()
                         .frame(width: parts.mouth.width * w, height: parts.mouth.height * h)
                         .offset(x: parts.mouth.minX * w, y: parts.mouth.minY * h)
+                        .opacity(openness)
                 }
             }
             .frame(width: w, height: h, alignment: .topLeading)
         }
         .allowsHitTesting(false)
         .accessibilityHidden(true)
+    }
+
+    private func smoothstep(_ edge0: Double, _ edge1: Double, _ x: Double) -> Double {
+        let t = min(max((x - edge0) / (edge1 - edge0), 0), 1)
+        return t * t * (3 - 2 * t)
     }
 
     private func scene(_ art: Art, size: CGSize) -> some View {
@@ -651,7 +693,7 @@ struct ChatScene: View {
 
             if let name {
                 Text(name)
-                    .font(.system(size: tagFrame.height * 0.52, weight: .bold, design: .monospaced))
+                    .font(.system(size: 15, weight: .bold, design: .rounded))
                     .foregroundStyle(layout.tagIsLight ? Palette.ink : .white)
                     .shadow(color: layout.tagIsLight ? .white.opacity(0.6) : .black.opacity(0.7), radius: 0, x: 1, y: 1)
                     .lineLimit(1)
@@ -661,12 +703,12 @@ struct ChatScene: View {
             }
 
             Text(typedText)
-                .font(.system(size: h * 0.04, weight: .semibold, design: .monospaced))
+                .font(.system(size: 17, weight: .semibold, design: .rounded))
                 .italic(isItalic)
                 .foregroundStyle(.white)
                 .shadow(color: .black.opacity(0.75), radius: 0, x: 2, y: 2)
                 .lineSpacing(h * 0.008)
-                .minimumScaleFactor(0.45)
+                .minimumScaleFactor(0.7)
                 .frame(width: boxFrame.width * 0.92, height: boxFrame.height * 0.86, alignment: .topLeading)
                 .offset(x: boxFrame.minX + boxFrame.width * 0.035, y: boxFrame.minY + boxFrame.height * 0.1)
                 .id(text)
@@ -676,7 +718,7 @@ struct ChatScene: View {
                 TimelineView(.periodic(from: .now, by: 0.5)) { timeline in
                     let on = Int(timeline.date.timeIntervalSinceReferenceDate * 2) % 2 == 0
                     Text("▼")
-                        .font(.system(size: h * 0.03, weight: .bold))
+                        .font(.system(size: 14, weight: .bold, design: .rounded))
                         .foregroundStyle(.white.opacity(on ? 1 : 0.3))
                 }
                 .offset(x: boxFrame.maxX - h * 0.06, y: boxFrame.maxY - h * 0.06)
@@ -749,7 +791,7 @@ struct DialogButton: View {
     var body: some View {
         Button(action: action) {
             Text(label)
-                .font(.subheadline.bold())
+                .font(.system(size: 17, weight: .bold, design: .rounded))
                 .multilineTextAlignment(.center)
                 .frame(maxWidth: .infinity)
                 .padding(.vertical, 12)

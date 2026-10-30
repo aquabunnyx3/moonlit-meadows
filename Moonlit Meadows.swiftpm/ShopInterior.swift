@@ -84,10 +84,18 @@ struct ShopCounterScene: View {
     }
 
     var body: some View {
-        if let chat = meadow.shopChat, let owner = ShopLayout.owner {
-            // A real chat with the shopkeeper, in the game's own chat scene.
-            ChatScene(meadow: meadow, speaker: .person(owner), name: owner.name, text: chatText(chat),
-                      voiceHint: meadow.relationship(owner.id).path == .romance ? "ROMANCE" : "BESTIE")
+        if let owner = ShopLayout.owner {
+            if let chat = meadow.shopChat {
+                // A real chat with the shopkeeper, in the game's own chat scene.
+                ChatScene(meadow: meadow, speaker: .person(owner), name: owner.name, text: chatText(chat),
+                          voiceHint: meadow.relationship(owner.id).path == .romance ? "ROMANCE" : "BESTIE")
+            } else {
+                // At her counter in the market: her chat screen in the shop
+                // itself, and the buttons live in the panel below
+                // (Michelle, 2026-10-30).
+                ChatScene(meadow: meadow, speaker: .person(owner), name: owner.name, text: line,
+                          artOverrideID: "shop")
+            }
         } else {
             options
         }
@@ -158,9 +166,17 @@ struct ShopPanel: View {
                 chatPanel(chat)
             } else {
                 switch meadow.shopMode {
-                case .buy: ShopTab(meadow: meadow)
-                case .sell: ShopSellView(meadow: meadow)
-                case .options: optionsHint
+                case .buy:
+                    VStack(spacing: 10) {
+                        counterNavRow
+                        ShopTab(meadow: meadow)
+                    }
+                case .sell:
+                    VStack(spacing: 10) {
+                        counterNavRow
+                        ShopSellView(meadow: meadow)
+                    }
+                case .options: optionsPanel
                 }
             }
         }
@@ -168,20 +184,31 @@ struct ShopPanel: View {
         .fontDesign(.rounded)
     }
 
-    private var optionsHint: some View {
-        let name = ShopLayout.owner?.name ?? "The shopkeeper"
-        return VStack(spacing: 8) {
+    /// Chat, Buy, Sell and Exit live down here now, under her chat screen.
+    private var optionsPanel: some View {
+        VStack(spacing: 10) {
             Spacer()
             Image(systemName: "hand.wave.fill")
                 .font(.title2)
                 .foregroundStyle(Palette.rose)
-            Text("\(name) is at the counter — pick Chat, Buy, Sell, or Exit up top.")
+            Text("\(ShopLayout.owner?.name ?? "The shopkeeper") is at the counter.")
                 .font(.callout)
-                .multilineTextAlignment(.center)
                 .opacity(0.8)
+            DialogButton(label: "Chat") { meadow.shopStartChat() }
+            DialogButton(label: "Buy") { meadow.shopMode = .buy }
+            DialogButton(label: "Sell") { meadow.shopMode = .sell }
+            DialogButton(label: "Exit", pink: false) { meadow.closeShopCounter() }
             Spacer()
         }
         .frame(maxWidth: .infinity)
+    }
+
+    /// Back to the counter options, or out of the shop entirely.
+    private var counterNavRow: some View {
+        HStack(spacing: 10) {
+            DialogButton(label: "Back") { meadow.shopMode = .options }
+            DialogButton(label: "Exit", pink: false) { meadow.closeShopCounter() }
+        }
     }
 
     private func chatPanel(_ chat: TalkResult) -> some View {
