@@ -21,7 +21,7 @@ let package = Package(
             teamIdentifier: "",
             displayVersion: "2.0",
             bundleVersion: "2",
-            appIcon: .placeholder(icon: .heart),
+            appIcon: .asset("AppIcon"),
             accentColor: .presetColor(.pink),
             supportedDeviceFamilies: [
                 .pad,

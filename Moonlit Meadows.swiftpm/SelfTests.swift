@@ -962,7 +962,9 @@ enum SelfTests {
         }
         c.expect(UIImage(named: "chat-farmer-female-s1-sundress-blush") != nil && ChatLayout.faces["farmer-female-s1-sundress-blush"] != nil,
                  "Long Waves in her sundress blushes")
-        c.expect(UIImage(named: "weather-breezy") != nil, "The breezy weather icon is in the assets")
+        for weather in Weather.allCases {
+            c.expect(UIImage(named: "weather-\(weather.rawValue)") != nil, "The \(weather.rawValue) weather icon is in the assets")
+        }
         for id in ["june", "roz", "theo", "kai", "sol", "silas", "rowan", "wes", "bree", "vi", "farmer-male", "farmer-female", "farmer-female-s0", "farmer-female-s2",
                    "farmer-male-s0", "farmer-male-s0-hoodie", "farmer-male-s2", "farmer-male-s2-hoodie"] {
             for mood in ["happy", "sad", "surprised", "blush"] {

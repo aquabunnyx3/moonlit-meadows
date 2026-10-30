@@ -29,7 +29,7 @@ Characters use only the illustrated art (the old shape-drawn characters are gone
 | 7 magical crop icons (moonflower, starberry, crystal carrot, golden clover, dream plum, aurora tulip, comet corn) | `ItemIcon` hue-shifts a base emoji and adds a glow |
 | 26 decorations | Emoji in `DecorSprite` |
 | 7 bunny accessories, 11 keepsakes, 8 outfit icons | Emoji |
-| App icon | Swift Playgrounds placeholder (heart) |
+| App icon | **Added**: `AppIcon` (the lavender bunny under the moon) |
 
 | Control deck background | **Added**: `panel-paper` (lavender pixel paper, mockup buttons and text removed). The tiles, chips, plots and buttons are restyled in code to match the mockup (`pixelPanel` in `Theme.swift`) |
 
