@@ -978,16 +978,16 @@ struct ControlDeck: View {
                                 .resizable()
                                 .interpolation(.none)
                                 .scaledToFit()
-                                .frame(height: height * 0.55)
+                                .frame(height: height * 0.48)
                         } else {
                             Text(tab.emoji)
                         }
                         Text(tab.title)
-                            .font(.system(size: max(height * 0.3, 11), weight: .bold, design: .rounded))
+                            .font(.system(size: max(height * 0.23, 9), weight: .bold, design: .rounded))
                             .lineLimit(1)
-                            .minimumScaleFactor(0.6)
+                            .minimumScaleFactor(0.5)
                     }
-                    .padding(.horizontal, 8)
+                    .padding(.horizontal, 6)
                     .frame(maxWidth: .infinity)
                     .frame(height: height)
                     .pixelPanel(isOpen ? Palette.pinkCard : pillColors(tab).fill,

@@ -29,6 +29,7 @@ struct JournalTab: View {
                 }
             }
             .pickerStyle(.segmented)
+            .controlSize(.small)
 
             ScrollView {
                 LazyVStack(spacing: 8) {
@@ -81,7 +82,7 @@ struct JournalTab: View {
                             Text("From \(person.name)").font(.caption.bold())
                         }
                     } else {
-                        Text("🎪 Festival request").font(.caption.bold())
+                        Text(quest.season != nil ? "🎪 Festival request" : "🌱 Farm quest").font(.caption.bold())
                     }
                     QuestRow(meadow: meadow, quest: quest)
                 }

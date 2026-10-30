@@ -19,6 +19,7 @@ struct PantryTab: View {
                 }
             }
             .pickerStyle(.segmented)
+            .controlSize(.small)
 
             switch section {
             case .dishes: dishes

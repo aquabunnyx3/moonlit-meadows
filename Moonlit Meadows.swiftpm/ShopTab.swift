@@ -19,6 +19,7 @@ struct ShopTab: View {
                 }
             }
             .pickerStyle(.segmented)
+            .controlSize(.small)
 
             ScrollView {
                 LazyVStack(spacing: 8) {
