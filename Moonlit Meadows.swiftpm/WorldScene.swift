@@ -125,7 +125,7 @@ struct WorldScene: View {
                     LureGarden(meadow: meadow, map: map, t: t)
 
                     // The path to the village, at the bottom of the farm.
-                    Text("🏘️ Village")
+                    Text("🏘️ Village ↓")
                         .font(.system(size: max(map.unit * 0.022, 9), weight: .bold, design: .rounded))
                         .padding(.horizontal, 6)
                         .padding(.vertical, 2)

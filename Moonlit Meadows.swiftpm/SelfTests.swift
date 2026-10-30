@@ -558,6 +558,17 @@ enum SelfTests {
         c.expect(meadow.deckTarget()?.kind == .goToFarm, "The bottom path leads home")
         meadow.deckAction()
         c.expect(meadow.town == nil, "Back on the farm")
+
+        // Walking down off the end of the path works too, both ways.
+        meadow.farmerSpot = Spot(x: 0.5, y: 0.93)
+        meadow.holdDirection(DeckVector(x: 0, y: 1))
+        for _ in 0..<30 where meadow.town == nil { meadow.deckStep(dt: 1.0 / 30) }
+        c.expect(meadow.town == .hub, "Walking down the farm's bottom path reaches the village")
+        meadow.townSpot = Spot(x: 0.57, y: 0.975)
+        meadow.holdDirection(DeckVector(x: 0, y: 1))
+        for _ in 0..<30 where meadow.town != nil { meadow.deckStep(dt: 1.0 / 30) }
+        meadow.holdDirection(.zero)
+        c.expect(meadow.town == nil, "Walking down the village's bottom path reaches the farm")
         for person in Person.all {
             c.expect(!meadow.whereaboutsText(of: person).isEmpty, "\(person.name)'s whereabouts are written out")
         }

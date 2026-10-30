@@ -308,7 +308,18 @@ extension Meadow {
         let moved = (((x - from.x) * SceneCollision.aspect) * ((x - from.x) * SceneCollision.aspect) + (y - from.y) * (y - from.y)).squareRoot()
         walkerSpot = Spot(x: x, y: y)
         walkedFigures += moved / scene.figure
+        // Walking down off the end of the path between the farm and the village takes you there.
+        if d.y > 0 {
+            if town == .hub, TownLayout.farmExitPath.contains(x, y) {
+                goToFarm()
+            } else if town == nil, !isAtHome, Self.villagePath.contains(x, y) {
+                goToTown()
+            }
+        }
     }
+
+    /// The very end of the farm's bottom path: walking into it goes to the village.
+    static let villagePath = DeckRect(minX: 0.44, minY: 0.94, maxX: 0.56, maxY: 1)
 
     /// The walk cycle's clock: one cycle per stride walked, so the steps match the ground.
     var walkCycleTime: Double { walkedFigures / Self.stride }

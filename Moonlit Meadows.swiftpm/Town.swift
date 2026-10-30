@@ -70,8 +70,10 @@ enum TownLayout {
 
     /// Where you arrive from the farm, at the bottom path.
     static let arrival = Spot(x: 0.57, y: 0.94)
-    /// Walk into this (the path off the bottom of the map) to go back to the farm.
+    /// The path off the bottom of the map, back to the farm: the action button says "Back to
+    /// the Farm" near it, and walking down into its very end takes you home.
     static let farmExit = DeckRect(minX: 0.535, minY: 0.955, maxX: 0.61, maxY: 1.0)
+    static let farmExitPath = DeckRect(minX: 0.535, minY: 0.985, maxX: 0.61, maxY: 1.0)
     /// The two lanes between the houses and the plaza, and the side lanes joining them,
     /// which villagers follow when they walk around.
     static let topLane = 0.265
@@ -660,6 +662,17 @@ struct TownScene: View {
                             .interpolation(.none)
                             .frame(width: map.rect.width, height: map.rect.height)
                             .position(x: map.rect.midX, y: map.rect.midY)
+                    }
+
+                    // The way home, at the bottom path.
+                    if place == .hub {
+                        Text("🌾 Farm ↓")
+                            .font(.system(size: max(map.unit * 0.022, 9), weight: .bold, design: .rounded))
+                            .padding(.horizontal, 6)
+                            .padding(.vertical, 2)
+                            .background(Palette.cream.opacity(0.9), in: .capsule)
+                            .position(map.point(0.62, 0.965))
+                            .allowsHitTesting(false)
                     }
 
                     if let target = meadow.deckTarget() {
