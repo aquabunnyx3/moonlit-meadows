@@ -831,11 +831,15 @@ private let silas = Person(
             "The bees are calm tonight. They only hum like that when they are happy.",
             "Long day? Sit a minute. The kettle's always on.",
             "Smells like rain by evening. The bees are coming home early.",
+            "A bee followed you in just now. She'll report everything back at the hive. They tell me everything, whether I ask or not.",
+            "Mind how you go at the pond after dark. Not a warning. Just… the bees see a lot from that shore, and they gossip.",
         ],
         friend: [
             "You've been carrying a lot lately. You can set some of it down here.",
             "I told the bees about you. They approve. They're very picky.",
             "Saved you a jar of the good honey. Don't tell the others.",
+            "You were out late again last night. No, nobody told me. A bee did.",
+            "There's one bee — lavender stripe, you can't miss her — who's taken to following you. She's spying, love. With bees, that's the same as caring.",
         ],
         romance: [
             "My grandfather said you know it's love when the bees settle around someone. They settle around you.",

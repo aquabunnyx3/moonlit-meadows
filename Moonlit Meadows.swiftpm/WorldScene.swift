@@ -136,6 +136,10 @@ struct WorldScene: View {
                         BreedBunnyView(breed: snow, size: map.unit * 0.075, time: t)
                             .position(map.point(bunnySpot.x, bunnySpot.y - 0.03))
                             .allowsHitTesting(false)
+                        // The spy bee keeps her distance from the Moon Bunny — but not much.
+                        SpyBee(size: map.unit * 0.05)
+                            .position(map.point(bunnySpot.x + 0.07, bunnySpot.y - 0.13))
+                            .allowsHitTesting(false)
                     }
 
                     LureGarden(meadow: meadow, map: map, t: t)

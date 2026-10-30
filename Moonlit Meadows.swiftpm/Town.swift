@@ -897,6 +897,10 @@ struct TownScene: View {
                         BreedBunnyView(breed: snow, size: map.unit * 0.085, time: t)
                             .position(map.point(bunnySpot.x, bunnySpot.y - 0.035))
                             .allowsHitTesting(false)
+                        // The spy bee keeps her distance from the Moon Bunny — but not much.
+                        SpyBee(size: map.unit * 0.055)
+                            .position(map.point(bunnySpot.x + 0.06, bunnySpot.y - 0.12))
+                            .allowsHitTesting(false)
                     }
 
                     if showsCollision {

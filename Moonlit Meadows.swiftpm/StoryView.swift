@@ -9,14 +9,53 @@ struct StorySceneView: View {
     let close: () -> Void
 
     var body: some View {
-        switch scene {
-        case .story(let event):
-            StoryPlayer(meadow: meadow, event: event, close: close)
-        case .moment(let moment):
-            MomentView(meadow: meadow, moment: moment, close: close)
-        case .completion:
-            CompletionView(meadow: meadow, close: close)
+        ZStack {
+            switch scene {
+            case .story(let event):
+                StoryPlayer(meadow: meadow, event: event, close: close)
+            case .moment(let moment):
+                MomentView(meadow: meadow, moment: moment, close: close)
+            case .completion:
+                CompletionView(meadow: meadow, close: close)
+            }
+            // Silas's little spy is always there for the big moments (story
+            // bible, section 9): story chapters and the completion finale.
+            if showsSpyBee {
+                SpyBee()
+                    .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .topTrailing)
+                    .padding(.top, 56)
+                    .padding(.trailing, 20)
+            }
         }
+    }
+
+    private var showsSpyBee: Bool {
+        switch scene {
+        case .moment: return false
+        default: return true
+        }
+    }
+}
+
+/// One particular bee of Silas's — golden, with a single lavender stripe —
+/// who turns up wherever something important is happening and reports back
+/// to the hive. She bobs and drifts a little, the way bees do.
+struct SpyBee: View {
+    var size: CGFloat = 36
+
+    var body: some View {
+        TimelineView(.animation(minimumInterval: 1 / 20)) { timeline in
+            let t = timeline.date.timeIntervalSinceReferenceDate
+            Image("bee-spy")
+                .resizable()
+                .interpolation(.none)
+                .scaledToFit()
+                .frame(width: size, height: size)
+                .offset(x: sin(t * 0.8) * 6, y: sin(t * 2.2) * 4)
+        }
+        .frame(width: size + 16, height: size + 12)
+        .allowsHitTesting(false)
+        .accessibilityHidden(true)
     }
 }
 
