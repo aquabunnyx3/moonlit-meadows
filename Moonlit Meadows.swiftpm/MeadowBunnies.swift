@@ -240,13 +240,16 @@ extension Meadow {
         bunny.lastPettedDay != today
     }
 
-    /// Petting each bunny once a day gives a little XP. Missing a day costs nothing.
+    /// Petting each bunny once a day gives a little XP and a couple of coins,
+    /// floated up as the one coin — no second currency popping up beside it
+    /// (Michelle, 2026-10-30). Missing a day costs nothing.
     @discardableResult
     func pet(_ id: UUID) -> Bool {
         guard let index = bunnies.firstIndex(where: { $0.id == id }), canPet(bunnies[index]) else { return false }
         bunnies[index].lastPettedDay = today
         gainXP(2)
-        spawn(.heart, "💕 \(bunnies[index].name)", at: WorldLayout.habitatCenter)
+        grant(.coins(2))
+        spawn(.text, "🪙 +2", at: WorldLayout.habitatCenter)
         feedbackCount += 1
         return true
     }
