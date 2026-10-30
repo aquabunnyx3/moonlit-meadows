@@ -330,10 +330,7 @@ private struct SettingsSheet: View {
                     }
                 }
                 Section("Credits") {
-                    LabeledContent("Made by", value: "Aqua Bunny Studios")
-                    LabeledContent("Created by", value: "Michelle")
-                    LabeledContent("Art, music and voices", value: "Merlin")
-                    LabeledContent("Programming", value: "Claude")
+                    LabeledContent("Made by", value: "Aqua Bunny Games")
                     Text("Thank you for playing Moonlit Meadows. 🌙🐰")
                         .font(.caption)
                 }
