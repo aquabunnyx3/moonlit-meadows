@@ -528,7 +528,15 @@ private struct WorldHUD: View {
                 HStack(spacing: 6) {
                     Text(Season.at(date).emoji).font(.system(size: 20))
                     VStack(alignment: .leading, spacing: 1) {
-                        Text("\(isNight && weather == .sunny ? "🌙" : weather.emoji) \(isNight && weather == .sunny ? "Clear night" : weather.name)")
+                        HStack(spacing: 3) {
+                            // The drawn weather icon when there is one (breezy so far), otherwise its emoji.
+                            if !(isNight && weather == .sunny), let icon = UIImage(named: "weather-\(weather.rawValue)") {
+                                Image(uiImage: icon).resizable().interpolation(.none).frame(width: 16, height: 16)
+                            } else {
+                                Text(isNight && weather == .sunny ? "🌙" : weather.emoji)
+                            }
+                            Text(isNight && weather == .sunny ? "Clear night" : weather.name)
+                        }
                             .font(.caption.bold())
                         Text("\(meadow.isFestivalDay ? "🎉 " : "")Day \(meadow.dayCount) · \(meadow.clockText)")
                             .font(.caption2.bold())
