@@ -92,9 +92,9 @@ enum TownLayout {
         DeckRect(minX: shopDoorstep.x - 0.04, minY: shopDoorstep.y - 0.07, maxX: shopDoorstep.x + 0.04, maxY: shopDoorstep.y + 0.01)
     }
 
-    /// The market stalls: the top two sell seeds, the bottom two buy your crops.
-    static let seedStalls = [DeckRect(minX: 0.31, minY: 0.31, maxX: 0.40, maxY: 0.47), DeckRect(minX: 0.505, minY: 0.31, maxX: 0.60, maxY: 0.47)]
-    static let sellStalls = [DeckRect(minX: 0.31, minY: 0.50, maxX: 0.40, maxY: 0.66), DeckRect(minX: 0.505, minY: 0.50, maxX: 0.60, maxY: 0.66)]
+    /// The four market stalls: each sells seeds and buys your crops.
+    static let stalls = [DeckRect(minX: 0.31, minY: 0.31, maxX: 0.40, maxY: 0.47), DeckRect(minX: 0.505, minY: 0.31, maxX: 0.60, maxY: 0.47),
+                         DeckRect(minX: 0.31, minY: 0.50, maxX: 0.40, maxY: 0.66), DeckRect(minX: 0.505, minY: 0.50, maxX: 0.60, maxY: 0.66)]
 
     /// Buildings, trees, fences and stalls (by your feet).
     static let hubBlocks: [DeckRect] = [
@@ -131,30 +131,39 @@ enum TownLayout {
         DeckRect(minX: 0.84, minY: 0.55, maxX: 0.855, maxY: 0.715),
         DeckRect(minX: 0.67, minY: 0.33, maxX: 0.81, maxY: 0.62),
         DeckRect(minX: 0.415, minY: 0.45, maxX: 0.49, maxY: 0.54),
-    ] + seedStalls.map { DeckRect(minX: $0.minX, minY: $0.minY, maxX: $0.maxX, maxY: $0.maxY - 0.03) }
-      + sellStalls.map { DeckRect(minX: $0.minX, minY: $0.minY, maxX: $0.maxX, maxY: $0.maxY - 0.03) }
+    ] + stalls.map { DeckRect(minX: $0.minX, minY: $0.minY, maxX: $0.maxX, maxY: $0.maxY - 0.03) }
 
-    /// Each villager's favorite spot in the village, for when their schedule brings them here.
-    static let townSpots: [String: (spot: Spot, label: String)] = [
-        "june": (Spot(x: 0.165, y: 0.625), "Reading outside the village library"),
-        "roz": (Spot(x: 0.555, y: 0.49), "Running the market stall in the plaza"),
-        "sol": (Spot(x: 0.45, y: 0.6), "Playing guitar in the plaza"),
-        "vi": (Spot(x: 0.355, y: 0.68), "Selling flowers at the plaza stall"),
+    /// Each villager's favorite spot in the village (by their feet).
+    static let townSpots: [String: Spot] = [
+        "june": Spot(x: 0.44, y: 0.275),
+        "roz": Spot(x: 0.555, y: 0.49),
+        "theo": Spot(x: 0.62, y: 0.5),
+        "kai": Spot(x: 0.865, y: 0.5),
+        "sol": Spot(x: 0.45, y: 0.6),
+        "rowan": Spot(x: 0.57, y: 0.745),
+        "silas": Spot(x: 0.355, y: 0.48),
+        "bree": Spot(x: 0.17, y: 0.955),
+        "vi": Spot(x: 0.355, y: 0.68),
     ]
 
-    /// Who's off the map when, and where. Everyone else is home whenever their schedule
-    /// doesn't have them on your farm or in the village.
-    static let errands: [String: Set<TimeOfDay>] = [
-        "theo": [.day],
-        "wes": [.day],
-        "bree": [.dusk, .night],
-        "vi": [.dawn],
-    ]
+    /// The morning / midday / evening schedule in the village: when each villager is at their
+    /// spot in the hub, and when they're briefly away. The rest of the time they're home,
+    /// except while their schedule has them visiting your farm (that's unchanged).
     static let townTimes: [String: Set<TimeOfDay>] = [
         "june": [.dusk],
-        "roz": [.day],
-        "sol": [.dusk],
+        "roz": [.dawn],
+        "theo": [.day],
+        "kai": [.day],
+        "sol": [.dawn],
+        "rowan": [.day],
+        "silas": [.dawn],
+        "bree": [.dawn],
         "vi": [.day],
+    ]
+    static let errands: [String: Set<TimeOfDay>] = [
+        "wes": [.day],
+        "bree": [.dusk],
+        "vi": [.dawn],
     ]
 
     static func house(_ id: String) -> TownHouse? {
@@ -391,19 +400,17 @@ extension Meadow {
         return .home
     }
 
-    /// For the Friends tab: where they are, in words.
+    /// For the Friends tab: where they are, in plain words, like "Roz is at home".
     func whereaboutsText(of person: Person) -> String {
         let slot = person.slot(at: timeOfDay)
-        if hubWalker(person.id) != nil, whereabouts(of: person.id) != .town {
-            return "🚶 Walking through the village"
+        if let step = hubWalker(person.id), step.isWalking {
+            return "🚶 \(person.name) is walking through the hub"
         }
         switch whereabouts(of: person.id) {
-        case .farm: return "🌾 On your farm · \(slot.place)"
-        case .town: return "🏘️ In the village · \(TownLayout.townSpots[person.id]?.label ?? slot.place)"
-        case .errand: return "🧭 Out · \(slot.place)"
-        case .home:
-            let house = TownLayout.house(person.id)?.name ?? "home"
-            return "🏠 At home · \(house)"
+        case .farm: return "🌾 \(person.name) is on your farm · \(slot.place)"
+        case .town: return "🏘️ \(person.name) is in the hub · \(slot.place)"
+        case .errand: return "🧭 \(person.name) is away for a bit · \(slot.place)"
+        case .home: return "🏠 \(person.name) is at home"
         }
     }
 
@@ -417,7 +424,7 @@ extension Meadow {
         func point(_ place: Whereabouts) -> Spot? {
             switch place {
             case .home: return house.doorstep
-            case .town: return TownLayout.townSpots[personID]?.spot
+            case .town: return TownLayout.townSpots[personID]
             case .farm, .errand: return Spot(x: (TownLayout.farmExit.minX + TownLayout.farmExit.maxX) / 2, y: 0.97)
             }
         }
@@ -510,11 +517,11 @@ struct TownScene: View {
         TimelineView(.animation(minimumInterval: 1 / 24, paused: meadow.isPaused || meadow.isAtMainMenu)) { timeline in
             let t = timeline.date.timeIntervalSinceReferenceDate
             GeometryReader { proxy in
-                let map = WorldMap(size: proxy.size)
+                let map = place == .hub ? WorldMap(size: proxy.size) : Self.room(in: proxy.size)
                 let size = map.unit * figureScale
 
                 ZStack(alignment: .topLeading) {
-                    Palette.ground
+                    if place == .hub { Palette.ground } else { Color(red: 0.07, green: 0.07, blue: 0.2) }
                     if let image = UIImage(named: art) {
                         Image(uiImage: image)
                             .resizable()
@@ -540,6 +547,14 @@ struct TownScene: View {
             }
         }
         .clipped()
+    }
+
+    /// A room is shown whole, as big as fits, like your own house: never cropped or stretched.
+    private static func room(in size: CGSize) -> WorldMap {
+        let aspect: CGFloat = 2096 / 1184
+        let width = min(size.width, size.height * aspect)
+        let height = width / aspect
+        return WorldMap(rect: CGRect(x: (size.width - width) / 2, y: (size.height - height) / 2, width: width, height: height))
     }
 
     private struct Figure {

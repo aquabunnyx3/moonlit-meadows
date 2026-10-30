@@ -24,6 +24,11 @@ struct WorldMap {
 
     let rect: CGRect
 
+    /// A picture placed exactly where it's drawn (like a room shown whole).
+    init(rect: CGRect) {
+        self.rect = rect
+    }
+
     init(size: CGSize) {
         let aspect = Self.aspect
         let width = size.width, height = max(size.height, 1)

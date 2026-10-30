@@ -32,7 +32,7 @@ struct DeckTarget: Equatable {
         case lureBasket
         case plot(Int)
         case bed, chair, chest, petBed, homeDoor
-        case goToTown, goToFarm, enterHouse(String), leaveHouse, shop, seedStall, sellStall
+        case goToTown, goToFarm, enterHouse(String), leaveHouse, shop, stall
         /// Something to look at: the action button shows its line.
         case look(String)
     }
@@ -279,22 +279,21 @@ extension Meadow {
             let doors = TownLayout.houses.map { ($0, $0.doorZone) }
             if let house = closest(doors, from: spot, facing: faced) {
                 if house.ownerID != nil {
-                    return DeckTarget(kind: .enterHouse(house.id), verb: "Enter \(house.name.capitalizedFirst)", icon: .emoji("🚪"), spot: house.doorstep)
+                    return DeckTarget(kind: .enterHouse(house.id), verb: "Enter", icon: .emoji("🚪"), spot: house.doorstep)
                 }
                 return DeckTarget(kind: .look("The Village Library is closed today. A note on the door says “Back after the harvest festival! — the librarian”."),
                                   verb: "Look at the Library", icon: .emoji("📚"), spot: house.doorstep)
             }
             if reaches(TownLayout.shopZone, from: spot, facing: faced) {
-                return DeckTarget(kind: .shop, verb: "Enter the Shop", icon: .asset("icon-shop"), spot: TownLayout.shopDoorstep)
+                return DeckTarget(kind: .shop, verb: "Shop", icon: .asset("icon-shop"), spot: TownLayout.shopDoorstep, secondary: "Sell")
             }
             if reaches(TownLayout.farmExit, from: spot, facing: faced) {
                 return DeckTarget(kind: .goToFarm, verb: "Back to the Farm", icon: .emoji("🌾"), spot: Spot(x: 0.57, y: 0.97))
             }
-            if let stall = closest(TownLayout.seedStalls.map { ($0, $0) }, from: spot, facing: faced) {
-                return DeckTarget(kind: .seedStall, verb: "Buy Seeds", icon: .asset("icon-seed-packet"), spot: Spot(x: stall.center.x, y: stall.maxY))
-            }
-            if let stall = closest(TownLayout.sellStalls.map { ($0, $0) }, from: spot, facing: faced) {
-                return DeckTarget(kind: .sellStall, verb: "Sell Crops", icon: .asset("icon-carrot"), spot: Spot(x: stall.center.x, y: stall.maxY))
+            // Every market stall sells seeds (Shop) and buys your crops (Sell, on the blue button).
+            if let stall = closest(TownLayout.stalls.map { ($0, $0) }, from: spot, facing: faced) {
+                return DeckTarget(kind: .stall, verb: "Shop", icon: .asset("icon-seed-packet"),
+                                  spot: Spot(x: stall.center.x, y: stall.maxY), secondary: "Sell")
             }
             return nil
         case .house(let id):
@@ -306,7 +305,7 @@ extension Meadow {
                 }
             }
             if reaches(room.exit, from: spot, facing: faced) {
-                return DeckTarget(kind: .leaveHouse, verb: "Go Outside", icon: .emoji("🚪"), spot: room.exit.center)
+                return DeckTarget(kind: .leaveHouse, verb: "Exit", icon: .emoji("🚪"), spot: room.exit.center)
             }
             if let thing = closest(room.things.map { ($0, $0.zone) }, from: spot, facing: faced) {
                 return DeckTarget(kind: .look(thing.text), verb: "Look at \(thing.name)", icon: .emoji("👀"), spot: thing.zone.center)
@@ -454,17 +453,16 @@ extension Meadow {
             leaveHouse()
         case .shop:
             panelTabID = PanelTab.shop.rawValue
-        case .seedStall:
+        case .stall:
             panelTabID = "seeds"
-        case .sellStall:
-            panelTabID = PanelTab.pantry.rawValue
         case .look(let text):
             showToast(text)
             feedbackCount += 1
         }
     }
 
-    /// The blue button: Back from a panel, Gift to the person you're facing, or out the door at home.
+    /// The blue button: Back from a panel, Gift to the person you're facing, Sell at the shop
+    /// and the market stalls, or out the door at home.
     var deckSecondary: String? {
         if panelTabID != PanelTab.farm.rawValue { return "Back" }
         if let secondary = deckTarget()?.secondary { return secondary }
@@ -476,10 +474,16 @@ extension Meadow {
             panelTabID = PanelTab.farm.rawValue
             return
         }
-        if case .person(let id)? = deckTarget()?.kind {
+        switch deckTarget()?.kind {
+        case .person(let id)?:
             profileOpensGifts = true
             openProfile(id)
             return
+        case .shop?, .stall?:
+            panelTabID = PanelTab.pantry.rawValue
+            return
+        default:
+            break
         }
         if isAtHome { leaveHome() }
     }

@@ -116,10 +116,10 @@ extension Person {
         likedGifts: ["blackberry", "honey", "mint", "salad"],
         dislikedGifts: ["chili", "eggplant"],
         schedule: [
-            ScheduleSlot(time: .dawn, place: "Blueberry brambles", emoji: "🫐", inMeadow: false),
+            ScheduleSlot(time: .dawn, place: "Picking blueberries by her cottage", emoji: "🫐", inMeadow: false),
             ScheduleSlot(time: .day, place: "Wandering the meadow", emoji: "🌿", inMeadow: true),
             ScheduleSlot(time: .dusk, place: "Wading in the creek", emoji: "🐸", inMeadow: false),
-            ScheduleSlot(time: .night, place: "Stargazing on the dock", emoji: "✨", inMeadow: false),
+            ScheduleSlot(time: .night, place: "Home with a cup of blueberry tea", emoji: "🫖", inMeadow: false),
         ],
         activities: [
             SharedActivity(name: "Berry picking", emoji: "🫐",
@@ -207,7 +207,7 @@ extension Person {
         dislikedGifts: ["radish", "mushroom"],
         schedule: [
             ScheduleSlot(time: .dawn, place: "Gathering dewy blooms", emoji: "💐", inMeadow: false),
-            ScheduleSlot(time: .day, place: "The Petal Cart", emoji: "🌸", inMeadow: false),
+            ScheduleSlot(time: .day, place: "Selling flowers at the plaza stall", emoji: "🌸", inMeadow: false),
             ScheduleSlot(time: .dusk, place: "Sunset walk", emoji: "🌅", inMeadow: true),
             ScheduleSlot(time: .night, place: "Writing poems", emoji: "📝", inMeadow: true),
         ],

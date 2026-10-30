@@ -517,7 +517,16 @@ enum SelfTests {
         }
         meadow.townSpot = TownLayout.shopDoorstep
         meadow.deckFacing = DeckVector(x: 0, y: -1)
-        c.expect(meadow.deckTarget()?.kind == .shop, "The shop door opens the shop")
+        c.expect(meadow.deckTarget()?.kind == .shop && meadow.deckSecondary == "Sell", "The shop counter offers Shop and Sell")
+        meadow.deckSecondaryAction()
+        c.expect(meadow.panelTabID == PanelTab.pantry.rawValue, "Sell opens selling")
+        meadow.deckSecondaryAction()
+        for stall in TownLayout.stalls {
+            meadow.townSpot = Spot(x: stall.center.x, y: stall.maxY + 0.02)
+            meadow.deckFacing = DeckVector(x: 0, y: -1)
+            let target = meadow.deckTarget()
+            c.expect(target?.kind == .stall || target?.secondary == "Gift", "Each market stall offers Shop and Sell")
+        }
 
         meadow.townSpot = TownLayout.house("june")?.doorstep ?? TownLayout.arrival
         meadow.deckFacing = DeckVector(x: 0, y: -1)
@@ -531,7 +540,7 @@ enum SelfTests {
         c.expect(bed?.verb == "Look at June's bed", "Beds in villagers' houses are Look, not Sleep, got \(bed?.verb ?? "nothing")")
         meadow.townSpot = Spot(x: 0.68, y: 0.8)
         meadow.deckFacing = DeckVector(x: 1, y: 0)
-        c.expect(meadow.deckTarget()?.kind == .leaveHouse, "The way out says Go Outside")
+        c.expect(meadow.deckTarget()?.verb == "Exit", "The way out says Exit")
         meadow.deckAction()
         c.expect(meadow.town == .hub, "Back out in the village")
 
