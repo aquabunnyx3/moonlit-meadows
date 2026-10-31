@@ -72,36 +72,36 @@ struct Decor: Identifiable {
 
     static let all: [Decor] = [
         // Shop decor
-        Decor(id: "flowers", name: "Tulip Bed", emoji: "🌷", unlockLevel: 1, price: 40, currency: .coins, coziness: 5, spot: Spot(x: 0.4, y: 0.6), scale: 0.07),
+        Decor(id: "flowers", name: "Tulip Bed", emoji: "🌷", unlockLevel: 1, price: 40, currency: .coins, coziness: 5, spot: Spot(x: 0.578, y: 0.36), scale: 0.07),
         Decor(id: "mushrooms", name: "Mushroom Ring", emoji: "🍄", unlockLevel: 2, price: 120, currency: .coins, coziness: 5, spot: Spot(x: 0.14, y: 0.77), scale: 0.06),
-        Decor(id: "lantern", name: "Lantern Post", emoji: "🏮", unlockLevel: 3, price: 300, currency: .coins, coziness: 8, spot: Spot(x: 0.405, y: 0.4), scale: 0.08),
-        Decor(id: "bench", name: "Picnic Basket", emoji: "🧺", unlockLevel: 4, price: 650, currency: .coins, coziness: 8, spot: Spot(x: 0.24, y: 0.79), scale: 0.07),
+        Decor(id: "lantern", name: "Lantern Post", emoji: "🏮", unlockLevel: 3, price: 300, currency: .coins, coziness: 8, spot: Spot(x: 0.487, y: 0.545), scale: 0.08),
+        Decor(id: "bench", name: "Picnic Basket", emoji: "🧺", unlockLevel: 4, price: 650, currency: .coins, coziness: 8, spot: Spot(x: 0.775, y: 0.50), scale: 0.07),
         Decor(id: "fountain", name: "Wishing Fountain", emoji: "⛲", unlockLevel: 5, price: 1_500, currency: .coins, coziness: 12, spot: Spot(x: 0.29, y: 0.21), scale: 0.1),
-        Decor(id: "butterflies", name: "Butterflies", emoji: "🦋", unlockLevel: 5, price: 6, currency: .gems, coziness: 10, spot: Spot(x: 0.45, y: 0.5), scale: 0.06),
+        Decor(id: "butterflies", name: "Butterflies", emoji: "🦋", unlockLevel: 5, price: 6, currency: .gems, coziness: 10, spot: Spot(x: 0.605, y: 0.33), scale: 0.06),
         Decor(id: "balloon", name: "Hot Air Balloon", emoji: "🎈", unlockLevel: 6, price: 4_000, currency: .coins, coziness: 12, spot: Spot(x: 0.8, y: 0.05), scale: 0.09),
-        Decor(id: "tent", name: "Cozy Tent", emoji: "⛺", unlockLevel: 7, price: 9_000, currency: .coins, coziness: 15, spot: Spot(x: 0.33, y: 0.79), scale: 0.09),
+        Decor(id: "tent", name: "Cozy Tent", emoji: "⛺", unlockLevel: 7, price: 9_000, currency: .coins, coziness: 15, spot: Spot(x: 0.755, y: 0.68), scale: 0.09),
         Decor(id: "rainbow", name: "Pastel Rainbow", emoji: "🌈", unlockLevel: 8, price: 15, currency: .gems, coziness: 20, spot: Spot(x: 0.35, y: 0.07), scale: 0.13),
         // Collection milestones
-        Decor(id: "gardenArch", name: "Starter Garden Arch", emoji: "🌿", unlockLevel: 1, price: 0, currency: .coins, coziness: 6, spot: Spot(x: 0.445, y: 0.62), scale: 0.07, earnedFrom: "Discover 5 breeds"),
-        Decor(id: "bunnyTopiary", name: "Bunny Topiary", emoji: "🌳", unlockLevel: 1, price: 0, currency: .coins, coziness: 10, spot: Spot(x: 0.575, y: 0.55), scale: 0.09, earnedFrom: "Discover 20 breeds"),
-        Decor(id: "moonGate", name: "Moon Gate", emoji: "🌕", unlockLevel: 1, price: 0, currency: .coins, coziness: 25, spot: Spot(x: 0.565, y: 0.4), scale: 0.1, earnedFrom: "Discover all 50 breeds"),
+        Decor(id: "gardenArch", name: "Starter Garden Arch", emoji: "🌿", unlockLevel: 1, price: 0, currency: .coins, coziness: 6, spot: Spot(x: 0.478, y: 0.63), scale: 0.07, earnedFrom: "Discover 5 breeds"),
+        Decor(id: "bunnyTopiary", name: "Bunny Topiary", emoji: "🌳", unlockLevel: 1, price: 0, currency: .coins, coziness: 10, spot: Spot(x: 0.60, y: 0.60), scale: 0.09, earnedFrom: "Discover 20 breeds"),
+        Decor(id: "moonGate", name: "Moon Gate", emoji: "🌕", unlockLevel: 1, price: 0, currency: .coins, coziness: 25, spot: Spot(x: 0.525, y: 0.42), scale: 0.1, earnedFrom: "Discover all 50 breeds"),
         // Character friendship decor (Friend chapter)
         Decor(id: "herbPlanter", name: "June's Herb Planter", emoji: "🪴", unlockLevel: 1, price: 0, currency: .coins, coziness: 8, spot: Spot(x: 0.2, y: 0.28), scale: 0.07, earnedFrom: "June's story"),
-        Decor(id: "cakeStand", name: "Roz's Cake Stand", emoji: "🎂", unlockLevel: 1, price: 0, currency: .coins, coziness: 8, spot: Spot(x: 0.585, y: 0.75), scale: 0.06, earnedFrom: "Roz's story"),
-        Decor(id: "telescope", name: "Theo's Telescope", emoji: "🔭", unlockLevel: 1, price: 0, currency: .coins, coziness: 8, spot: Spot(x: 0.28, y: 0.1), scale: 0.07, earnedFrom: "Theo's story"),
-        Decor(id: "bunnyHutch", name: "Kai's Bunny Hutch", emoji: "🛖", unlockLevel: 1, price: 0, currency: .coins, coziness: 8, spot: Spot(x: 0.655, y: 0.06), scale: 0.08, earnedFrom: "Kai's story"),
-        Decor(id: "musicBox", name: "Sol's Music Box", emoji: "🎵", unlockLevel: 1, price: 0, currency: .coins, coziness: 8, spot: Spot(x: 0.585, y: 0.32), scale: 0.06, earnedFrom: "Sol's story"),
+        Decor(id: "cakeStand", name: "Roz's Cake Stand", emoji: "🎂", unlockLevel: 1, price: 0, currency: .coins, coziness: 8, spot: Spot(x: 0.812, y: 0.52), scale: 0.06, earnedFrom: "Roz's story"),
+        Decor(id: "telescope", name: "Theo's Telescope", emoji: "🔭", unlockLevel: 1, price: 0, currency: .coins, coziness: 8, spot: Spot(x: 0.35, y: 0.08), scale: 0.07, earnedFrom: "Theo's story"),
+        Decor(id: "bunnyHutch", name: "Kai's Bunny Hutch", emoji: "🛖", unlockLevel: 1, price: 0, currency: .coins, coziness: 8, spot: Spot(x: 0.665, y: 0.16), scale: 0.08, earnedFrom: "Kai's story"),
+        Decor(id: "musicBox", name: "Sol's Music Box", emoji: "🎵", unlockLevel: 1, price: 0, currency: .coins, coziness: 8, spot: Spot(x: 0.665, y: 0.435), scale: 0.06, earnedFrom: "Sol's story"),
         // Romance date decor (Dating chapter) — bunny-themed
-        Decor(id: "pressedFlowerArch", name: "Bunny Blossom Arch", emoji: "💐", unlockLevel: 1, price: 0, currency: .coins, coziness: 12, spot: Spot(x: 0.4, y: 0.71), scale: 0.07, earnedFrom: "A date with June"),
-        Decor(id: "loveCake", name: "Bunny Love Cake", emoji: "🍰", unlockLevel: 1, price: 0, currency: .coins, coziness: 12, spot: Spot(x: 0.7, y: 0.88), scale: 0.06, earnedFrom: "A date with Roz"),
-        Decor(id: "constellationLights", name: "Bunny Constellation", emoji: "🌠", unlockLevel: 1, price: 0, currency: .coins, coziness: 12, spot: Spot(x: 0.5, y: 0.04), scale: 0.08, earnedFrom: "A date with Theo"),
-        Decor(id: "porchSwing", name: "Bunny Porch Swing", emoji: "🪑", unlockLevel: 1, price: 0, currency: .coins, coziness: 12, spot: Spot(x: 0.585, y: 0.16), scale: 0.06, earnedFrom: "A date with Kai"),
-        Decor(id: "duetBandstand", name: "Bunny Bandstand", emoji: "🎪", unlockLevel: 1, price: 0, currency: .coins, coziness: 12, spot: Spot(x: 0.86, y: 0.44), scale: 0.08, earnedFrom: "A date with Sol"),
+        Decor(id: "pressedFlowerArch", name: "Bunny Blossom Arch", emoji: "💐", unlockLevel: 1, price: 0, currency: .coins, coziness: 12, spot: Spot(x: 0.525, y: 0.895), scale: 0.07, earnedFrom: "A date with June"),
+        Decor(id: "loveCake", name: "Bunny Love Cake", emoji: "🍰", unlockLevel: 1, price: 0, currency: .coins, coziness: 12, spot: Spot(x: 0.63, y: 0.895), scale: 0.06, earnedFrom: "A date with Roz"),
+        Decor(id: "constellationLights", name: "Bunny Constellation", emoji: "🌠", unlockLevel: 1, price: 0, currency: .coins, coziness: 12, spot: Spot(x: 0.68, y: 0.045), scale: 0.08, earnedFrom: "A date with Theo"),
+        Decor(id: "porchSwing", name: "Bunny Porch Swing", emoji: "🪑", unlockLevel: 1, price: 0, currency: .coins, coziness: 12, spot: Spot(x: 0.462, y: 0.305), scale: 0.06, earnedFrom: "A date with Kai"),
+        Decor(id: "duetBandstand", name: "Bunny Bandstand", emoji: "🎪", unlockLevel: 1, price: 0, currency: .coins, coziness: 12, spot: Spot(x: 0.72, y: 0.565), scale: 0.08, earnedFrom: "A date with Sol"),
         // Seasonal festivals
-        Decor(id: "petalGarland", name: "Petal Garland", emoji: "🎏", unlockLevel: 1, price: 0, currency: .coins, coziness: 8, spot: Spot(x: 0.75, y: 0.46), scale: 0.07, earnedFrom: "Petal Festival"),
+        Decor(id: "petalGarland", name: "Petal Garland", emoji: "🎏", unlockLevel: 1, price: 0, currency: .coins, coziness: 8, spot: Spot(x: 0.79, y: 0.42), scale: 0.07, earnedFrom: "Petal Festival"),
         Decor(id: "starLanterns", name: "Starlight Lanterns", emoji: "🎐", unlockLevel: 1, price: 0, currency: .coins, coziness: 8, spot: Spot(x: 0.12, y: 0.68), scale: 0.07, earnedFrom: "Starlight Festival"),
-        Decor(id: "harvestWreath", name: "Harvest Wreath", emoji: "🍂", unlockLevel: 1, price: 0, currency: .coins, coziness: 8, spot: Spot(x: 0.585, y: 0.86), scale: 0.06, earnedFrom: "Harvest Moon Festival"),
-        Decor(id: "snowBunny", name: "Snow Bunny", emoji: "⛄", unlockLevel: 1, price: 0, currency: .coins, coziness: 8, spot: Spot(x: 0.51, y: 0.94), scale: 0.07, earnedFrom: "Snowglow Festival"),
+        Decor(id: "harvestWreath", name: "Harvest Wreath", emoji: "🍂", unlockLevel: 1, price: 0, currency: .coins, coziness: 8, spot: Spot(x: 0.497, y: 0.25), scale: 0.06, earnedFrom: "Harvest Moon Festival"),
+        Decor(id: "snowBunny", name: "Snow Bunny", emoji: "⛄", unlockLevel: 1, price: 0, currency: .coins, coziness: 8, spot: Spot(x: 0.572, y: 0.925), scale: 0.07, earnedFrom: "Snowglow Festival"),
     ]
 }
 
