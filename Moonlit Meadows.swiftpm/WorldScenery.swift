@@ -302,6 +302,17 @@ private struct MiniPlot: View {
         ZStack {
             RoundedRectangle(cornerRadius: size * 0.18)
                 .fill(Palette.darkSoil)
+                .overlay {
+                    VStack(spacing: 0) {
+                        ForEach(0..<3, id: \.self) { _ in
+                            Spacer()
+                            Rectangle().fill(Palette.bark.opacity(0.5)).frame(height: 1)
+                        }
+                        Spacer()
+                    }
+                    .padding(.horizontal, size * 0.12)
+                    .clipShape(RoundedRectangle(cornerRadius: size * 0.18))
+                }
                 .padding(size * 0.07)
             if let id = plot.cropID {
                 if plot.isReady {

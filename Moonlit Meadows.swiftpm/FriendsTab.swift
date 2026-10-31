@@ -648,7 +648,7 @@ struct QuestRow: View {
             HStack {
                 Text(quest.title).font(.subheadline.bold())
                 Spacer()
-                PriceButton(label: "Deliver", isEnabled: meadow.canComplete(quest)) {
+                PriceButton(label: quest.harvestGoal != nil || quest.lureGoal ? "Claim" : "Deliver", isEnabled: meadow.canComplete(quest)) {
                     meadow.completeQuest(quest.id)
                 }
             }
@@ -665,6 +665,21 @@ struct QuestRow: View {
                     .padding(.vertical, 2)
                     .background(have >= item.count ? Palette.mint : Palette.blush, in: .capsule)
                 }
+            }
+            if let goal = quest.harvestGoal {
+                let done = meadow.harvestCount(of: goal.itemID)
+                Text("🌱 Harvested \(min(done, goal.count))/\(goal.count) — they're yours to keep")
+                    .font(.caption.bold())
+                    .padding(.horizontal, 6)
+                    .padding(.vertical, 2)
+                    .background(done >= goal.count ? Palette.mint : Palette.blush, in: .capsule)
+            }
+            if quest.lureGoal {
+                Text(meadow.hasLuredBunny ? "🐰 You lured a bunny! 🎉" : "🐰 Lure any bunny to the east-meadow basket")
+                    .font(.caption.bold())
+                    .padding(.horizontal, 6)
+                    .padding(.vertical, 2)
+                    .background(meadow.hasLuredBunny ? Palette.mint : Palette.blush, in: .capsule)
             }
             RewardList(rewards: quest.rewards)
             if quest.points > 0 {

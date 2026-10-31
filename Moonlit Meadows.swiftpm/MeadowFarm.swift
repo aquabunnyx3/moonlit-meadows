@@ -120,6 +120,7 @@ extension Meadow {
               let id = plots[index].cropID, let crop = Crop.find(id) else { return }
         addItems(id, 1)
         cropsHarvested.insert(id)
+        harvestCounts[id, default: 0] += 1
         gainXP(crop.xp)
         spawn(.text, byHelper ? "🐾 +1 \(crop.emoji)" : "+1 \(crop.emoji)", at: plotSpot(index))
         if replant && (byHelper || coins >= crop.seedCost) {
@@ -162,6 +163,7 @@ extension Meadow {
                 harvested[id, default: 0] += cycles
                 addItems(id, cycles)
                 cropsHarvested.insert(id)
+                harvestCounts[id, default: 0] += cycles
                 gainXP(crop.xp * cycles)
                 plots[index].progress = total - Double(cycles)
             } else {

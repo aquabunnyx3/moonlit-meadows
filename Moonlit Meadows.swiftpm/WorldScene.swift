@@ -275,6 +275,22 @@ private struct GardenOverlay: View {
                 if index < plotCount {
                     RoundedRectangle(cornerRadius: unit * 0.012)
                         .fill(Palette.darkSoil)
+                        .overlay {
+                            // Tilled furrows raked across the soil, so a plot
+                            // reads as earth, not a plain brown square
+                            // (Michelle, 2026-10-30).
+                            VStack(spacing: 0) {
+                                ForEach(0..<4, id: \.self) { _ in
+                                    Spacer()
+                                    Rectangle()
+                                        .fill(Palette.bark.opacity(0.55))
+                                        .frame(height: 1.5)
+                                }
+                                Spacer()
+                            }
+                            .padding(.horizontal, width * 0.07)
+                            .clipShape(RoundedRectangle(cornerRadius: unit * 0.012))
+                        }
                         .overlay(RoundedRectangle(cornerRadius: unit * 0.012)
                             .strokeBorder(Palette.bark.opacity(0.5), lineWidth: 1.5))
                         .frame(width: width, height: height)

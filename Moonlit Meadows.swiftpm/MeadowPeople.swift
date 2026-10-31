@@ -669,7 +669,10 @@ extension Meadow {
     // MARK: Quests
 
     var availableQuests: [Quest] {
-        var quests = Quest.starter.filter { !completedQuests.contains($0.id) }
+        var quests = Quest.starter.filter {
+            !completedQuests.contains($0.id)
+                && ($0.prerequisite.map { completedQuests.contains($0) } ?? true)
+        }
         quests += Person.all.flatMap(\.quests).filter {
             !completedQuests.contains($0.id) && stage(of: $0.personID ?? "") >= $0.requiredStage
                 && !isDistant($0.personID ?? "")
@@ -681,8 +684,15 @@ extension Meadow {
         return quests
     }
 
+    /// How many of a crop you've harvested, ever (Settle In counts carrots).
+    func harvestCount(of id: String) -> Int { harvestCounts[id] ?? 0 }
+
     func canComplete(_ quest: Quest) -> Bool {
-        quest.items.allSatisfy { count(of: $0.itemID) >= $0.count }
+        if let goal = quest.harvestGoal {
+            return harvestCount(of: goal.itemID) >= goal.count
+        }
+        if quest.lureGoal { return hasLuredBunny }
+        return quest.items.allSatisfy { count(of: $0.itemID) >= $0.count }
     }
 
     @discardableResult

@@ -134,6 +134,10 @@ struct SaveData: Codable, Equatable {
     var completedQuests: [String] = []
     var festivalCycles: [String] = []
     var cropsHarvested: [String] = []
+    /// How many of each crop you've ever harvested (Settle In counts carrots).
+    var harvestCounts: [String: Int] = [:]
+    /// Whether a bunny has ever arrived at the lure basket.
+    var hasLuredBunny = false
     var favoriteBunnyGifts = 0
     var completionSceneSeen = false
     /// The in-game day, and how many seconds of it you've played. `nil` in older saves.
@@ -159,7 +163,7 @@ struct SaveData: Codable, Equatable {
         case metMoonBunny, moonBunnySightings, memoryFragments, capsuleOpened, revealDone, finaleDone, fishyPending, fishyDone
         case relationships, gifts
         case learnedRecipes, outfits, equippedOutfit, farmerGender, skinTone, hairStyle, hairColor, eyeColor, accessories, equippedAccessory, keepsakes, dateScenesSeen, hints
-        case claimedMilestones, claimedAchievements, completedQuests, festivalCycles, cropsHarvested
+        case claimedMilestones, claimedAchievements, completedQuests, festivalCycles, cropsHarvested, harvestCounts, hasLuredBunny
         case favoriteBunnyGifts, completionSceneSeen, dayNumber, firstDay, dayElapsed, storage, introWelcomeSeen, tourStep, momentsSeen, firstSalePending
     }
 
@@ -216,6 +220,8 @@ struct SaveData: Codable, Equatable {
         completedQuests = try c.decodeIfPresent([String].self, forKey: .completedQuests) ?? d.completedQuests
         festivalCycles = try c.decodeIfPresent([String].self, forKey: .festivalCycles) ?? d.festivalCycles
         cropsHarvested = try c.decodeIfPresent([String].self, forKey: .cropsHarvested) ?? d.cropsHarvested
+        harvestCounts = try c.decodeIfPresent([String: Int].self, forKey: .harvestCounts) ?? d.harvestCounts
+        hasLuredBunny = try c.decodeIfPresent(Bool.self, forKey: .hasLuredBunny) ?? d.hasLuredBunny
         favoriteBunnyGifts = try c.decodeIfPresent(Int.self, forKey: .favoriteBunnyGifts) ?? d.favoriteBunnyGifts
         completionSceneSeen = try c.decodeIfPresent(Bool.self, forKey: .completionSceneSeen) ?? d.completionSceneSeen
         dayNumber = try c.decodeIfPresent(Int.self, forKey: .dayNumber)

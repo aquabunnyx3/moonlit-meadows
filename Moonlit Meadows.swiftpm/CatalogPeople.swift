@@ -126,6 +126,12 @@ struct Quest: Identifiable {
     let items: [ItemCount]
     let points: Int
     let rewards: [Reward]
+    /// A goal finished by harvesting, not handing in: the crop stays in your bag.
+    var harvestGoal: ItemCount? = nil
+    /// A goal finished by luring any bunny to the basket.
+    var lureGoal = false
+    /// Only offered once the quest with this ID is complete.
+    var prerequisite: String? = nil
 }
 
 extension Quest {
@@ -134,11 +140,20 @@ extension Quest {
     /// so it has to really live here (Michelle caught that it didn't, 2026-10-30).
     static let starter: [Quest] = [
         Quest(id: "settle-in", personID: nil, season: nil, title: "Settle In",
-              description: "Welcome to Moonlit Meadows! Harvest 3 carrots from your plots and hand them in here — a proper first harvest to settle in with.",
+              description: "Welcome to Moonlit Meadows! Harvest 3 carrots from your plots — they're yours to keep. A proper first harvest to settle in with.",
               requiredStage: .stranger,
-              items: [ItemCount(itemID: "carrot", count: 3)],
+              items: [],
               points: 0,
-              rewards: [.coins(60), .gems(2)]),
+              rewards: [.coins(60), .gems(2)],
+              harvestGoal: ItemCount(itemID: "carrot", count: 3)),
+        Quest(id: "first-lure", personID: nil, season: nil, title: "Something Hungry",
+              description: "Set a carrot out at the lure basket in the east meadow and wait. Bunnies can't resist carrots — see who comes to visit.",
+              requiredStage: .stranger,
+              items: [],
+              points: 0,
+              rewards: [.coins(40), .gems(1)],
+              lureGoal: true,
+              prerequisite: "settle-in"),
     ]
 }
 
