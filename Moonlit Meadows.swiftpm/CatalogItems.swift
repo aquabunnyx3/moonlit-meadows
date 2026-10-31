@@ -175,11 +175,15 @@ enum ItemInfo {
     }
 
     static func emoji(_ id: String) -> String {
-        Crop.find(id)?.emoji ?? Recipe.find(id)?.emoji ?? (fish(id) != nil ? "🐟" : "❓")
+        if id.hasPrefix("seed-") { return "🌱" }
+        return Crop.find(id)?.emoji ?? Recipe.find(id)?.emoji ?? (fish(id) != nil ? "🐟" : "❓")
     }
 
     static func name(_ id: String) -> String {
-        Crop.find(id)?.name ?? Recipe.find(id)?.name ?? fish(id)?.name ?? id
+        if id.hasPrefix("seed-"), let crop = Crop.find(String(id.dropFirst(5))) {
+            return "\(crop.name) Seeds"
+        }
+        return Crop.find(id)?.name ?? Recipe.find(id)?.name ?? fish(id)?.name ?? id
     }
 
     static func basePrice(_ id: String) -> Int {

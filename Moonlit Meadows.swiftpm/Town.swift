@@ -555,7 +555,9 @@ enum TownLayout {
         bounds: DeckRect(minX: 0.04, minY: 0.615, maxX: 0.96, maxY: 0.96),
         blocks: [BlockZone(label: "Village Shop: counter", rect: DeckRect(minX: 0.01, minY: 0.50, maxX: 0.99, maxY: 0.665)),
                  BlockZone(label: "Village Shop: lavender plant", rect: DeckRect(minX: 0.02, minY: 0.76, maxX: 0.115, maxY: 0.95)),
-                 BlockZone(label: "Village Shop: fern", rect: DeckRect(minX: 0.85, minY: 0.74, maxX: 0.975, maxY: 0.95))],
+                 BlockZone(label: "Village Shop: fern", rect: DeckRect(minX: 0.85, minY: 0.74, maxX: 0.975, maxY: 0.95)),
+                 BlockZone(label: "Village Shop: drop box", rect: DeckRect(minX: 0.19, minY: 0.815, maxX: 0.31, maxY: 0.96)),
+                 BlockZone(label: "Village Shop: seed machine", rect: DeckRect(minX: 0.67, minY: 0.80, maxX: 0.79, maxY: 0.96))],
         entrance: Spot(x: 0.505, y: 0.88), exit: DeckRect(minX: 0.40, minY: 0.92, maxX: 0.615, maxY: 1),
         resident: Spot(x: 0.62, y: 0.56),
         things: [
@@ -898,6 +900,24 @@ struct TownScene: View {
 
                     if case .house(let id) = place, let door = TownLayout.interiors[id]?.glassDoor {
                         GlassDoorView(door: door, rect: map.rect, isOpen: meadow.glassDoorOpen)
+                    }
+
+                    // The Village Shop's after-hours fixtures, drawn against
+                    // its front wall (Michelle, 2026-10-30).
+                    if case .house(let id) = place, id == "shop" {
+                        ForEach(Array(ShopLayout.fixtures.enumerated()), id: \.offset) { _, fixture in
+                            if let image = UIImage(named: fixture.art) {
+                                Image(uiImage: image)
+                                    .resizable()
+                                    .interpolation(.none)
+                                    .scaledToFit()
+                                    .frame(width: (fixture.rect.maxX - fixture.rect.minX) * map.rect.width,
+                                           height: (fixture.rect.maxY - fixture.rect.minY) * map.rect.height,
+                                           alignment: .bottom)
+                                    .position(x: map.rect.minX + (fixture.rect.minX + fixture.rect.maxX) / 2 * map.rect.width,
+                                              y: map.rect.minY + (fixture.rect.minY + fixture.rect.maxY) / 2 * map.rect.height)
+                            }
+                        }
                     }
 
                     // To the Workshops, at the village's east lane.

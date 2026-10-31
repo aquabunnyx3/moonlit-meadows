@@ -198,6 +198,10 @@ final class Meadow {
     var shopChat: TalkResult?
     /// Her reply to the answer you picked, while counter-chatting. Not saved.
     var shopChatAnswer: String?
+    /// Using the drop box inside the shop after hours. Not saved.
+    var dropBoxOpen = false
+    /// Using the seed vending machine inside the shop after hours. Not saved.
+    var seedMachineOpen = false
     /// The panel open on the control deck, by `PanelTab` raw value, or `seeds` or `storage`.
     /// `farm` means none: the D-pad, quick inventory and action button show.
     var panelTabID = "farm"

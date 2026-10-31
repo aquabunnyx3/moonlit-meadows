@@ -34,11 +34,37 @@ enum ShopLayout {
     static func isOpen(hour: Double) -> Bool {
         hour >= Double(openHour) && hour < Double(closeHour)
     }
+
+    /// After hours (Michelle, 2026-10-30): two fixtures stand against the
+    /// shop's front wall, either side of the door, so the shop still works
+    /// while Bree is away — a drop box for selling, and a vending machine
+    /// for seeds. The rects are where TownScene draws them in the room; the
+    /// zones are where the farmer stands to use them.
+    static let dropBoxRect = DeckRect(minX: 0.192, minY: 0.715, maxX: 0.308, maxY: 0.955)
+    static let vendingRect = DeckRect(minX: 0.672, minY: 0.545, maxX: 0.788, maxY: 0.955)
+    static let dropBoxZone = DeckRect(minX: 0.15, minY: 0.68, maxX: 0.35, maxY: 0.93)
+    static let vendingZone = DeckRect(minX: 0.63, minY: 0.62, maxX: 0.83, maxY: 0.93)
+    static let fixtures: [(art: String, rect: DeckRect)] = [
+        ("fixture-drop-box", dropBoxRect), ("fixture-seed-machine", vendingRect),
+    ]
+
+    /// Seed packets are inventory items named after their crop: the vending
+    /// machine sells them, and planting takes a packet instead of coins.
+    static func seedPacketID(_ cropID: String) -> String { "seed-\(cropID)" }
 }
 
 extension Meadow {
     /// Whether the Village Shop is within its hours right now.
     var shopIsOpen: Bool { ShopLayout.isOpen(hour: clockHour) }
+
+    /// Buys one seed packet from the after-hours vending machine, at the
+    /// same price planting charges in coins.
+    func buySeedPacket(_ cropID: String) {
+        guard let crop = Crop.find(cropID), isUnlocked(crop), coins >= crop.seedCost else { return }
+        coins -= crop.seedCost
+        addItems(ShopLayout.seedPacketID(cropID), 1)
+        feedbackCount += 1
+    }
 
     /// Starts a real conversation with the shopkeeper, right at her counter —
     /// the same talk as anywhere else: daily line, friendship points, and
@@ -316,5 +342,93 @@ struct ShopSellView: View {
                 }
             }
         }
+    }
+}
+
+// MARK: - After hours: the drop box and the seed machine
+
+/// The drop box's panel: the counter's sell list, with nobody behind it.
+struct DropBoxPanel: View {
+    let meadow: Meadow
+
+    var body: some View {
+        VStack(spacing: 10) {
+            HStack(spacing: 10) {
+                Text("📦 Drop Box").font(.headline)
+                Spacer()
+                DialogButton(label: "Done", pink: false) { meadow.dropBoxOpen = false }
+            }
+            Text("Bree's away — drop your goods in the box and it pays her usual prices on the spot.")
+                .font(.caption)
+                .opacity(0.7)
+                .frame(maxWidth: .infinity, alignment: .leading)
+            ShopSellView(meadow: meadow)
+        }
+        .foregroundStyle(Palette.ink)
+        .fontDesign(.rounded)
+    }
+}
+
+/// The seed vending machine's panel: every crop's seeds, as packets.
+/// Locked crops stay locked — the machine sells seeds, not shortcuts.
+struct SeedMachinePanel: View {
+    let meadow: Meadow
+
+    var body: some View {
+        VStack(spacing: 10) {
+            HStack(spacing: 10) {
+                Text("🌱 Seed Vending Machine").font(.headline)
+                Spacer()
+                DialogButton(label: "Done", pink: false) { meadow.seedMachineOpen = false }
+            }
+            Text("A packet plants one crop — the plot takes the packet instead of coins.")
+                .font(.caption)
+                .opacity(0.7)
+                .frame(maxWidth: .infinity, alignment: .leading)
+            ScrollView {
+                LazyVStack(spacing: 8) {
+                    ForEach(Crop.all) { crop in
+                        seedRow(crop)
+                    }
+                }
+            }
+            .scrollIndicators(.hidden)
+        }
+        .foregroundStyle(Palette.ink)
+        .fontDesign(.rounded)
+    }
+
+    private func seedRow(_ crop: Crop) -> some View {
+        let unlocked = meadow.isUnlocked(crop)
+        let packets = meadow.count(of: ShopLayout.seedPacketID(crop.id))
+        return CozyCard {
+            HStack(spacing: 10) {
+                ItemIcon(itemID: crop.id, size: 28)
+                    .frame(width: 46, height: 46)
+                    .background(Palette.blush, in: .circle)
+                VStack(alignment: .leading, spacing: 2) {
+                    Text("\(crop.name) Seeds")
+                        .font(.headline)
+                    if unlocked {
+                        coinText("🪙 \(crop.seedCost)" + (packets > 0 ? " · 🎒 ×\(packets)" : ""))
+                            .font(.caption)
+                            .opacity(0.7)
+                    } else {
+                        Text("Unlocks at Lv \(crop.unlockLevel)")
+                            .font(.caption)
+                            .opacity(0.7)
+                    }
+                }
+                Spacer(minLength: 6)
+                if unlocked {
+                    PriceButton(label: "Buy", isEnabled: meadow.coins >= crop.seedCost, color: Palette.lilac) {
+                        meadow.buySeedPacket(crop.id)
+                    }
+                } else {
+                    Text("🔒")
+                }
+            }
+        }
+        .opacity(unlocked ? 1 : 0.55)
     }
 }

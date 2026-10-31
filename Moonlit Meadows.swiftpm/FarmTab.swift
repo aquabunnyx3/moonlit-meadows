@@ -25,6 +25,7 @@ struct FarmTab: View {
     private func seedButton(_ crop: Crop) -> some View {
         let isUnlocked = meadow.isUnlocked(crop)
         let isSelected = meadow.selectedSeed == crop.id
+        let packets = meadow.count(of: ShopLayout.seedPacketID(crop.id))
         return Button {
             meadow.pickSeed(crop.id)
             meadow.panelTabID = PanelTab.farm.rawValue
@@ -39,7 +40,7 @@ struct FarmTab: View {
                     Text(crop.name)
                         .font(.caption.bold())
                     coinText(isUnlocked
-                         ? "🪙 \(crop.seedCost) · \(crop.growSeconds.countdown) · 🐰×\(lureUses(crop))"
+                         ? "\(packets > 0 ? "🎒 ×\(packets) · " : "")🪙 \(crop.seedCost) · \(crop.growSeconds.countdown) · 🐰×\(lureUses(crop))"
                          : "Unlocks at Lv \(crop.unlockLevel)")
                         .font(.caption2)
                         .opacity(0.75)

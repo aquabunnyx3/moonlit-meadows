@@ -72,6 +72,20 @@ struct ControlPanel: View {
                     .padding(12)
                     .background(hasPaper ? Palette.cream.opacity(0.35) : Palette.cream, in: .rect(cornerRadius: 26))
                     .transition(.panelSlide)
+            } else if meadow.dropBoxOpen {
+                // After hours at the drop box: the sell list, no shopkeeper.
+                DropBoxPanel(meadow: meadow)
+                    .frame(maxWidth: .infinity, maxHeight: .infinity)
+                    .padding(12)
+                    .background(hasPaper ? Palette.cream.opacity(0.35) : Palette.cream, in: .rect(cornerRadius: 26))
+                    .transition(.panelSlide)
+            } else if meadow.seedMachineOpen {
+                // After hours at the seed vending machine.
+                SeedMachinePanel(meadow: meadow)
+                    .frame(maxWidth: .infinity, maxHeight: .infinity)
+                    .padding(12)
+                    .background(hasPaper ? Palette.cream.opacity(0.35) : Palette.cream, in: .rect(cornerRadius: 26))
+                    .transition(.panelSlide)
             } else if let person = meadow.focusedPersonID.flatMap(Person.find) {
                 if let talk = meadow.profileTalk, let question = talk.question, meadow.profileAnswer == nil {
                     // They asked you something: the answer buttons live here,

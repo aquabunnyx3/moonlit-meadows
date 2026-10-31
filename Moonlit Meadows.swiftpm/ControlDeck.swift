@@ -35,7 +35,7 @@ struct DeckTarget: Equatable {
         case lureBasket
         case plot(Int)
         case bed, chair, chest, petBed, homeDoor
-        case goToTown, goToFarm, goToPond, leavePond, fish, moonBunny, digCapsule, enterHouse(String), leaveHouse, shop, stall, shopCounter, goToWorkshops, leaveWorkshops
+        case goToTown, goToFarm, goToPond, leavePond, fish, moonBunny, digCapsule, enterHouse(String), leaveHouse, shop, stall, shopCounter, goToWorkshops, leaveWorkshops, dropBox, seedMachine
         /// Something to look at: the action button shows its line.
         case look(String)
     }
@@ -264,7 +264,7 @@ extension Meadow {
     /// trying across and up-and-down separately so diagonals glide along walls.
     func deckStep(dt: Double) {
         if fishing != nil { return }
-        if shopCounterOpen { deckDirection = .zero; return }
+        if shopCounterOpen || dropBoxOpen || seedMachineOpen { deckDirection = .zero; return }
         guard !deckDirection.isZero, !isPaused, !isAtMainMenu, !isSleeping, dt > 0 else { return }
         let scene = currentCollision
         let d = deckDirection
@@ -497,6 +497,17 @@ extension Meadow {
             return nil
         case .house(let id):
             guard let room = TownLayout.interiors[id] else { return nil }
+            if id == "shop", !shopIsOpen {
+                // After hours, the shop still works (Michelle, 2026-10-30):
+                // a drop box for selling and a vending machine for seeds,
+                // standing against the front wall either side of the door.
+                if reaches(ShopLayout.dropBoxZone, from: spot, facing: faced) {
+                    return DeckTarget(kind: .dropBox, verb: "Drop Box", icon: .emoji("📦"), spot: ShopLayout.dropBoxZone.center)
+                }
+                if reaches(ShopLayout.vendingZone, from: spot, facing: faced) {
+                    return DeckTarget(kind: .seedMachine, verb: "Seed Machine", icon: .asset("icon-seed-packet"), spot: ShopLayout.vendingZone.center)
+                }
+            }
             if id == "shop", reaches(ShopLayout.counterZone, from: spot, facing: faced) {
                 if shopIsOpen {
                     return DeckTarget(kind: .shopCounter, verb: "Shop Counter", icon: .asset("icon-shop"), spot: ShopLayout.counterZone.center)
@@ -610,7 +621,7 @@ extension Meadow {
     /// The big pink button.
     func deckAction() {
         if fishing != nil { fishingTap(); return }
-        if shopCounterOpen { return }
+        if shopCounterOpen || dropBoxOpen || seedMachineOpen { return }
         if tourBlocksAction() { return }
         guard let target = deckTarget(), target.canAct else { return }
         deckDirection = .zero
@@ -671,6 +682,10 @@ extension Meadow {
         case .shopCounter:
             shopCounterOpen = true
             shopMode = .options
+        case .dropBox:
+            dropBoxOpen = true
+        case .seedMachine:
+            seedMachineOpen = true
         case .leaveHouse:
             leaveHouse()
         case .shop:

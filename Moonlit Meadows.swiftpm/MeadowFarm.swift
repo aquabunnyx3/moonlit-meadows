@@ -106,8 +106,13 @@ extension Meadow {
 
     func plant(_ cropID: String, in index: Int, quietly: Bool = false) {
         guard plots.indices.contains(index), let crop = Crop.find(cropID), isUnlocked(crop),
-              coins >= crop.seedCost, plots[index].cropID == nil else { return }
-        coins -= crop.seedCost
+              plots[index].cropID == nil else { return }
+        // A seed packet (from the shop's vending machine) plants for free;
+        // otherwise the seed is paid for in coins, as always.
+        if !removeItems(ShopLayout.seedPacketID(cropID), 1) {
+            guard coins >= crop.seedCost else { return }
+            coins -= crop.seedCost
+        }
         plots[index] = Plot(cropID: cropID, progress: 0)
         if !quietly {
             spawn(.text, "🌱", at: plotSpot(index))

@@ -56,6 +56,7 @@ enum SelfTests {
         ("Date scenes: videos play on dates and stay in the Journal", dateScenes),
         ("Control deck: D-pad walking, walls, and the action button", controlDeck),
         ("Village: the walk there, houses, stalls, and who's where", village),
+        ("Shop after hours: the drop box and the seed machine", shopAfterHours),
     ]
 
     static func runAll() -> [TestResult] {
@@ -514,6 +515,43 @@ enum SelfTests {
         meadow.homeSpot = Spot(x: 0.5, y: 0.7)
         meadow.deckSecondaryAction()
         c.expect(!meadow.isAtHome && meadow.farmerSpot.y == Meadow.cottageDoorstep.y, "Leaving puts you on the doorstep")
+    }
+
+    /// The Village Shop after hours: the counter is closed, but the drop box
+    /// sells and the seed vending machine sells packets that plant for free.
+    private static func shopAfterHours(_ c: Check) {
+        let meadow = freshMeadow(at: date(hour: 20))
+        c.expect(!meadow.shopIsOpen, "The shop is closed at 8 PM")
+        meadow.enterHouse("shop")
+
+        meadow.townSpot = Spot(x: 0.25, y: 0.80)
+        meadow.deckFacing = DeckVector(x: 0, y: 1)
+        c.expect(meadow.deckTarget()?.kind == .dropBox, "The drop box offers selling after hours")
+        meadow.deckAction()
+        c.expect(meadow.dropBoxOpen, "The drop box opens its sell panel")
+        meadow.addItems("carrot", 3)
+        let coinsBefore = meadow.coins
+        meadow.sell("carrot", count: 2)
+        c.expect(meadow.count(of: "carrot") == 1 && meadow.coins > coinsBefore, "The drop box sells at the usual prices")
+        meadow.dropBoxOpen = false
+
+        meadow.townSpot = Spot(x: 0.73, y: 0.80)
+        meadow.deckFacing = DeckVector(x: 0, y: 1)
+        c.expect(meadow.deckTarget()?.kind == .seedMachine, "The vending machine offers seeds after hours")
+        meadow.deckAction()
+        c.expect(meadow.seedMachineOpen, "The vending machine opens its panel")
+        meadow.coins = 500
+        meadow.buySeedPacket("carrot")
+        c.expect(meadow.count(of: "seed-carrot") == 1 && meadow.coins < 500, "The machine sells a carrot seed packet")
+        c.expect(ItemInfo.name("seed-carrot") == "Carrot Seeds", "Seed packets are named after their crop")
+        meadow.seedMachineOpen = false
+
+        meadow.leaveHouse()
+        meadow.goToFarm()
+        meadow.coins = 0
+        meadow.plant("carrot", in: 0)
+        c.expect(meadow.plots[0].cropID == "carrot" && meadow.count(of: "seed-carrot") == 0 && meadow.coins == 0,
+                 "A seed packet plants for free")
     }
 
     private static func village(_ c: Check) {
