@@ -147,9 +147,10 @@ enum PersonArt {
     static let cycleRates: [String: Double] = [
         "walk-sol-pinafore-left": 4.6, "walk-sol-pinafore-right": 4.6,
         "walk-sol-overalls-left": 4.6, "walk-sol-overalls-right": 4.6,
-        // Bree's forward cycle is a drawn 4-frame sheet, not video: it plays
+        // The forward cycles are drawn 4-frame sheets, not video: they play
         // at sprite-animation speed (Michelle's forward-walking pass, 2026-10-30).
-        "walk-bree-front": 7,
+        "walk-bree-front": 7, "walk-june-front": 7, "walk-roz-front": 7,
+        "walk-theo-front": 7, "walk-kai-front": 7,
     ]
     private static var cycleLengths: [String: Int] = [:]
 
