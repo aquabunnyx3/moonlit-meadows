@@ -310,7 +310,7 @@ extension Meadow {
     var walkCycleTime: Double { walkedFigures / Self.stride }
 
     /// The point just in front of your farmer, where the faced thing is.
-    private func facedPoint(from spot: Spot) -> Spot {
+    func facedPoint(from spot: Spot) -> Spot {
         let d = deckFacing
         let length = max((d.x * d.x + d.y * d.y).squareRoot(), 0.001)
         let reach = currentCollision.reach
