@@ -58,6 +58,7 @@ enum SelfTests {
         ("Village: the walk there, houses, stalls, and who's where", village),
         ("Shop after hours: the drop box and the seed machine", shopAfterHours),
         ("First chats are introductions", firstMeetLines),
+        ("Fishing results live on the deck buttons", fishingResultButtons),
     ]
 
     static func runAll() -> [TestResult] {
@@ -570,6 +571,23 @@ enum SelfTests {
         c.expect(imani?.line.hasPrefix(Meadow.FirstMeetLines.line(for: "imani") ?? "—") == true
                  && imani?.line.contains("Bring me the first fish") == true,
                  "Imani's introduction still sets her Something Fishy quest")
+    }
+
+    /// After a catch or an escape, the catch card's buttons move to the
+    /// deck: Fish again on the action button, Done on the blue one.
+    private static func fishingResultButtons(_ c: Check) {
+        let meadow = freshMeadow()
+        meadow.goToPond()
+        meadow.fishing = FishingSession()
+        meadow.fishing?.phase = .caught
+        c.expect(meadow.deckTarget()?.verb == "Fish again", "The action button offers Fish again after a catch")
+        c.expect(meadow.deckSecondary == "Done", "The blue button is Done after a catch")
+        meadow.deckAction()
+        c.expect(meadow.fishing?.phase == .casting, "The action button casts again")
+        meadow.fishing?.phase = .escaped
+        c.expect(meadow.deckSecondary == "Done", "The blue button is Done after an escape too")
+        meadow.deckSecondaryAction()
+        c.expect(meadow.fishing == nil, "Done puts the rod away")
     }
 
     private static func village(_ c: Check) {

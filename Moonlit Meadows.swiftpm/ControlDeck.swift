@@ -335,6 +335,11 @@ extension Meadow {
     /// those, what you're facing before what's merely nearby.
     func deckTarget() -> DeckTarget? {
         guard !isSleeping else { return nil }
+        // After a catch (or an escape), the deck's buttons are the result
+        // card's choices (Michelle, 2026-10-30): Fish again / Done.
+        if let session = fishing, session.phase == .caught || session.phase == .escaped {
+            return DeckTarget(kind: .fish, verb: "Fish again", icon: .emoji("🎣"), spot: PondLayout.dockSpot)
+        }
         if town != nil { return townTarget() }
         if isAtHome { return homeTarget() }
         let spot = farmerSpot
@@ -620,7 +625,11 @@ extension Meadow {
 
     /// The big pink button.
     func deckAction() {
-        if fishing != nil { fishingTap(); return }
+        if let session = fishing {
+            // On the result card, the action button is Fish again (Michelle, 2026-10-30).
+            if session.phase == .caught || session.phase == .escaped { fishAgain() } else { fishingTap() }
+            return
+        }
         if shopCounterOpen || dropBoxOpen || seedMachineOpen { return }
         if tourBlocksAction() { return }
         guard let target = deckTarget(), target.canAct else { return }
@@ -701,12 +710,19 @@ extension Meadow {
     /// The blue button: Back from a panel, Gift to the person you're facing, Sell at the shop
     /// and the market stalls, or out the door at home.
     var deckSecondary: String? {
+        // Fishing results: the blue button is Done (Michelle, 2026-10-30).
+        if let session = fishing, session.phase == .caught || session.phase == .escaped { return "Done" }
         if panelTabID != PanelTab.farm.rawValue { return "Back" }
         if let secondary = deckTarget()?.secondary { return secondary }
         return isAtHome && !isSleeping ? "Exit" : nil
     }
 
     func deckSecondaryAction() {
+        // Fishing results: the blue button puts the rod away (Michelle, 2026-10-30).
+        if let session = fishing, session.phase == .caught || session.phase == .escaped {
+            endFishing()
+            return
+        }
         if panelTabID != PanelTab.farm.rawValue {
             panelTabID = PanelTab.farm.rawValue
             return

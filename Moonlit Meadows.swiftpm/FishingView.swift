@@ -24,6 +24,14 @@ struct FishingView: View {
                     Color(red: 0.35, green: 0.45, blue: 0.65)
                 }
 
+                // While you wait, the water lives: ripple rings spread from
+                // the bobber (its fixed spot in the art) and quicken at a bite.
+                // (A generated video kept restaging the scene and moving the
+                // bobber, so the motion is drawn over the corrected still.)
+                if let session = meadow.fishing, session.phase == .casting || session.phase == .waiting || session.phase == .bite {
+                    waitRipples(urgent: session.phase == .bite, t: timeline.date.timeIntervalSinceReferenceDate)
+                }
+
                 if meadow.fishing?.phase == .caught, let catchPlayer {
                     VideoLayer(player: catchPlayer)
                 }
@@ -114,6 +122,32 @@ struct FishingView: View {
         .padding(14)
     }
 
+    /// Expanding ripple rings at the bobber's spot in the fishing art
+    /// (0.3065, 0.648 of the picture), mapped through the fill crop.
+    private func waitRipples(urgent: Bool, t: Double) -> some View {
+        GeometryReader { geo in
+            let s = max(geo.size.width / 1920, geo.size.height / 1280)
+            let bx = (geo.size.width - 1920 * s) / 2 + 0.3065 * 1920 * s
+            let by = (geo.size.height - 1280 * s) / 2 + 0.648 * 1280 * s
+            let cycle = urgent ? 0.9 : 2.6
+            ZStack {
+                ForEach(0..<3, id: \.self) { i in
+                    let p = (t / cycle + Double(i) / 3).truncatingRemainder(dividingBy: 1)
+                    Ellipse()
+                        .stroke(.white.opacity((1 - p) * (urgent ? 0.8 : 0.5)), lineWidth: 2)
+                        .frame(width: (12 + 52 * p) * s, height: (12 + 52 * p) * s * 0.42)
+                        .position(x: bx, y: by)
+                }
+                Circle()
+                    .fill(.white.opacity(0.16 + 0.08 * sin(t * 2.2)))
+                    .frame(width: 18 * s, height: 18 * s)
+                    .position(x: bx, y: by - 5 * s)
+                    .blur(radius: 3)
+            }
+        }
+        .allowsHitTesting(false)
+    }
+
     private func caption(_ text: String) -> some View {
         Text(text)
             .font(.subheadline.bold())
@@ -195,10 +229,6 @@ struct FishingView: View {
                      : "📏 \(session.size) cm · 🪙 \(fish.value)")
                     .font(.subheadline.bold())
             }
-            HStack(spacing: 10) {
-                DialogButton(label: "Fish again 🎣") { meadow.fishAgain() }
-                DialogButton(label: "Done", pink: false) { meadow.endFishing() }
-            }
         }
         .padding(18)
         .frame(maxWidth: 430)
@@ -213,10 +243,6 @@ struct FishingView: View {
                 .font(.callout)
                 .multilineTextAlignment(.center)
                 .opacity(0.85)
-            HStack(spacing: 10) {
-                DialogButton(label: "Fish again 🎣") { meadow.fishAgain() }
-                DialogButton(label: "Done", pink: false) { meadow.endFishing() }
-            }
         }
         .padding(18)
         .frame(maxWidth: 430)
