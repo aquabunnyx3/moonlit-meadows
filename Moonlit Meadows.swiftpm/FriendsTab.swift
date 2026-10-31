@@ -823,26 +823,34 @@ struct PersonTheme {
 struct ProfileTabStrip: View {
     let meadow: Meadow
 
-    private let tabs: [(tab: PanelTab, label: String)] = [
-        (.pantry, "🧺 Pantry"), (.bunnies, "🐰 Bunnies"), (.friends, "💞 Friends"),
-        (.journal, "📔 Journal"), (.shop, "🛍️ Shop"),
-    ]
+    private let tabs: [PanelTab] = [.pantry, .bunnies, .friends, .journal, .shop]
 
     var body: some View {
         HStack(spacing: 6) {
-            ForEach(tabs, id: \.tab.id) { item in
+            ForEach(tabs) { tab in
                 Button {
                     meadow.closeProfile()
-                    meadow.panelTabID = item.tab.rawValue
+                    meadow.panelTabID = tab.rawValue
                 } label: {
-                    Text(item.label)
-                        .font(.caption.bold())
-                        .lineLimit(1)
-                        .minimumScaleFactor(0.7)
-                        .frame(maxWidth: .infinity)
-                        .padding(.vertical, 7)
-                        .background(Palette.pinkCard, in: .rect(cornerRadius: 12))
-                        .overlay(RoundedRectangle(cornerRadius: 12).strokeBorder(Palette.pinkEdge, lineWidth: 2))
+                    HStack(spacing: 4) {
+                        // The deck's pixel tab icons, not emojis (Michelle,
+                        // 2026-10-30: the profile menu had drifted to emoji).
+                        if let icon = UIImage(named: "icon-\(tab.rawValue)") ?? tab.icon {
+                            Image(uiImage: icon)
+                                .resizable()
+                                .interpolation(.none)
+                                .scaledToFit()
+                                .frame(height: 14)
+                        }
+                        Text(tab.title)
+                            .font(.caption.bold())
+                            .lineLimit(1)
+                            .minimumScaleFactor(0.7)
+                    }
+                    .frame(maxWidth: .infinity)
+                    .padding(.vertical, 7)
+                    .background(Palette.pinkCard, in: .rect(cornerRadius: 12))
+                    .overlay(RoundedRectangle(cornerRadius: 12).strokeBorder(Palette.pinkEdge, lineWidth: 2))
                 }
                 .buttonStyle(.plain)
             }
