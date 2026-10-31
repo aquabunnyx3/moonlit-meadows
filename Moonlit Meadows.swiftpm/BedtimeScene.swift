@@ -36,6 +36,15 @@ enum BedtimeScene {
         default: outfit = "jacket"
         }
         let name = "scene-bedtime-\(look.gender.rawValue)-\(hair)-\(outfit)"
+        // Skin variants (Michelle, 2026-10-30): tones 1-3 (Fair, Golden, Tan)
+        // have their own data sets, `...-skin<tone>`; tone 4 (Deep) is the
+        // art's own skin and uses the base name. A variant that isn't in the
+        // app yet falls back to the base video, so sleep never breaks while
+        // the variant set is still being made.
+        if look.skinTone >= 1 && look.skinTone < 4 {
+            let variant = "\(name)-skin\(look.skinTone)"
+            if DateSceneView.url(for: variant) != nil { return variant }
+        }
         // Same check the date scenes use: no data set, no scene.
         return DateSceneView.url(for: name) != nil ? name : nil
     }
