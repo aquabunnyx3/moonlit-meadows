@@ -59,7 +59,7 @@ private struct FriendRow: View {
                 Spacer(minLength: 4)
                 VStack(alignment: .trailing, spacing: 4) {
                     if newChapters > 0 { CozyTag(text: "💌 New chapter", color: Palette.petal) }
-                    if meadow.canTalk(to: person.id) { CozyTag(text: "💬 Say hi", color: Palette.mint) }
+                    // (The "Say hi" chip was removed — Michelle, 2026-10-30.)
                 }
             }
         }
