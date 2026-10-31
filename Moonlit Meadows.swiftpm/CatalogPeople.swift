@@ -943,7 +943,7 @@ private let imani = Person(
                        dateLine: "Imani names a fish after you. “He's dramatic and always hungry,” she says, and won't stop smiling."),
         SharedActivity(name: "Night Fishing", emoji: "🎣",
                        friendLine: "You fish by lantern light, catching nothing and minding not at all. Imani tells the story of the Old Dockmaster twice.",
-                       dateLine: "On the dock at night, Imani's shoulder finds yours. “Quiet,” she whispers. “Something's biting.” Nothing is. She doesn't move away."),
+                       dateLine: "On the dock at night, Imani's shoulder finds yours. “Quiet,” she whispers. “Something's biting.” Nothing is. She doesn't move away.", dateScene: "scene-imani-night-fishing-date"),
         SharedActivity(name: "Release Day", emoji: "🌊",
                        friendLine: "You help Imani carry the season's tagged fish back to the deep water, one bucket at a time. She salutes each one.",
                        dateLine: "Imani lets the last fish go, then keeps hold of your hand instead. “Some things you don't release,” she says."),
