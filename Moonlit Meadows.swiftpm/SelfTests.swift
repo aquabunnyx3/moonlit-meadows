@@ -1028,6 +1028,11 @@ enum SelfTests {
             c.expect(PersonArt.cycleFrame(for: id, facing: .right, time: 0) != nil,
                      "Creator style \(style) walks right with a drawn cycle")
         }
+        c.expect(FarmerRenderer.hasArt(gender: .male, hairStyle: 3, cut: .jacket),
+                 "Low Ponytail has its jacket portrait")
+        let pony = FarmerRenderer.artID(for: FarmerLook(gender: .male, hairStyle: 3))
+        c.expect(PersonArt.cycleFrame(for: pony, facing: .right, time: 0) != nil,
+                 "Low Ponytail walks right with a drawn cycle")
         c.expect(PersonArt.cycleFrame(for: waves, facing: .left, time: 0)?.isFlipped == true, "Walking left mirrors the right cycle")
         for person in Person.all where person.id != "rowan" {
             c.expect(PersonArt.hasWalkCycle(for: person.id, facing: .right), "\(person.name) walks with a video cycle")

@@ -152,6 +152,7 @@ enum PersonArt {
         "walk-bree-front": 7, "walk-june-front": 7, "walk-roz-front": 7,
         // The drawn 4-frame right cycles for the 2026-10-30 creator styles.
         "farmer-female-s3-right": 6, "farmer-female-s4-right": 6,
+        "farmer-male-s3-right": 6,
         "walk-theo-front": 7, "walk-kai-front": 7, "walk-rowan-front": 7,
         "walk-silas-front": 7, "walk-imani-front": 7, "walk-wes-front": 7,
         "walk-vi-front": 7, "walk-sol-pinafore-front": 4.6,
