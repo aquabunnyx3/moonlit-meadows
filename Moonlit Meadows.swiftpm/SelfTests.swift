@@ -58,6 +58,7 @@ enum SelfTests {
         ("Village: the walk there, houses, stalls, and who's where", village),
         ("Shop after hours: the drop box and the seed machine", shopAfterHours),
         ("First chats are introductions", firstMeetLines),
+        ("A chat always offers at least two answers", chatAlwaysOffersAnswers),
         ("Fishing results live on the deck buttons", fishingResultButtons),
         ("Double-tap toggles the quick inventory", quickPinToggle),
         ("Decor is bought into the bag and placed by triple-tap", decorPlacement),
@@ -560,6 +561,30 @@ enum SelfTests {
 
     /// The first time you talk to anyone, they introduce themselves in
     /// character; after that, the daily lines take over.
+    /// Michelle's rule (2026-10-30): Done is never the only option — every
+    /// chat, for every character, in every state, offers at least two
+    /// answers. First talks and same-day repeats ride on small talk; the
+    /// written catalog questions are also checked for two-plus answers.
+    private static func chatAlwaysOffersAnswers(_ c: Check) {
+        for person in Person.all {
+            let meadow = freshMeadow()
+            let first = meadow.talk(to: person.id)
+            c.expect((first?.question?.answers.count ?? 0) >= 2,
+                     "\(person.id) offers answers on the very first chat")
+            if let question = first?.question {
+                c.expect(meadow.answer(question.id, option: 0, for: person.id) != nil,
+                         "\(person.id)'s offered answer lands")
+            }
+            let again = meadow.talk(to: person.id)
+            c.expect((again?.question?.answers.count ?? 0) >= 2,
+                     "\(person.id) still offers answers after today's chat")
+            for question in person.questions {
+                c.expect(question.answers.count >= 2,
+                         "\(person.id)'s question \(question.id) has at least two answers")
+            }
+        }
+    }
+
     private static func firstMeetLines(_ c: Check) {
         let meadow = freshMeadow()
         for person in Person.all {

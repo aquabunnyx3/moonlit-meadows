@@ -284,6 +284,93 @@ extension Meadow {
 
     /// Chat once a day for a little friendship. Every other day they may ask you a question.
     @discardableResult
+    /// Small talk (Michelle, 2026-10-30): a chat ALWAYS offers something to
+    /// answer — Done is never the only button. When no story question fits
+    /// (a stranger, an already-chatted day, a drama beat, or every question
+    /// answered), the talk falls back to this person's small talk: three
+    /// things to say, in their voice. Small talk is repeatable and moves
+    /// nothing — no points, no warmth — the once-ever questions keep the
+    /// stakes.
+    static func smallTalk(for personID: String) -> Question {
+        func q(_ prompt: String, _ answers: [(String, String)]) -> Question {
+            Question(id: "smalltalk-\(personID)", prompt: prompt,
+                     answers: answers.map { Answer(text: $0.0, response: $0.1, points: 0) })
+        }
+        switch personID {
+        case "june":
+            return q("June tucks a stray curl back. “Did you need something, or are you just saying hello?”", [
+                ("Just saying hello.", "“Well, hello back. The basil missed you too. It told me. I translate for basil now, apparently.”"),
+                ("Your garden always smells amazing.", "“That's the lemon balm showing off. Everything out here has a little vanity. Even the kale. Especially the kale.”"),
+                ("Anything exciting out here today?", "“A bee learned the greenhouse door. A BEE. I may as well leave it open and charge admission.”"),
+            ])
+        case "roz":
+            return q("Roz dusts flour off her hands. “Well, Sprout? In the market for bread or gossip?”", [
+                ("Just wanted to see you.", "“Careful, Sprout. Flattery gets you the warm loaf, and I'm running low on willpower.”"),
+                ("Bread. Always bread.", "“Correct answer. The sourdough's in a mood today — good mood. Crackly. Like me before coffee.”"),
+                ("Gossip, obviously.", "“Then pull up a crate. The bakery hears everything, and I repeat most of it.”"),
+            ])
+        case "theo":
+            return q("Theo keeps one eye on the sky. “…Something to say?”", [
+                ("Just checking you're alive.", "“Regrettably. The moon sends her regards, by the way. She doesn't. That was a lie. Feel better?”"),
+                ("Nice night for stars.", "“…It is. Don't make a thing of it. …The bright one's Venus. Everyone thinks it's a star. It isn't.”"),
+                ("I'll leave you to it.", "“Hm. …You can stay. Quietly. The sky doesn't mind.”"),
+            ])
+        case "kai":
+            return q("Kai grins, mid-project, tools everywhere. “Hey! Perfect timing. Probably. What's up?”", [
+                ("Just saying hi.", "“Hi received, logged, and appreciated. You've officially improved the structural integrity of my day.”"),
+                ("What are you building?", "“A stage, a shelf, or a mistake — depends how the afternoon goes. Stick around and find out with me.”"),
+                ("Need a hand?", "“Always. Hold this, don't move, and if it collapses we both saw nothing.”"),
+            ])
+        case "sol":
+            return q("Sol looks up from their instrument, unbothered as ever. “Passing through, or staying a while?”", [
+                ("Staying a while.", "“Good. The kettle's on and the good chair is only mostly broken.”"),
+                ("Just passing through.", "“Forty-two towns taught me: passing through is how staying starts. No rush either way.”"),
+                ("Play something?", "“One song. Then I charge you in biscuits and compliments.”"),
+            ])
+        case "rowan":
+            return q("Rowan wipes the forge heat off with a sleeve. “Mind the sparks. What is it?”", [
+                ("Just visiting.", "“Hm. Folks don't visit a forge by accident. …Kettle's on the back hook if you want tea.”"),
+                ("How's the work?", "“Steel's honest. It does what you tell it, if you tell it right. People could learn from steel.”"),
+                ("The farm's holding up, thanks to you.", "“…Fences were half of it. You did the rest. Don't argue with a man holding tongs.”"),
+            ])
+        case "silas":
+            return q("Silas watches a bee land on his finger like it's reporting for duty. “Hello, love. Mind the girls.”", [
+                ("How are the bees?", "“Thriving, opinionated, and only mildly plotting. Average Tuesday at the apiary.”"),
+                ("Just came to say hello.", "“Then hello back, and the hive says it too. The hum goes up a note when you arrive. I've started noticing.”"),
+                ("Any honey wisdom today?", "“Same as always: move slow, mean well, and never swat at anything that's feeding you.”"),
+            ])
+        case "imani":
+            return q("Imani glances up from the water. “Well? The pond's listening too.”", [
+                ("Just saying hello.", "“Hello, then. You walk quieter than most. The fish have noticed. That's a compliment here.”"),
+                ("How's the pond today?", "“Clear, cold, and honest. Everything a pond should be and most people aren't.”"),
+                ("Any fishing wisdom?", "“Patience, soft hands, and put back what you don't need. Works for more than fishing.”"),
+            ])
+        case "wes":
+            return q("Wes straightens up from a row, slow as seasons. “Mm. Something on your mind?”", [
+                ("Just checking in.", "“Checked. Still here. Still mostly soil, same as the rest of us.”"),
+                ("How's the ground?", "“Depends where you stand. East field's sweet. West field's got opinions. We're working through them.”"),
+                ("Any advice for a new farmer?", "“Water deep, not often, and don't plant promises you can't weed. Rest's just weather.”"),
+            ])
+        case "bree":
+            return q("Bree beams over the counter. “Hi hi! Shopping, or just visiting your favorite shopkeeper?”", [
+                ("Just visiting.", "“Favorite answer! Visiting is free and it comes with a smile. This one's on the house.”"),
+                ("How's business?", "“Busy enough to keep the shelves honest. The seed machine hums at night. I choose to find that charming.”"),
+                ("What's good today?", "“Everything, but the ribbons by the window are showing off. I keep moving them. They keep winning.”"),
+            ])
+        case "vi":
+            return q("Vi blinks like she's surfacing from somewhere far away. “Oh — hello. Was I dreaming again?”", [
+                ("Probably. Good dream?", "“A snowdrop rang like a bell and the whole garden hummed along. So, yes. A very good one.”"),
+                ("Just saying hello.", "“Hello, hello. You arrive like a nice plot twist. The story's better with you in it.”"),
+                ("What are snowdrops saying today?", "“Hope, arriving quietly. They never shout. That's why you have to kneel down close to hear them.”"),
+            ])
+        default:
+            return q("“Well — hello.”", [
+                ("Just saying hello.", "“Hello back. It's a better day for you being in it.”"),
+                ("How are things?", "“Oh, you know. One foot in front of the other, and the kettle somewhere nearby.”"),
+            ])
+        }
+    }
+
     func talk(to personID: String) -> TalkResult? {
         guard let person = Person.find(personID) else { return nil }
         // The first conversation with anyone is an introduction in their own
@@ -292,7 +379,7 @@ extension Meadow {
             ? (FirstMeetLines.line(for: personID) ?? dailyLine(for: person))
             : dailyLine(for: person)
         guard canTalk(to: personID) else {
-            return TalkResult(line: line, points: 0, question: nil)
+            return TalkResult(line: line, points: 0, question: Self.smallTalk(for: personID))
         }
         var state = relationship(personID)
         state.lastTalkDay = today
@@ -312,13 +399,13 @@ extension Meadow {
                 addPoints(10, to: personID)
                 save()
                 moment("somethingFishy", "🎣 Something Fishy — complete! Imani weighed the fish, nodded once, and wrote your name in the pond ledger.")
-                return TalkResult(line: "…Clean catch. Quick, too. The pond approves of you. So do I — and I don't say that about visitors.", points: earnedPoints, question: nil)
+                return TalkResult(line: "…Clean catch. Quick, too. The pond approves of you. So do I — and I don't say that about visitors.", points: earnedPoints, question: Self.smallTalk(for: personID))
             }
             if !fishyPending && !fishyDone {
                 fishyPending = true
                 save()
                 moment("somethingFishy", "🎣 New quest — Something Fishy: catch any fish at the Pond and bring it to Imani.")
-                return TalkResult(line: line + "\n\n…One thing, since you'll be back — and you will be back. Bring me the first fish you catch here. A keeper likes to know who's fishing her water.", points: earnedPoints, question: nil)
+                return TalkResult(line: line + "\n\n…One thing, since you'll be back — and you will be back. Bring me the first fish you catch here. A keeper likes to know who's fishing her water.", points: earnedPoints, question: Self.smallTalk(for: personID))
             }
         }
 
@@ -326,10 +413,10 @@ extension Meadow {
         // sibling makes talking to the other one pointed, some days.
         if today % 2 == 0, stage(of: personID) >= .friend {
             if personID == "imani", relationship("silas").path == .romance, stage(of: "silas") >= .romanticInterest {
-                return TalkResult(line: "…You've got honey on your sleeve. HIS honey. …Forget it. It's not my business who you fall for. Even when it is my brother. Especially then.", points: earnedPoints, question: nil)
+                return TalkResult(line: "…You've got honey on your sleeve. HIS honey. …Forget it. It's not my business who you fall for. Even when it is my brother. Especially then.", points: earnedPoints, question: Self.smallTalk(for: personID))
             }
             if personID == "silas", relationship("imani").path == .romance, stage(of: "imani") >= .romanticInterest {
-                return TalkResult(line: "One of my bees came home smelling of pond water, love. …Imani's a better catch than anything in that pond. Mind you treat her right. And don't tell her I said 'better catch.' She'd frame it.", points: earnedPoints, question: nil)
+                return TalkResult(line: "One of my bees came home smelling of pond water, love. …Imani's a better catch than anything in that pond. Mind you treat her right. And don't tell her I said 'better catch.' She'd frame it.", points: earnedPoints, question: Self.smallTalk(for: personID))
             }
         }
 
@@ -340,42 +427,42 @@ extension Meadow {
         if today % 2 == 0, stage(of: personID) >= .friend {
             // Kai & Sol are exes — a year together, ended "amicably".
             if personID == "kai", relationship("sol").path == .romance, stage(of: "sol") >= .romanticInterest {
-                return TalkResult(line: "So… you and Sol. Official, huh? …I'm happy for you. I am. I built the stage they play on, did you know that? Every nail. If the atelier roof ever leaks I'll fix it — just don't tell them I said that.", points: earnedPoints, question: nil)
+                return TalkResult(line: "So… you and Sol. Official, huh? …I'm happy for you. I am. I built the stage they play on, did you know that? Every nail. If the atelier roof ever leaks I'll fix it — just don't tell them I said that.", points: earnedPoints, question: Self.smallTalk(for: personID))
             }
             if personID == "kai", stage(of: "sol") >= .closeFriend {
-                return TalkResult(line: "You've been spending a lot of time at Sol's place lately. …Cool. That's cool. They make good tea. If they hum while they work, it means things are going well. Whatever 'things' are. Not my business.", points: earnedPoints, question: nil)
+                return TalkResult(line: "You've been spending a lot of time at Sol's place lately. …Cool. That's cool. They make good tea. If they hum while they work, it means things are going well. Whatever 'things' are. Not my business.", points: earnedPoints, question: Self.smallTalk(for: personID))
             }
             if personID == "sol", relationship("kai").path == .romance, stage(of: "kai") >= .romanticInterest {
-                return TalkResult(line: "Kai waved at me today. A year together, and I get a WAVE — like I'm the postman. …Sorry. That one isn't yours to carry. He hums off-key when he's happy, you know. I keep hearing it when he's near you.", points: earnedPoints, question: nil)
+                return TalkResult(line: "Kai waved at me today. A year together, and I get a WAVE — like I'm the postman. …Sorry. That one isn't yours to carry. He hums off-key when he's happy, you know. I keep hearing it when he's near you.", points: earnedPoints, question: Self.smallTalk(for: personID))
             }
             if personID == "sol", stage(of: "kai") >= .closeFriend {
-                return TalkResult(line: "You and Kai have been collaborating a lot. He laughs around you — the real one, not the market-day one. I used to— …never mind. Play something for me instead? Something that isn't a love song.", points: earnedPoints, question: nil)
+                return TalkResult(line: "You and Kai have been collaborating a lot. He laughs around you — the real one, not the market-day one. I used to— …never mind. Play something for me instead? Something that isn't a love song.", points: earnedPoints, question: Self.smallTalk(for: personID))
             }
             // Roz & Rowan are exes — one summer, "ancient history". It isn't.
             if personID == "roz", relationship("rowan").path == .romance, stage(of: "rowan") >= .romanticInterest {
-                return TalkResult(line: "You smell like forge smoke. …He's a good man, Rowan. Stubborn as a cold oven. He keeps every note anyone's ever written him, you know — if he ever shows you mine from when I was seventeen, I was DRAMATIC and it doesn't count.", points: earnedPoints, question: nil)
+                return TalkResult(line: "You smell like forge smoke. …He's a good man, Rowan. Stubborn as a cold oven. He keeps every note anyone's ever written him, you know — if he ever shows you mine from when I was seventeen, I was DRAMATIC and it doesn't count.", points: earnedPoints, question: Self.smallTalk(for: personID))
             }
             if personID == "roz", stage(of: "rowan") >= .closeFriend {
-                return TalkResult(line: "Rowan asked about you today. ROWAN. Asked. Out loud, in words. …Don't give me that look. It's ancient history. Practically archaeology. Pass the flour.", points: earnedPoints, question: nil)
+                return TalkResult(line: "Rowan asked about you today. ROWAN. Asked. Out loud, in words. …Don't give me that look. It's ancient history. Practically archaeology. Pass the flour.", points: earnedPoints, question: Self.smallTalk(for: personID))
             }
             if personID == "rowan", relationship("roz").path == .romance, stage(of: "roz") >= .romanticInterest {
-                return TalkResult(line: "Roz is good for you. She laughs enough for two people. …She got me to dance once, at the midsummer fair. Whole village saw. She wrote me a note after. I keep it in the box. Don't make it a thing.", points: earnedPoints, question: nil)
+                return TalkResult(line: "Roz is good for you. She laughs enough for two people. …She got me to dance once, at the midsummer fair. Whole village saw. She wrote me a note after. I keep it in the box. Don't make it a thing.", points: earnedPoints, question: Self.smallTalk(for: personID))
             }
             if personID == "rowan", stage(of: "roz") >= .closeFriend {
-                return TalkResult(line: "You were at the bakery a long while today. She gives you the good loaf. …She gives most people the good loaf. Most.", points: earnedPoints, question: nil)
+                return TalkResult(line: "You were at the bakery a long while today. She gives you the good loaf. …She gives most people the good loaf. Most.", points: earnedPoints, question: Self.smallTalk(for: personID))
             }
             // Theo & Kai just can't stand each other.
             if personID == "theo", relationship("kai").path == .romance, stage(of: "kai") >= .romanticInterest {
-                return TalkResult(line: "So it's him. Then don't expect a blessing from me. I hate Kai Nakamura-Hale — his noise, his grin, his need to be adored by every room he walks into. Keep him away from my observatory, and don't ask me to smile about it.", points: earnedPoints, question: nil)
+                return TalkResult(line: "So it's him. Then don't expect a blessing from me. I hate Kai Nakamura-Hale — his noise, his grin, his need to be adored by every room he walks into. Keep him away from my observatory, and don't ask me to smile about it.", points: earnedPoints, question: Self.smallTalk(for: personID))
             }
             if personID == "theo", stage(of: "kai") >= .closeFriend {
-                return TalkResult(line: "Don't dress it up — I hate Kai. The grin, the racket, the way he turns every room into an audience. If I could go the rest of my life without hearing that laugh again, I'd call it mercy.", points: earnedPoints, question: nil)
+                return TalkResult(line: "Don't dress it up — I hate Kai. The grin, the racket, the way he turns every room into an audience. If I could go the rest of my life without hearing that laugh again, I'd call it mercy.", points: earnedPoints, question: Self.smallTalk(for: personID))
             }
             if personID == "kai", relationship("theo").path == .romance, stage(of: "theo") >= .romanticInterest {
-                return TalkResult(line: "Wait. You and THEO? Huh. Didn't have that on my chart. Does he smile? Like, with his whole face? …Good for him. Seriously. Don't tell him I said that — he'll get strange about it.", points: earnedPoints, question: nil)
+                return TalkResult(line: "Wait. You and THEO? Huh. Didn't have that on my chart. Does he smile? Like, with his whole face? …Good for him. Seriously. Don't tell him I said that — he'll get strange about it.", points: earnedPoints, question: Self.smallTalk(for: personID))
             }
             if personID == "kai", stage(of: "theo") >= .closeFriend {
-                return TalkResult(line: "You hang out with Theo a lot, huh? No judgment — somebody has to check he's alive. Guy talks to the moon more than to people. He's not bad. He's just… Theo-shaped.", points: earnedPoints, question: nil)
+                return TalkResult(line: "You hang out with Theo a lot, huh? No judgment — somebody has to check he's alive. Guy talks to the moon more than to people. He's not bad. He's just… Theo-shaped.", points: earnedPoints, question: Self.smallTalk(for: personID))
             }
         }
 
@@ -387,7 +474,7 @@ extension Meadow {
         // with no questions there were no rude answers, no strained warmth,
         // and the Apologize button never appeared either. The once-each
         // questions and the once-a-day first talk are pacing enough.
-        let question = stage(of: personID) >= .acquaintance ? unanswered.first : nil
+        let question = (stage(of: personID) >= .acquaintance ? unanswered.first : nil) ?? Self.smallTalk(for: personID)
         moment("firstChat", "💬 That's chatting! The Friends tab keeps track of everyone's hearts and favorites.")
         return TalkResult(line: line, points: earnedPoints, question: question)
     }
@@ -395,6 +482,13 @@ extension Meadow {
     /// Every answer is kind; some just land a little better. Each question is answered once.
     @discardableResult
     func answer(_ questionID: String, option: Int, for personID: String) -> Answer? {
+        // Small talk answers land without touching choices, points or warmth.
+        if questionID.hasPrefix("smalltalk-") {
+            guard Person.find(personID) != nil else { return nil }
+            let question = Self.smallTalk(for: personID)
+            guard question.answers.indices.contains(option) else { return nil }
+            return question.answers[option]
+        }
         guard let person = Person.find(personID),
               let question = person.questions.first(where: { $0.id == questionID }),
               question.answers.indices.contains(option),

@@ -407,7 +407,7 @@ private struct HabitatBunnies: View {
         let area = WorldLayout.habitat
         let shown = Array(meadow.bunnies.sorted { $0.isFavorite && !$1.isFavorite }.prefix(8))
         let accessory = meadow.equippedAccessory.flatMap { BunnyAccessory.find($0)?.emoji }
-        let bunnySize = map.unit * 0.06
+        let bunnySize = map.unit * 0.082
 
         ZStack(alignment: .topLeading) {
             ForEach(Array(shown.enumerated()), id: \.element.id) { index, bunny in
@@ -421,10 +421,19 @@ private struct HabitatBunnies: View {
                     let hopPhase = ((t + phase) / 0.5).truncatingRemainder(dividingBy: 1)
                     let hop = isMoving ? sin(hopPhase * .pi) * bunnySize * 0.14 : 0
                     let bob = isMoving ? 0 : (1 - cos((t + phase) * 2 * .pi / 3.2)) / 2 * PersonFigure.bobHeight
-                    BreedBunnyView(breed: breed, size: bunnySize, time: t, phase: phase, accessory: accessory)
-                        .offset(y: -hop - bob)
-                        .position(map.point(area.minX + (area.maxX - area.minX) * (0.12 + 0.25 * column) + wander,
-                                            area.minY + (area.maxY - area.minY) * (0.3 + 0.5 * row)))
+                    ZStack {
+                        // A soft ground shadow: without one, the pale
+                        // portrait art at pen size reads as a blur on the
+                        // grass (Michelle, 2026-10-30).
+                        Ellipse()
+                            .fill(.black.opacity(0.16))
+                            .frame(width: bunnySize * 0.85, height: bunnySize * 0.3)
+                            .offset(y: bunnySize * 0.36)
+                        BreedBunnyView(breed: breed, size: bunnySize, time: t, phase: phase, accessory: accessory)
+                            .offset(y: -hop - bob)
+                    }
+                    .position(map.point(area.minX + (area.maxX - area.minX) * (0.12 + 0.25 * column) + wander,
+                                        area.minY + (area.maxY - area.minY) * (0.3 + 0.5 * row)))
                 }
             }
         }
