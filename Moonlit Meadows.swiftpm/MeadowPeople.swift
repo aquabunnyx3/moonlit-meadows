@@ -355,8 +355,13 @@ extension Meadow {
 
         let unanswered = person.questions.filter { relationship(personID).choices[$0.id] == nil }
         // The pacing ladder (story bible §5): strangers get small talk only —
-        // personal questions start at Acquaintance.
-        let question = today % 2 == 0 && stage(of: personID) >= .acquaintance ? unanswered.first : nil
+        // personal questions start at Acquaintance. Questions used to also
+        // wait for an even-numbered day, which made them so rare that chats
+        // seemed to never offer options at all (Michelle, 2026-10-30) — and
+        // with no questions there were no rude answers, no strained warmth,
+        // and the Apologize button never appeared either. The once-each
+        // questions and the once-a-day first talk are pacing enough.
+        let question = stage(of: personID) >= .acquaintance ? unanswered.first : nil
         moment("firstChat", "💬 That's chatting! The Friends tab keeps track of everyone's hearts and favorites.")
         return TalkResult(line: line, points: earnedPoints, question: question)
     }
