@@ -560,14 +560,14 @@ enum SelfTests {
     private static func firstMeetLines(_ c: Check) {
         let meadow = freshMeadow()
         for person in Person.all {
-            c.expect(FirstMeetLines.line(for: person.id) != nil, "\(person.name) has a first-meet line")
+            c.expect(Meadow.FirstMeetLines.line(for: person.id) != nil, "\(person.name) has a first-meet line")
         }
         let theo = meadow.talk(to: "theo")
-        c.expect(theo?.line == FirstMeetLines.line(for: "theo"), "Theo's first chat is his cold-shoulder introduction")
+        c.expect(theo?.line == Meadow.FirstMeetLines.line(for: "theo"), "Theo's first chat is his cold-shoulder introduction")
         let theoAgain = meadow.talk(to: "theo")
-        c.expect(theoAgain?.line != FirstMeetLines.line(for: "theo"), "Later chats use the daily lines")
+        c.expect(theoAgain?.line != Meadow.FirstMeetLines.line(for: "theo"), "Later chats use the daily lines")
         let imani = meadow.talk(to: "imani")
-        c.expect(imani?.line.hasPrefix(FirstMeetLines.line(for: "imani") ?? "—") == true
+        c.expect(imani?.line.hasPrefix(Meadow.FirstMeetLines.line(for: "imani") ?? "—") == true
                  && imani?.line.contains("Bring me the first fish") == true,
                  "Imani's introduction still sets her Something Fishy quest")
     }
