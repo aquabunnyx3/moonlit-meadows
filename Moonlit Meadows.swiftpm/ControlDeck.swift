@@ -1194,10 +1194,11 @@ private struct InventorySlotView: View {
 
     var body: some View {
         let isSelected = stack.map { meadow.quickSlot == .item($0.id) } ?? false
-        Button {
-            if let stack { meadow.selectQuickSlot(.item(stack.id)) }
-        } label: {
-            ZStack(alignment: .bottomTrailing) {
+        // Not a Button: a Button's tap handling swallows the long-press, so
+        // .draggable never lifts (Michelle, 2026-10-30: can't tap and drag
+        // items in the quick inventory). A plain view takes both gestures:
+        // a tap selects, a long-press drag moves the item.
+        ZStack(alignment: .bottomTrailing) {
                 RoundedRectangle(cornerRadius: size * 0.2)
                     .fill(Palette.lilacCard.opacity(0.55))
                     .overlay(RoundedRectangle(cornerRadius: size * 0.2).inset(by: 3).strokeBorder(.white.opacity(0.7), lineWidth: 1.5))
@@ -1221,9 +1222,8 @@ private struct InventorySlotView: View {
                         .padding(-2)
                 }
             }
-        }
-        .buttonStyle(SquishButtonStyle())
-        .disabled(stack == nil)
+        .contentShape(Rectangle())
+        .onTapGesture { if let stack { meadow.selectQuickSlot(.item(stack.id)) } }
         .accessibilityLabel(stack.map { "\(ItemInfo.name($0.id)), \($0.count)" } ?? "Empty slot")
         .accessibilityAddTraits(isSelected ? .isSelected : [])
         .modifier(DraggableIfPresent(itemID: stack?.id))
@@ -1280,10 +1280,9 @@ private struct QuickSlotView: View {
 
     var body: some View {
         let isSelected = slot.map { $0 == meadow.quickSlot } ?? false
-        Button {
-            if let slot { meadow.selectQuickSlot(slot) }
-        } label: {
-            ZStack {
+        // Not a Button either, for the same reason as InventorySlotView:
+        // the tap selects, the long-press drag pins and unpins.
+        ZStack {
                 DeckArt(name: "icon-slot-empty", fallback: Palette.lilacCard)
                 content
             }
@@ -1296,9 +1295,8 @@ private struct QuickSlotView: View {
                 }
             }
             .scaleEffect(isSelected ? 1.06 : 1)
-        }
-        .buttonStyle(SquishButtonStyle())
-        .disabled(slot == nil)
+        .contentShape(Rectangle())
+        .onTapGesture { if let slot { meadow.selectQuickSlot(slot) } }
         .overlay {
             if slot == .water && meadow.tourStep == .water {
                 TourRing(cornerRadius: 12)
