@@ -154,6 +154,11 @@ enum PersonArt {
         "walk-silas-front": 7, "walk-imani-front": 7, "walk-wes-front": 7,
         "walk-vi-front": 7, "walk-sol-pinafore-front": 4.6,
         "walk-sol-overalls-front": 4.6,
+        "walk-bree-back": 7, "walk-june-back": 7, "walk-roz-back": 7,
+        "walk-theo-back": 7, "walk-kai-back": 7, "walk-rowan-back": 7,
+        "walk-silas-back": 7, "walk-imani-back": 7, "walk-wes-back": 7,
+        "walk-vi-back": 7, "walk-sol-pinafore-back": 4.6,
+        "walk-sol-overalls-back": 4.6,
     ]
     private static var cycleLengths: [String: Int] = [:]
 
