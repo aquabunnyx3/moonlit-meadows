@@ -86,7 +86,7 @@ struct SaveData: Codable, Equatable {
     var level = 1
     var xp = 0
     var inventory: [String: Int] = [:]
-    var plots: [Plot] = Array(repeating: Plot(), count: 4)
+    var plots: [Plot] = Array(repeating: Plot(), count: 2)
     var decor: [String] = []
     var canLevel = 0
     var lastSeen = Date()

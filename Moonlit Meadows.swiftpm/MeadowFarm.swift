@@ -48,7 +48,7 @@ extension Meadow {
 
     var nextPlotCost: Int? {
         guard plots.count < Self.maxPlots else { return nil }
-        return 60 * Int(pow(2.2, Double(plots.count - Self.startingPlots)))
+        return 50 * plots.count
     }
 
     var nextCanCost: Int? {

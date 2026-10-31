@@ -481,11 +481,30 @@ struct Festival {
 /// 2096×1184): x runs across its width and y down its height. Overlays, floating text, and
 /// the drawn fallback scene all use these, so crops, bunnies, and characters line up with it.
 enum WorldLayout {
-    /// The four beds inside the fence on the left: plots 1–4.
-    static let beds: [Spot] = [Spot(x: 0.224, y: 0.46), Spot(x: 0.311, y: 0.46), Spot(x: 0.224, y: 0.637), Spot(x: 0.311, y: 0.637)]
-    static let bedSize = (width: 0.068, height: 0.13)
-    /// The big fenced field on the right: plots 5–12, in a 4×2 grid, bought with the "+" tile.
-    static let field = (minX: 0.622, minY: 0.565, maxX: 0.813, maxY: 0.818)
+    /// The one garden: a 5×5 grid of plots on the left of the farm, unlocked one plot
+    /// at a time. The third row and column sit a little further over — the wider gap
+    /// after the second row and column is the cross lane through the middle.
+    static let plotColumns = 5
+    static let plotRows = 5
+    /// The top-left corner of the first plot's cell.
+    static let plotOrigin = Spot(x: 0.150, y: 0.340)
+    /// One plot's patch of soil.
+    static let plotCell = (width: 0.050, height: 0.088)
+    /// Centre-to-centre spacing of neighbouring plots.
+    static let plotPitch = (x: 0.062, y: 0.112)
+    /// The cross lane's extra width, added from the third row and column on.
+    static let plotLane = (x: 0.018, y: 0.015)
+
+    static func plotColumn(_ index: Int) -> Int { index % plotColumns }
+    static func plotRow(_ index: Int) -> Int { index / plotColumns }
+
+    /// The cell a plot sits in, in unit coordinates.
+    static func plotCellRect(_ index: Int) -> (minX: Double, minY: Double, maxX: Double, maxY: Double) {
+        let column = Double(plotColumn(index)), row = Double(plotRow(index))
+        let minX = plotOrigin.x + column * plotPitch.x + (column >= 2 ? plotLane.x : 0)
+        let minY = plotOrigin.y + row * plotPitch.y + (row >= 2 ? plotLane.y : 0)
+        return (minX, minY, minX + plotCell.width, minY + plotCell.height)
+    }
     static let lureBasket = Spot(x: 0.295, y: 0.835)
     static let lureGarden = (minX: 0.23, minY: 0.775, maxX: 0.36, maxY: 0.895)
     /// The open grass beside the cottage, where your bunnies play.
@@ -545,13 +564,10 @@ enum WorldLayout {
         return RouteStep(spot: route[0].spot)
     }
 
+    /// A plot's centre, from the one grid geometry above.
     static func plot(_ index: Int) -> Spot {
-        if index < beds.count { return beds[index] }
-        let cell = index - beds.count
-        let column = Double(cell % 4)
-        let row = Double((cell / 4) % 2)
-        return Spot(x: field.minX + (field.maxX - field.minX) * (column + 0.5) / 4,
-                    y: field.minY + (field.maxY - field.minY) * (row + 0.5) / 2)
+        let cell = plotCellRect(index)
+        return Spot(x: (cell.minX + cell.maxX) / 2, y: (cell.minY + cell.maxY) / 2)
     }
 
     static var habitatCenter: Spot {

@@ -38,8 +38,8 @@ struct AwayReport: Identifiable {
 /// - `MeadowRewards.swift`: rewards, achievements, festivals
 @Observable
 final class Meadow {
-    static let startingPlots = 4
-    static let maxPlots = 12
+    static let startingPlots = 2
+    static let maxPlots = 25
     static let maxCanLevel = 5
     static let awayLimit: TimeInterval = 8 * 3600
 

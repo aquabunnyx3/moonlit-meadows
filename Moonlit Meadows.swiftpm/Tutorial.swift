@@ -6,7 +6,7 @@ import SwiftUI
 /// welcome card (Michelle's design): five locked steps — walk, plant, the watering
 /// can, Pantry, Journal. While the Tour runs, only the glowing control answers;
 /// anything else gets "Try tapping … again to proceed." Movement is never locked
-/// (you have to reach the garden beds), but tabs and the action button are.
+/// (you have to reach the garden plots), but tabs and the action button are.
 ///
 /// One adaptation from the original sketch: this game's crops grow on timers and
 /// the watering can is a gem-paid "grow everything" shortcut, so the water step
@@ -21,7 +21,7 @@ enum TourStep: String, Codable, Equatable {
     var hint: String {
         switch self {
         case .move: return "👣 Use the D-pad to take a little walk."
-        case .plant: return "🌱 Walk to a garden bed, face it, and tap the glowing button to plant a seed."
+        case .plant: return "🌱 Walk onto a garden plot and tap the glowing button to plant a seed."
         case .water: return "💧 Tap the watering can. It grows everything at once for gems — a handy shortcut. Plant, water, wait, pick: that's farming!"
         case .pantry: return "🧺 Tap Pantry to sell crops and cook treats."
         case .journal: return "📖 Last one — tap Journal. Your quests and notes live there."
