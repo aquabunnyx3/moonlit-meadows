@@ -16,7 +16,8 @@ extension Meadow {
         case .items(let id, let amount):
             if ItemInfo.exists(id) { addItems(id, amount) }
         case .decor(let id):
-            if Decor.find(id) != nil { decor.insert(id) }
+            // Earned decor arrives in the bag as well; the player places it.
+            if Decor.find(id) != nil { addItems(id, 1) }
         case .outfit(let id):
             if Outfit.find(id) != nil { outfits.insert(id) }
         case .accessory(let id):

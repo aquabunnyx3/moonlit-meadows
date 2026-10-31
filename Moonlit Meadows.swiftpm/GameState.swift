@@ -136,6 +136,8 @@ struct SaveData: Codable, Equatable {
     var cropsHarvested: [String] = []
     /// How many of each crop you've ever harvested (Settle In counts carrots).
     var harvestCounts: [String: Int] = [:]
+    /// Where each placed decoration stands on the farm (decor id → spot).
+    var placedDecor: [String: Spot] = [:]
     /// Whether a bunny has ever arrived at the lure basket.
     var hasLuredBunny = false
     /// Whether the Moon Bunny lure movie (the chase into Theo) has played.
@@ -165,7 +167,7 @@ struct SaveData: Codable, Equatable {
         case metMoonBunny, moonBunnySightings, memoryFragments, capsuleOpened, revealDone, finaleDone, fishyPending, fishyDone
         case relationships, gifts
         case learnedRecipes, outfits, equippedOutfit, farmerGender, skinTone, hairStyle, hairColor, eyeColor, accessories, equippedAccessory, keepsakes, dateScenesSeen, hints
-        case claimedMilestones, claimedAchievements, completedQuests, festivalCycles, cropsHarvested, harvestCounts, hasLuredBunny, moonBunnyLureSceneSeen
+        case claimedMilestones, claimedAchievements, completedQuests, festivalCycles, cropsHarvested, harvestCounts, hasLuredBunny, moonBunnyLureSceneSeen, placedDecor
         case favoriteBunnyGifts, completionSceneSeen, dayNumber, firstDay, dayElapsed, storage, introWelcomeSeen, tourStep, momentsSeen, firstSalePending
     }
 
@@ -223,6 +225,7 @@ struct SaveData: Codable, Equatable {
         festivalCycles = try c.decodeIfPresent([String].self, forKey: .festivalCycles) ?? d.festivalCycles
         cropsHarvested = try c.decodeIfPresent([String].self, forKey: .cropsHarvested) ?? d.cropsHarvested
         harvestCounts = try c.decodeIfPresent([String: Int].self, forKey: .harvestCounts) ?? d.harvestCounts
+        placedDecor = try c.decodeIfPresent([String: Spot].self, forKey: .placedDecor) ?? d.placedDecor
         hasLuredBunny = try c.decodeIfPresent(Bool.self, forKey: .hasLuredBunny) ?? d.hasLuredBunny
         moonBunnyLureSceneSeen = try c.decodeIfPresent(Bool.self, forKey: .moonBunnyLureSceneSeen) ?? d.moonBunnyLureSceneSeen
         favoriteBunnyGifts = try c.decodeIfPresent(Int.self, forKey: .favoriteBunnyGifts) ?? d.favoriteBunnyGifts

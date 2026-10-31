@@ -60,6 +60,7 @@ enum SelfTests {
         ("First chats are introductions", firstMeetLines),
         ("Fishing results live on the deck buttons", fishingResultButtons),
         ("Double-tap toggles the quick inventory", quickPinToggle),
+        ("Decor is bought into the bag and placed by triple-tap", decorPlacement),
     ]
 
     static func runAll() -> [TestResult] {
@@ -608,6 +609,27 @@ enum SelfTests {
         c.expect(meadow.quickPins == ["clover"], "Double-tapping a pinned item takes it out")
         meadow.toggleQuickPin("tulip")
         c.expect(meadow.quickPins == ["clover", "tulip"], "The freed slot can be refilled")
+    }
+
+    /// Bought (and earned) decor lands in the bag; triple-tap places it at
+    /// the farmer's feet on the farm, and only there.
+    private static func decorPlacement(_ c: Check) {
+        let meadow = freshMeadow()
+        meadow.coins = 500
+        let flowers = Decor.find("flowers")!
+        meadow.buy(flowers)
+        c.expect(meadow.count(of: "flowers") == 1 && meadow.decor.isEmpty && meadow.coziness == 0,
+                 "Buying decor puts it in the bag, unplaced, with no coziness yet")
+        let spot = meadow.facedPoint(from: meadow.farmerSpot)
+        c.expect(meadow.placeDecor("flowers"), "Triple-tap places it on the farm")
+        c.expect(meadow.count(of: "flowers") == 0 && meadow.decor.contains("flowers") && meadow.coziness == flowers.coziness,
+                 "Placing takes it out of the bag and the coziness counts")
+        c.expect(meadow.placedDecor["flowers"] == spot && meadow.decorSpot(for: flowers) == spot,
+                 "It stands where the farmer faced")
+        meadow.addItems("lantern", 1)
+        meadow.goToTown()
+        c.expect(!meadow.placeDecor("lantern") && meadow.count(of: "lantern") == 1,
+                 "Decor cannot be placed in the village")
     }
 
     private static func village(_ c: Check) {

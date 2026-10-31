@@ -1261,6 +1261,7 @@ private struct InventorySlotView: View {
                 }
             }
         .contentShape(Rectangle())
+        .onTapGesture(count: 3) { if let stack { meadow.placeDecor(stack.id) } }
         .onTapGesture(count: 2) { if let stack { meadow.toggleQuickPin(stack.id) } }
         .onTapGesture { if let stack { meadow.selectQuickSlot(.item(stack.id)) } }
         .accessibilityLabel(stack.map { "\(ItemInfo.name($0.id)), \($0.count)" } ?? "Empty slot")
@@ -1336,6 +1337,10 @@ private struct QuickSlotView: View {
             }
             .scaleEffect(isSelected ? 1.06 : 1)
         .contentShape(Rectangle())
+        .onTapGesture(count: 3) {
+            // Triple-tapping a carried decoration places it where you stand.
+            if case .item(let id)? = slot { meadow.placeDecor(id) }
+        }
         .onTapGesture(count: 2) {
             // Double-tapping a pinned item in its quick slot unpins it.
             if pinIndex != nil, case .item(let id)? = slot { meadow.toggleQuickPin(id) }

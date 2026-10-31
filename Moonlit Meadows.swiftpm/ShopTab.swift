@@ -62,6 +62,7 @@ struct ShopTab: View {
 
     private func decorRow(_ item: Decor) -> some View {
         let isOwned = meadow.decor.contains(item.id)
+        let isCarried = meadow.count(of: item.id) > 0
         let isUnlocked = meadow.level >= item.unlockLevel
         let balance = item.currency == .coins ? meadow.coins : meadow.gems
         let icon = item.currency == .coins ? "🪙" : "💎"
@@ -80,7 +81,7 @@ struct ShopTab: View {
                 VStack(alignment: .leading, spacing: 2) {
                     Text(item.name)
                         .font(.headline)
-                    if let source = item.earnedFrom, !isOwned {
+                    if let source = item.earnedFrom, !isOwned && !isCarried {
                         Text("Earned from: \(source)").font(.caption).opacity(0.7)
                     } else {
                         Text(isUnlocked ? "+\(item.coziness)% coziness" : "Unlocks at Lv \(item.unlockLevel)")
@@ -91,6 +92,9 @@ struct ShopTab: View {
                 Spacer(minLength: 6)
                 if isOwned {
                     Text("Placed 💕")
+                        .font(.caption.bold())
+                } else if isCarried {
+                    Text("In your bag 🎒")
                         .font(.caption.bold())
                 } else if isUnlocked && item.isShopItem {
                     PriceButton(label: "\(icon) \(item.price.cozy)", isEnabled: balance >= item.price) {

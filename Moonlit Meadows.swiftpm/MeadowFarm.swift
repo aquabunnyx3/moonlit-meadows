@@ -210,7 +210,7 @@ extension Meadow {
     // MARK: Shop
 
     func buy(_ item: Decor) {
-        guard item.isShopItem, !decor.contains(item.id), level >= item.unlockLevel else { return }
+        guard item.isShopItem, !decor.contains(item.id), count(of: item.id) == 0, level >= item.unlockLevel else { return }
         switch item.currency {
         case .coins:
             guard coins >= item.price else { return }
@@ -219,11 +219,34 @@ extension Meadow {
             guard gems >= item.price else { return }
             gems -= item.price
         }
-        decor.insert(item.id)
+        // Bought decor goes in the bag now (Michelle, 2026-10-30): the player
+        // chooses where it stands — triple-tap it on the farm to place it.
+        addItems(item.id, 1)
         noteFirstPurchase()
-        spawn(.sparkle, "✨ \(item.emoji) ✨", at: item.spot)
+        spawn(.sparkle, "✨ \(item.emoji) ✨", at: WorldLayout.cottageDoor)
         feedbackCount += 1
         save()
+    }
+
+    /// Where a decoration stands: where the player put it, or its catalog
+    /// spot for decor earned before placement existed.
+    func decorSpot(for item: Decor) -> Spot {
+        placedDecor[item.id] ?? item.spot
+    }
+
+    /// Triple-tapping a carried decoration places it right where you're
+    /// standing (Michelle, 2026-10-30) — one step ahead, so you're not
+    /// inside it. Farm only: decor lives on the meadow.
+    @discardableResult
+    func placeDecor(_ id: String) -> Bool {
+        guard Decor.find(id) != nil, count(of: id) > 0, !decor.contains(id),
+              town == nil, !isAtHome else { return false }
+        removeItems(id, 1)
+        decor.insert(id)
+        placedDecor[id] = facedPoint(from: farmerSpot)
+        feedbackCount += 1
+        save()
+        return true
     }
 
     func buyPlot() {

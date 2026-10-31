@@ -124,6 +124,10 @@ final class Meadow {
     var festivalCycles: Set<String> = []
     var cropsHarvested: Set<String> = []
     var harvestCounts: [String: Int] = [:]
+    /// Where each placed decoration stands (decor id → spot). Decor without
+    /// an entry stands at its catalog spot (older saves, earned before
+    /// placement existed).
+    var placedDecor: [String: Spot] = [:]
     var hasLuredBunny = false
     var moonBunnyLureSceneSeen = false
     /// Session-only steps of the Moon Bunny lure movie (Story.swift).
@@ -365,6 +369,7 @@ final class Meadow {
         data.festivalCycles = festivalCycles.sorted()
         data.cropsHarvested = cropsHarvested.sorted()
         data.harvestCounts = harvestCounts
+        data.placedDecor = placedDecor
         data.hasLuredBunny = hasLuredBunny
         data.moonBunnyLureSceneSeen = moonBunnyLureSceneSeen
         data.favoriteBunnyGifts = favoriteBunnyGifts
@@ -484,6 +489,7 @@ final class Meadow {
         festivalCycles = Set(data.festivalCycles)
         cropsHarvested = Set(data.cropsHarvested)
         harvestCounts = data.harvestCounts
+        placedDecor = data.placedDecor
         hasLuredBunny = data.hasLuredBunny
         moonBunnyLureSceneSeen = data.moonBunnyLureSceneSeen
         favoriteBunnyGifts = data.favoriteBunnyGifts

@@ -127,7 +127,7 @@ struct WorldScene: View {
 
                     ForEach(Decor.all.filter { meadow.decor.contains($0.id) }) { item in
                         DecorSprite(item: item, unit: map.unit, t: t, isNight: mood.isNight)
-                            .position(map.point(item.spot))
+                            .position(map.point(meadow.decorSpot(for: item)))
                     }
 
                     HabitatBunnies(meadow: meadow, map: map, t: t)
