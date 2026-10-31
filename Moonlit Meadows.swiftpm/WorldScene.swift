@@ -63,7 +63,7 @@ struct WorldMap {
 }
 
 /// The top screen: Moonlit Meadows itself. It shows progress rather than taking input:
-/// crops grow in the beds, visitors walk up to the lure garden, your bunnies play in the
+/// crops grow in the garden grid, visitors walk up to the lure garden, your bunnies play in the
 /// meadow, characters stroll by on their schedules, and decor appears as you earn it.
 struct WorldScene: View {
     let meadow: Meadow
@@ -116,6 +116,7 @@ struct WorldScene: View {
                             .interpolation(.none)
                             .frame(width: map.rect.width, height: map.rect.height)
                             .position(x: map.rect.midX, y: map.rect.midY)
+                        GardenOverlay(plotCount: meadow.plots.count, map: map)
                     } else {
                         SkyView(mood: mood, weather: weather, t: t)
                         HillsView()
@@ -237,18 +238,12 @@ private struct DrawnScenery: View {
             Cottage(width: unit * 0.28, isNight: isNight)
                 .position(map.point(0.497, 0.17))
 
-            ForEach(Array(WorldLayout.beds.enumerated()), id: \.offset) { _, bed in
+            ForEach(0..<WorldLayout.plotColumns * WorldLayout.plotRows, id: \.self) { index in
                 RoundedRectangle(cornerRadius: unit * 0.015)
                     .fill(Palette.darkSoil)
-                    .frame(width: rect.width * WorldLayout.bedSize.width, height: unit * WorldLayout.bedSize.height)
-                    .position(map.point(bed))
+                    .frame(width: rect.width * WorldLayout.plotCell.width, height: unit * WorldLayout.plotCell.height)
+                    .position(map.point(WorldLayout.plot(index)))
             }
-            let field = WorldLayout.field
-            RoundedRectangle(cornerRadius: unit * 0.02)
-                .fill(Palette.darkSoil)
-                .overlay(RoundedRectangle(cornerRadius: unit * 0.02).strokeBorder(Palette.bark.opacity(0.7), lineWidth: 2))
-                .frame(width: rect.width * (field.maxX - field.minX), height: unit * (field.maxY - field.minY))
-                .position(map.point((field.minX + field.maxX) / 2, (field.minY + field.maxY) / 2))
             let garden = WorldLayout.lureGarden
             Ellipse()
                 .fill(Palette.mint)
@@ -262,9 +257,44 @@ private struct DrawnScenery: View {
     }
 }
 
+// MARK: - Garden grid
+
+/// The garden's 5×5 grid over the meadow art: tilled soil for the plots you own, and
+/// a faint dashed patch for each plot still waiting in the Shop, so the whole garden
+/// reads as one tidy grid.
+private struct GardenOverlay: View {
+    let plotCount: Int
+    let map: WorldMap
+
+    var body: some View {
+        let unit = map.unit
+        ZStack(alignment: .topLeading) {
+            ForEach(0..<WorldLayout.plotColumns * WorldLayout.plotRows, id: \.self) { index in
+                let width = map.rect.width * WorldLayout.plotCell.width
+                let height = unit * WorldLayout.plotCell.height
+                if index < plotCount {
+                    RoundedRectangle(cornerRadius: unit * 0.012)
+                        .fill(Palette.darkSoil)
+                        .overlay(RoundedRectangle(cornerRadius: unit * 0.012)
+                            .strokeBorder(Palette.bark.opacity(0.5), lineWidth: 1.5))
+                        .frame(width: width, height: height)
+                        .position(map.point(WorldLayout.plot(index)))
+                } else {
+                    RoundedRectangle(cornerRadius: unit * 0.012)
+                        .fill(Palette.darkSoil.opacity(0.15))
+                        .overlay(RoundedRectangle(cornerRadius: unit * 0.012)
+                            .strokeBorder(Palette.bark.opacity(0.4), style: StrokeStyle(lineWidth: 1.5, dash: [5, 4])))
+                        .frame(width: width, height: height)
+                        .position(map.point(WorldLayout.plot(index)))
+                }
+            }
+        }
+    }
+}
+
 // MARK: - Crops
 
-/// Crops growing in the beds and the big field. Sprouts sway; ready crops bounce.
+/// Crops growing in the garden grid. Sprouts sway; ready crops bounce.
 private struct CropsOverlay: View {
     let plots: [Plot]
     let map: WorldMap
