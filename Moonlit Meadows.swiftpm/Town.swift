@@ -897,33 +897,36 @@ struct TownScene: View {
 
                     // To the Workshops, at the village's east lane.
                     if place == .hub {
-                        Text("🛠️ Workshops →")
-                            .font(.system(size: max(map.unit * 0.022, 9), weight: .bold, design: .rounded))
-                            .padding(.horizontal, 6)
-                            .padding(.vertical, 2)
-                            .background(Palette.cream.opacity(0.9), in: .capsule)
+                        Text("Workshops →")
+                            .font(.system(size: max(map.unit * 0.034, 13), weight: .bold, design: .rounded))
+                            .padding(.horizontal, 12)
+                            .padding(.vertical, 6)
+                            .foregroundStyle(Palette.ink)
+                            .pixelPanel(Palette.lilacCard, edge: Palette.lilacEdge, cornerRadius: 12)
                             .position(map.point(0.945, 0.65))
                             .allowsHitTesting(false)
                     }
 
                     // Back to the village, at the west road.
                     if place == .workshops {
-                        Text("← 🏘️ Village")
-                            .font(.system(size: max(map.unit * 0.022, 9), weight: .bold, design: .rounded))
-                            .padding(.horizontal, 6)
-                            .padding(.vertical, 2)
-                            .background(Palette.cream.opacity(0.9), in: .capsule)
+                        Text("← Village")
+                            .font(.system(size: max(map.unit * 0.034, 13), weight: .bold, design: .rounded))
+                            .padding(.horizontal, 12)
+                            .padding(.vertical, 6)
+                            .foregroundStyle(Palette.ink)
+                            .pixelPanel(Palette.lilacCard, edge: Palette.lilacEdge, cornerRadius: 12)
                             .position(map.point(0.075, 0.515))
                             .allowsHitTesting(false)
                     }
 
                     // The way home, at the bottom path.
                     if place == .hub || place == .pond {
-                        Text("🌾 Farm ↓")
-                            .font(.system(size: max(map.unit * 0.022, 9), weight: .bold, design: .rounded))
-                            .padding(.horizontal, 6)
-                            .padding(.vertical, 2)
-                            .background(Palette.cream.opacity(0.9), in: .capsule)
+                        Text("Farm ↓")
+                            .font(.system(size: max(map.unit * 0.034, 13), weight: .bold, design: .rounded))
+                            .padding(.horizontal, 12)
+                            .padding(.vertical, 6)
+                            .foregroundStyle(Palette.ink)
+                            .pixelPanel(Palette.lilacCard, edge: Palette.lilacEdge, cornerRadius: 12)
                             .position(map.point(place == .pond ? 0.5 : 0.62, 0.965))
                             .allowsHitTesting(false)
                     }

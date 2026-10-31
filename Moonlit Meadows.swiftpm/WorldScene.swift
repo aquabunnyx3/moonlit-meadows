@@ -146,20 +146,22 @@ struct WorldScene: View {
                     LureGarden(meadow: meadow, map: map, t: t)
 
                     // The path to the village, at the bottom of the farm.
-                    Text("🏘️ Village ↓")
-                        .font(.system(size: max(map.unit * 0.022, 9), weight: .bold, design: .rounded))
-                        .padding(.horizontal, 6)
-                        .padding(.vertical, 2)
-                        .background(Palette.cream.opacity(0.9), in: .capsule)
+                    Text("Village ↓")
+                        .font(.system(size: max(map.unit * 0.034, 13), weight: .bold, design: .rounded))
+                        .padding(.horizontal, 12)
+                        .padding(.vertical, 6)
+                        .foregroundStyle(Palette.ink)
+                            .pixelPanel(Palette.lilacCard, edge: Palette.lilacEdge, cornerRadius: 12)
                         .position(map.point(0.5, 0.955))
                         .allowsHitTesting(false)
 
                     // The footpath to the Pond, off the farm's north edge.
-                    Text("🎣 Pond ↑")
-                        .font(.system(size: max(map.unit * 0.022, 9), weight: .bold, design: .rounded))
-                        .padding(.horizontal, 6)
-                        .padding(.vertical, 2)
-                        .background(Palette.cream.opacity(0.9), in: .capsule)
+                    Text("Pond ↑")
+                        .font(.system(size: max(map.unit * 0.034, 13), weight: .bold, design: .rounded))
+                        .padding(.horizontal, 12)
+                        .padding(.vertical, 6)
+                        .foregroundStyle(Palette.ink)
+                            .pixelPanel(Palette.lilacCard, edge: Palette.lilacEdge, cornerRadius: 12)
                         .position(map.point(0.30, 0.045))
                         .allowsHitTesting(false)
 
