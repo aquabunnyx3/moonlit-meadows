@@ -57,6 +57,7 @@ enum SelfTests {
         ("Control deck: D-pad walking, walls, and the action button", controlDeck),
         ("Village: the walk there, houses, stalls, and who's where", village),
         ("Shop after hours: the drop box and the seed machine", shopAfterHours),
+        ("First chats are introductions", firstMeetLines),
     ]
 
     static func runAll() -> [TestResult] {
@@ -552,6 +553,23 @@ enum SelfTests {
         meadow.plant("carrot", in: 0)
         c.expect(meadow.plots[0].cropID == "carrot" && meadow.count(of: "seed-carrot") == 0 && meadow.coins == 0,
                  "A seed packet plants for free")
+    }
+
+    /// The first time you talk to anyone, they introduce themselves in
+    /// character; after that, the daily lines take over.
+    private static func firstMeetLines(_ c: Check) {
+        let meadow = freshMeadow()
+        for person in Person.all {
+            c.expect(FirstMeetLines.line(for: person.id) != nil, "\(person.name) has a first-meet line")
+        }
+        let theo = meadow.talk(to: "theo")
+        c.expect(theo?.line == FirstMeetLines.line(for: "theo"), "Theo's first chat is his cold-shoulder introduction")
+        let theoAgain = meadow.talk(to: "theo")
+        c.expect(theoAgain?.line != FirstMeetLines.line(for: "theo"), "Later chats use the daily lines")
+        let imani = meadow.talk(to: "imani")
+        c.expect(imani?.line.hasPrefix(FirstMeetLines.line(for: "imani") ?? "—") == true
+                 && imani?.line.contains("Bring me the first fish") == true,
+                 "Imani's introduction still sets her Something Fishy quest")
     }
 
     private static func village(_ c: Check) {

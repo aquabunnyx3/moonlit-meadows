@@ -260,11 +260,37 @@ extension Meadow {
         return lines[((today % lines.count) + lines.count) % lines.count]
     }
 
+    /// First conversations (Michelle, 2026-10-30): the first time you ever
+    /// talk to someone, this is what they say — an introduction in character.
+    /// June is warm, Roz renames you on sight, Theo gives the cold shoulder,
+    /// Rowan and Imani come with a warning, Sol and Wes barely look up.
+    enum FirstMeetLines {
+        static let lines: [String: String] = [
+            "june": "Oh — hello! You must be the new farmer. I'm June, I keep the glasshouse. …Sorry, I rehearsed that on the basil and it went better. Welcome to Moonlit Meadows.",
+            "roz": "Well, look at you! New farmer, new neighbor — I'm Roz, I run the bakery, and I'm calling you 'Sprout' now. That wasn't a discussion. Come by when you're hungry, Sprout. You'll always be hungry.",
+            "theo": "…You're the new farmer. Theo. I keep the observatory, and the observatory keeps itself — knock before you come up, and don't touch the telescope. …That's all. Welcome, I suppose.",
+            "kai": "Hey, new farmer! Kai — I build things, fix things, and lift heavy things before anyone asks. Need a hand with the farm? Trick question. I'm already helping.",
+            "sol": "A new face. Sol — I play music wherever they'll have me, and some places they won't. Forty-two towns, and the meadow still surprised me. Let's see if you do.",
+            "rowan": "Rowan. Forge, over the way. Mind how you go on that farm of yours — old fences, soft ground, and a pond that floods when it pleases. You break something, bring it to me. I'll mend it.",
+            "silas": "Well now. The bees noticed you before I did, and they're particular. I'm Silas — I keep the hives at the apiary. Any friend the bees approve of is welcome at my door.",
+            "imani": "New face at my pond. I'm Imani — I keep this water and everything in it. Fish here if you like, but respect the pond: no litter, no greedy nets. Do that, and we'll get along fine.",
+            "wes": "New farmer, is it. Wes. I keep the cottage by the moon wreath. …Depends on the soil, most things do. Yours is decent. Don't let it go to your head.",
+            "bree": "Hi hi! I'm Bree — brambles, blueberries, and the Village Shop when I'm not out here picking. You've got kind eyes. The shop's open nine to six, but knock any time. I live for a plan.",
+            "vi": "Oh — good evening. I'm Vi. This flower is for you: a snowdrop. It means 'hope, arriving quietly.' …That's you, I think. Welcome to the meadow.",
+        ]
+
+        static func line(for personID: String) -> String? { lines[personID] }
+    }
+
     /// Chat once a day for a little friendship. Every other day they may ask you a question.
     @discardableResult
     func talk(to personID: String) -> TalkResult? {
         guard let person = Person.find(personID) else { return nil }
-        let line = dailyLine(for: person)
+        // The first conversation with anyone is an introduction in their own
+        // voice (Michelle, 2026-10-30) — after that, the daily lines take over.
+        let line = relationship(personID).lastTalkDay == nil
+            ? (FirstMeetLines.line(for: personID) ?? dailyLine(for: person))
+            : dailyLine(for: person)
         guard canTalk(to: personID) else {
             return TalkResult(line: line, points: 0, question: nil)
         }
