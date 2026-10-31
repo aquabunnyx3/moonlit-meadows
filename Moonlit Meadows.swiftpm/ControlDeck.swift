@@ -807,6 +807,19 @@ extension Meadow {
         quickPins.removeAll { $0 == id }
         feedbackCount += 1
     }
+
+    /// Double-tapping a carried item toggles it in the quick inventory
+    /// (Michelle, 2026-10-30 — the drag was too fiddly): in if there is a
+    /// spare slot, out if it is already pinned.
+    func toggleQuickPin(_ id: String) {
+        if quickPins.contains(id) {
+            unpinQuickItem(id)
+            return
+        }
+        guard count(of: id) > 0, quickPins.count < 2 else { return }
+        quickPins.append(id)
+        feedbackCount += 1
+    }
 }
 
 // MARK: - The deck
@@ -1221,7 +1234,8 @@ private struct InventorySlotView: View {
         // Not a Button: a Button's tap handling swallows the long-press, so
         // .draggable never lifts (Michelle, 2026-10-30: can't tap and drag
         // items in the quick inventory). A plain view takes both gestures:
-        // a tap selects, a long-press drag moves the item.
+        // a tap selects, a double-tap moves the item in or out of the
+        // quick inventory, and a long-press drag still works too.
         ZStack(alignment: .bottomTrailing) {
                 RoundedRectangle(cornerRadius: size * 0.2)
                     .fill(Palette.lilacCard.opacity(0.55))
@@ -1247,6 +1261,7 @@ private struct InventorySlotView: View {
                 }
             }
         .contentShape(Rectangle())
+        .onTapGesture(count: 2) { if let stack { meadow.toggleQuickPin(stack.id) } }
         .onTapGesture { if let stack { meadow.selectQuickSlot(.item(stack.id)) } }
         .accessibilityLabel(stack.map { "\(ItemInfo.name($0.id)), \($0.count)" } ?? "Empty slot")
         .accessibilityAddTraits(isSelected ? .isSelected : [])
@@ -1305,7 +1320,8 @@ private struct QuickSlotView: View {
     var body: some View {
         let isSelected = slot.map { $0 == meadow.quickSlot } ?? false
         // Not a Button either, for the same reason as InventorySlotView:
-        // the tap selects, the long-press drag pins and unpins.
+        // the tap selects, a double-tap pins and unpins, and the
+        // long-press drag still works too.
         ZStack {
                 DeckArt(name: "icon-slot-empty", fallback: Palette.lilacCard)
                 content
@@ -1320,6 +1336,10 @@ private struct QuickSlotView: View {
             }
             .scaleEffect(isSelected ? 1.06 : 1)
         .contentShape(Rectangle())
+        .onTapGesture(count: 2) {
+            // Double-tapping a pinned item in its quick slot unpins it.
+            if pinIndex != nil, case .item(let id)? = slot { meadow.toggleQuickPin(id) }
+        }
         .onTapGesture { if let slot { meadow.selectQuickSlot(slot) } }
         .overlay {
             if slot == .water && meadow.tourStep == .water {

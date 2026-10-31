@@ -59,6 +59,7 @@ enum SelfTests {
         ("Shop after hours: the drop box and the seed machine", shopAfterHours),
         ("First chats are introductions", firstMeetLines),
         ("Fishing results live on the deck buttons", fishingResultButtons),
+        ("Double-tap toggles the quick inventory", quickPinToggle),
     ]
 
     static func runAll() -> [TestResult] {
@@ -588,6 +589,25 @@ enum SelfTests {
         c.expect(meadow.deckSecondary == "Done", "The blue button is Done after an escape too")
         meadow.deckSecondaryAction()
         c.expect(meadow.fishing == nil, "Done puts the rod away")
+    }
+
+    /// Double-tapping a carried item pins it to a spare quick slot;
+    /// double-tapping again takes it back out.
+    private static func quickPinToggle(_ c: Check) {
+        let meadow = freshMeadow()
+        meadow.addItems("carrot", 3)
+        meadow.addItems("clover", 1)
+        meadow.addItems("tulip", 1)
+        meadow.toggleQuickPin("carrot")
+        c.expect(meadow.quickPins == ["carrot"], "Double-tap pins the item")
+        meadow.toggleQuickPin("clover")
+        c.expect(meadow.quickPins == ["carrot", "clover"], "A second item fills the other spare slot")
+        meadow.toggleQuickPin("tulip")
+        c.expect(meadow.quickPins == ["carrot", "clover"], "No room: a third item stays in the bag")
+        meadow.toggleQuickPin("carrot")
+        c.expect(meadow.quickPins == ["clover"], "Double-tapping a pinned item takes it out")
+        meadow.toggleQuickPin("tulip")
+        c.expect(meadow.quickPins == ["clover", "tulip"], "The freed slot can be refilled")
     }
 
     private static func village(_ c: Check) {
