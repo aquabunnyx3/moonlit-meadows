@@ -1149,7 +1149,7 @@ struct ControlDeck: View {
                     if let target {
                         DeckIconView(icon: target.icon, size: size * 0.46)
                     } else {
-                        DeckArt(name: "moon-coin", fallback: Palette.lavender)
+                        DeckArt(name: "icon-bunnies", fallback: Palette.lavender)
                             .frame(width: size * 0.52, height: size * 0.52)
                     }
                 }
