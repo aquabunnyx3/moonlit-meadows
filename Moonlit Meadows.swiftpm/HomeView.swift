@@ -10,12 +10,13 @@ struct HomeScene: View {
     @AppStorage("debugCollision") private var collisionOn = false
     @AppStorage("developerMode") private var developerMode = false
     private var showsCollision: Bool { developerMode && collisionOn }
-    /// The sleeping bedroom (blanket breathing, Z's floating) is showing.
-    @State private var showsSleepArt = false
     @State private var wantsToWake = false
-    /// The bedtime scene playing over the room (Merlin, 2026-10-29), and whether it has ended.
-    @State private var bedtimeVideo: String?
-    @State private var bedtimeEnded = false
+    /// The end-of-day sequence (Michelle, 2026-10-30): fade to black, the town
+    /// sunset, a second fade to black, then the new day's card.
+    @State private var sleepBlackout = false
+    @State private var showsSunset = false
+    @State private var sunsetEnded = false
+    @State private var showsDayCard = false
 
     /// Male farmers get the same room in blue/grey/white (`home-*-male` art, Merlin,
     /// 2026-10-30); the base art is the fallback if a male set is ever missing.
@@ -39,15 +40,22 @@ struct HomeScene: View {
                 room(night: false).opacity(night ? 0 : 1)
                 room(night: true).opacity(night ? 1 : 0)
 
-                if showsSleepArt {
-                    SleepingRoom(art: art, isPaused: meadow.isPaused, male: isMaleFarmer)
-                        .transition(.opacity)
-                }
-
-                // Your farmer's goodnight scene plays first, over the room (Merlin, 2026-10-29).
-                if meadow.isSleeping, let bedtimeVideo, !bedtimeEnded {
-                    BedtimeSceneView(meadow: meadow, video: bedtimeVideo) { bedtimeEnded = true }
-                        .transition(.opacity)
+                // End of day (Michelle, 2026-10-30): the fade to black, the
+                // town sunset, a second fade to black, and the new day's card,
+                // all over the room. The black sits under the clip and the
+                // card, so each fade lands on it.
+                if meadow.isSleeping {
+                    Color.black
+                        .opacity(sleepBlackout ? 1 : 0)
+                        .allowsHitTesting(false)
+                    if showsSunset {
+                        SunsetSceneView(meadow: meadow) { sunsetEnded = true }
+                            .transition(.opacity)
+                    }
+                    if showsDayCard {
+                        DayCardView(meadow: meadow)
+                            .transition(.opacity)
+                    }
                 }
 
                 // A bunny napping in the pet bed.
@@ -97,6 +105,7 @@ struct HomeScene: View {
                 }
                 .foregroundStyle(Palette.ink)
                 .padding(10)
+                .opacity(meadow.isSleeping ? 0 : 1)
             }
             .frame(width: geo.size.width, height: geo.size.height)
             .animation(.easeInOut(duration: 2.5), value: night)
@@ -107,34 +116,45 @@ struct HomeScene: View {
             if meadow.isSleeping { wantsToWake = true }
         }
         .task(id: meadow.isSleeping) {
-            // Sleep: your goodnight scene first if it's in the app, then the blanket (breathing,
-            // Z's floating), back to the quiet night room, then morning. Without a scene video,
-            // sleep is exactly as it was before (Merlin, 2026-10-29).
+            // End of day (Michelle, 2026-10-30): fade to black, the sun sets
+            // over the town while its lights go out, fade to black again, the
+            // new day's card, then morning. Tapping hurries each step along.
             guard meadow.isSleeping else { return }
             wantsToWake = false
-            bedtimeVideo = BedtimeScene.videoName(for: meadow)
-            bedtimeEnded = bedtimeVideo == nil
-            if bedtimeVideo != nil {
+            showsSunset = false
+            sunsetEnded = false
+            showsDayCard = false
+            // 1. Fade to black.
+            withAnimation(.easeInOut(duration: 0.9)) { sleepBlackout = true }
+            try? await Task.sleep(for: .milliseconds(950))
+            // 2. The sunset, if the clip is in the app.
+            if !wantsToWake && !Task.isCancelled && SunsetScene.isAvailable {
+                withAnimation(.easeInOut(duration: 0.6)) { showsSunset = true }
                 var waited = 0.0
-                while !bedtimeEnded && !wantsToWake && !Task.isCancelled && waited < 15 {
+                while !sunsetEnded && !wantsToWake && !Task.isCancelled && waited < 16 {
                     try? await Task.sleep(for: .milliseconds(250))
                     if !meadow.isPaused { waited += 0.25 }
                 }
-                withAnimation(.easeInOut(duration: 1)) { bedtimeEnded = true }
+                // 3. Fade to black again, before the day card.
+                withAnimation(.easeInOut(duration: 0.9)) { showsSunset = false }
+                try? await Task.sleep(for: .milliseconds(950))
             }
-            if !wantsToWake {
-                withAnimation(.easeInOut(duration: 1)) { showsSleepArt = true }
-                var slept = 0.0
-                // A short drift under the blanket after the scene; the full wait without one.
-                let target = bedtimeVideo == nil ? 8.0 : 3.0
-                while slept < target && !wantsToWake && !Task.isCancelled {
+            // 4. The new day's card.
+            if !wantsToWake && !Task.isCancelled {
+                withAnimation(.easeInOut(duration: 0.6)) { showsDayCard = true }
+                var card = 0.0
+                while card < 2.6 && !wantsToWake && !Task.isCancelled {
                     try? await Task.sleep(for: .milliseconds(250))
-                    if !meadow.isPaused { slept += 0.25 }
+                    if !meadow.isPaused { card += 0.25 }
                 }
+                withAnimation(.easeInOut(duration: 0.6)) { showsDayCard = false }
+                try? await Task.sleep(for: .milliseconds(650))
             }
-            withAnimation(.easeInOut(duration: 1)) { showsSleepArt = false }
-            try? await Task.sleep(for: .seconds(1.3))
-            withAnimation(.easeInOut(duration: 2.5)) { meadow.wakeUp() }
+            // 5. Morning: the black lifts into the new day.
+            withAnimation(.easeInOut(duration: 2.5)) {
+                meadow.wakeUp()
+                sleepBlackout = false
+            }
         }
     }
 
