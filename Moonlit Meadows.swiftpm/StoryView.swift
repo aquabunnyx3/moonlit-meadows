@@ -615,21 +615,34 @@ struct ChatScene: View {
                     }
                 }
                 // Whichever mouth frame differs from the face's own mouth
-                // crossfades in and out with `openness`.
+                // crossfades in and out with `openness`. With a half-open frame
+                // (`chat-<id>-mouthhalf`), the mouth eases through it on the way:
+                // closed → half → open and back, so talking reads smoothly.
+                let half = ChatFaceParts.frame("chat-\(id)-mouthhalf", look: look)
+                let rest = parts.openMouth.contains(mood) ? 1 - openness : openness
+                let halfAmount = half == nil ? 0 : max(0, 1 - abs(rest - 0.5) * 2)
+                let fullAmount = half == nil ? rest : smoothstep(0.5, 1, rest)
+                if let half, halfAmount > 0.01 {
+                    Image(uiImage: half)
+                        .resizable()
+                        .frame(width: parts.mouth.width * w, height: parts.mouth.height * h)
+                        .offset(x: parts.mouth.minX * w, y: parts.mouth.minY * h)
+                        .opacity(halfAmount)
+                }
                 if parts.openMouth.contains(mood) {
-                    if openness < 0.99, let image = ChatFaceParts.frame("chat-\(id)-mouthclosed", look: look) {
+                    if fullAmount > 0.01, let image = ChatFaceParts.frame("chat-\(id)-mouthclosed", look: look) {
                         Image(uiImage: image)
                             .resizable()
                             .frame(width: parts.mouth.width * w, height: parts.mouth.height * h)
                             .offset(x: parts.mouth.minX * w, y: parts.mouth.minY * h)
-                            .opacity(1 - openness)
+                            .opacity(fullAmount)
                     }
-                } else if openness > 0.01, let image = ChatFaceParts.frame("chat-\(id)-mouthopen", look: look) {
+                } else if fullAmount > 0.01, let image = ChatFaceParts.frame("chat-\(id)-mouthopen", look: look) {
                     Image(uiImage: image)
                         .resizable()
                         .frame(width: parts.mouth.width * w, height: parts.mouth.height * h)
                         .offset(x: parts.mouth.minX * w, y: parts.mouth.minY * h)
-                        .opacity(openness)
+                        .opacity(fullAmount)
                 }
             }
             .frame(width: w, height: h, alignment: .topLeading)
