@@ -1021,6 +1021,13 @@ enum SelfTests {
         let first = PersonArt.cycleFrame(for: waves, facing: .right, time: 0)
         let later = PersonArt.cycleFrame(for: waves, facing: .right, time: 0.5)
         c.expect(first != nil && later != nil && first?.image !== later?.image, "Long Waves walks right with her video cycle")
+        for style in 3...4 {
+            c.expect(FarmerRenderer.hasArt(gender: .female, hairStyle: style, cut: .jacket),
+                     "Creator style \(style) has its jacket portrait")
+            let id = FarmerRenderer.artID(for: FarmerLook(gender: .female, hairStyle: style))
+            c.expect(PersonArt.cycleFrame(for: id, facing: .right, time: 0) != nil,
+                     "Creator style \(style) walks right with a drawn cycle")
+        }
         c.expect(PersonArt.cycleFrame(for: waves, facing: .left, time: 0)?.isFlipped == true, "Walking left mirrors the right cycle")
         for person in Person.all where person.id != "rowan" {
             c.expect(PersonArt.hasWalkCycle(for: person.id, facing: .right), "\(person.name) walks with a video cycle")

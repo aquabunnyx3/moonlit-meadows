@@ -126,7 +126,7 @@ enum FarmerGender: String, Codable, CaseIterable, Identifiable {
     /// The two hairstyles for each farmer, in art order (`s0`, `s1`).
     var hairStyles: [String] {
         switch self {
-        case .female: return ["Curly Buns", "Long Waves", "Bald"]
+        case .female: return ["Curly Buns", "Long Waves", "Bald", "Twin Braids", "Bob"]
         case .male: return ["Curly Top", "Curly Fade", "Bald"]
         }
     }
