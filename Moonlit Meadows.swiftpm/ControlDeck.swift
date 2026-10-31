@@ -202,8 +202,9 @@ extension Meadow {
 
     static let cottageDoorstep = Spot(x: 0.497, y: 0.33)
     private static let cottageDoorZone = DeckRect(minX: 0.465, minY: 0.22, maxX: 0.53, maxY: 0.30)
-    /// The lure basket's patch below the crop beds — no fence anymore, walk right up.
-    private static let lureBasketZone = DeckRect(minX: 0.235, minY: 0.78, maxX: 0.355, maxY: 0.89)
+    /// The lure basket's patch in the east meadow (where the approved garden
+    /// mock put it, clear of plot 22) — no fence, walk right up.
+    private static let lureBasketZone = DeckRect(minX: 0.64, minY: 0.795, maxX: 0.76, maxY: 0.905)
 
     /// Inside your cottage (fractions of the room art).
     static let homeEntrance = Spot(x: 0.5, y: 0.86)

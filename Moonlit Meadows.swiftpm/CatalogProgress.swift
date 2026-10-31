@@ -505,7 +505,7 @@ enum WorldLayout {
         let minY = plotOrigin.y + row * plotPitch.y + (row >= 2 ? plotLane.y : 0)
         return (minX, minY, minX + plotCell.width, minY + plotCell.height)
     }
-    static let lureBasket = Spot(x: 0.295, y: 0.835)
+    static let lureBasket = Spot(x: 0.70, y: 0.85)
     static let lureGarden = (minX: 0.23, minY: 0.775, maxX: 0.36, maxY: 0.895)
     /// The open grass beside the cottage, where your bunnies play.
     static let habitat = (minX: 0.60, minY: 0.14, maxX: 0.73, maxY: 0.42)
