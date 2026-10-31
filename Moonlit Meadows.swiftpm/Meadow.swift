@@ -125,6 +125,10 @@ final class Meadow {
     var cropsHarvested: Set<String> = []
     var harvestCounts: [String: Int] = [:]
     var hasLuredBunny = false
+    var moonBunnyLureSceneSeen = false
+    /// Session-only steps of the Moon Bunny lure movie (Story.swift).
+    var moonBunnyChasePending = false
+    var moonBunnyBumpPending = false
     var favoriteBunnyGifts = 0
     var completionSceneSeen = false
     /// The in-game day. Daily things (chatting, gifts, activities) reset when you sleep.
@@ -358,6 +362,7 @@ final class Meadow {
         data.cropsHarvested = cropsHarvested.sorted()
         data.harvestCounts = harvestCounts
         data.hasLuredBunny = hasLuredBunny
+        data.moonBunnyLureSceneSeen = moonBunnyLureSceneSeen
         data.favoriteBunnyGifts = favoriteBunnyGifts
         data.completionSceneSeen = completionSceneSeen
         data.dayNumber = dayNumber
@@ -476,6 +481,7 @@ final class Meadow {
         cropsHarvested = Set(data.cropsHarvested)
         harvestCounts = data.harvestCounts
         hasLuredBunny = data.hasLuredBunny
+        moonBunnyLureSceneSeen = data.moonBunnyLureSceneSeen
         favoriteBunnyGifts = data.favoriteBunnyGifts
         completionSceneSeen = data.completionSceneSeen
         // Older saves start counting days from today.

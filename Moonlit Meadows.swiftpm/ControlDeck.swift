@@ -909,7 +909,10 @@ struct ControlDeck: View {
             }
         }
         .onChange(of: meadow.dayNumber) { _, _ in meadow.checkAmbientMoments() }
-        .onChange(of: meadow.presentedScene?.id) { _, _ in meadow.presentPendingFragment() }
+        .onChange(of: meadow.presentedScene?.id) { _, _ in
+            meadow.presentPendingFragment()
+            meadow.advanceMoonBunnySequence()
+        }
         .onChange(of: meadow.timeOfDay) { _, _ in meadow.checkAmbientMoments() }
         .onAppear { meadow.checkAmbientMoments() }
         .background {

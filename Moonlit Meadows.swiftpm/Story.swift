@@ -39,6 +39,43 @@ extension Meadow {
         }
     }
 
+    // MARK: The Moon Bunny lure movie (Michelle's mini movie, 2026-10-30)
+
+    /// The first bunny to answer the basket while "Something Hungry" is open
+    /// isn't a normal bunny: the Moon Bunny pops up and leads you into the
+    /// village, straight into Theo. Plays once, ever.
+    func startMoonBunnyChaseIfNeeded() {
+        guard !moonBunnyLureSceneSeen, !moonBunnyChasePending, !moonBunnyBumpPending,
+              availableQuests.contains(where: { $0.id == "first-lure" }) else { return }
+        moonBunnyChasePending = true
+        presentMoonBunnyChase()
+    }
+
+    private func presentMoonBunnyChase() {
+        guard moonBunnyChasePending, presentedScene == nil, !isSleeping, !isAtMainMenu else { return }
+        moonBunnyChasePending = false
+        moonBunnyBumpPending = true
+        presentedScene = .moment(Moment(personID: "moon-bunny", title: "🌙 The Moon Bunny",
+                                        text: "A white bunny with a crescent moon on her brow stares at you over the carrot — then bolts. You run after her, all the way to the village…",
+                                        video: "scene-moon-bunny-chase"))
+    }
+
+    /// Runs whenever a scene closes: if the chase just ended, it dumps you in
+    /// the village, face to face with Theo; a queued chase starts here too.
+    func advanceMoonBunnySequence() {
+        if moonBunnyBumpPending, presentedScene == nil, !isSleeping, !isAtMainMenu {
+            moonBunnyBumpPending = false
+            goToTown()
+            moonBunnyLureSceneSeen = true
+            remember("You chased the Moon Bunny into the village and crashed straight into Theo.", with: "theo")
+            presentedScene = .moment(Moment(personID: "theo", title: "💫 An Awkward Meeting",
+                                            text: "You skid around the corner — straight into someone. Star charts everywhere. “S-sorry! I was watching for the moon, not where I was going.”",
+                                            video: "scene-theo-bump"))
+            save()
+        }
+        presentMoonBunnyChase()
+    }
+
     func presentPendingFragment() {
         guard let number = pendingFragment, presentedScene == nil, !isSleeping, !isAtMainMenu else { return }
         pendingFragment = nil

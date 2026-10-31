@@ -169,6 +169,7 @@ extension Meadow {
             lureSlots[index].progress = min(lureSlots[index].progress + seconds / visitDuration(of: breed), 1)
             if lureSlots[index].progress >= 1 {
                 hasLuredBunny = true
+                startMoonBunnyChaseIfNeeded()
                 spawn(.heart, "🐾 A visitor arrived!", at: Spot(x: WorldLayout.lureBasket.x, y: WorldLayout.lureBasket.y - 0.08))
             }
         }
