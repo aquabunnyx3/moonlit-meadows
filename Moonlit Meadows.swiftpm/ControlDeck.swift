@@ -293,27 +293,11 @@ extension Meadow {
             let near = door.approach.contains(x, y)
             if near != glassDoorOpen { glassDoorOpen = near }
         }
-        // Walking down off the end of the path between the farm and the village takes you there.
-        if d.y > 0 {
-            if town == .hub, TownLayout.farmExitPath.contains(x, y) {
-                goToFarm()
-            } else if town == nil, !isAtHome, Self.villagePath.contains(x, y) {
-                goToTown()
-            } else if town == .pond, PondLayout.exitZone.contains(x, y) {
-                goToFarmFromPond()
-            }
-        }
-        // Walking up the footpath off the farm's north edge takes you to the Pond.
-        if d.y < 0, town == nil, !isAtHome, Self.farmPondZone.contains(x, y) {
-            goToPond()
-        }
-        // The village's east lane runs to the Workshops; their west road runs back.
-        if d.x > 0, town == .hub, TownLayout.workshopsPath.contains(x, y) {
-            goToWorkshops()
-        }
-        if d.x < 0, town == .workshops, WorkshopsLayout.exitZone.contains(x, y) {
-            goToHubFromWorkshops()
-        }
+        // Travelling between places is by the action button only (Michelle,
+        // 2026-10-30): walking to the end of a path offers the trip as the
+        // deck's target ("Go to the Village", "Back to the Farm", ...) and
+        // nothing happens until the button is pressed. Walking off the edge
+        // of a scene never takes you anywhere by itself.
     }
 
     /// The very end of the farm's bottom path: walking into it goes to the village.
