@@ -820,7 +820,7 @@ enum SelfTests {
             meadow.rename(bunny.id, to: "Sir Hops")
             meadow.toggleFavorite(bunny.id)
         }
-        meadow.talk(to: "sol")
+        _ = meadow.talk(to: "sol")
         meadow.relationships["roz"]?.points = 40
         meadow.completeEvent("roz-1", choice: 1)
         meadow.decor.insert("flowers")
@@ -873,7 +873,7 @@ enum SelfTests {
         meadow.advanceClock(by: Meadow.dayLength / 2)
         c.expect(meadow.clockText == "3:00 PM" && meadow.timeOfDay == .day, "Halfway through is 3 PM, got \(meadow.clockText)")
         c.expect(!meadow.isBedtime, "Not bedtime yet")
-        meadow.talk(to: "june")
+        _ = meadow.talk(to: "june")
         c.expect(!meadow.canTalk(to: "june"), "One chat per day")
         meadow.advanceClock(by: Meadow.dayLength)
         c.expect(meadow.isBedtime && meadow.timeOfDay == .night, "The day ends at midnight")

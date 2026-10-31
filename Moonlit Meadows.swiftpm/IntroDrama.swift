@@ -167,9 +167,6 @@ struct WelcomeCard: View {
                     .opacity(0.8)
                     .multilineTextAlignment(.center)
                 DialogButton(label: "Begin ▸") { meadow.dismissWelcome() }
-                Text("…or press the action button")
-                    .font(.caption)
-                    .opacity(0.6)
             }
             .padding(24)
             .frame(maxWidth: 420)
