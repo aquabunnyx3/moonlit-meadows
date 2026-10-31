@@ -453,25 +453,25 @@ enum SelfTests {
         c.expect(Meadow.farmCollision.isFree(Meadow.farmStart) && Meadow.farmCollision.isFree(Meadow.cottageDoorstep),
                  "The farm's start spot and doorstep are walkable")
 
-        // Just outside the bed fence, facing the first bed.
-        meadow.farmerSpot = Spot(x: 0.155, y: 0.46)
+        // Just west of the garden grid, facing the first plot.
+        meadow.farmerSpot = Spot(x: 0.14, y: 0.384)
         meadow.deckFacing = DeckVector(x: 1, y: 0)
         meadow.quickSlot = .seeds
         let target = meadow.deckTarget()
-        c.expect(target?.kind == .plot(0), "Facing a bed works its plot, got \(String(describing: target?.kind))")
+        c.expect(target?.kind == .plot(0), "Facing a plot works it, got \(String(describing: target?.kind))")
         c.expect(target?.verb.hasPrefix("Plant") ?? false, "An empty plot says Plant")
         let coins = meadow.coins
         meadow.deckAction()
         c.expect(meadow.plots[0].cropID == meadow.selectedSeed && meadow.coins < coins, "The action button plants the seed in hand")
+        // No fences any more: she walks right over the plots.
         meadow.holdDirection(DeckVector(x: 1, y: 0))
         for _ in 0..<60 { meadow.deckStep(dt: 1.0 / 30) }
         meadow.holdDirection(.zero)
-        let bedLeft = WorldLayout.beds[0].x - WorldLayout.bedSize.width / 2
-        c.expect(meadow.farmerSpot.x < bedLeft, "The bed fence blocks walking")
-        meadow.holdDirection(DeckVector(x: 1, y: 1))
-        meadow.deckStep(dt: 0.1)
-        meadow.holdDirection(.zero)
-        c.expect(meadow.farmerSpot.y > 0.46, "Diagonals slide along what's in the way")
+        c.expect(meadow.farmerSpot.x > WorldLayout.plotCellRect(0).maxX, "Walking crosses the plots freely")
+        // Standing on a plot works that plot, whichever way she faces.
+        meadow.farmerSpot = WorldLayout.plot(1)
+        meadow.deckFacing = DeckVector(x: 0, y: -1)
+        c.expect(meadow.deckTarget()?.kind == .plot(1), "Standing on a plot works that plot")
 
         // The main grid and the quick bar share one selection.
         meadow.grant(.items("strawberry", 2))

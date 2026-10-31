@@ -194,21 +194,9 @@ extension Meadow {
             BlockZone(label: "farm: pine trunk (south)", rect: DeckRect(minX: 0.845, minY: 0.86, maxX: 0.872, maxY: 0.9)),
             BlockZone(label: "farm: pine trunk (far south)", rect: DeckRect(minX: 0.945, minY: 0.88, maxX: 0.975, maxY: 0.92)),
             BlockZone(label: "farm: rocks (south)", rect: DeckRect(minX: 0.67, minY: 0.915, maxX: 0.75, maxY: 0.99)),
-            // The fenced beds on the left: you plant them over the fence.
-            BlockZone(label: "farm: bed fence (north)", rect: DeckRect(minX: 0.168, minY: 0.335, maxX: 0.368, maxY: 0.372)),
-            BlockZone(label: "farm: bed fence (south)", rect: DeckRect(minX: 0.168, minY: 0.715, maxX: 0.368, maxY: 0.76)),
-            BlockZone(label: "farm: bed fence (west)", rect: DeckRect(minX: 0.168, minY: 0.335, maxX: 0.18, maxY: 0.76)),
-            BlockZone(label: "farm: bed fence (east)", rect: DeckRect(minX: 0.356, minY: 0.335, maxX: 0.368, maxY: 0.76)),
-            BlockZone(label: "farm: bed 1", rect: DeckRect(minX: 0.19, minY: 0.395, maxX: 0.258, maxY: 0.525)),
-            BlockZone(label: "farm: bed 2", rect: DeckRect(minX: 0.277, minY: 0.395, maxX: 0.345, maxY: 0.525)),
-            BlockZone(label: "farm: bed 3", rect: DeckRect(minX: 0.19, minY: 0.572, maxX: 0.258, maxY: 0.702)),
-            BlockZone(label: "farm: bed 4", rect: DeckRect(minX: 0.277, minY: 0.572, maxX: 0.345, maxY: 0.702)),
-            // The big field on the right: worked over its fence too.
-            BlockZone(label: "farm: field fence (north)", rect: DeckRect(minX: 0.598, minY: 0.522, maxX: 0.838, maxY: 0.555)),
-            BlockZone(label: "farm: field fence (west)", rect: DeckRect(minX: 0.598, minY: 0.522, maxX: 0.615, maxY: 0.868)),
-            BlockZone(label: "farm: field fence (east)", rect: DeckRect(minX: 0.826, minY: 0.522, maxX: 0.838, maxY: 0.868)),
-            BlockZone(label: "farm: field fence (south)", rect: DeckRect(minX: 0.598, minY: 0.83, maxX: 0.838, maxY: 0.868)),
-            BlockZone(label: "farm: field plots", rect: DeckRect(minX: 0.615, minY: 0.555, maxX: 0.826, maxY: 0.83)),
+            // The garden grid is deliberately NOT in this list (Michelle, 2026-10-30):
+            // no fences, no solid plots — you walk right over the soil and work the
+            // plot you're standing on.
         ],
         figure: 0.13, reach: 0.09)
 
@@ -375,6 +363,15 @@ extension Meadow {
                 .min { $0.1 < $1.1 }
             return near?.0
         }
+        /// Plots are worked standing on them: the plot under her feet wins, then the
+        /// one she's facing, then the nearest in reach (she may be in the lane).
+        func pickPlot(_ items: [(Int, DeckRect)]) -> Int? {
+            if let hit = items.first(where: { $0.1.contains(spot.x, spot.y) }) { return hit.0 }
+            if let hit = items.first(where: { $0.1.contains(faced.x, faced.y) }) { return hit.0 }
+            return items.map { ($0.0, $0.1.distance(spot.x, spot.y, aspect: aspect)) }
+                .filter { $0.1 <= Self.nearReach }
+                .min { $0.1 < $1.1 }?.0
+        }
         func reaches(_ zone: DeckRect) -> Bool {
             zone.contains(faced.x, faced.y) || zone.distance(spot.x, spot.y, aspect: aspect) <= Self.nearReach
         }
@@ -408,7 +405,7 @@ extension Meadow {
                               icon: arrived ? .asset("icon-bunnies") : .asset("icon-pantry"), spot: WorldLayout.lureBasket)
         }
         let plotZones = plots.indices.map { index in (index, plotRect(index)) }
-        if let index = pick(plotZones) {
+        if let index = pickPlot(plotZones) {
             return plotTarget(index)
         }
         return nil
@@ -539,16 +536,10 @@ extension Meadow {
                    icon: .emoji("💬"), spot: spot, secondary: "Gift")
     }
 
+    /// A plot's cell in the garden grid, from the one grid geometry.
     private func plotRect(_ index: Int) -> DeckRect {
-        let center = WorldLayout.plot(index)
-        if index < WorldLayout.beds.count {
-            let size = WorldLayout.bedSize
-            return DeckRect(minX: center.x - size.width / 2, minY: center.y - size.height / 2,
-                            maxX: center.x + size.width / 2, maxY: center.y + size.height / 2)
-        }
-        let field = WorldLayout.field
-        let w = (field.maxX - field.minX) / 8, h = (field.maxY - field.minY) / 4
-        return DeckRect(minX: center.x - w, minY: center.y - h, maxX: center.x + w, maxY: center.y + h)
+        let cell = WorldLayout.plotCellRect(index)
+        return DeckRect(minX: cell.minX, minY: cell.minY, maxX: cell.maxX, maxY: cell.maxY)
     }
 
     /// The plot's action for what's in your hands.
