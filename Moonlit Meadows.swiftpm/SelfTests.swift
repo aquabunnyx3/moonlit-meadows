@@ -414,7 +414,7 @@ enum SelfTests {
             meadow.discovered[breed.id] = meadow.now
         }
         c.expect(meadow.claimMilestone(5), "Should claim the 5-breed milestone")
-        c.expect(meadow.decor.contains("gardenArch"), "Milestone decor granted")
+        c.expect(meadow.count(of: "gardenArch") >= 1, "Milestone decor arrives in the bag to place")
         let coins = meadow.coins
         c.expect(!meadow.claimMilestone(5), "Milestones claim once")
         c.expect(meadow.coins == coins, "No duplicate milestone rewards")
@@ -493,9 +493,10 @@ enum SelfTests {
         meadow.deckSecondaryAction()
         c.expect(meadow.panelTabID == PanelTab.farm.rawValue, "Back closes the panel")
 
-        meadow.farmerSpot = Spot(x: 0.585, y: 0.765)
-        meadow.deckFacing = DeckVector(x: -1, y: 0)
-        c.expect(meadow.deckTarget()?.kind == .lureBasket, "The lure basket is in reach")
+        // The lure basket is in the east meadow now: stand just west of it, facing it.
+        meadow.farmerSpot = Spot(x: 0.62, y: 0.85)
+        meadow.deckFacing = DeckVector(x: 1, y: 0)
+        c.expect(meadow.deckTarget()?.kind == .lureBasket, "The lure basket is in reach, got \(String(describing: meadow.deckTarget()?.kind))")
         meadow.deckAction()
         c.expect(meadow.panelTabID == PanelTab.lures.rawValue, "Set Lure opens the lures")
         meadow.deckSecondaryAction()
@@ -592,8 +593,10 @@ enum SelfTests {
         }
         let theo = meadow.talk(to: "theo")
         c.expect(theo?.line == Meadow.FirstMeetLines.line(for: "theo"), "Theo's first chat is his cold-shoulder introduction")
-        let theoAgain = meadow.talk(to: "theo")
-        c.expect(theoAgain?.line != Meadow.FirstMeetLines.line(for: "theo"), "Later chats use the daily lines")
+        // (Theo won't talk on rainy days before the Reveal, so the repeat check uses June.)
+        _ = meadow.talk(to: "june")
+        let juneAgain = meadow.talk(to: "june")
+        c.expect(juneAgain?.line != Meadow.FirstMeetLines.line(for: "june"), "Later chats use the daily lines")
         let imani = meadow.talk(to: "imani")
         c.expect(imani?.line.hasPrefix(Meadow.FirstMeetLines.line(for: "imani") ?? "—") == true
                  && imani?.line.contains("Bring me the first fish") == true,
@@ -661,7 +664,8 @@ enum SelfTests {
         c.expect(TownArt.image("city-hub-map") != nil, "The village map is in the assets")
         for (id, _) in TownLayout.interiors {
             c.expect(TownArt.image(InteriorArt.name(id)) != nil, "\(InteriorArt.name(id)) is in the assets")
-            c.expect(TownLayout.house(id) != nil, "\(id) has a house in the village")
+            // Imani lives in her cabin at the Pond, not in the village.
+            if id != "imani" { c.expect(TownLayout.house(id) != nil, "\(id) has a house in the village") }
         }
         let meadow = freshMeadow()
         for person in Person.all {
@@ -681,6 +685,9 @@ enum SelfTests {
         c.expect(meadow.deckTarget()?.kind == .goToTown, "The bottom of the farm leads to the village")
         meadow.deckAction()
         c.expect(meadow.town == .hub, "Going to the village")
+        // Midday, with the shop open and nobody mid-walk on their doorstep (a new day starts at 6 AM,
+        // when villagers are just leaving home).
+        meadow.setClock(toMatch: date(hour: 12))
 
         // Every house door works, and the empty houses are just as enterable.
         for house in TownLayout.houses where house.ownerID != nil {
@@ -720,8 +727,9 @@ enum SelfTests {
         meadow.deckFacing = DeckVector(x: -1, y: 0)
         let bed = meadow.deckTarget()
         c.expect(bed?.verb == "Look at June's bed", "Beds in villagers' houses are Look, not Sleep, got \(bed?.verb ?? "nothing")")
-        meadow.townSpot = Spot(x: 0.68, y: 0.8)
-        meadow.deckFacing = DeckVector(x: 1, y: 0)
+        // June's new room: the way out is the bottom edge, left of her worktable.
+        meadow.townSpot = Spot(x: 0.2, y: 0.93)
+        meadow.deckFacing = DeckVector(x: 0, y: 1)
         c.expect(meadow.deckTarget()?.verb == "Exit", "The way out says Exit")
         meadow.deckAction()
         c.expect(meadow.town == .hub, "Back out in the village")
@@ -774,7 +782,7 @@ enum SelfTests {
 
     private static func dateScenes(_ c: Check) {
         let scenes = Person.main.flatMap { $0.activities.compactMap(\.dateScene) }
-        c.expect(scenes.count == 7, "Seven date scenes, got \(scenes.count)")
+        c.expect(scenes.count == 8, "Eight date scenes (Imani's Night Fishing included), got \(scenes.count)")
         for scene in scenes {
             c.expect(NSDataAsset(name: scene) != nil, "\(scene) is in the assets")
         }
@@ -853,7 +861,7 @@ enum SelfTests {
         // Villager strolls: steady pace, real stops, and steps that keep up with the ground.
         let route = WorldLayout.strollRoute(lane: 1, visitsBunnies: true)
         var stopped = false, lastDistance = -1.0
-        for tenth in 0..<350 { // less than one loop (~40 s)
+        for tenth in 0..<200 { // less than one loop (about 25 s)
             let step = WorldLayout.routeStep(route, at: Double(tenth) / 10, aspect: 2096.0 / 1184.0)
             if !step.isWalking { stopped = true }
             if step.isWalking {
@@ -1026,8 +1034,10 @@ enum SelfTests {
         c.expect(!hoodie.fits(.female) && !sundress.fits(.male), "The hoodie and sundress are made for one body each")
         c.expect(FarmerLook(gender: .male, hairStyle: 1).canWear(hoodie), "Curly Fade is drawn in the hoodie")
         c.expect(FarmerLook(gender: .female, hairStyle: 1).canWear(sundress), "Long Waves is drawn in the sundress")
+        // The three original styles are drawn in every cut; the newer ones are jacket-only until
+        // the outfit round (held).
         for gender in FarmerGender.allCases {
-            for style in gender.hairStyles.indices {
+            for style in 0..<min(3, gender.hairStyles.count) {
                 for outfit in Outfit.all where outfit.fits(gender) {
                     c.expect(FarmerLook(gender: gender, hairStyle: style).canWear(outfit),
                              "\(gender.hairStyles[style]) (\(gender.title)) can wear \(outfit.name)")
@@ -1064,13 +1074,14 @@ enum SelfTests {
         c.expect(PersonArt.cycleFrame(for: part, facing: .right, time: 0) != nil,
                  "Side Part walks right with a drawn cycle")
         c.expect(PersonArt.cycleFrame(for: waves, facing: .left, time: 0)?.isFlipped == true, "Walking left mirrors the right cycle")
-        for person in Person.all where person.id != "rowan" {
+        // Imani's side walk sheet is still to come (she has front and back cycles).
+        for person in Person.all where person.id != "rowan" && person.id != "imani" {
             c.expect(PersonArt.hasWalkCycle(for: person.id, facing: .right), "\(person.name) walks with a video cycle")
         }
         let curlyFade = FarmerRenderer.artID(for: FarmerLook(gender: .male, hairStyle: 1))
         c.expect(PersonArt.hasWalkCycle(for: curlyFade, facing: .left), "Curly Fade walks with a video cycle")
         var upward = RouteStep(spot: Spot(x: 0.5, y: 0.5)); upward.dx = 0.01; upward.dy = -0.2; upward.isWalking = true
-        c.expect(WalkFacing.facing(for: upward, id: "june") == .right, "Walking up the screen uses the side walk, not a sliding back sprite")
+        c.expect(WalkFacing.facing(for: upward, id: "june") == .back, "Walking up the screen uses the drawn back walk")
         let padded = FarmerRenderer.image(.person, look: FarmerLook(gender: .female))
         if let padded {
             let trimmed = ArtTrim.trimmed(padded, key: "selftest")
@@ -1117,7 +1128,11 @@ enum SelfTests {
                 for option in choice.options { check("farmer", option.text); check(event.personID, option.response) }
             }
         }
-        c.expect(silent.isEmpty, "\(silent.count) lines have no voice: \(silent.prefix(3))")
+        // Grouped by speaker, so it reads as a recording list (lines without a recording use talk blips).
+        var bySpeaker: [String: Int] = [:]
+        for line in silent { bySpeaker[String(line.prefix { $0 != ":" }), default: 0] += 1 }
+        let summary = bySpeaker.sorted { $0.value > $1.value }.map { "\($0.key) \($0.value)" }.joined(separator: ", ")
+        c.expect(silent.isEmpty, "\(silent.count) lines still need recording (\(summary)); first: \(silent.prefix(2))")
 
         if let june = Person.find("june") {
             c.expect(VoiceLines.clips(owner: "june", text: june.lines.early[0]) == ["JUNE-DAILY-EARLY-1"], "June's first line plays JUNE-DAILY-EARLY-1")

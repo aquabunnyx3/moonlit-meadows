@@ -247,6 +247,8 @@ enum TownLayout {
         "silas": Spot(x: 0.355, y: 0.49),
         "bree": Spot(x: 0.17, y: 0.955),
         "vi": Spot(x: 0.355, y: 0.68),
+        // Wes's out days put him in the village too; without a spot he'd be "in the hub" but nowhere.
+        "wes": Spot(x: 0.24, y: 0.4),
     ]
 
     /// The morning / midday / evening schedule in the village: when each villager is at their
