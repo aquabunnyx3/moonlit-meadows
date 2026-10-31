@@ -498,7 +498,13 @@ extension Meadow {
         case .house(let id):
             guard let room = TownLayout.interiors[id] else { return nil }
             if id == "shop", reaches(ShopLayout.counterZone, from: spot, facing: faced) {
-                return DeckTarget(kind: .shopCounter, verb: "Shop Counter", icon: .asset("icon-shop"), spot: ShopLayout.counterZone.center)
+                if shopIsOpen {
+                    return DeckTarget(kind: .shopCounter, verb: "Shop Counter", icon: .asset("icon-shop"), spot: ShopLayout.counterZone.center)
+                }
+                // Outside her hours the counter is unattended (Michelle, 2026-10-30).
+                let keeper = ShopLayout.owner?.name ?? "The shopkeeper"
+                return DeckTarget(kind: .look("The counter is unattended — the shop is closed. \(keeper) keeps it open 9 AM to 6 PM."),
+                                  verb: "Shop Closed", icon: .asset("icon-shop"), spot: ShopLayout.counterZone.center)
             }
             if let resident = houseResident {
                 let box = DeckRect(minX: room.resident.x - 0.06, minY: room.resident.y - 0.16, maxX: room.resident.x + 0.06, maxY: room.resident.y + 0.03)

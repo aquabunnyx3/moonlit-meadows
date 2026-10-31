@@ -717,6 +717,9 @@ extension Meadow {
         if let step = hubWalker(person.id), step.isWalking {
             return "\(person.name) is walking through the hub"
         }
+        if person.id == ShopLayout.ownerID, ShopLayout.isOpen(hour: clockHour) {
+            return "\(person.name) is at the Village Shop"
+        }
         switch whereabouts(of: person.id) {
         case .farm: return "\(person.name) is on your farm · \(slot.place)"
         case .town: return "\(person.name) is in the hub · \(slot.place)"
@@ -732,6 +735,8 @@ extension Meadow {
     /// not in the village (or are inside, or you're visiting them at home).
     func hubWalker(_ personID: String) -> RouteStep? {
         guard !heldHome.contains(personID), let house = TownLayout.house(personID) else { return nil }
+        // While her shop is open, Bree is at its counter, not out walking.
+        if personID == ShopLayout.ownerID, ShopLayout.isOpen(hour: clockHour) { return nil }
         let hour = clockHour
         let current = whereabouts(of: personID, at: TimeOfDay.at(hour: Int(hour)))
         func point(_ place: Whereabouts) -> Spot? {
@@ -988,9 +993,16 @@ struct TownScene: View {
                 list.append(Figure(id: walker.person.id, person: walker.person, spot: walker.step.spot,
                                    facing: WalkFacing.facing(for: walker.step, id: walker.person.spriteID(onDay: meadow.today)), isWalking: walker.step.isWalking))
             }
-        case .house:
+        case .house(let houseID):
             if let resident = meadow.houseResident, let room = TownLayout.interiors[resident.id] {
                 list.append(Figure(id: resident.id, person: resident, spot: room.resident, facing: .front, isWalking: false))
+            }
+            // The Village Shop: while it's open, Bree stands at her counter in
+            // pixel form, at the room's resident spot behind it (Michelle,
+            // 2026-10-30).
+            if houseID == "shop", meadow.shopIsOpen, let owner = ShopLayout.owner,
+               let room = TownLayout.interiors["shop"] {
+                list.append(Figure(id: owner.id, person: owner, spot: room.resident, facing: .front, isWalking: false))
             }
         case .pond:
             // Imani, the pond keeper, is by the stone jetty near her cabin.
@@ -1042,8 +1054,13 @@ struct TownScene: View {
             case .workshops: return "🛠️ The Workshops"
             }
         }()
+        // Inside the Village Shop, the pill carries its hours (Michelle, 2026-10-30).
+        let shopSuffix: String = {
+            guard case .house(let id) = place, id == "shop" else { return "" }
+            return meadow.shopIsOpen ? " · Open \(ShopLayout.hoursText)" : " · Closed · Opens 9 AM"
+        }()
         return HStack(spacing: 6) {
-            Text("\(name) · Day \(meadow.dayCount) · \(meadow.clockText)")
+            Text("\(name)\(shopSuffix) · Day \(meadow.dayCount) · \(meadow.clockText)")
                 .font(.caption.bold())
                 .padding(.horizontal, 10)
                 .padding(.vertical, 5)

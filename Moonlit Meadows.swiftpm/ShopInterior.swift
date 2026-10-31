@@ -22,9 +22,24 @@ enum ShopLayout {
     static let ownerID = "bree"
 
     static var owner: Person? { Person.find(ownerID) }
+
+    /// The shop's hours (Michelle, 2026-10-30): Bree keeps the Village Shop
+    /// from 9 in the morning to 6 in the evening. Inside those hours she
+    /// stands at her counter in pixel form; outside them the counter is
+    /// unattended and the shop is closed, though the door still opens.
+    static let openHour = 9
+    static let closeHour = 18
+    static var hoursText: String { "9 AM – 6 PM" }
+
+    static func isOpen(hour: Double) -> Bool {
+        hour >= Double(openHour) && hour < Double(closeHour)
+    }
 }
 
 extension Meadow {
+    /// Whether the Village Shop is within its hours right now.
+    var shopIsOpen: Bool { ShopLayout.isOpen(hour: clockHour) }
+
     /// Starts a real conversation with the shopkeeper, right at her counter —
     /// the same talk as anywhere else: daily line, friendship points, and
     /// sometimes a question, because she's a person like everyone else.
