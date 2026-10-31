@@ -150,7 +150,10 @@ enum PersonArt {
         // The forward cycles are drawn 4-frame sheets, not video: they play
         // at sprite-animation speed (Michelle's forward-walking pass, 2026-10-30).
         "walk-bree-front": 7, "walk-june-front": 7, "walk-roz-front": 7,
-        "walk-theo-front": 7, "walk-kai-front": 7,
+        "walk-theo-front": 7, "walk-kai-front": 7, "walk-rowan-front": 7,
+        "walk-silas-front": 7, "walk-imani-front": 7, "walk-wes-front": 7,
+        "walk-vi-front": 7, "walk-sol-pinafore-front": 4.6,
+        "walk-sol-overalls-front": 4.6,
     ]
     private static var cycleLengths: [String: Int] = [:]
 
